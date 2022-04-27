@@ -19,7 +19,7 @@ public class Define
         Unknown, // 디폴트
         Login,
         Lobby,
-        Game,
+        InGame,
     }
 
     public enum Sound

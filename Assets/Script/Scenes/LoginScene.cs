@@ -14,6 +14,9 @@ public class LoginScene : BaseScene
 
         SceneType = Define.Scene.Login;
 
+        // 씬 UI
+        Managers.UI.ShowSceneUI<UI_Login>("UI_Login");
+
         //List<GameObject> list = new List<GameObject>();
 
         //// 풀매니저 테스트
@@ -43,7 +46,7 @@ public class LoginScene : BaseScene
             // -> 근데 BaseScene, GameScene, LoginScene 등에서 Init, Clear 할 때 중요 작업 하니까
             // 그런 작업 한번에 관리하기 위해서 Scene Manager 하나 새로 만듦 / 선택사항
             // -> 새로 만든 매니저로
-            Managers.Scene.LoadScene(Define.Scene.Game);
+            Managers.Scene.LoadScene(Define.Scene.InGame);
         }
     }
 
