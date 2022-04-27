@@ -39,8 +39,8 @@ public class Player_Controller : MonoBehaviour
 
         if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
-            if(!ani.GetBool("IsAttack"))
-                StartCoroutine(Attack(5,0.5f));
+            if(!ani.GetBool("IsAttack"))//공격중에는 더 이상 실행안됨
+                StartCoroutine(Attack(5,0.5f));//현재 attack_delay는 0.5 공격속도는 2배로 늘어남 기본 1
         }
         else
             move(speed);
@@ -90,7 +90,7 @@ public class Player_Controller : MonoBehaviour
          isMove = false;
         ani.SetBool("IsMove",false);
         ani.SetBool("IsAttack",true);
-        ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절
+        ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy != null)
         {
             stat.Hp = stat.Hp - damage;

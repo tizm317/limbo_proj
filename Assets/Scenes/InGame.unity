@@ -146,7 +146,7 @@ PrefabInstance:
     - target: {fileID: 6068054994472305620, guid: 8b0ed2bc94ddb3b43866e9d4f3f135d9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6068054994472305620, guid: 8b0ed2bc94ddb3b43866e9d4f3f135d9,
         type: 3}
@@ -156,7 +156,7 @@ PrefabInstance:
     - target: {fileID: 6068054994472305620, guid: 8b0ed2bc94ddb3b43866e9d4f3f135d9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6068054994472305620, guid: 8b0ed2bc94ddb3b43866e9d4f3f135d9,
         type: 3}
@@ -589,12 +589,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
-  hp: 50
-  maxHp: 50
-  attack: 0
-  defense: 0
-  movespeed: 0
+  _level: 0
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
 --- !u!54 &1074444365
 Rigidbody:
   m_ObjectHideFlags: 0
