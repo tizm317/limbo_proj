@@ -34,7 +34,7 @@ public class _PlayerController : MonoBehaviour
 
         // TEMP
         //Managers.UI.ShowPopupUI<UI_Button>();
-        Managers.UI.ShowPopupUI<UI_Inven>();
+        //Managers.UI.ShowPopupUI<UI_Inven>();
     }
 
     void UpdateDie()

@@ -47,8 +47,8 @@ public class UI_Button : UI_Popup
 
         Bind<Button>(typeof(Buttons)); // Buttons 의 enum 타입을 넘기겠다 는 의미
         Bind<Text>(typeof(Texts)); // Relection 이용해서 enum 넘겨줌. enum 이름에 typeof 사용해서 넘겨줌 => 정확히 Texts를 넘긴거는 아니고, 이런 형식(이 enum 타입)을 넘기겠다고 호출한 것.
-        Bind<GameObject>(typeof(GameObjects));
-        Bind<Image>(typeof(Images));
+        //Bind<GameObject>(typeof(GameObjects));
+        //Bind<Image>(typeof(Images));
 
 
         // 클릭 event 추가 과정 (한줄로 처리하는 ExtensionMethod 활용)
@@ -56,16 +56,18 @@ public class UI_Button : UI_Popup
 
         // 드래그 event 추가 과정 (기존 방법)
         // 1. go 찾기 
-        GameObject go = GetImage((int)Images.ItemIcon).gameObject;
+        //GameObject go = GetImage((int)Images.ItemIcon).gameObject;
         // 2. 포인터이벤트데이터 받으면 {...} 반환하는 람다함수 를 go 와 연결 (Drag type)
-        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag); // {...} 내용 : 누른 go를 드래그하기 위함
+        //BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag); // {...} 내용 : 누른 go를 드래그하기 위함
     }
 
     //int _score = 0;
 
+
+
     public void OnButtonClicked(PointerEventData data)
     {
-
+        Managers.UI.ShowPopupUI<UI_Inven>();
     }
 
     //public void OnButtonClicked(PointerEventData data)

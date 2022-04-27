@@ -42,6 +42,7 @@ public class UIManager
         // 외부에서 popup ui 켜질 때 , 역으로 UI Manager 한테 setcanvas 요청해서 canvas 내 order 변경
         // UI_Scene, UI_Popup 시작할 때 호출
 
+
         // Canvas
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;

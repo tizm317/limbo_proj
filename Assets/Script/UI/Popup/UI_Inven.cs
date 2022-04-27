@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UI_Inven : UI_Popup
 {
@@ -15,7 +16,7 @@ public class UI_Inven : UI_Popup
 
     void Start()
     {
-        //Init();
+        Init();
     }
 
     public override void Init()
@@ -30,8 +31,15 @@ public class UI_Inven : UI_Popup
         foreach (Transform child in gridPanel.transform)
             Managers.Resource.Destroy(child.gameObject);
 
+
+        // 드래그 event 추가
+        //GetObject((int)GameObjects.GridPanel).gameObject.BindEvent(OnMouseDrag, Define.UIEvent.Drag);
+        GameObject go = GetObject((int)GameObjects.GridPanel).gameObject;
+        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag); 
+
+
         // 아이템 개수만큼 붙이기
-        for(int i = 0; i < 8; i++) // 실제 인벤토리 정보 참고해서 몇개 만들지 고려
+        for (int i = 0; i < 8; i++) // 실제 인벤토리 정보 참고해서 몇개 만들지 고려
         {
             // 1. inven_item 생성해서 GridPanel 산하에 붙임
             GameObject item = Managers.UI.MakeSubItem<UI_Inven_Item>(parent: gridPanel.transform).gameObject;
@@ -46,6 +54,5 @@ public class UI_Inven : UI_Popup
         }
     }
 
-  
 
 }

@@ -69,7 +69,7 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.Game;
 
         // 씬 UI
-        //Managers.UI.ShowSceneUI<>();
+        Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
 
@@ -78,16 +78,16 @@ public class GameScene : BaseScene
         //    Managers.Resource.Instantiate("UnityChan");
 
 
-        // 코루틴 관련
         /*
-        // 코루틴 테스트
-        //CoroutineTest test = new CoroutineTest();
-        //foreach(System.Object t in test)
-        //{
-        //    // 여기서 판단해줌
-        //    Test value = (Test)t;
-        //    Debug.Log(value.Id);
-        //}
+         * 코루틴 관련
+           코루틴 테스트
+        CoroutineTest test = new CoroutineTest();
+        foreach(System.Object t in test)
+        {
+            // 여기서 판단해줌
+            Test value = (Test)t;
+            Debug.Log(value.Id);
+        }
 
         co = StartCoroutine(CoExplodeAfterSeconds(4.0f));
         StartCoroutine("CoStopExplode", 2.0f);
