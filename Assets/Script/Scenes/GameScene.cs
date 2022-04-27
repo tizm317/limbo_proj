@@ -66,7 +66,7 @@ public class GameScene : BaseScene
         base.Init();
 
         // æ¿≈∏¿‘ º≥¡§
-        SceneType = Define.Scene.Game;
+        SceneType = Define.Scene.InGame;
 
         // æ¿ UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");

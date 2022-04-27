@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_InGame : UI_Scene
+public class UI_Login : UI_Scene
 {
     enum Buttons
     {
@@ -13,6 +13,7 @@ public class UI_InGame : UI_Scene
 
     enum Texts
     {
+        TitleText,
         PointText,
     }
 
@@ -39,13 +40,9 @@ public class UI_InGame : UI_Scene
         GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
     }
 
-    UI_Inven ui_Inven;
 
     public void OnButtonClicked(PointerEventData data)
     {
-        if (!ui_Inven)
-            ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
-        else
-            Managers.UI.ClosePopupUI(ui_Inven);
+        Managers.Scene.LoadScene(Define.Scene.InGame);
     }
 }
