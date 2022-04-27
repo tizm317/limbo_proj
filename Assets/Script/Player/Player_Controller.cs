@@ -9,6 +9,8 @@ public class Player_Controller : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;
+    [SerializeField]
+    Stat stat;
     private Camera cam;
     private GameObject player,my_enemy;
     private Vector3 destination;//이동하는 목적지를 저장하는 변수
@@ -37,8 +39,8 @@ public class Player_Controller : MonoBehaviour
 
         if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
-            Attack(3);
-            Debug.Log("*");
+            if(!ani.GetBool("IsAttack"))
+                StartCoroutine(Attack(5,0.5f));
         }
         else
             move(speed);
@@ -79,19 +81,25 @@ public class Player_Controller : MonoBehaviour
     private void Lock_On(GameObject enemy)
     {
         my_enemy = enemy;
+        stat = my_enemy.GetComponent<Stat>();
+        Debug.Log(stat.Hp);
     }
-    private void Attack(float damage)
-    {//damage는 한번 공격할때 감소하는 hp수, distance는 사거리
-        if(my_enemy != null)
+    IEnumerator Attack(int damage,float attack_delay)
+    {//damage는 한번 공격할때 감소하는 hp수, distance는 사거리->아직 미구현
+         isMove = false;
+        ani.SetBool("IsMove",false);
+        ani.SetBool("IsAttack",true);
+        ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절
+        while(my_enemy != null)
         {
-            isMove = false;
-            ani.SetBool("IsMove",false);
-            ani.SetBool("IsAttack",true);
-            Destroy(my_enemy);
-        }
-        else
-        {
-            ani.SetBool("IsAttack",false);
+            stat.Hp = stat.Hp - damage;
+            Debug.Log(stat.Hp);
+            if(stat.Hp < 0)
+            {
+                Destroy(my_enemy);
+                ani.SetBool("IsAttack",false);
+            }
+            yield return new WaitForSeconds(attack_delay);
         }
     }
     
