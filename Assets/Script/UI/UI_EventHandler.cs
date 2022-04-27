@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,24 +6,34 @@ using UnityEngine.EventSystems;
 
 public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
 {
-    // EventSystemì—ì„œ ë˜ì ¸ì£¼ëŠ” ì´ë²¤íŠ¸ ë°›ì•„ì˜´
+    // EventSystem¿¡¼­ ´øÁ®ÁÖ´Â ÀÌº¥Æ® ¹Ş¾Æ¿È
+    // UI ¿¡¼­ Ä³Ä¡ÇØ¼­ Äİ¹é ³¯·ÁÁÜ
 
+    // ÇÊ¿äÇÑ ÀÎÅÍÆäÀÌ½º Á¤ÀÇ ¹× ±¸ÇöÇØÁÖ¸é µÊ.
+    // Æ÷ÀÎÅÍÅ¬¸¯ÇÚµé·¯, µå·¡±×ÇÚµé·¯ »ó¼Ó¹ŞÀ½ (Å¬¸¯ ÀÌº¥Æ® , µå·¡±× ÀÌº¥Æ® ¹Ş¾Æ¿À±â À§ÇØ)
+
+    // ÇÔ¼ö¶û ¿¬°á Áş´Â °Íµµ ¹Ø¿¡ Äİ¹éÇÔ¼ö ¿¬°á½ÃÄÑ¼­ ÇÔ¼ö°¡ ½ÇÇàµÇµµ·Ï ÇÏ¸éµÊ.
+
+    // Action ÀÌ¿ëÇØ¼­ Ãß°¡ÇÏ°í ½ÍÀº ÇÔ¼ö ¿¬µ¿
     public Action<PointerEventData> OnClickHandler = null;
     public Action<PointerEventData> OnDragHandler = null;
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // ´©°¡ Å¬¸¯ÇÏ¸é , ±¸µ¶ÇÑ °÷À¸·Î event ÀüÆÄ
+
         if (OnClickHandler != null)
-            OnClickHandler.Invoke(eventData);
+            OnClickHandler.Invoke(eventData); // ±¸µ¶ ½ÅÃ»ÇÑ ¾ÖµéÇÑÅ× ÀüÆÄ
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         //transform.position = eventData.position;
         //Debug.Log("OnDrag");
+
         if (OnDragHandler != null)
             OnDragHandler.Invoke(eventData);
     }
 
-
+ 
 }

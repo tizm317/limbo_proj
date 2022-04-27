@@ -1,4 +1,4 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +7,13 @@ using UnityEngine.EventSystems;
 
 public class UI_Button : UI_Popup
 {
+    // ¹öÆ°¿ë
 
-    // enum ì´ìš©í•´ì„œ
-    // button, text ëª©ë¡ ì •ë¦¬í•´ë‘ê³ 
-    // ì—°ê²°í•´ì¤Œ
+    // enum ÀÌ¿ëÇØ¼­
+    // button, text ¸ñ·Ï Á¤¸®ÇØµÎ°í
+    // ¿¬°áÇØÁÜ
+    // 4°¡Áö : ¹öÆ°. ÅØ½ºÆ®, °ÔÀÓ¿ÀºêÁ§Æ®, ÀÌ¹ÌÁö
+
 
     enum Buttons
     {
@@ -20,7 +23,7 @@ public class UI_Button : UI_Popup
     enum Texts
     {
         PointText,
-        ScoreText,
+        //ScoreText,
     }
 
     enum GameObjects
@@ -42,26 +45,37 @@ public class UI_Button : UI_Popup
     {
         base.Init();
 
-        Bind<Button>(typeof(Buttons)); // Buttons ì˜ enum íƒ€ì…ì„ ë„˜ê¸°ê² ë‹¤ ëŠ” ì˜ë¯¸
-        Bind<Text>(typeof(Texts)); // Relection ì´ìš©í•´ì„œ
+        Bind<Button>(typeof(Buttons)); // Buttons ÀÇ enum Å¸ÀÔÀ» ³Ñ±â°Ú´Ù ´Â ÀÇ¹Ì
+        Bind<Text>(typeof(Texts)); // Relection ÀÌ¿ëÇØ¼­ enum ³Ñ°ÜÁÜ. enum ÀÌ¸§¿¡ typeof »ç¿ëÇØ¼­ ³Ñ°ÜÁÜ => Á¤È®È÷ Texts¸¦ ³Ñ±ä°Å´Â ¾Æ´Ï°í, ÀÌ·± Çü½Ä(ÀÌ enum Å¸ÀÔ)À» ³Ñ±â°Ú´Ù°í È£ÃâÇÑ °Í.
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
 
+
+        // Å¬¸¯ event Ãß°¡ °úÁ¤ (ÇÑÁÙ·Î Ã³¸®ÇÏ´Â ExtensionMethod È°¿ë)
         GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
 
-        // event ì¶”ê°€
+        // µå·¡±× event Ãß°¡ °úÁ¤ (±âÁ¸ ¹æ¹ı)
+        // 1. go Ã£±â 
         GameObject go = GetImage((int)Images.ItemIcon).gameObject;
-        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
+        // 2. Æ÷ÀÎÅÍÀÌº¥Æ®µ¥ÀÌÅÍ ¹ŞÀ¸¸é {...} ¹İÈ¯ÇÏ´Â ¶÷´ÙÇÔ¼ö ¸¦ go ¿Í ¿¬°á (Drag type)
+        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag); // {...} ³»¿ë : ´©¸¥ go¸¦ µå·¡±×ÇÏ±â À§ÇÔ
     }
 
-    int _score = 0;
+    //int _score = 0;
 
     public void OnButtonClicked(PointerEventData data)
     {
-        _score++;
 
-        GetText((int)Texts.ScoreText).text = $"ì ìˆ˜ : {_score}";
     }
+
+    //public void OnButtonClicked(PointerEventData data)
+    //{
+    //    //_score++;
+
+    //    //GetText((int)Texts.ScoreText).text = $"Á¡¼ö : {_score}";
+
+    //    Debug.Log("dd");
+    //}
 
 }
 
