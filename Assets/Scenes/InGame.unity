@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -560,7 +560,7 @@ PrefabInstance:
     - target: {fileID: 4480131930398008631, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.71
+      value: -9.77
       objectReference: {fileID: 0}
     - target: {fileID: 4480131930398008631, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
         type: 3}
@@ -612,6 +612,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 2ae4a46ffceb9b744a3965edd952b07d, type: 2}
+    - target: {fileID: 7551565249040613197, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564, type: 3}
 --- !u!1 &1074444361 stripped
@@ -632,10 +637,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: 0
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
+  _level: 1
+  _hp: 50
+  _maxHp: 50
+  _attack: 5
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
@@ -646,7 +651,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1074444361}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab46505f99f5fc9458fd3446fbf5965f, type: 3}
   m_Name: 
@@ -654,7 +659,7 @@ MonoBehaviour:
   _destPos: {x: 0, y: 0, z: 0}
   _state: 0
   _lockTarget: {fileID: 1263350712}
-  _scanRange: 10
+  _scanRange: 8
   _attachRange: 2
 --- !u!195 &1074444364
 NavMeshAgent:
@@ -700,6 +705,27 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 403093678}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1263350715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263350712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde04312b50f45d40861ab493d70a06c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 1
+  _hp: 100
+  _maxHp: 100
+  _attack: 5
+  _defense: 5
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _exp: 0
+  _gold: 0
 --- !u!1 &1684480923
 GameObject:
   m_ObjectHideFlags: 0
