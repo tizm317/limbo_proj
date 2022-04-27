@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class InputManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -16,6 +15,7 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         mouse_right_btn_change();
+        quit();
     }
 
     void mouse_right_btn_change()
@@ -37,7 +37,12 @@ public class InputManager : MonoBehaviour
         {
             LeftShift = false;
         }
-            
-
     }
+
+    void quit()
+    {
+        if(Input.GetKey(KeyCode.Escape))
+            Application.Quit();
+    }
+
 }
