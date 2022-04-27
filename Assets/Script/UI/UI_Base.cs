@@ -1,4 +1,4 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -7,29 +7,48 @@ using UnityEngine.EventSystems;
 
 public abstract class UI_Base : MonoBehaviour
 {
+    // ¸ðµç UI ÀÇ ÃÖ»óÀ§ º£ÀÌ½º Å¬·¡½º
+    // Bind ÇÔ¼öµé, Get ÇÔ¼öµé
+
+    // µñ¼Å³Ê¸®·Î ÀúÀå
+    // °¢ Type º°·Î list·Î µé°í ÀÖÀ½
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 
     public abstract void Init();
 
-
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
-        // enum ê°’ì„ ì–´ë–»ê²Œ ë„˜ê²¨ë°›ì§€?
-        // C# ì˜ reflection ê¸°ëŠ¥ ì‚¬ìš©
-        // reflection : ì˜¤ë¸Œì íŠ¸ ì—‘ìŠ¤ë ˆì´ ì°ì–´ì„œ ì •ë³´ ì¶”ì¶œ
+        // UI ÀÚµ¿È­ ±â´É : À¯´ÏÆ¼ Åø·Î ¿¬°áÁö¾îÁÖ´Â ±â´É ÀÚµ¿È­ 
+        // ¸ÊÇÎ ±â´É
+        
+        // enum °ªÀ» ¾î¶»°Ô ³Ñ°Ü¹ÞÁö?
+        // C# ÀÇ reflection ±â´É »ç¿ë
+        // reflection : ¿ÀºêÁ§Æ® ¿¢½º·¹ÀÌ Âï¾î¼­ Á¤º¸ ÃßÃâ
+        // Type À» ÀÌ¿ëÇØ¼­ ÀÔ·Â¹ÞÀ½, typeof() ÀÌ¿ëÇØ¼­ ³ÖÀ½.
 
-        string[] names = Enum.GetNames(type); // C# ê¸°ëŠ¥ìœ¼ë¡œ enum -> string ë³€í™˜
+        // ÇÏ´Â ÀÏ
+        // enum »êÇÏ¿¡¼­ ÇØ´çµÇ´Â ÀÌ¸§À» Ã£¾Æ¼­ ¿ÀºêÁ§Æ® Ã£¾Æ¼­ ¿¬µ¿
+        // Á¤È®È÷´Â ÄÄÆ÷³ÍÆ®¸¦ µé°í ÀÖ´Â ¿ÀºêÁ§Æ®
+        // generic À¸·Î ÄÄÆ÷³ÍÆ® ³Ö¾î¼­ ...
 
+        // 1. C# ±â´ÉÀ¸·Î ÀÌ¸§ º¯È¯ enum -> string º¯È¯
+        string[] names = Enum.GetNames(type); 
+
+        // 2. °³¼ö¸¸Å­ ¸®½ºÆ® »ý¼º
         UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
+        
+        // 3. Å¸ÀÔº°·Î ¸®½ºÆ®¸¦ µñ¼Å³Ê¸®¿¡ ³Ö±â
         _objects.Add(typeof(T), objects);
 
+        // 4. ÀÚµ¿À¸·Î ³Ö±â (ÀÌ¸§ÇÏ°í °°Àº ¿ÀºêÁ§Æ® Ã£¾Æ¼­)
         for (int i = 0; i < names.Length; i++)
         {
-            if (typeof(T) == typeof(GameObject))
-                objects[i] = Util.FindChild(gameObject, names[i], true); // GameObject ì „ìš© ë²„ì „
+            if (typeof(T) == typeof(GameObject)) // °ÔÀÓ ¿ÀºêÁ§Æ®¸é
+                objects[i] = Util.FindChild(gameObject, names[i], true); // GameObject Àü¿ë ¹öÀü FindChild
             else
-                objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+                objects[i] = Util.FindChild<T>(gameObject, names[i], true); // ÄÄÆ÷³ÍÆ® ¹öÀü FindChild
 
+            // ¹ÙÀÎµå ½ÇÆÐ
             if (objects[i] == null)
                 Debug.Log($"Failed to Bind :  {names[i]}");
         }
@@ -39,50 +58,48 @@ public abstract class UI_Base : MonoBehaviour
 
     protected T Get<T>(int idx) where T : UnityEngine.Object
     {
+        // Get ÇÔ¼ö : µñ¼Å³Ê¸®¿¡¼­ ²¨³»¼­ ¾²´Â ÇÔ¼ö
+
+        // 1. ÀúÀåÇÒ ¸®½ºÆ® ¼±¾ð
         UnityEngine.Object[] objects = null;
+
+        // 2. µñ¼Å³Ê¸®¿¡¼­ Ã£¾Æ¼­ ¸®½ºÆ® ¸¸µê
         if (_objects.TryGetValue(typeof(T), out objects) == false)
             return null;
 
+        // 3. T·Î casting ÇØ¼­ ¹ÝÈ¯
         return objects[idx] as T;
     }
 
-    protected GameObject GetObject(int idx)
-    {
-        return Get<GameObject>(idx);
-    }
-
-    protected Text GetText(int idx)
-    {
-        return Get<Text>(idx);
-    }
-
-    protected Button GetButton(int idx)
-    {
-        return Get<Button>(idx);
-    }
-
-    protected Image GetImage(int idx)
-    {
-        return Get<Image>(idx);
-    }
+    // Get ´Ù¸¥ ¹öÀüµé : GetObject, GetText, GetButton, GetImage
+    protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
+    protected Text GetText(int idx) { return Get<Text>(idx); }
+    protected Button GetButton(int idx) { return Get<Button>(idx); }
+    protected Image GetImage(int idx) { return Get<Image>(idx); }
 
     public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
+        // °ÔÀÓ ¿ÀºêÁ§Æ® ¹Þ¾Æ¼­, UI_EventHandler ÄÄÆ÷³ÍÆ® ÃßÃâÇÏ°í, ¹º°¡ Ãß°¡ÇÏ´Â ±â´É
+        // ÀÔ·Â : °ÔÀÓ ¿ÀºêÁ§Æ® , ÄÝ¹éÀ¸·Î ¹ÞÀ» ¿¬µ¿ÇÒ ÇÔ¼ö actionÀ¸·Î ¹ÞÀ½ , UI_Event Á¾·ù
+
+        // 1. UI_EventHandler °¡Á®¿À±â (¾øÀ¸¸é Ãß°¡)
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
-        switch (type)
+        // 2. type¿¡ µû¶ó ¿¬µ¿
+        switch(type)
         {
+            // Click typeÀÌ¸é, ÇØ´ç action ÀÌ OnClickHandler ±¸µ¶½ÅÃ»
             case Define.UIEvent.Click:
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
+
+                // Drag typeÀÌ¸é, ÇØ´ç action ÀÌ OnDragHandler ±¸µ¶½ÅÃ»
             case Define.UIEvent.Drag:
                 evt.OnDragHandler -= action;
                 evt.OnDragHandler += action;
                 break;
         }
-
-        evt.OnDragHandler += ((PointerEventData data) => { evt.gameObject.transform.position = data.position; });
     }
 
 }

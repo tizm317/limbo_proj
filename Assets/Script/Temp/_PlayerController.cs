@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerController : MonoBehaviour
+public class _PlayerController : MonoBehaviour
 {
     [SerializeField]
     float _speed = 10.0f;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
         // TEMP
         //Managers.UI.ShowPopupUI<UI_Button>();
-        Managers.UI.ShowSceneUI<UI_Inven>();
+        Managers.UI.ShowPopupUI<UI_Inven>();
     }
 
     void UpdateDie()

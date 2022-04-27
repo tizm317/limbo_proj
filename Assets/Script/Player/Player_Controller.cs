@@ -49,7 +49,8 @@ public class Player_Controller : MonoBehaviour
     private void Mouse_Right_Click()
     {
         RaycastHit hit;//레이케스트 선언
-        Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+        bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+        if (!raycastHit) return; // raycast 실패하면 return
         if(hit.collider.tag == "ground")
         {
             Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
