@@ -50,7 +50,7 @@ public class EnemyController : MonoBehaviour
                     anim.CrossFade("WALK", 0.1f);
                     break;
                 case EnemyState.Skill:
-                    anim.CrossFade("ATTACK", 0.1f, -1, 0);
+                    anim.CrossFade("ATTACK", 0.1f, -1, 0.0f);
                     break;
             }
         }
@@ -129,6 +129,32 @@ public class EnemyController : MonoBehaviour
             Vector3 dir = _lockTarget.transform.position - transform.position;
             Quaternion quat = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
+        }
+
+        PlayerStat targetStat = _lockTarget.GetComponent<PlayerStat>();
+        Stat myStat = gameObject.GetComponent<Stat>();
+        int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
+        //targetStat.Hp -= damage;
+
+        if (targetStat.Hp > 0)
+        {
+            float distance = (_lockTarget.transform.position - transform.position).magnitude;
+            if (distance >= _attachRange)
+            {
+                if(State != EnemyState.Moving)
+                    State = EnemyState.Moving;
+                
+            }
+            else
+            {
+                if(State != EnemyState.Skill)
+                    State = EnemyState.Skill;
+            }
+        }
+        else
+        {
+            if(State != EnemyState.Idle)
+                State = EnemyState.Idle;
         }
     }
 
