@@ -7,18 +7,19 @@ public class EnemyController : MonoBehaviour
 {
     public enum EnemyState  //Enemy variable
     {
-        Idle,
+        Idle, 
         Moving,
         Skill,
         Die,
+        
     }
     [SerializeField] Vector3 _destPos;  //타켓 위치
     [SerializeField] EnemyState _state = EnemyState.Idle;  //상태 초기값 = wait(idle)
     [SerializeField] GameObject _lockTarget;  //타켓
 
     Stat _stat;
-    [SerializeField] float _scanRange = 10.0f;  //사정거리
-    [SerializeField] float _attachRange = 2.0f;  //적 공격 사정거리
+    [SerializeField] float _scanRange = 10;  //사정거리
+    [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
     Rigidbody rigid;
     CapsuleCollider capsuleCollider;
@@ -40,6 +41,8 @@ public class EnemyController : MonoBehaviour
 
             switch (_state)
             {
+                case EnemyState.Die:
+                    break;
                 case EnemyState.Idle:
                     anim.CrossFade("WAIT", 0.1f);
                     break; ;
@@ -48,8 +51,6 @@ public class EnemyController : MonoBehaviour
                     break;
                 case EnemyState.Skill:
                     anim.CrossFade("ATTACK", 0.1f, -1, 0);
-                    break;
-                case EnemyState.Die:
                     break;
             }
         }
@@ -64,33 +65,32 @@ public class EnemyController : MonoBehaviour
 
         // HPBar 여부 체크 후 생성 코드 필요
     }
-
-
+    void UpdateDie()
+    {
+        //Debug.Log("UpdateDie");
+        //미정
+    }
     void UpdateIdle()
     {
-        Debug.Log("UpdateIdle");
-
+       
         //사정 거리 내에서 Tag를 이용하여 플레이어 찾기
-        GameObject Player = GameObject.FindGameObjectWithTag("Player");
-        if (Player == null)  //Player가 없으면 대기
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)  //Player가 없으면 대기
             return;
 
         //player와 enemy의 거리 계산
-        float distance = (Player.transform.position - transform.position).magnitude;
+        float distance = (player.transform.position - transform.position).magnitude;
         if (distance <= _scanRange)
         {
-            _lockTarget = Player;
+            _lockTarget = player;
             State = EnemyState.Moving;
-
             return;
         }
 
     }
 
     void UpdateMoving()
-    {
-        Debug.Log("UpdateMoving");
-
+    {        
         //플레이어가 사정 거리보다 가까우면 공격
         if (_lockTarget != null)
         {
@@ -100,7 +100,6 @@ public class EnemyController : MonoBehaviour
             {
                 NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
                 nma.SetDestination(transform.position);
-
                 State = EnemyState.Skill;
                 return;
             }
@@ -120,26 +119,19 @@ public class EnemyController : MonoBehaviour
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
         }
-
+        
     }
 
     void UpdateSkill()
     {
-        Debug.Log("UpdateSkill");
-
         if (_lockTarget != null)
         {
             Vector3 dir = _lockTarget.transform.position - transform.position;
             Quaternion quat = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
+    }
 
-    }
-    void UpdateDie()
-    {
-        Debug.Log("UpdateDie");
-        //미정
-    }
     void OnHitEvent()
     {
         Debug.Log("OnHitEvent");
@@ -156,13 +148,14 @@ public class EnemyController : MonoBehaviour
             if (targetStat.Hp > 0)
             {
                 float distance = (_lockTarget.transform.position - transform.position).magnitude;
-                if (distance <= _attachRange)
+                if (distance >= _attachRange)
                 {
-                    State = EnemyState.Skill;
+                    State = EnemyState.Moving;
+                    
                 }
                 else
                 {
-                    State = EnemyState.Moving;
+                    State = EnemyState.Skill;
                 }
             }
             else
@@ -174,7 +167,7 @@ public class EnemyController : MonoBehaviour
         {
             State = EnemyState.Idle;
         }
-
+        
 
     }
     void Update()
@@ -183,7 +176,7 @@ public class EnemyController : MonoBehaviour
         {
             case EnemyState.Idle:
                 UpdateIdle();
-                break; ;
+                break;
             case EnemyState.Moving:
                 UpdateMoving();
                 break;
