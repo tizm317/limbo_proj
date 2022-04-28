@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class Player_Controller : MonoBehaviour
 {
     const float PlayerSpeed = 5.0f;
+    const float AttackDelay = 1.0f;
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;
     [SerializeField]
     Stat stat;
+    private PlayerStat my_stat;
     private Camera cam;
     private GameObject player,my_enemy;
     private Vector3 destination;//이동하는 목적지를 저장하는 변수
@@ -23,6 +25,7 @@ public class Player_Controller : MonoBehaviour
     {
         start_camera_set();//카메라의 위치를 플레이어를 기준으로 y축 5만큼, z축 -10만큼, x각 30도만큼 변경
         ani = player.GetComponent<Animator>();
+        my_stat = player.GetComponent<PlayerStat>();
     }
 
     // Update is called once per frame
@@ -40,7 +43,7 @@ public class Player_Controller : MonoBehaviour
         if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
             if(!ani.GetBool("IsAttack"))//공격중에는 더 이상 실행안됨
-                StartCoroutine(Attack(5,1f));//현재 attack_delay는 0.5 공격속도는 2배로 늘어남 기본 1
+                StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
         }
         else
             move(speed);
@@ -83,7 +86,6 @@ public class Player_Controller : MonoBehaviour
     {
         my_enemy = enemy;
         stat = my_enemy.GetComponent<Stat>();
-        Debug.Log(stat.Hp);
     }
     IEnumerator Attack(int damage,float attack_delay)
     {//damage는 한번 공격할때 감소하는 hp수, distance는 사거리->아직 미구현
