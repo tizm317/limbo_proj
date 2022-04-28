@@ -40,7 +40,7 @@ public class Player_Controller : MonoBehaviour
         if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
             if(!ani.GetBool("IsAttack"))//공격중에는 더 이상 실행안됨
-                StartCoroutine(Attack(5,0.5f));//현재 attack_delay는 0.5 공격속도는 2배로 늘어남 기본 1
+                StartCoroutine(Attack(5,1f));//현재 attack_delay는 0.5 공격속도는 2배로 늘어남 기본 1
         }
         else
             move(speed);
