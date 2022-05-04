@@ -11,12 +11,14 @@ public class GRID : MonoBehaviour
     public float nodeRadius;
     Node[,] grid;
     public List<Node> path;
-
+    Node playerNode, targetNode;
     float nodeDiameter;
     int gridSizeX, gridSizeY;
     // Start is called before the first frame update
     void Awake()
     {
+        playerNode = NodeFromWolrdPoint(player.position);
+        targetNode = NodeFromWolrdPoint(target.position);
         nodeDiameter = nodeRadius*2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
@@ -32,8 +34,7 @@ public class GRID : MonoBehaviour
     void OnDrawGizmos()//Scene창에서 그림으로 알려주는 코드 시작점과 목표지점은 시안으로, 경로는 검정으로, 장해물이 있는 곳은 빨강으로 표시
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x,1,gridWorldSize.y));
-        Node playerNode = NodeFromWolrdPoint(player.position);
-        Node targetNode = NodeFromWolrdPoint(target.position);
+       
         if(onlyDisplayPathGizmos)
         {
             if(path != null)
