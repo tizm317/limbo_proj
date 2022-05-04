@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class PathFinding : MonoBehaviour
 {
@@ -16,20 +17,25 @@ public class PathFinding : MonoBehaviour
 
     void Update()
     {
-        FindPath(seeker.position, target.position);
+        if(Input.GetButtonDown("Jump"))
+            FindPath(seeker.position, target.position);
     }
     void FindPath(Vector3 startPos, Vector3 targetPos)
     {
+
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
         Node startNode = grid.NodeFromWolrdPoint(startPos);
         Node targetNode = grid.NodeFromWolrdPoint(targetPos);//시작점과 목표지점 초기화
 
-        List<Node> openSet = new List<Node>();//경로 노드 리스트
+        Heap<Node> openSet = new Heap<Node>(grid.MaxSize);//경로 노드 리스트
         HashSet<Node> closedSet = new HashSet<Node>();//이미 탐색을 마친 노드 리스트
         openSet.Add(startNode);//시작점
 
         while(openSet.Count > 0)
         {
-            Node currentNode = openSet[0];
+            Node currentNode = openSet.RemoveFirst();
+            /*Node currentNode = openSet[0];
             for(int i = 1; i < openSet.Count; i++)
             {
                 if((openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost) && openSet[i].hCost < currentNode.hCost)
@@ -38,11 +44,13 @@ public class PathFinding : MonoBehaviour
                 }
             }
 
-            openSet.Remove(currentNode);
+            openSet.Remove(currentNode);*/
             closedSet.Add(currentNode);
 
             if(currentNode == targetNode)//타겟 노드를 발견하면 탈출
             {
+                sw.Stop();
+                print("Path found: " + sw.ElapsedMilliseconds + " ms");
                 RetracePath(startNode,targetNode);
                 return;
             }

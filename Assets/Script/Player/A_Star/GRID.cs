@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GRID : MonoBehaviour
 {
+    public bool onlyDisplayPathGizmos;
     public Transform player, target;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
@@ -33,7 +34,20 @@ public class GRID : MonoBehaviour
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x,1,gridWorldSize.y));
         Node playerNode = NodeFromWolrdPoint(player.position);
         Node targetNode = NodeFromWolrdPoint(target.position);
-        if(grid != null)
+        if(onlyDisplayPathGizmos)
+        {
+            if(path != null)
+            {
+                foreach(Node n in path)
+                {
+                    Gizmos.color = Color.black;
+                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                }
+            }
+        }
+        else
+        {
+            if(grid != null)
         {
             foreach(Node n in grid)
             {
@@ -43,12 +57,15 @@ public class GRID : MonoBehaviour
                 if(path != null)
                 {
                     
-                    if(path.Contains(n))//->문제점
+                    if(path.Contains(n))
                         Gizmos.color = Color.black;
                 }
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
+        }
+        
+        
     }
 
     public List<Node> GetNeighbours(Node node)
@@ -85,6 +102,12 @@ public class GRID : MonoBehaviour
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
         return grid[x,y];
+    }
+
+    public int MaxSize{
+        get{
+            return gridSizeX * gridSizeY;
+            }
     }
 
     void CreateGrid()
