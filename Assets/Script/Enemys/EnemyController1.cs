@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController1 : MonoBehaviour
 {
+    //enemyController1은 대기하다가 추적 사정거리 안에 player가 들어오면 무빙하여 attack
     public enum EnemyState  //Enemy variable
     {
         Idle, 
@@ -21,16 +22,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float _scanRange = 10;  //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
-    Rigidbody rigid;
-    CapsuleCollider capsuleCollider;
-    Material mat;
-
-    void Awake()
-    {
-        rigid = GetComponent<Rigidbody>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
-        mat = GetComponent<Material>();
-    }
     public EnemyState State
     {
         get { return _state; }
@@ -193,8 +184,6 @@ public class EnemyController : MonoBehaviour
         {
             State = EnemyState.Idle;
         }
-        
-
     }
     void Update()
     {
@@ -214,6 +203,4 @@ public class EnemyController : MonoBehaviour
                 break;
         }
     }
-
-
 }
