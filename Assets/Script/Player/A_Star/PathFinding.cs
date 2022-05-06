@@ -6,8 +6,9 @@ using System.Diagnostics;
 public class PathFinding : MonoBehaviour
 {
     GRID grid;
+    private List<Node> Path;
 
-    public Transform seeker, target;
+    //public Transform seeker, target;
     
     void Awake()
     {
@@ -15,12 +16,25 @@ public class PathFinding : MonoBehaviour
         
     }
 
-    void Update()
+    /*void Update()
     {
         if(Input.GetButtonDown("Jump"))
             FindPath(seeker.position, target.position);
+    }*/
+
+    public List<Vector3> Return_Path(Transform player)
+    {
+        List<Vector3> route = new List<Vector3>();
+        
+        for(int i = 0; i < Path.Count; i++)
+        {
+            route.Add(new Vector3(Path[i].worldPosition.x,player.position.y,Path[i].worldPosition.y));
+        }
+
+        return route;
     }
-    void FindPath(Vector3 startPos, Vector3 targetPos)
+
+    public void FindPath(Vector3 startPos, Vector3 targetPos)
     {
 
         Stopwatch sw = new Stopwatch();
@@ -91,6 +105,7 @@ public class PathFinding : MonoBehaviour
 
         path.Reverse();
         grid.path = path;
+        Path = path;
     }
     int GetDistance(Node nodeA, Node nodeB)
     {

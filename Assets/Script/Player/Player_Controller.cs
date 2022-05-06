@@ -12,11 +12,13 @@ public class Player_Controller : MonoBehaviour
     InputManager input;
     [SerializeField]
     Stat stat;
+    PathFinding pathfinding;
     private PlayerStat my_stat;
     private Camera cam;
-    private GameObject player,my_enemy;
-    private Vector3 destination;//이동하는 목적지를 저장하는 변수
-    private bool isMove;//캐릭터가 이동중인지 확인하는 변수
+    public GameObject player,my_enemy;
+    private Vector3 player_pos;
+    private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
+    private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
@@ -24,8 +26,11 @@ public class Player_Controller : MonoBehaviour
     void Start()
     {
         start_camera_set();//카메라의 위치를 플레이어를 기준으로 y축 5만큼, z축 -10만큼, x각 30도만큼 변경
+        player = GameObject.Find("Player");
+        player_pos = player.GetComponent<Transform>().position;
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
+        pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
     }
 
     // Update is called once per frame
@@ -58,6 +63,7 @@ public class Player_Controller : MonoBehaviour
         {
             Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
             my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
+            stat = null;//저장해둔 스텟도 지워줌
             ani.SetBool("IsAttack",false);
         }
         else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
@@ -135,26 +141,67 @@ public class Player_Controller : MonoBehaviour
     #region 이동
     private void Set_Destination(Vector3 dest)
     {
-        destination = dest;
+        destination.Clear();//리스트를 비워주고
+        Vector3 pos = player.GetComponent<Transform>().position;
+        isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),LayerMask.GetMask("unwalkable"));
+        if(isObstacle)
+        {
+            pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
+            destination = pathfinding.Return_Path(player.GetComponent<Transform>());
+            destination.Add(new Vector3(dest.x,pos.y,dest.z));
+        }
+        else
+        {
+            destination.Add(dest);//새 목적지를 첫번째로
+        }
         isMove = true;//움직여도 되는지판별
         ani.SetBool("IsMove",true);
     }
 
     private void move(float speed)
     {
-        dir = new Vector3(destination.x - player.GetComponent<Transform>().position.x,0,destination.z - player.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
-        if(isMove)//움직여도 되는가?
+        if(destination.Count > 0)
         {
-            if(Vector3.Distance(player.GetComponent<Transform>().position,destination)<=0.7)//너무 가깝게 찍으면 움직일 필요 없음
+            dir = new Vector3(destination[0].x - player.GetComponent<Transform>().position.x,0,destination[0].z - player.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
+            if(isMove)//움직여도 되는가?
             {
-                isMove = false;
-                ani.SetBool("IsMove",false);
-                return;
-            }
-            else
-            {
-                player.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
-                player.GetComponent<Transform>().forward = dir;
+                if(!isObstacle)//장애물이 없다면
+                {
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.7)//너무 가깝게 찍으면 움직일 필요 없음
+                    {
+                        isMove = false;
+                        ani.SetBool("IsMove",false);
+                        return;
+                    }
+                    else
+                    {
+                        player.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
+                        player.GetComponent<Transform>().forward = dir;
+                    }
+                }
+                else
+                {
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.1)//너무 가깝게 찍으면 움직일 필요 없음
+                    {
+                        Debug.LogFormat("destination coordinate = {0}, count = {1}",destination[0],destination.Count);
+                        if(destination.Count == 1)
+                        {
+                            isMove = false;
+                            ani.SetBool("IsMove",false);
+                            return;
+                        }
+                        else
+                        {
+                            if(destination.Count != 1)
+                                destination.RemoveAt(0);
+                        }
+                    }
+                    else
+                    {
+                        player.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
+                        player.GetComponent<Transform>().forward = dir;
+                    }
+                }
             }
         }
     }
@@ -168,7 +215,7 @@ public class Player_Controller : MonoBehaviour
     {
         cam = Camera.main;
         player = GameObject.Find("Player");
-        cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-10);
+        cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-15);
         cam.GetComponent<Transform>().rotation = Quaternion.Euler(30,0,0);
     }
     #endregion
