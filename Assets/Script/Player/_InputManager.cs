@@ -16,7 +16,7 @@ public class _InputManager
     public Action<Define.MouseEvent> MouseAction = null;
     bool _pressed = false;
     float _pressedTime = 0;
-
+    public bool mouse_right_btn;//player controller(영찬버전)에서 마우스 입력 확인을 받기 위한 변수
 
     // input manager 대표로 입력 체크해서 (유일하게)
     // 실제 입력있으면 , event로 전파함
@@ -62,6 +62,33 @@ public class _InputManager
                 _pressed = false;
                 _pressedTime = 0;
             }
+
+            if (Input.GetMouseButton(1))//마우스 오른쪽 클릭인 경우(down)
+            {
+                if (!_pressed)
+                {
+                    // 그 전에 누른 적 없다
+                    MouseAction.Invoke(Define.MouseEvent.PointerDown);
+                    _pressedTime = Time.time;
+                }
+                MouseAction.Invoke(Define.MouseEvent.Press);
+                _pressed = true;
+
+                // 드래그 추가 가능
+                // 시간 재서 몇초 이상일 때 드래그 상태...
+            }
+            else
+            {
+                if (_pressed)
+                {
+                    if (Time.time < _pressedTime + 0.2f)
+                        MouseAction.Invoke(Define.MouseEvent.Click);
+                    else
+                        MouseAction.Invoke(Define.MouseEvent.PointerUp);
+                }
+                _pressed = false;
+                _pressedTime = 0;
+            }
         }
     }
 
@@ -71,4 +98,10 @@ public class _InputManager
         KeyAction = null;
         MouseAction = null;
     }
+
+    void quit()
+    {
+        if(Input.GetKey(KeyCode.Escape))
+            Application.Quit();
+    }//종료 코드 나중에 수정할 것
 }

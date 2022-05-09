@@ -9,7 +9,7 @@ public class Player_Controller : MonoBehaviour
     const float AttackDelay = 1.0f;
     // Start is called before the first frame update
     [SerializeField]
-    InputManager input;
+    _InputManager input;
     [SerializeField]
     Stat stat;
     PathFinding pathfinding;
@@ -25,8 +25,10 @@ public class Player_Controller : MonoBehaviour
     private Animator ani;
     void Start()
     {
-        start_camera_set();//카메라의 위치를 플레이어를 기준으로 y축 5만큼, z축 -10만큼, x각 30도만큼 변경
+        Managers.Input.MouseAction -= OnMouseClicked;
+        Managers.Input.MouseAction += OnMouseClicked;
         player = GameObject.Find("Player");
+        cam = Camera.main;
         player_pos = player.GetComponent<Transform>().position;
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
@@ -36,12 +38,6 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(input.mouse_right_btn)
-        {
-            Mouse_Right_Click();
-        }
-
-        Run();
         if(Input.GetKeyDown(KeyCode.Space))
             Dash();
 
@@ -52,9 +48,9 @@ public class Player_Controller : MonoBehaviour
         }
         else
             move(speed);
-        Camera_follow();
     }
-    private void Mouse_Right_Click()
+    
+    void OnMouseClicked(Define.MouseEvent evt)
     {
         RaycastHit hit;//레이케스트 선언
         bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
@@ -112,16 +108,6 @@ public class Player_Controller : MonoBehaviour
         }
     }
     
-    private void Run()
-    {
-        if(isMove)
-        {
-            if(input.LeftShift)
-                speed = 2*PlayerSpeed;
-            else
-                speed = PlayerSpeed;
-        }
-    }
     private void Dash()
     {
         if(dash_cool)
@@ -206,17 +192,36 @@ public class Player_Controller : MonoBehaviour
         }
     }
     #endregion
-    #region 카메라 관리
-    void Camera_follow()
-    {
-        cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-10);//이동중에는 카메라도 따라다님
-    }
-    void start_camera_set()
-    {
-        cam = Camera.main;
-        player = GameObject.Find("Player");
-        cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-15);
-        cam.GetComponent<Transform>().rotation = Quaternion.Euler(30,0,0);
-    }
-    #endregion
 }
+//삭제된 코드
+/*private void Mouse_Right_Click()
+{
+    RaycastHit hit;//레이케스트 선언
+    bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+    if (!raycastHit) return; // raycast 실패하면 return
+    if(hit.collider.tag == "ground")
+    {
+        Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
+        my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
+        stat = null;//저장해둔 스텟도 지워줌
+        ani.SetBool("IsAttack",false);
+    }
+    else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
+    {
+        Lock_On(hit.transform.gameObject);//타게팅용
+        Set_Destination(my_enemy.GetComponent<Transform>().position);
+    }
+    else
+        return;
+}*/
+/*void Camera_follow()
+{
+    cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-10);//이동중에는 카메라도 따라다님
+}
+void start_camera_set()
+{
+    cam = Camera.main;
+    player = GameObject.Find("Player");
+    cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-15);
+    cam.GetComponent<Transform>().rotation = Quaternion.Euler(30,0,0);
+}*/
