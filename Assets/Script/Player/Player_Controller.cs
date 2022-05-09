@@ -129,9 +129,10 @@ public class Player_Controller : MonoBehaviour
     {
         destination.Clear();//리스트를 비워주고
         Vector3 pos = player.GetComponent<Transform>().position;
-        isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),LayerMask.GetMask("unwalkable"));
+        isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),pathfinding.grid.unwalkableMask);
         if(isObstacle)
         {
+            Debug.Log("player pos = " + pos);
             pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
             destination = pathfinding.Return_Path(player.GetComponent<Transform>());
             destination.Add(new Vector3(dest.x,pos.y,dest.z));

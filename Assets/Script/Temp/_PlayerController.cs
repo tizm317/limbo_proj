@@ -46,7 +46,7 @@ public class _PlayerController : MonoBehaviour
     void UpdateMoving()
     {
         // State : Moving
-
+        Debug.Log("이상한 코드 작동중!!");
         Vector3 dir = _destPos - transform.position;
 
         if (dir.magnitude < 0.00001f)

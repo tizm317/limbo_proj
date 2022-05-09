@@ -1561,7 +1561,7 @@ GameObject:
   - component: {fileID: 1771716142}
   - component: {fileID: 1771716141}
   - component: {fileID: 1771716140}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1672,6 +1672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d4b85c89597624c885fa6f75e221eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 0}
 --- !u!114 &1834819812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1687,7 +1688,7 @@ MonoBehaviour:
   onlyDisplayPathGizmos: 0
   unwalkableMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1280
   gridWorldSize: {x: 50, y: 50}
   nodeRadius: 0.5
 --- !u!4 &1834819813

@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 public class PathFinding : MonoBehaviour
 {
-    GRID grid;
+    public GRID grid;
     private List<Node> Path;
 
     //public Transform seeker, target;

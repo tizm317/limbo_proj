@@ -22,9 +22,13 @@ public class Camera_Controller : MonoBehaviour
         _player = GameObject.Find("Player");
         SetQuarterView(_delta);
     }
-
+    void update()
+    {
+        
+    }
     void LateUpdate()
     {
+        wheel_Control(5);
         if(_mode == Define.CameraMode.QuarterView)
         {
             RaycastHit hit;
@@ -46,5 +50,12 @@ public class Camera_Controller : MonoBehaviour
     {
         _mode = Define.CameraMode.QuarterView;
         _delta = delta;
+    }
+
+    void wheel_Control(float speed)
+    {
+        float wheel = Input.GetAxis("Mouse ScrollWheel");
+        if((_delta.z < -5 && wheel > 0) || (_delta.z > -15 && wheel < 0))
+            _delta += new Vector3(0,0,wheel * speed);
     }
 }
