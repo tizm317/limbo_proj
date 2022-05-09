@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
+public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler
 {
     // EventSystem에서 던져주는 이벤트 받아옴
     // UI 에서 캐치해서 콜백 날려줌
@@ -17,6 +17,7 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
     // Action 이용해서 추가하고 싶은 함수 연동
     public Action<PointerEventData> OnClickHandler = null;
     public Action<PointerEventData> OnDragHandler = null;
+    public Action<PointerEventData> OnPointerUpHandler = null;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -25,6 +26,8 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
         if (OnClickHandler != null)
             OnClickHandler.Invoke(eventData); // 구독 신청한 애들한테 전파
     }
+
+
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -35,5 +38,9 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
             OnDragHandler.Invoke(eventData);
     }
 
- 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (OnPointerUpHandler != null)
+            OnPointerUpHandler.Invoke(eventData);
+    }
 }

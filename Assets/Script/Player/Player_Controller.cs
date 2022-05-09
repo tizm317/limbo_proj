@@ -15,7 +15,7 @@ public class Player_Controller : MonoBehaviour
     private PlayerStat my_stat;
     private Camera cam;
     private GameObject player,my_enemy;
-    private Vector3 destination;//이동하는 목적지를 저장하는 변수
+    public Vector3 destination;//이동하는 목적지를 저장하는 변수
     private bool isMove;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
@@ -133,7 +133,7 @@ public class Player_Controller : MonoBehaviour
     #endregion
 
     #region 이동
-    private void Set_Destination(Vector3 dest)
+    public void Set_Destination(Vector3 dest)
     {
         destination = dest;
         isMove = true;//움직여도 되는지판별
