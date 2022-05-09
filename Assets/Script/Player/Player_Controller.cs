@@ -12,6 +12,7 @@ public class Player_Controller : MonoBehaviour
     _InputManager input;
     [SerializeField]
     Stat stat;
+    [SerializeField]
     PathFinding pathfinding;
     private PlayerStat my_stat;
     private Camera cam;
@@ -132,7 +133,6 @@ public class Player_Controller : MonoBehaviour
         isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),pathfinding.grid.unwalkableMask);
         if(isObstacle)
         {
-            Debug.Log("player pos = " + pos);
             pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
             destination = pathfinding.Return_Path(player.GetComponent<Transform>());
             destination.Add(new Vector3(dest.x,pos.y,dest.z));
@@ -141,6 +141,7 @@ public class Player_Controller : MonoBehaviour
         {
             destination.Add(dest);//새 목적지를 첫번째로
         }
+        Debug.Log(destination.Count);
         isMove = true;//움직여도 되는지판별
         ani.SetBool("IsMove",true);
     }
@@ -168,9 +169,9 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.1)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.7)//너무 가깝게 찍으면 움직일 필요 없음
                     {
-                        Debug.LogFormat("destination coordinate = {0}, count = {1}",destination[0],destination.Count);
+                        
                         if(destination.Count == 1)
                         {
                             isMove = false;
@@ -180,7 +181,11 @@ public class Player_Controller : MonoBehaviour
                         else
                         {
                             if(destination.Count != 1)
+                            {
+                                Debug.LogFormat("destination coordinate = {0}, count = {1}",destination[0],destination.Count);
                                 destination.RemoveAt(0);
+                                
+                            }
                         }
                     }
                     else

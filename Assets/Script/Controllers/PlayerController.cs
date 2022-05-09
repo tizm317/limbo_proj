@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    // Animation À» state pattern À¸·Î °ü¸®
+    // Animation ï¿½ï¿½ state pattern ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     // state pattern
-    // state ¸¦ enum À¸·Î Á¤ÇØµÒ
+    // state ï¿½ï¿½ enum ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Øµï¿½
     public enum PlayerState
     {
         Die,
@@ -22,11 +22,11 @@ public class PlayerController : MonoBehaviour
     Vector3 _destPos;
     GameObject _lockTarget;
 
-    // state º¯¼ö
+    // state ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     PlayerState _state = PlayerState.Idle;
 
-    // _state ¶û animation °°ÀÌ ¹Ù²Ù±â À§ÇØ¼­ ÇÁ·ÎÆÛÆ¼·Î ¸¸µé¾î¼­ ¹­¾î¼­ °ü¸®
+    // _state ï¿½ï¿½ animation ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½ï¿½ï¿½î¼­ ï¿½ï¿½ï¿½ï¿½
     public PlayerState State
     {
         get { return _state; }
@@ -42,12 +42,12 @@ public class PlayerController : MonoBehaviour
                     anim.SetBool("attack", false);
                     break;
                 case PlayerState.Idle:
-                    // ÇöÀç °ÔÀÓ »óÅÂ¿¡ ´ëÇÑ Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù
+                    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½
                     anim.SetFloat("speed", 0);
                     anim.SetBool("attack", false);
                     break;
                 case PlayerState.Moving:
-                    // ÇöÀç °ÔÀÓ »óÅÂ¿¡ ´ëÇÑ Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù
+                    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½
                     anim.SetFloat("speed", _stat.MoveSpeed);
                     anim.SetBool("attack", false);
                     break;
@@ -62,9 +62,9 @@ public class PlayerController : MonoBehaviour
     {
         _stat = gameObject.GetComponent<PlayerStat>();
 
-        // ¸¶¿ì½º ÀÌº¥Æ®
-        // ±¸µ¶ ½ÅÃ» : inputmanager¿¡¼­ Å° ÀÔ·Â ÀÖÀ¸¸é, OnMouseClicked ÇÔ¼ö ½ÇÇà
-        Managers.Input.MouseAction -= OnMouseEvent; // 2¹ø È£Ãâ ¹æÁö
+        // ï¿½ï¿½ï¿½ì½º ï¿½Ìºï¿½Æ®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» : inputmanagerï¿½ï¿½ï¿½ï¿½ Å° ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, OnMouseClicked ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Managers.Input.MouseAction -= OnMouseEvent; // 2ï¿½ï¿½ È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Managers.Input.MouseAction += OnMouseEvent;
 
     }
@@ -72,12 +72,13 @@ public class PlayerController : MonoBehaviour
     void UpdateDie()
     {
         // State : Die
-        // ¾Æ¹«°Íµµ ¸øÇÔ
+        // ï¿½Æ¹ï¿½ï¿½Íµï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     void UpdateMoving()
     {
-        // (Å¸ÄÏÆÃ µÈ) ¸ó½ºÅÍ°¡ ³» »çÁ¤°Å¸®º¸´Ù °¡±î¿ì¸é °ø°İ
+        // (Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½) ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Debug.Log("ë‚˜ ë„ëŠ”ì¤‘!");
         if (_lockTarget != null)
         {
             float distance = (_destPos - transform.position).magnitude;
@@ -88,47 +89,47 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // ÀÌµ¿
+        // ï¿½Ìµï¿½
         // State : Moving
 
         Vector3 dir = _destPos - transform.position;
 
         if (dir.magnitude < 0.1f) //  0.00001f
         {
-            // °ÅÀÇ µµÂøÇÏ¸é Idle »óÅÂ·Î º¯È¯
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ Idle ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
 
             State = PlayerState.Idle;
         }
         else
         {
-            // ÀÌµ¿ ºÎºĞ
+            // ï¿½Ìµï¿½ ï¿½Îºï¿½
 
-            // ³×ÀÌ°ÔÀÌ¼Ç ÀÌµ¿ ¹öÀü
+            // ï¿½ï¿½ï¿½Ì°ï¿½ï¿½Ì¼ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
             NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
 
             float moveDist = Mathf.Clamp(_stat.MoveSpeed * Time.deltaTime, 0.0f, dir.magnitude);
 
-            //nma.CalculatePath // °¥¼öÀÖ´ÂÁö °è»ê
-            nma.Move(dir.normalized * moveDist); // °¥¼ö ÀÖ´Â °÷ ¹«ºê.. // ¶Ç ºÎµéºÎµé°Å¸®´Â ¹®Á¦ why? Move´Â ¿ÏÀüÈ÷ °¡±îÀÌ ÀÌµ¿½ÃÅ°Áö ¾ÊÀ½ °£Á¢ÀûÀÎ ¹æ¹ıÀÌ¶ó -> µµÂø ¹üÀ§ ¼öÁ¤
+            //nma.CalculatePath // ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+            nma.Move(dir.normalized * moveDist); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.. // ï¿½ï¿½ ï¿½Îµï¿½Îµï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ why? Moveï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ -> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), _stat.TurnSpeed * Time.deltaTime);
 
-            // ¸ø °¡´Â °÷(layor : Block) µµ´ŞÇÏ¸é (·¹ÀÌÀú·Î È®ÀÎ ÈÄ) ¸ØÃß±â
-            // ÇÃ·¹ÀÌ¾î ¾ÕÀ¸·Î ·¹ÀÌÀú ½÷¼­ ºí·ÏÀÎÁö È®ÀÎ ÈÄ ¸®ÅÏ
-            // ·¹ÀÌÀú È®ÀÎ
+            // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½(layor : Block) ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½) ï¿½ï¿½ï¿½ß±ï¿½
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
             Debug.DrawRay(transform.position + Vector3.up * 0.5f, dir.normalized, Color.blue);
             if (Physics.Raycast(transform.position, dir, 1.0f, LayerMask.GetMask("Block")))
             {
-                if (Input.GetMouseButton(0) == false) // ¸¶¿ì½º ´©¸£´Â Áß¿¡´Â Idle·Î ¾È º¯ÇÏ°Ô(°è¼Ó ´Ş¸®°Ô)
+                if (Input.GetMouseButton(0) == false) // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ï¿½ï¿½ Idleï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½(ï¿½ï¿½ï¿½ ï¿½Ş¸ï¿½ï¿½ï¿½)
                     State = PlayerState.Idle;
                 return;
             }
-            // ±âº» ÀÌµ¿ ¹öÀü
+            // ï¿½âº» ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
             /*
-            // µµÂøÇØ¼­ ºÎµéºÎµé °Å¸®´Â °Å ÇØ°á ¹æ¹ı 
-            // 1. Mathf.Clamp È°¿ë (min, max »çÀÌ)
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Îµï¿½Îµï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ø°ï¿½ ï¿½ï¿½ï¿½ 
+            // 1. Mathf.Clamp È°ï¿½ï¿½ (min, max ï¿½ï¿½ï¿½ï¿½)
             float moveDist = Mathf.Clamp(_speed * Time.deltaTime, 0.0f, dir.magnitude);
 
-            // 2. if¹®À¸·Î ºñ±³ÇØ¼­ dir.magnitude ³ÑÀ¸¸é dir.magnitude ´ëÀÔ
+            // 2. ifï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ dir.magnitude ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ dir.magnitude ï¿½ï¿½ï¿½ï¿½
             //float moveDist = _speed * Time.deltaTime;
             //if (moveDist >= dir.magnitude)
             //    moveDist = dir.magnitude;
@@ -136,7 +137,7 @@ public class PlayerController : MonoBehaviour
             transform.position += dir.normalized * moveDist;
 
             //transform.LookAt(_destPos);
-            // ¶Ò¶Ò ²÷±â´Â °Å ÇØ°á
+            // ï¿½Ò¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ø°ï¿½
             // slerp 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), _turnSpeed * Time.deltaTime);
             */
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
     void OnRunEvent()
     {
-        Debug.Log("¶Ñ¹÷¶Ñ¹÷");
+        Debug.Log("ï¿½Ñ¹ï¿½ï¿½Ñ¹ï¿½");
     }
 
     void UpdateIdle()
@@ -164,19 +165,19 @@ public class PlayerController : MonoBehaviour
 
     void OnHitEvent()
     {
-        // hit ¾Ö´Ï¸ŞÀÌ¼Ç ³¡³¯ ¶§ È£Ãâ
+        // hit ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
 
         Debug.Log("OnHitEvent");
 
         //TODO
         if (_stopSkill == true)
         {
-            // ¾Æ´Ï? -> ¸ØÃç
+            // ï¿½Æ´ï¿½? -> ï¿½ï¿½ï¿½ï¿½
             State = PlayerState.Idle;
         }
         else
         {
-            // ¸¶¿ì½º ´©¸£°í ÀÖ? -> °è¼Ó ½ºÅ³
+            // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½? -> ï¿½ï¿½ï¿½ ï¿½ï¿½Å³
             State = PlayerState.Skill;
         }
 
@@ -228,16 +229,16 @@ public class PlayerController : MonoBehaviour
 
     void OnMouseEvent_IdleRun(Define.MouseEvent evt)
     {
-        // °øÅë ºÎºĞ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        // ·¹ÀÌÀú È®ÀÎ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         // Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
         RaycastHit hit;
         bool raycastHit = Physics.Raycast(ray, out hit, 100.0f, _mask);
 
-        // µğ¾Æºí·Î Çü½Ä..
-        // ¸ó½ºÅÍ ÂïÀº °æ¿ì, ¸ó½ºÅÍ Å¸°ÔÆÃÇØ¼­ ¸ó½ºÅÍ ¹æÇâÀ¸·Î ÀÌµ¿ (´©¸¥ »óÅÂ¿¡¼­ Ä¿¼­ ÀÌµ¿ÇØµµ Å¸°ÙÆÃÇÑ ¸ó½ºÅÍÂÊÀ¸·Î ÀÌµ¿)
-        // ¶¥ ÂïÀº °æ¿ì, ¶¥ ÂÊÀ¸·Î ÀÌµ¿
+        // ï¿½ï¿½Æºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½..
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Øµï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½)
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         switch (evt)
         {
             case Define.MouseEvent.PointerDown:
@@ -246,9 +247,9 @@ public class PlayerController : MonoBehaviour
                     {
                         _destPos = hit.point;
                         State = PlayerState.Moving;
-                        _stopSkill = false; //////////////////////////////////////////////////////////////////////////////// ÀÌ»óÇØ
+                        _stopSkill = false; //////////////////////////////////////////////////////////////////////////////// ï¿½Ì»ï¿½ï¿½ï¿½
 
-                        // ¸ó½ºÅÍ¸¦ Ã³À½À¸·Î Å¬¸¯ÇÏ¸é, ¸ó½ºÅÍ¸¦ Å¸°ÙÆÃÇÔ.
+                        // ï¿½ï¿½ï¿½Í¸ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ï¸ï¿½, ï¿½ï¿½ï¿½Í¸ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
                         if (hit.collider.gameObject.layer == (int)Define.Layer.Monster)
                             _lockTarget = hit.collider.gameObject;
                         else
@@ -258,13 +259,13 @@ public class PlayerController : MonoBehaviour
                 break;
             case Define.MouseEvent.Press:
                 {
-                    // ¶¥Âï¾úÀ» ¶§
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
                     if (_lockTarget == null && raycastHit)
                         _destPos = hit.point;
                 }
                 break;
             case Define.MouseEvent.PointerUp:
-                // »ìÂ¦ Å¬¸¯ÇÑ °æ¿ì - 1È¸¿ë ½ºÅ³
+                // ï¿½ï¿½Â¦ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ - 1È¸ï¿½ï¿½ ï¿½ï¿½Å³
                 _stopSkill = false;
                 break;
         }

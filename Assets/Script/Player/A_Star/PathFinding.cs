@@ -16,11 +16,6 @@ public class PathFinding : MonoBehaviour
         
     }
 
-    /*void Update()
-    {
-        if(Input.GetButtonDown("Jump"))
-            FindPath(seeker.position, target.position);
-    }*/
 
     public List<Vector3> Return_Path(Transform player)
     {
@@ -49,22 +44,13 @@ public class PathFinding : MonoBehaviour
         while(openSet.Count > 0)
         {
             Node currentNode = openSet.RemoveFirst();
-            /*Node currentNode = openSet[0];
-            for(int i = 1; i < openSet.Count; i++)
-            {
-                if((openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost) && openSet[i].hCost < currentNode.hCost)
-                {
-                    currentNode = openSet[i];
-                }
-            }
 
-            openSet.Remove(currentNode);*/
             closedSet.Add(currentNode);
 
             if(currentNode == targetNode)//타겟 노드를 발견하면 탈출
             {
                 sw.Stop();
-                print("Path found: " + sw.ElapsedMilliseconds + " ms");
+                //print("Path found: " + sw.ElapsedMilliseconds + " ms");
                 RetracePath(startNode,targetNode);
                 return;
             }
