@@ -70,6 +70,7 @@ public class GameScene : BaseScene
 
         // 씬 UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
+        Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
 
@@ -96,6 +97,8 @@ public class GameScene : BaseScene
 
         // DataManager test - 외부에서 사용할 때
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
+        Dictionary<int, Data.Pos> dict_pos = Managers.Data.PosDict;
+
 
         // 커서컨트롤러 @Scene
         gameObject.GetOrAddComponent<CursorController>();

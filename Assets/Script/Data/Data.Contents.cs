@@ -43,4 +43,36 @@ namespace Data
     }
     #endregion
     // (추가)
+    #region Map
+    [Serializable]
+    public class Pos
+    {
+        // json 파일에서의 이름하고 이 파일에서의 이름 맞춰야함 (다르면 못 찾음)
+        // 타입도 맞춰야함
+        // public 변수이여야 읽어들임, 아니면 [SerializedField]
+        public int code;
+        public string name;
+        public Vector3 position;
+
+        // 포맷만 맞춰두고 한번에 불러옴
+    }
+
+    [Serializable]
+    public class PosData : ILoader<int, Pos>
+    {
+        // ILoader 인터페이스 포함
+
+        public List<Pos> pos = new List<Pos>();
+
+        public Dictionary<int, Pos> MakeDict()
+        {
+            Dictionary<int, Pos> dict = new Dictionary<int, Pos>();
+
+            foreach (Pos ele in pos)
+                dict.Add(ele.code, ele);
+
+            return dict;
+        }
+    }
+    #endregion
 }
