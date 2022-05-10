@@ -14,20 +14,16 @@ public class CameraController : MonoBehaviour
     GameObject _player = null;
 
     [SerializeField]
-    Vector3 _yPos = new Vector3(0.0f, 1.0f, 0.0f); // Player Position ¹ß¹Ù´ÚÀÌ¾î¼­ Á¶Á¤°ª
+    Vector3 _yPos = new Vector3(0.0f, 1.0f, 0.0f); // Player Position ï¿½ß¹Ù´ï¿½ï¿½Ì¾î¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     void Start()
     {
-        
+        start_camera_set();
+        SetQuarterView(_delta);
     }
 
     void LateUpdate()
     {
-        // ´ú´ú ¶³¸®´Â ¹®Á¦?
-        // why? Ä«¸Þ¶óÄÁÆ®·Ñ·¯ÀÇ ÁÂÇ¥¼¼ÆÃÀ» update¿¡ Çß±â ¶§¹®
-        // playerController ¶û Ä«¸Þ¶óÄÁÆ®·Ñ·¯ µÑ ´Ù update¹®¿¡ µÒ
-        // ´©°¡ ¸ÕÀú ½ÇÇàµÉÁö ¾Ë¼ö¾øÀ½
-        // ÀÌ°Ô ³ªÁß -> LateUpdate() ·Î ¹Ù²ã
 
         if(_mode == Define.CameraMode.QuarterView)
         {
@@ -50,5 +46,9 @@ public class CameraController : MonoBehaviour
     {
         _mode = Define.CameraMode.QuarterView;
         _delta = delta;
+    }
+    void start_camera_set()
+    {  
+        _player = GameObject.Find("Player");
     }
 }

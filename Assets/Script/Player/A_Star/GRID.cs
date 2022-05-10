@@ -5,7 +5,7 @@ using UnityEngine;
 public class GRID : MonoBehaviour
 {
     public bool onlyDisplayPathGizmos;
-    public Transform player, target;
+    //public Transform player, target;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
@@ -17,8 +17,8 @@ public class GRID : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        playerNode = NodeFromWolrdPoint(player.position);
-        targetNode = NodeFromWolrdPoint(target.position);
+        //playerNode = NodeFromWolrdPoint(player.position);
+        //targetNode = NodeFromWolrdPoint(target.position);
         nodeDiameter = nodeRadius*2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
@@ -53,8 +53,8 @@ public class GRID : MonoBehaviour
             foreach(Node n in grid)
             {
                 Gizmos.color = (n.walkable)?Color.white:Color.red;
-                if(playerNode == n || targetNode == n)
-                    Gizmos.color = Color.cyan;
+                //if(playerNode == n || targetNode == n)
+                    //Gizmos.color = Color.cyan;
                 if(path != null)
                 {
                     
