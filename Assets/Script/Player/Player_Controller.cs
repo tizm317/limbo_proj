@@ -17,20 +17,19 @@ public class Player_Controller : MonoBehaviour
     private PlayerStat my_stat;
     private Camera cam;
     public GameObject player,my_enemy;
-    private Vector3 player_pos;
     private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     private Animator ani;
+
     void Start()
     {
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
         player = GameObject.Find("Player");
         cam = Camera.main;
-        player_pos = player.GetComponent<Transform>().position;
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
@@ -53,23 +52,28 @@ public class Player_Controller : MonoBehaviour
     
     void OnMouseClicked(Define.MouseEvent evt)
     {
-        RaycastHit hit;//레이케스트 선언
-        bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-        if (!raycastHit) return; // raycast 실패하면 return
-        if(hit.collider.tag == "ground")
+        if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
         {
-            Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
-            my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
-            stat = null;//저장해둔 스텟도 지워줌
-            ani.SetBool("IsAttack",false);
+            RaycastHit hit;//레이케스트 선언
+            bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+            if (!raycastHit) return; // raycast 실패하면 return
+            if(hit.collider.tag == "ground")
+            {
+                Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
+                my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
+                stat = null;//저장해둔 스텟도 지워줌
+                ani.SetBool("IsAttack",false);
+            }
+            else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
+            {
+                Lock_On(hit.transform.gameObject);//타게팅용
+                Set_Destination(my_enemy.GetComponent<Transform>().position);
+            }
+            else
+            { 
+                return;
+            }
         }
-        else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
-        {
-            Lock_On(hit.transform.gameObject);//타게팅용
-            Set_Destination(my_enemy.GetComponent<Transform>().position);
-        }
-        else
-            return;
     }
 
     #region 스킬
@@ -131,6 +135,7 @@ public class Player_Controller : MonoBehaviour
         destination.Clear();//리스트를 비워주고
         Vector3 pos = player.GetComponent<Transform>().position;
         isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),pathfinding.grid.unwalkableMask);
+        Debug.Log(isObstacle);
         if(isObstacle)
         {
             pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
@@ -141,7 +146,6 @@ public class Player_Controller : MonoBehaviour
         {
             destination.Add(dest);//새 목적지를 첫번째로
         }
-        Debug.Log(destination.Count);
         isMove = true;//움직여도 되는지판별
         ani.SetBool("IsMove",true);
     }
@@ -155,7 +159,7 @@ public class Player_Controller : MonoBehaviour
             {
                 if(!isObstacle)//장애물이 없다면
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.7)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
                     {
                         isMove = false;
                         ani.SetBool("IsMove",false);
@@ -169,7 +173,7 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.7)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
                     {
                         
                         if(destination.Count == 1)
@@ -182,9 +186,9 @@ public class Player_Controller : MonoBehaviour
                         {
                             if(destination.Count != 1)
                             {
+                                Debug.DrawRay(player.GetComponent<Transform>().position, player.GetComponent<Transform>().up,Color.red,30.0f);
                                 Debug.LogFormat("destination coordinate = {0}, count = {1}",destination[0],destination.Count);
                                 destination.RemoveAt(0);
-                                
                             }
                         }
                     }
