@@ -56,6 +56,6 @@ public class Camera_Controller : MonoBehaviour
     {
         float wheel = Input.GetAxis("Mouse ScrollWheel");
         if((_delta.z < -5 && wheel > 0) || (_delta.z > -15 && wheel < 0))
-            _delta += new Vector3(0,0,wheel * speed);
+            _delta += new Vector3(0, -1.2f * wheel * speed ,wheel * speed);
     }
 }
