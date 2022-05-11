@@ -9,7 +9,7 @@ public class Player_Controller : MonoBehaviour
     const float AttackDelay = 1.0f;
     // Start is called before the first frame update
     [SerializeField]
-    _InputManager input;
+    InputManager input;
     [SerializeField]
     Stat stat;
     [SerializeField]
@@ -50,11 +50,14 @@ public class Player_Controller : MonoBehaviour
         else
             move(speed);
     }
-    
+
+
     void OnMouseClicked(Define.MouseEvent evt)
     {
+
         RaycastHit hit;//레이케스트 선언
         bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+        
         if (!raycastHit) return; // raycast 실패하면 return
         if(hit.collider.tag == "ground")
         {
@@ -126,7 +129,7 @@ public class Player_Controller : MonoBehaviour
     #endregion
 
     #region 이동
-    private void Set_Destination(Vector3 dest)
+    public void Set_Destination(Vector3 dest)
     {
         destination.Clear();//리스트를 비워주고
         Vector3 pos = player.GetComponent<Transform>().position;
@@ -144,6 +147,17 @@ public class Player_Controller : MonoBehaviour
         Debug.Log(destination.Count);
         isMove = true;//움직여도 되는지판별
         ani.SetBool("IsMove",true);
+    }
+
+    public float magicNumber = 100.0f;
+
+    public Vector3 Get_Destination()
+    {
+        // 목적지가 없을 때(클릭 없을 때) 리스트가 아예 없어서 y값을 Magic Number 로 설정해두고, 그 경우 미니맵 안 나타나도록
+        if (destination.Count == 0)
+            return new Vector3(0, magicNumber, 0);
+
+        return destination[0];
     }
 
     private void move(float speed)

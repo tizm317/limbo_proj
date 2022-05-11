@@ -10,6 +10,7 @@ public class UI_Inven : UI_Popup
 
     enum GameObjects
     {
+        Panel,
         GridPanel,
     }
 
@@ -26,6 +27,9 @@ public class UI_Inven : UI_Popup
         // 바인딩 과정
         Bind<GameObject>(typeof(GameObjects));
 
+        GameObject panel = Get<GameObject>((int)GameObjects.Panel);
+
+
         // girdPanel 날리기 (child 순회해서) 과정
         GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
         foreach (Transform child in gridPanel.transform)
@@ -35,7 +39,8 @@ public class UI_Inven : UI_Popup
         // 드래그 event 추가
         //GetObject((int)GameObjects.GridPanel).gameObject.BindEvent(OnMouseDrag, Define.UIEvent.Drag);
         GameObject go = GetObject((int)GameObjects.GridPanel).gameObject;
-        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag); 
+        BindEvent(go, (PointerEventData data) => { if (data.pointerId != -1) return;
+            go.transform.position = data.position; panel.transform.position = data.position; }, Define.UIEvent.Drag);
 
 
         // 아이템 개수만큼 붙이기

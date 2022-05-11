@@ -38,7 +38,7 @@ public class UI_Inven_Item : UI_Base
 
         // Drag event 랑 아이콘이랑 연결하고, UI_Inven_Item 위치를 마우스 따라감
         GameObject go = GetObject((int)GameObjects.ItemIcon).gameObject;
-        BindEvent(go, (PointerEventData data) => { gameObject.transform.position = data.position; }, Define.UIEvent.Drag);
+        BindEvent(go, (PointerEventData data) => { if (data.pointerId != -1) return; gameObject.transform.position = data.position; }, Define.UIEvent.Drag);
 
         // ?
         GameObject go2 = GetObject((int)GameObjects.ItemIcon).gameObject;

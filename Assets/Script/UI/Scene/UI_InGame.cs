@@ -43,6 +43,8 @@ public class UI_InGame : UI_Scene
 
     public void OnButtonClicked(PointerEventData data)
     {
+        if (data.pointerId != -1) return;
+
         if (!ui_Inven)
             ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
         else

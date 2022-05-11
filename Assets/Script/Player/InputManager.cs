@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class _InputManager
+public class InputManager
 {
     // 입력 관리 매니저
 
@@ -18,6 +18,8 @@ public class _InputManager
     float _pressedTime = 0;
     public bool mouse_right_btn;//player controller(영찬버전)에서 마우스 입력 확인을 받기 위한 변수
 
+
+
     // input manager 대표로 입력 체크해서 (유일하게)
     // 실제 입력있으면 , event로 전파함
     // listener pattern
@@ -26,7 +28,9 @@ public class _InputManager
     {
         // UI 클릭이면 리턴시켜서 UI 클릭시 밑에꺼 무시하도록 만듦 (플레이어 이동 등)
         if (EventSystem.current.IsPointerOverGameObject())
-            return;
+              return;
+   
+
 
         // 1. 어떤 키 입력 있고, KeyAction이 null 이 아니면,
         // KeyAction event를 구독한 곳으로 전파
@@ -36,40 +40,42 @@ public class _InputManager
         // 마우스 입력 있으면,
         if (MouseAction != null)
         {
-            if (Input.GetMouseButton(0))
-            {
-                if (!_pressed)
-                {
-                    // 그 전에 누른 적 없다
-                    MouseAction.Invoke(Define.MouseEvent.PointerDown);
-                    _pressedTime = Time.time;
-                }
-                MouseAction.Invoke(Define.MouseEvent.Press);
-                _pressed = true;
+            //if (Input.GetMouseButton(0))
+            //{
+            //    if (!_pressed)
+            //    {
+            //        // 그 전에 누른 적 없다
+            //        MouseAction.Invoke(Define.MouseEvent.PointerDown);
+            //        _pressedTime = Time.time;
+            //    }
+            //    MouseAction.Invoke(Define.MouseEvent.Press);
+            //    _pressed = true;
 
-                // 드래그 추가 가능
-                // 시간 재서 몇초 이상일 때 드래그 상태...
-            }
-            else
-            {
-                if (_pressed)
-                {
-                    if (Time.time < _pressedTime + 0.2f)
-                        MouseAction.Invoke(Define.MouseEvent.Click);
-                    else
-                        MouseAction.Invoke(Define.MouseEvent.PointerUp);
-                }
-                _pressed = false;
-                _pressedTime = 0;
-            }
+            //    // 드래그 추가 가능
+            //    // 시간 재서 몇초 이상일 때 드래그 상태...
+            //}
+            //else
+            //{
+            //    if (_pressed)
+            //    {
+            //        if (Time.time < _pressedTime + 0.2f)
+            //            MouseAction.Invoke(Define.MouseEvent.Click);
+            //        else
+            //            MouseAction.Invoke(Define.MouseEvent.PointerUp);
+            //    }
+            //    _pressed = false;
+            //    _pressedTime = 0;
+            //}
 
             if (Input.GetMouseButton(1))//마우스 오른쪽 클릭인 경우(down)
             {
                 if (!_pressed)
                 {
                     // 그 전에 누른 적 없다
+
                     MouseAction.Invoke(Define.MouseEvent.PointerDown);
                     _pressedTime = Time.time;
+
                 }
                 MouseAction.Invoke(Define.MouseEvent.Press);
                 _pressed = true;
@@ -79,6 +85,8 @@ public class _InputManager
             }
             else
             {
+               
+
                 if (_pressed)
                 {
                     if (Time.time < _pressedTime + 0.2f)
@@ -89,6 +97,7 @@ public class _InputManager
                 _pressed = false;
                 _pressedTime = 0;
             }
+
         }
     }
 
