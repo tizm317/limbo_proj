@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
@@ -23,7 +23,7 @@ public class PathFinding : MonoBehaviour
         
         for(int i = 0; i < Path.Count; i++)
         {
-            route.Add(new Vector3(Path[i].worldPosition.x,player.position.y,Path[i].worldPosition.y));
+            route.Add(new Vector3(Path[i].worldPosition.x,player.position.y,Path[i].worldPosition.z));
         }
 
         return route;
@@ -50,7 +50,7 @@ public class PathFinding : MonoBehaviour
             if(currentNode == targetNode)//타겟 노드를 발견하면 탈출
             {
                 sw.Stop();
-                //print("Path found: " + sw.ElapsedMilliseconds + " ms");
+                print("Path found: " + sw.ElapsedMilliseconds + " ms");
                 RetracePath(startNode,targetNode);
                 return;
             }

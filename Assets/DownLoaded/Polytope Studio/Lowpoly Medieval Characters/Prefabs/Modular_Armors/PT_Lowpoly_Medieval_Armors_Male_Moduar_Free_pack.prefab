@@ -5572,9 +5572,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6068054994472305620}
   - component: {fileID: 204389361405614510}
+  - component: {fileID: 1263350716}
+  - component: {fileID: 1263350715}
   m_Layer: 0
   m_Name: PT_Lowpoly_Medieval_Armors_Male_Moduar_Free_pack
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5630,15 +5632,50 @@ Animator:
   m_GameObject: {fileID: 6880901488789346670}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 45f944a4396b0a54398eb1abe6743296, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1d6615e592724564e836d1a9f0071e48, type: 2}
+  m_Controller: {fileID: 9100000, guid: 20e634f484b962c4ab78c28be985b5e1, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &1263350716
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6880901488789346670}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1263350715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6880901488789346670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde04312b50f45d40861ab493d70a06c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 1
+  _hp: 100
+  _maxHp: 100
+  _attack: 5
+  _defense: 5
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _exp: 0
+  _gold: 0
 --- !u!1 &7091185167530504810
 GameObject:
   m_ObjectHideFlags: 0

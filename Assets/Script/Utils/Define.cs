@@ -42,6 +42,8 @@ public class Define
         PointerDown, // 처음 누르는 행위
         PointerUp,   // 떼는 행위
         Click, // 잠깐 눌렀다 떼는 행위
+        Right_Press,//우클 좌클 구분용
+        Right_PointerDown,//우클 좌클 구분용
     }
 
     public enum CameraMode
