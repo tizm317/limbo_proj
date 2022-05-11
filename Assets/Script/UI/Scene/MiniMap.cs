@@ -34,6 +34,8 @@ public class MiniMap : UI_Scene
     Player_Controller player_Controller;
     public GameObject inputManager;
 
+    
+
 
     void Start()
     {
@@ -101,10 +103,54 @@ public class MiniMap : UI_Scene
         BindEvent(go, (PointerEventData data) =>
         {
             if (data.pointerId != -1) return;
-            destinationImage.transform.localPosition = new Vector3(data.position.x - 784.375f, data.position.y - 316.25f, 0);
-            temp.z = destinationImage.transform.localPosition.y;
-            temp.x = destinationImage.transform.localPosition.x;
+            //destinationImage.transform.localPosition = new Vector3(data.position.x - 784.375f, data.position.y - 316.25f, 0); // 이거 수정하자
+            destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0);
+
+            // 수정 -> 덜덜거림
+            temp.x = destinationImage.transform.localPosition.x + player.transform.position.x;
+            temp.z = destinationImage.transform.localPosition.y + player.transform.position.z;
+            temp.y = 1;
             player_Controller.Set_Destination(temp);
         }, Define.UIEvent.Click);
+
+
+
+        GameObject mapImage = Get<GameObject>((int)GameObjects.MapImage);
+        foreach (Transform child in mapImage.transform)
+        {
+            if(child.GetComponent<UI_Minimap_ObjImg>() == true)
+                Managers.Resource.Destroy(child.gameObject);
+        }
+
+        // 맵 데이터
+        // static object data
+        Dictionary<int, Data.Pos> dict_pos = Managers.Data.PosDict;
+
+
+
+        // 맵 오브젝트 개수만큼 붙이기
+        for (int i = 0; i < dict_pos.Count; i++) // 실제 인벤토리 정보 참고해서 몇개 만들지 고려
+        {
+            // 1. UI_Minimap_ObjImag 생성해서 MapImage 산하에 붙임
+            GameObject item = Managers.UI.MakeSubItem<UI_Minimap_ObjImg>(parent: mapImage.transform).gameObject;
+
+
+            // 1번째 방법 - 코드로 추가 : Util.GetOrAddComponent<UI_Inven_Item>(item);
+            UI_Minimap_ObjImg objImg = item.GetOrAddComponent<UI_Minimap_ObjImg>(); // Extension 사용
+
+            // 위치 설정
+
+            Vector3 tempVec;
+            tempVec.x = dict_pos[i].x;
+            tempVec.y = dict_pos[i].z;
+            tempVec.z = 0;
+            Debug.Log(tempVec);
+            objImg.gameObject.transform.localPosition = tempVec;
+
+            //invenItem.SetInfo($"집행검{i}번");
+        }
+
+
+
     }
 }

@@ -52,7 +52,10 @@ namespace Data
         // public 변수이여야 읽어들임, 아니면 [SerializedField]
         public int code;
         public string name;
-        public Vector3 position;
+        public float x;
+        public float y;
+        public float z;
+        //public Vector3 position;
 
         // 포맷만 맞춰두고 한번에 불러옴
     }
@@ -62,6 +65,7 @@ namespace Data
     {
         // ILoader 인터페이스 포함
 
+        // 이름 json 파일 안에 있는 이름하고 맞춰야함
         public List<Pos> pos = new List<Pos>();
 
         public Dictionary<int, Pos> MakeDict()

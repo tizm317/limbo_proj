@@ -187,7 +187,7 @@ public class Player_Controller : MonoBehaviour
                 {
                     if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
                     {
-                        
+
                         if(destination.Count == 1)
                         {
                             isMove = false;

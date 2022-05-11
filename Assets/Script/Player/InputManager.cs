@@ -67,23 +67,24 @@ public class InputManager
                 _pressedTime = 0;
             }*///원래 내용(이호영)
 
-            if (Input.GetMouseButton(0))
-            {
-                if (!_pressed)
-                {
-                    // 그 전에 누른 적 없다
+            //if (Input.GetMouseButton(0))
+            //{
+            //    if (!_pressed)
+            //    {
+            //        // 그 전에 누른 적 없다
 
-                    MouseAction.Invoke(Define.MouseEvent.PointerDown);
-                    _pressedTime = Time.time;
+            //        MouseAction.Invoke(Define.MouseEvent.PointerDown);
+            //        _pressedTime = Time.time;
 
-                }
-                MouseAction.Invoke(Define.MouseEvent.Press);
-                _pressed = true;
+            //    }
+            //    MouseAction.Invoke(Define.MouseEvent.Press);
+            //    _pressed = true;
 
-                // 드래그 추가 가능
-                // 시간 재서 몇초 이상일 때 드래그 상태...
-            }
-            else if (Input.GetMouseButton(1))//마우스 오른쪽 클릭인 경우(down)
+            //    // 드래그 추가 가능
+            //    // 시간 재서 몇초 이상일 때 드래그 상태...
+            //}
+
+            if (Input.GetMouseButton(1))//마우스 오른쪽 클릭인 경우(down)
             {
                 if (!_pressed)
                 {
@@ -99,8 +100,6 @@ public class InputManager
             }
             else
             {
-               
-
                 if (_pressed)
                 {
                     if (Time.time < _pressedTime + 0.2f)
