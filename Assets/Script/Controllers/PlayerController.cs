@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
         Managers.Input.MouseAction -= OnMouseEvent; // 2�� ȣ�� ����
         Managers.Input.MouseAction += OnMouseEvent;
 
+        //HP Bar 생성
+        Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
     }
 
     void UpdateDie()

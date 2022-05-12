@@ -20,6 +20,13 @@ public class EnemyController2 : MonoBehaviour
     private Animator anim;
 
 
+    void init()
+    {
+        // HPBar
+        if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
+            Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +34,7 @@ public class EnemyController2 : MonoBehaviour
         playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();  //player Tag를 가진 게임오브젝트 위치
         points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();  //waypointgroup 안 (부모포함) 게임오브젝트 위치
         anim = GetComponent<Animator>();
+        init();
     }
 
     // Update is called once per frame
