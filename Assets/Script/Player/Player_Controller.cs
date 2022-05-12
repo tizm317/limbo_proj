@@ -159,7 +159,8 @@ public class Player_Controller : MonoBehaviour
         if (destination.Count == 0)
             return new Vector3(0, magicNumber, 0);
 
-        return destination[0];
+        // 길찾기에서 최종 목적지를 받아와야 함
+        return destination[destination.Count - 1];
     }
 
     private void move(float speed)
