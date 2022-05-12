@@ -126,4 +126,9 @@ public class GRID : MonoBehaviour
             }
         }
     }
+
+    public List<Node> GetPaths()
+    {
+        return path;
+    }
 }
