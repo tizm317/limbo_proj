@@ -18,13 +18,18 @@ public class EnemyController2 : MonoBehaviour
     private bool isAttack = false; //공격 여부를 판단할 변수
     private Animator anim;
 
+    [SerializeField] GameObject _lockTarget;
+
+
     void init()
     {
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+
         //랜덤하게 point를 이동하도록
         nextIdx = Random.Range(1, points.Length);
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Start is called before the first frame update
@@ -34,7 +39,7 @@ public class EnemyController2 : MonoBehaviour
         playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();  //player Tag를 가진 게임오브젝트 위치
         points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();  //waypointgroup 안 (부모포함) 게임오브젝트 위치
         anim = GetComponent<Animator>();
-        
+        GameObject _lockTarget = GameObject.FindGameObjectWithTag("Player");
         init();
     }
 
@@ -81,6 +86,26 @@ public class EnemyController2 : MonoBehaviour
             nextIdx = (++nextIdx >= points.Length) ? 1 : Random.Range(1, points.Length);
 
             //nextIdx = Random.Range(1, points.Length);
+        }
+    }
+    void OnHitEvent()
+    {
+        if (_lockTarget != null)
+        {
+            Debug.Log("ONHITEVENT");
+            Stat targetStat = _lockTarget.GetComponent<Stat>();
+            Stat myStat = gameObject.GetComponent<Stat>();
+            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
+            targetStat.Hp -= damage;
+
+            if (targetStat.Hp > 0)
+            {
+                float dist = (_lockTarget.transform.position - transform.position).magnitude;
+                if (dist <= 1.0f)
+                    isAttack = true;
+                else
+                    isAttack = false;
+            }
         }
     }
 }

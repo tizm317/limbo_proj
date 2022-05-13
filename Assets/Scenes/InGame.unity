@@ -211,6 +211,7 @@ MonoBehaviour:
   nextIdx: 1
   speed: 1.5
   damping: 5
+  _lockTarget: {fileID: 1263350712}
 --- !u!195 &64943072
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -390,6 +391,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
         type: 3}
@@ -1879,6 +1885,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -2265,6 +2276,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -2498,6 +2514,7 @@ MonoBehaviour:
   nextIdx: 1
   speed: 2
   damping: 5
+  _lockTarget: {fileID: 1263350712}
 --- !u!114 &1391856101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2963,6 +2980,7 @@ MonoBehaviour:
   nextIdx: 1
   speed: 2
   damping: 5
+  _lockTarget: {fileID: 1263350712}
 --- !u!195 &1904214735
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3051,6 +3069,7 @@ MonoBehaviour:
   nextIdx: 1
   speed: 0.5
   damping: 5
+  _lockTarget: {fileID: 1263350712}
 --- !u!114 &1904544043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3127,6 +3146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3848168572386967437, guid: 3e502d36cb70ea34c8f9a4cfa7b7c564,
         type: 3}
