@@ -24,6 +24,7 @@ public class Player_Controller : MonoBehaviour
     private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     private Animator ani;
 
+
     void Start()
     {
         Managers.Input.MouseAction -= OnMouseClicked;
@@ -33,6 +34,7 @@ public class Player_Controller : MonoBehaviour
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
+
     }
 
     // Update is called once per frame

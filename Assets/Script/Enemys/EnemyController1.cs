@@ -123,35 +123,6 @@ public class EnemyController1 : MonoBehaviour
             Quaternion quat = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
-
-        /*
-        Stat targetStat = _lockTarget.GetComponent<Stat>();
-        Stat myStat = gameObject.GetComponent<Stat>();
-        int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
-        targetStat.Hp -= damage;
-
-        
-        if (targetStat.Hp > 0)
-        {
-            float distance = (_lockTarget.transform.position - transform.position).magnitude;
-            if (distance >= _attachRange)
-            {
-                if(State != EnemyState.Moving)
-                    State = EnemyState.Moving;
-                
-            }
-            else
-            {
-                if(State != EnemyState.Skill)
-                    State = EnemyState.Skill;
-            }
-        }
-        else
-        {
-            if(State != EnemyState.Idle)
-                State = EnemyState.Idle;
-        }
-        */
     }
     void OnHitEvent()
     {
