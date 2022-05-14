@@ -22,6 +22,7 @@ public class Player_Controller : MonoBehaviour
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
+    private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private Animator ani;
 
     void Start()
@@ -39,9 +40,8 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
-            Dash();
-
-        if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
+            StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
+        else if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
             if(!ani.GetBool("IsAttack"))//공격중에는 더 이상 실행안됨
                 StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
@@ -53,26 +53,29 @@ public class Player_Controller : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
-        if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
+        if(!on_skill)
         {
-            RaycastHit hit;//레이케스트 선언
-            bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-            if (!raycastHit) return; // raycast 실패하면 return
-            if(hit.collider.tag == "ground")
+            if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
             {
-                Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
-                my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
-                stat = null;//저장해둔 스텟도 지워줌
-                ani.SetBool("IsAttack",false);
-            }
-            else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
-            {
-                Lock_On(hit.transform.gameObject);//타게팅용
-                Set_Destination(my_enemy.GetComponent<Transform>().position);
-            }
-            else
-            { 
-                return;
+                RaycastHit hit;//레이케스트 선언
+                bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+                if (!raycastHit) return; // raycast 실패하면 return
+                if(hit.collider.tag == "ground")
+                {
+                    Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
+                    my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
+                    stat = null;//저장해둔 스텟도 지워줌
+                    ani.SetBool("IsAttack",false);
+                }
+                else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
+                {
+                    Lock_On(hit.transform.gameObject);//타게팅용
+                    Set_Destination(my_enemy.GetComponent<Transform>().position);
+                }
+                else
+                { 
+                    return;
+                }
             }
         }
     }
@@ -80,14 +83,29 @@ public class Player_Controller : MonoBehaviour
     #region 스킬
     IEnumerator SkillCool(string skill, float cool_time)//스킬의 이름을 string으로 입력하고 쿨타임 지정해주면 됨
     {
+        switch(skill)
+        {
+            case "Dash":
+                dash_cool = false;
+                break;
+            default:
+                break;
+        }
+
         while(cool_time > 0)
         {
             cool_time -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         
-        if(skill == "Dash")//스킬이 추가될 때마다 추가해주어야함, 반환형이 없기때문에 bool을 입력받아 직접 바꿔줄 수 없음, 반복함수라 ref사용 불가능
-            dash_cool = true;
+        switch(skill)
+        {
+            case "Dash":
+                dash_cool = true;
+                break;
+            default:
+                break;
+        }
     }
 
     private void Lock_On(GameObject enemy)
@@ -114,19 +132,32 @@ public class Player_Controller : MonoBehaviour
         }
     }
     
-    private void Dash()
+    IEnumerator Dash(float x)
     {
-        if(dash_cool)
+        if(dash_cool)//쿨타임이 도는중인지 먼저 확인
         {
-            dash_cool = false;
+            on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             RaycastHit hit;//레이케스트 선언
-            Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);
+            Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//스크린상에서 마우스 포인터의 위치
             Vector3 dash_dir = new Vector3(hit.point.x - player.GetComponent<Transform>().position.x,0,hit.point.z- player.GetComponent<Transform>().position.z);//대쉬 방향은 현재 마우스 포인터의 방향
-            player.GetComponent<Rigidbody>().AddForce(dash_dir.normalized * 5.0f,ForceMode.Impulse);
-            isMove = false;//대쉬를 사용하면 이동을 멈춤
+            Vector3 dash_dst = player.GetComponent<Transform>().position + dash_dir.normalized*x;//현재 위치에서 마우스 포인터로 거리 x만큼 떨어진 위치로 이동
+            destination.Clear();//목적지를 비워줌
+            destination.Add(dash_dst);
+            ani.SetBool("Dash",true);
+            speed = PlayerSpeed*3;
+            while(true)
+            {
+                if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)
+                {
+                    speed = PlayerSpeed;
+                    ani.SetBool("Dash",false);
+                    on_skill  = false;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
             StartCoroutine(SkillCool("Dash",1.0f));
-        }
-        
+        }   
     }
     #endregion
 
@@ -159,7 +190,7 @@ public class Player_Controller : MonoBehaviour
         if (destination.Count == 0)
             return new Vector3(0, magicNumber, 0);
 
-        return destination[0];
+        return destination[destination.Count -1];
     }
 
     private void move(float speed)
