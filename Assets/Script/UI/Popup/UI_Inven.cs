@@ -35,6 +35,8 @@ public class UI_Inven : UI_Popup
         foreach (Transform child in gridPanel.transform)
             Managers.Resource.Destroy(child.gameObject);
 
+        gridPanel.GetComponent<GridLayout>().
+
 
         // 드래그 event 추가
         //GetObject((int)GameObjects.GridPanel).gameObject.BindEvent(OnMouseDrag, Define.UIEvent.Drag);

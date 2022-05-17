@@ -16,6 +16,10 @@ public abstract class UI_Base : MonoBehaviour
 
     public abstract void Init();
 
+    private void Start()
+    {
+        Init(); 
+    }
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
         // UI 자동화 기능 : 유니티 툴로 연결지어주는 기능 자동화 

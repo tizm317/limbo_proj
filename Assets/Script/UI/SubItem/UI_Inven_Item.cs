@@ -19,11 +19,11 @@ public class UI_Inven_Item : UI_Base
     Vector3 _originalPos;
     Vector3 _originalLocalPosition;
 
-    void Start()
+    /*void Start()
     {
         Init();
     }
-
+    */
     public override void Init()
     {
         // ¹ÙÀÎµù
