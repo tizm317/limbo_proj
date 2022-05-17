@@ -33,9 +33,23 @@ public class MiniMap : UI_Scene
     public RectTransform destinationImage;
     Player_Controller player_Controller;
     public GameObject inputManager;
+    public RectTransform mapImage;
 
-    GRID grid;
-    List<Node> path;
+
+    Dictionary<int, Data.Pos> dict_pos;
+
+    // 길찾기
+    //GRID grid;
+    PathFinding pathFinding;
+    List<Vector3> path;
+
+    public GameObject linePrefab;
+    GameObject line;
+
+    LineRenderer lr;
+
+    //bool draw;
+
 
     void Start()
     {
@@ -73,16 +87,37 @@ public class MiniMap : UI_Scene
 
         }
 
+        // 플레이어 원점으로 두고 나머지 이동하도록 수정
+        // 플레이어 반대방향으로 지도 반대로 이동(고정된 물체 한번에 같이 이동시키기 위해서)
+        mapImage.localPosition = playerPos * -1;
 
         // path 정보
         // 노드 연결해서 가는 길 표시?
-        path = grid.GetPaths();
-        if (path != null)
+
+        // 라인 그리기
+        
+        //lr.SetPosition(0, playerImage.localPosition);
+        //lr.SetPosition(lr.positionCount - 1, destinationImage.localPosition);
+
+        DrawUILine drawUILine = mapImage.GetComponent<DrawUILine>();
+
+        if(destinationImage.localPosition != null)
+            drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+
+        path = pathFinding.Return_Path(player);
+        //drawUILine.DrawLine(playerImage.localPosition, path);
+
+        //lr.SetPosition(0, playerImage.position);
+        //lr.SetPosition(1, destinationImage.position);
+
+        if (path.Count != 0 )
         {
-            foreach (Node n in path)
-            {
-                Debug.Log($"node worldPostion : { n.worldPosition}");
-            }
+            drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
+        }
+
+        if(path.Count != 0 && Vector3.Distance(playerImage.position, destinationImage.position) < 1.0f)
+        {
+            drawUILine.ClearLine();
         }
     }
 
@@ -102,7 +137,7 @@ public class MiniMap : UI_Scene
         //GameObject playerImage = Get<GameObject>((int)GameObjects.PlayerImage);
 
         // path 받아오려고
-        grid = GameObject.Find("A*").GetComponent<GRID>();
+        pathFinding = GameObject.Find("A*").GetComponent<PathFinding>();
 
         Vector3 temp = new Vector3(0, 0, 0);
         //
@@ -134,7 +169,7 @@ public class MiniMap : UI_Scene
 
         // 맵 데이터
         // static object data
-        Dictionary<int, Data.Pos> dict_pos = Managers.Data.PosDict;
+        dict_pos = Managers.Data.PosDict;
 
 
 
@@ -160,7 +195,17 @@ public class MiniMap : UI_Scene
             //invenItem.SetInfo($"집행검{i}번");
         }
 
-   
+        // 길찾기
+        //lr = playerImage.gameObject.GetComponent<LineRenderer>();
+        //lr.startColor = Color.black;
+        //lr.endColor = Color.black;
+        //lr.startWidth = 1f;
+        //lr.endWidth = 1f;
+
+
+        //line = Instantiate(linePrefab);
+        //lr = line.GetComponent<LineRenderer>();
+        //lr.positionCount = 2;
 
     }
 }

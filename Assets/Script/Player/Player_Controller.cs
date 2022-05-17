@@ -134,9 +134,11 @@ public class Player_Controller : MonoBehaviour
     public void Set_Destination(Vector3 dest)
     {
         destination.Clear();//리스트를 비워주고
+        //pathfinding.ClearPath(); // 노드 같이 비워주기 by HY
+
         Vector3 pos = player.GetComponent<Transform>().position;
         isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),pathfinding.grid.unwalkableMask);
-        Debug.Log(isObstacle);
+        //Debug.Log(isObstacle);
         if(isObstacle)
         {
             pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
@@ -202,6 +204,7 @@ public class Player_Controller : MonoBehaviour
                                 Debug.DrawRay(player.GetComponent<Transform>().position, player.GetComponent<Transform>().up,Color.red,30.0f);
                                 Debug.LogFormat("destination coordinate = {0}, count = {1}",destination[0],destination.Count);
                                 destination.RemoveAt(0);
+
                             }
                         }
                     }
@@ -215,6 +218,12 @@ public class Player_Controller : MonoBehaviour
         }
     }
     #endregion
+
+    public bool get_isObstacle()
+    {
+        // HY
+        return isObstacle;
+    }
 }
 //삭제된 코드
 /*private void Mouse_Right_Click()

@@ -6,24 +6,29 @@ using System.Diagnostics;
 public class PathFinding : MonoBehaviour
 {
     public GRID grid;
+
     private List<Node> Path;
 
     //public Transform seeker, target;
-    
+
     void Awake()
     {
         grid = GetComponent<GRID>();
-        
+
     }
 
 
     public List<Vector3> Return_Path(Transform player)
     {
         List<Vector3> route = new List<Vector3>();
-        
-        for(int i = 0; i < Path.Count; i++)
+
+        // null 일때 문제 생겨서 추가
+        if (Path == null)
+            return route;
+
+        for (int i = 0; i < Path.Count; i++)
         {
-            route.Add(new Vector3(Path[i].worldPosition.x,player.position.y,Path[i].worldPosition.z));
+            route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
         }
 
         return route;
@@ -41,33 +46,33 @@ public class PathFinding : MonoBehaviour
         HashSet<Node> closedSet = new HashSet<Node>();//이미 탐색을 마친 노드 리스트
         openSet.Add(startNode);//시작점
 
-        while(openSet.Count > 0)
+        while (openSet.Count > 0)
         {
             Node currentNode = openSet.RemoveFirst();
 
             closedSet.Add(currentNode);
 
-            if(currentNode == targetNode)//타겟 노드를 발견하면 탈출
+            if (currentNode == targetNode)//타겟 노드를 발견하면 탈출
             {
                 sw.Stop();
                 print("Path found: " + sw.ElapsedMilliseconds + " ms");
-                RetracePath(startNode,targetNode);
+                RetracePath(startNode, targetNode);
                 return;
             }
 
-            foreach(Node neighbour in grid.GetNeighbours(currentNode))
+            foreach (Node neighbour in grid.GetNeighbours(currentNode))
             {
-                if(!neighbour.walkable || closedSet.Contains(neighbour))
+                if (!neighbour.walkable || closedSet.Contains(neighbour))
                     continue;
-                
+
                 int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
-                if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
                     neighbour.gCost = newMovementCostToNeighbour;
-                    neighbour.hCost = GetDistance(neighbour,targetNode);
+                    neighbour.hCost = GetDistance(neighbour, targetNode);
                     neighbour.parent = currentNode;
 
-                    if(!openSet.Contains(neighbour))
+                    if (!openSet.Contains(neighbour))
                     {
                         openSet.Add(neighbour);
                     }
@@ -83,7 +88,7 @@ public class PathFinding : MonoBehaviour
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
 
-        while(currentNode != startNode)
+        while (currentNode != startNode)
         {
             path.Add(currentNode);
             currentNode = currentNode.parent;
@@ -93,13 +98,23 @@ public class PathFinding : MonoBehaviour
         grid.path = path;
         Path = path;
     }
+
     int GetDistance(Node nodeA, Node nodeB)
     {
         int distanceX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
         int distanceY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
-        if(distanceX > distanceY)
+        if (distanceX > distanceY)
             return 14 * distanceY + 10 * (distanceX - distanceY);
         return 14 * distanceX + 10 * (distanceY - distanceX);
+    }
+
+    public void ClearPath()
+    {
+        // path 초기화가 없는듯?
+        // Player_Controller 에서 destionation 리스트클리어는 해주는거 같긴한데
+        // 도착하면 지워줘야지(또는 새 목적지 찍히면)
+
+        Path.Clear();
     }
 }

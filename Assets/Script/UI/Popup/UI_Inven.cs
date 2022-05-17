@@ -55,9 +55,14 @@ public class UI_Inven : UI_Popup
             // (2번째 방법 : 프리팹 저장할 때 add component 해서 UI_Inven_Item 컴포넌트 추가)
             UI_Inven_Item invenItem = item.GetOrAddComponent<UI_Inven_Item>(); // Extension 사용
             
+            //item.GetComponent<UI_Inven_Item>().SetPos(item.GetComponent<RectTransform>().localPosition);
+            
             invenItem.SetInfo($"집행검{i}번");
         }
     }
 
+    public void SetGridPos()
+    {
 
+    }
 }
