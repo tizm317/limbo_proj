@@ -104,7 +104,7 @@ public class EnemyController2 : MonoBehaviour
                 if (dist <= 1.0f)
                     isAttack = true;
                 else
-                    isAttack = false;
+                    isAttack = false; //어택
             }
         }
     }
