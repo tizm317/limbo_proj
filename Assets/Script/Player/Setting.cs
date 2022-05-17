@@ -8,9 +8,14 @@ public class Setting : MonoBehaviour
     public Slider[] AudioSlide;
     public Toggle[] Toggle;
     private float[] temp = new float[10];
+    private Light light;
     public AudioMixer master;
     public Slider BrightSlide;
     // Start is called before the first frame update
+    void Start()
+    {
+        light = GameObject.Find("Directional Light").GetComponent<Light>();
+    }
     public void SetVolume(int idx)
     {
         string name;
@@ -27,24 +32,24 @@ public class Setting : MonoBehaviour
                 break;
         }
         float volume = AudioSlide[idx].value;
-        if(volume == -40f)
+        if(volume != -40f)
+        {
+            master.SetFloat(name,volume);  
+            Toggle[idx].isOn = false;
+        }         
+        else
         {
             master.SetFloat(name,-80);//음소거
             Toggle[idx].isOn = true;
-        }
-           
-        else
-        {
-            master.SetFloat(name,volume);
-            temp[idx] = volume;
-            Toggle[idx].isOn = false;
         }
     }
 
     public void Volume_Toggle(int idx)
     {
-        if(Toggle[idx])
+        if(Toggle[idx].isOn)
         {
+            float volume = AudioSlide[idx].value;
+            temp[idx] = volume;
             Debug.Log(temp[idx]);
             AudioSlide[idx].value = -80f;
         }
@@ -53,5 +58,10 @@ public class Setting : MonoBehaviour
             Debug.Log(temp[idx]);
             AudioSlide[idx].value = temp[idx];
         }
+    }
+
+    public void Set_BrightNess()
+    {
+        light.intensity = BrightSlide.value;
     }
 }
