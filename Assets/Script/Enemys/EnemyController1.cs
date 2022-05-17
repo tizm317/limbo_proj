@@ -35,13 +35,13 @@ public class EnemyController1 : MonoBehaviour
                 case EnemyState.Die:
                     break;
                 case EnemyState.Idle:
-                    anim.CrossFade("WAIT", 0.1f);
+                    anim.CrossFade("WAIT", 0.2f);
                     break; ;
                 case EnemyState.Moving:
-                    anim.CrossFade("WALK", 0.1f);
+                    anim.CrossFade("WALK", 0.2f);
                     break;
                 case EnemyState.Skill:
-                    anim.CrossFade("ATTACK", 0.1f, -1, 0.0f);
+                    anim.CrossFade("ATTACK", 0.2f, -1, 0.0f);
                     break;
             }
         }
@@ -54,7 +54,9 @@ public class EnemyController1 : MonoBehaviour
     {
         _stat = gameObject.GetComponent<Stat>();
 
-        // HPBar 여부 체크 후 생성 코드 필요
+        // HPBar
+        if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
+            Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
     }
     void UpdateDie()
     {
@@ -121,42 +123,13 @@ public class EnemyController1 : MonoBehaviour
             Quaternion quat = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
-
-        PlayerStat targetStat = _lockTarget.GetComponent<PlayerStat>();
-        Stat myStat = gameObject.GetComponent<Stat>();
-        int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
-        //targetStat.Hp -= damage;
-
-        if (targetStat.Hp > 0)
-        {
-            float distance = (_lockTarget.transform.position - transform.position).magnitude;
-            if (distance >= _attachRange)
-            {
-                if(State != EnemyState.Moving)
-                    State = EnemyState.Moving;
-                
-            }
-            else
-            {
-                if(State != EnemyState.Skill)
-                    State = EnemyState.Skill;
-            }
-        }
-        else
-        {
-            if(State != EnemyState.Idle)
-                State = EnemyState.Idle;
-        }
     }
-
     void OnHitEvent()
     {
-        Debug.Log("OnHitEvent");
-
+        //체력
         if (_lockTarget != null)
         {
-            //체력
-            PlayerStat targetStat = _lockTarget.GetComponent<PlayerStat>();
+            Stat targetStat = _lockTarget.GetComponent<Stat>();
             Stat myStat = gameObject.GetComponent<Stat>();
             int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
             targetStat.Hp -= damage;
@@ -165,15 +138,10 @@ public class EnemyController1 : MonoBehaviour
             if (targetStat.Hp > 0)
             {
                 float distance = (_lockTarget.transform.position - transform.position).magnitude;
-                if (distance >= _attachRange)
-                {
-                    State = EnemyState.Moving;
-                    
-                }
-                else
-                {
+                if (distance <= _attachRange)
                     State = EnemyState.Skill;
-                }
+                else
+                    State = EnemyState.Moving;
             }
             else
             {
@@ -185,6 +153,8 @@ public class EnemyController1 : MonoBehaviour
             State = EnemyState.Idle;
         }
     }
+    
+
     void Update()
     {
         switch (State)

@@ -34,8 +34,8 @@ public class MiniMap : UI_Scene
     Player_Controller player_Controller;
     public GameObject inputManager;
 
-    
-
+    GRID grid;
+    List<Node> path;
 
     void Start()
     {
@@ -71,9 +71,18 @@ public class MiniMap : UI_Scene
             destination.z = 0;
             destinationImage.localPosition = destination;
 
-            // 반대로 미니맵 클릭해서 이동하는 방식도 있으면 좋을듯?
-            // UI 에 레이케스트 해서 
-            // 거꾸로 
+        }
+
+
+        // path 정보
+        // 노드 연결해서 가는 길 표시?
+        path = grid.GetPaths();
+        if (path != null)
+        {
+            foreach (Node n in path)
+            {
+                Debug.Log($"node worldPostion : { n.worldPosition}");
+            }
         }
     }
 
@@ -92,7 +101,8 @@ public class MiniMap : UI_Scene
 
         //GameObject playerImage = Get<GameObject>((int)GameObjects.PlayerImage);
 
-
+        // path 받아오려고
+        grid = GameObject.Find("A*").GetComponent<GRID>();
 
         Vector3 temp = new Vector3(0, 0, 0);
         //
@@ -150,7 +160,7 @@ public class MiniMap : UI_Scene
             //invenItem.SetInfo($"집행검{i}번");
         }
 
-
+   
 
     }
 }
