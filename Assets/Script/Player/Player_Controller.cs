@@ -246,6 +246,12 @@ public class Player_Controller : MonoBehaviour
         }
     }
     #endregion
+
+    public bool get_isObstacle()
+    {
+        // 미니맵에서 isObstacle 값 가져오기 위한 public 함수_HY
+        return isObstacle;
+    }
 }
 //삭제된 코드
 /*private void Mouse_Right_Click()
