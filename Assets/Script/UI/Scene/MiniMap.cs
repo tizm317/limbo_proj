@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MiniMap : UI_Scene
+public class MiniMap : UI_Popup
 {
     // 미니맵
     /* 
@@ -23,6 +23,7 @@ public class MiniMap : UI_Scene
 
     enum GameObjects
     {
+        Mask,
         MapImage,
         PlayerImage,
         DestinationImage,
@@ -34,7 +35,7 @@ public class MiniMap : UI_Scene
     Player_Controller player_Controller;
     public GameObject inputManager;
     public RectTransform mapImage;
-
+    public RectTransform mask;
 
     Dictionary<int, Data.Pos> dict_pos;
 
@@ -206,6 +207,33 @@ public class MiniMap : UI_Scene
         //line = Instantiate(linePrefab);
         //lr = line.GetComponent<LineRenderer>();
         //lr.positionCount = 2;
+
+    }
+
+    public void SizeControl(int step)
+    {
+        // 미니맵 사이즈 조절
+        // step에 맞게
+        // 0(off),1,2,3
+        // UI_InGame에서 사용하기 위해 퍼블릭함수
+
+        switch(step)
+        {
+            case 0: // off
+                break;
+            case 1: // defaultSize
+                mask.localScale = new Vector3(1, 1, 0);
+                mapImage.localScale = new Vector3(1, 1, 0);
+                break;
+            case 2: // middleSize
+                mask.localScale = new Vector3(2, 2, 0);
+                mapImage.localScale = new Vector3(2, 2, 0);
+                break;
+            case 3: // MaxSize
+                mask.localScale = new Vector3(3, 3, 0);
+                mapImage.localScale = new Vector3(3, 3, 0);
+                break;
+        }
 
     }
 }

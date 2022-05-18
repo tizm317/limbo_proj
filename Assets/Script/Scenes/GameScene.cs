@@ -70,7 +70,7 @@ public class GameScene : BaseScene
 
         // ¾À UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
-        Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
+        //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
 
