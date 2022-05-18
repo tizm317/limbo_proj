@@ -59,6 +59,9 @@ public class UI_Inven_Item : UI_Base
         CursorController cursorController = GameObject.Find("@Scene").GetComponent<CursorController>();
         Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => 
         {
+            // UI : 좌클 아니면 리턴
+            if (PointerEventData.pointerId != -1) return;
+
             disX = Mathf.Abs(PointerEventData.position.x - gridPanel.transform.position.x); disY = Mathf.Abs(PointerEventData.position.y - gridPanel.transform.position.y);
             if (disX > rectTransform.rect.width / 2 || disY > rectTransform.rect.height / 2)
                 tryRemoving = true;
@@ -71,7 +74,11 @@ public class UI_Inven_Item : UI_Base
         BindEvent
             (
                 go, (PointerEventData data) => 
-                    { disX = Mathf.Abs(data.position.x - gridPanel.transform.position.x); disY = Mathf.Abs(data.position.y - gridPanel.transform.position.y);
+                    {
+                        // UI : 좌클 아니면 리턴
+                        if (data.pointerId != -1) return;
+
+                        disX = Mathf.Abs(data.position.x - gridPanel.transform.position.x); disY = Mathf.Abs(data.position.y - gridPanel.transform.position.y);
                         if (disX > rectTransform.rect.width / 2 || disY > rectTransform.rect.height / 2)//(Mathf.Abs(gameObject.GetComponent<RectTransform>().localPosition.x - _originalLocalPosition.x) > 100)
                         {
                             Managers.Resource.Destroy(gameObject); // pool로 반환
