@@ -8,7 +8,7 @@ public class Define
 
     public enum Layer
     {
-        Monster = 8,
+        Monster = 9,
         Ground,
         Block,
     }
@@ -34,6 +34,7 @@ public class Define
         Click,
         Drag,
         PointerUp,
+        PointerDown,
     }
 
     public enum MouseEvent

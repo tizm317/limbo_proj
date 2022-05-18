@@ -20,6 +20,8 @@ public class UI_Inven : UI_Popup
         Init();
     }
 
+    GameObject gridPanel;
+
     public override void Init()
     {
         base.Init();
@@ -31,11 +33,11 @@ public class UI_Inven : UI_Popup
 
 
         // girdPanel 날리기 (child 순회해서) 과정
-        GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
+        gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
         foreach (Transform child in gridPanel.transform)
             Managers.Resource.Destroy(child.gameObject);
 
-        gridPanel.GetComponent<GridLayout>().
+        //gridPanel.GetComponent<GridLayout>().
 
 
         // 드래그 event 추가
@@ -51,6 +53,7 @@ public class UI_Inven : UI_Popup
             // 1. inven_item 생성해서 GridPanel 산하에 붙임
             GameObject item = Managers.UI.MakeSubItem<UI_Inven_Item>(parent: gridPanel.transform).gameObject;
 
+           // gridPanel.GetComponent<GridLayout>().
 
             // 프리팹에 UI_Inven_Item 컴포넌트 연결 안 되어있어서 생기는 문제 해결법
             // 1번째 방법 - 코드로 추가 : Util.GetOrAddComponent<UI_Inven_Item>(item);
@@ -63,8 +66,4 @@ public class UI_Inven : UI_Popup
         }
     }
 
-    public void SetGridPos()
-    {
-
-    }
 }
