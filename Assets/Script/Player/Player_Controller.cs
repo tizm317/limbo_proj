@@ -23,6 +23,7 @@ public class Player_Controller : MonoBehaviour
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
+    private bool isAttack = false;
     private Animator ani;
 
     void Start()
@@ -43,7 +44,8 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
         else if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
-            StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+            if(!isAttack)
+                StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
         }
         else
             move(speed);
@@ -58,9 +60,7 @@ public class Player_Controller : MonoBehaviour
             {
                 RaycastHit hit;//레이케스트 선언
                 bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-                Debug.Log(raycastHit);
                 if (!raycastHit) return; // raycast 실패하면 return
-                Debug.Log(hit.collider.tag);
                 if(hit.collider.tag == "ground")
                 {
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
@@ -115,19 +115,23 @@ public class Player_Controller : MonoBehaviour
     }
     IEnumerator Attack(int damage,float attack_delay)
     {
+        isAttack = true;
         isMove = false;
         ani.SetBool("IsMove",false);
-        ani.CrossFade("Attack",0.3f);
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy != null)
         {
+            ani.CrossFade("Attack",0f);
             stat.Hp = stat.Hp - damage;
+            Debug.Log(stat.Hp);
             if(stat.Hp <= 0)
             {
                 Destroy(my_enemy);
             }
             yield return new WaitForSeconds(attack_delay);
+            ani.CrossFade("Idle",0f);
         }
+        isAttack = false;
     }
     
     IEnumerator Dash(float x)
