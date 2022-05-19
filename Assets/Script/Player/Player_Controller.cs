@@ -119,19 +119,22 @@ public class Player_Controller : MonoBehaviour
     {
         isAttack = true;
         isMove = false;
+        ani.SetBool("IsAttack", true);
         ani.SetBool("IsMove",false);
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy != null)
         {
-            ani.CrossFade("Attack",0f);
+            
             stat.Hp = stat.Hp - damage;
             player.GetComponent<Transform>().forward = new Vector3(my_enemy.GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy.GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
             if(stat.Hp <= 0)
             {
+                ani.SetBool("IsAttack", false);
                 Destroy(my_enemy);
             }
             yield return new WaitForSeconds(attack_delay);
         }
+        ani.SetBool("IsAttack", false);
         isAttack = false;
     }
     
