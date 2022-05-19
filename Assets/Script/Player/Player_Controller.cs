@@ -45,7 +45,9 @@ public class Player_Controller : MonoBehaviour
         else if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
             if(!isAttack)
+            {
                 StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+            }
         }
         else
             move(speed);
@@ -123,13 +125,12 @@ public class Player_Controller : MonoBehaviour
         {
             ani.CrossFade("Attack",0f);
             stat.Hp = stat.Hp - damage;
-            Debug.Log(stat.Hp);
+            player.GetComponent<Transform>().forward = new Vector3(my_enemy.GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy.GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
             if(stat.Hp <= 0)
             {
                 Destroy(my_enemy);
             }
             yield return new WaitForSeconds(attack_delay);
-            ani.CrossFade("Idle",0f);
         }
         isAttack = false;
     }
@@ -140,7 +141,7 @@ public class Player_Controller : MonoBehaviour
         {
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             dash_cool = false;
-            ani.CrossFade("Dash",0.1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
+            ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
             isMove = true;
             RaycastHit hit;//레이케스트 선언
             Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//스크린상에서 마우스 포인터의 위치
