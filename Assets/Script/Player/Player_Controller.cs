@@ -136,6 +136,7 @@ public class Player_Controller : MonoBehaviour
         {
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             dash_cool = false;
+            ani.CrossFade("Dash",0.1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
             isMove = true;
             RaycastHit hit;//레이케스트 선언
             Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//스크린상에서 마우스 포인터의 위치
@@ -143,12 +144,8 @@ public class Player_Controller : MonoBehaviour
             Vector3 dash_dst = player.GetComponent<Transform>().position + dash_dir.normalized*x;//현재 위치에서 마우스 포인터로 거리 x만큼 떨어진 위치로 이동
             destination.Clear();//목적지를 비워줌
             destination.Add(dash_dst);
-            ani.CrossFade("Dash",0.3f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
-
-            ani.SetBool("IsAttack",false);
             ani.SetBool("IsMove",false);
-            
-            speed = PlayerSpeed*3;
+            speed = PlayerSpeed*2;
             while(true)
             {
                 if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)
