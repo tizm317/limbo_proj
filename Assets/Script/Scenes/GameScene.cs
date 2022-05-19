@@ -76,7 +76,7 @@ public class GameScene : BaseScene
 
         // 풀매니저 테스트
         //for (int i = 0; i < 5; i++)
-        //    Managers.Resource.Instantiate("UnityChan");
+        //    Managers.Resource.Instantiate("Skeleton");
 
 
         /*
