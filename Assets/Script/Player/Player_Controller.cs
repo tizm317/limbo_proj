@@ -135,6 +135,7 @@ public class Player_Controller : MonoBehaviour
         if(dash_cool)//쿨타임이 도는중인지 먼저 확인
         {
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
+            dash_cool = false;
             isMove = true;
             RaycastHit hit;//레이케스트 선언
             Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//스크린상에서 마우스 포인터의 위치
