@@ -223,15 +223,15 @@ public class MiniMap : UI_Popup
                 break;
             case 1: // defaultSize
                 mask.localScale = new Vector3(1, 1, 0);
-                mapImage.localScale = new Vector3(1, 1, 0);
+                //mapImage.localScale = new Vector3(1, 1, 0);
                 break;
             case 2: // middleSize
                 mask.localScale = new Vector3(2, 2, 0);
-                mapImage.localScale = new Vector3(2, 2, 0);
+                //mapImage.localScale = new Vector3(2, 2, 0);
                 break;
             case 3: // MaxSize
                 mask.localScale = new Vector3(3, 3, 0);
-                mapImage.localScale = new Vector3(3, 3, 0);
+                //mapImage.localScale = new Vector3(3, 3, 0);
                 break;
         }
 
