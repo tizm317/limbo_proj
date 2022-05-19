@@ -43,8 +43,7 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
         else if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
-            if(!ani.GetBool("IsAttack"))//공격중에는 더 이상 실행안됨
-                StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+            StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
         }
         else
             move(speed);
@@ -59,13 +58,14 @@ public class Player_Controller : MonoBehaviour
             {
                 RaycastHit hit;//레이케스트 선언
                 bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+                Debug.Log(raycastHit);
                 if (!raycastHit) return; // raycast 실패하면 return
+                Debug.Log(hit.collider.tag);
                 if(hit.collider.tag == "ground")
                 {
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
                     my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
                     stat = null;//저장해둔 스텟도 지워줌
-                    ani.SetBool("IsAttack",false);
                 }
                 else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
                 {
@@ -115,9 +115,9 @@ public class Player_Controller : MonoBehaviour
     }
     IEnumerator Attack(int damage,float attack_delay)
     {
-         isMove = false;
+        isMove = false;
         ani.SetBool("IsMove",false);
-        ani.SetBool("IsAttack",true);
+        ani.CrossFade("Attack",0.3f);
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy != null)
         {
@@ -125,7 +125,6 @@ public class Player_Controller : MonoBehaviour
             if(stat.Hp <= 0)
             {
                 Destroy(my_enemy);
-                ani.SetBool("IsAttack",false);
             }
             yield return new WaitForSeconds(attack_delay);
         }
