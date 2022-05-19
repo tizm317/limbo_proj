@@ -55,6 +55,14 @@ public class UI_InGame : UI_Scene
         Max,
     }
 
+    int miniMapZoom = (int)zoom.defaultZoom;
+    enum zoom
+    {
+        defaultZoom,
+        secondZoom,
+        MaxZoom,
+    }
+
     void ControlPopUpUI()
     {
         // 키보드 입력 -> 팝업UI On/Off
@@ -94,7 +102,29 @@ public class UI_InGame : UI_Scene
                     miniMap.SizeControl(miniMapStep);
                     Managers.UI.ClosePopupUI(miniMap);
                     miniMapStep = (int)minimap.Off;
+                    miniMapZoom = (int)zoom.defaultZoom; // 줌도 초기화
                     Debug.Log("Step : " + miniMapStep);
+                    break;
+            }
+        }
+        else if(Input.GetKeyDown(KeyCode.Z))
+        {
+            if (!miniMap)
+                return;
+
+            switch (miniMapZoom)
+            {
+                case (int)zoom.defaultZoom:
+                    miniMapZoom++;
+                    miniMap.Zoom(miniMapZoom);
+                    break;
+                case (int)zoom.secondZoom:
+                    miniMapZoom++;
+                    miniMap.Zoom(miniMapZoom);
+                    break;
+                case (int)zoom.MaxZoom:
+                    miniMapZoom = (int)zoom.defaultZoom;
+                    miniMap.Zoom(miniMapZoom);
                     break;
             }
         }
