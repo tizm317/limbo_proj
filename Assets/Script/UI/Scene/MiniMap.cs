@@ -220,6 +220,10 @@ public class MiniMap : UI_Popup
         switch(step)
         {
             case 0: // off
+                // 초기화
+                Zoom(0);
+                //mapImage.localScale = new Vector3(1, 1, 0);
+                mask.localScale = new Vector3(1, 1, 0);
                 break;
             case 1: // defaultSize
                 mask.localScale = new Vector3(1, 1, 0);
@@ -235,5 +239,23 @@ public class MiniMap : UI_Popup
                 break;
         }
 
+    }
+
+    public void Zoom(int step)
+    {
+        // 미니맵 줌 기능
+        switch (step)
+        {
+            case 0:  // default
+                mapImage.localScale = new Vector3(1, 1, 0);
+                break;
+            case 1:  // second
+                mapImage.localScale = new Vector3(2, 2, 0);
+                break;
+            case 2: // max
+                mapImage.localScale = new Vector3(3, 3, 0);
+                break;
+        
+        }
     }
 }
