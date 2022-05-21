@@ -23,6 +23,7 @@ public class Player_Controller : MonoBehaviour
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
+    private bool isAttack = false;
     private Animator ani;
 
     void Start()
@@ -43,7 +44,10 @@ public class Player_Controller : MonoBehaviour
             StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
         else if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
         {
-            StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+            if(!isAttack)
+            {
+                StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+            }
         }
         else
             move(speed);
@@ -58,9 +62,7 @@ public class Player_Controller : MonoBehaviour
             {
                 RaycastHit hit;//레이케스트 선언
                 bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-                Debug.Log(raycastHit);
                 if (!raycastHit) return; // raycast 실패하면 return
-                Debug.Log(hit.collider.tag);
                 if(hit.collider.tag == "ground")
                 {
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
@@ -115,19 +117,25 @@ public class Player_Controller : MonoBehaviour
     }
     IEnumerator Attack(int damage,float attack_delay)
     {
+        isAttack = true;
         isMove = false;
+        ani.SetBool("IsAttack", true);
         ani.SetBool("IsMove",false);
-        ani.CrossFade("Attack",0.3f);
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy != null)
         {
+            
             stat.Hp = stat.Hp - damage;
+            player.GetComponent<Transform>().forward = new Vector3(my_enemy.GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy.GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
             if(stat.Hp <= 0)
             {
+                ani.SetBool("IsAttack", false);
                 Destroy(my_enemy);
             }
             yield return new WaitForSeconds(attack_delay);
         }
+        ani.SetBool("IsAttack", false);
+        isAttack = false;
     }
     
     IEnumerator Dash(float x)
@@ -136,7 +144,7 @@ public class Player_Controller : MonoBehaviour
         {
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             dash_cool = false;
-            ani.CrossFade("Dash",0.1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
+            ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
             isMove = true;
             RaycastHit hit;//레이케스트 선언
             Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//스크린상에서 마우스 포인터의 위치
