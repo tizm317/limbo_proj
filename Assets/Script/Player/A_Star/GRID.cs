@@ -6,7 +6,7 @@ public class GRID : MonoBehaviour
 {
     public bool onlyDisplayPathGizmos;
     //public Transform player, target;
-    public LayerMask unwalkableMask;
+    public LayerMask unwalkableMask; // HY 수정
     public Vector2 gridWorldSize;
     public float nodeRadius;
     Node[,] grid;
@@ -17,6 +17,7 @@ public class GRID : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        unwalkableMask = ((1 << (int)Define.Layer.Wall) | (1 << (int)Define.Layer.Building)); // HY 수정 (layer 에 빌딩 추가, 빌딩도 못 지나가는 부분이니까 mask 바꿈)
         //playerNode = NodeFromWolrdPoint(player.position);
         //targetNode = NodeFromWolrdPoint(target.position);
         nodeDiameter = nodeRadius*2;

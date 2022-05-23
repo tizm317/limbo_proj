@@ -30,14 +30,14 @@ public class DataManager
     // 외부에서 사용할 때 : Dictionary 뽑아서 사용 (예시 : Dictionary<int, Stat> dict = Managers.Data.StatDict;)
     public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>(); // 키 값을 레벨로
     //(추가 하는 부분)
-    public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
+    //public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
 
     public void Init()
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
-        PosDict = LoadJson<Data.PosData, int, Data.Pos>("PosData").MakeDict();
+        //PosDict = LoadJson<Data.PosData, int, Data.Pos>("PosData").MakeDict();
         // (추가 하는 부분)
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
@@ -55,6 +55,10 @@ public class DataManager
             // 맵 오브젝트(child) 순회
             foreach (Transform child in prop.transform)
             {
+                // Layer 가 Building 아니면 continue (나중에 조건 바뀔 수 있음 - 중요 건물만 한다던가)
+                if (child.gameObject.layer != (int)Define.Layer.Building)
+                    continue;
+
                 // MakeList() 에서 List 만들어서 반환
                 json = MakeList(child.gameObject, objCount);
                 objCount++;
@@ -99,7 +103,7 @@ public class DataManager
     public class SaveData
     {
         // List 만들기 위해서
-        public List<ObjContainer> Map = new List<ObjContainer>();
+        public List<ObjContainer> map = new List<ObjContainer>();
     }
     SaveData saveData = new SaveData();
 
@@ -119,7 +123,7 @@ public class DataManager
         MyObjContainer.z = obj.transform.position.z;
 
         // List 에 add
-        saveData.Map.Add(MyObjContainer);
+        saveData.map.Add(MyObjContainer);
 
         // List를 json으로
         // List 계속 새로 덮이는데

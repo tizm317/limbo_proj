@@ -37,7 +37,7 @@ public class MiniMap : UI_Popup
     public RectTransform mapImage;
     public RectTransform mask;
 
-    Dictionary<int, Data.Pos> dict_pos;
+    Dictionary<int, Data.Map> dict_map;
 
     // 길찾기
     //GRID grid;
@@ -170,12 +170,12 @@ public class MiniMap : UI_Popup
 
         // 맵 데이터
         // static object data
-        dict_pos = Managers.Data.PosDict;
-
+        dict_map = Managers.Data.MapDict;
+        
 
 
         // 맵 오브젝트 개수만큼 붙이기
-        for (int i = 0; i < dict_pos.Count; i++) // 실제 인벤토리 정보 참고해서 몇개 만들지 고려
+        for (int i = 0; i < dict_map.Count; i++) // 실제 정보 참고해서 몇개 만들지 고려
         {
             // 1. UI_Minimap_ObjImag 생성해서 MapImage 산하에 붙임
             GameObject item = Managers.UI.MakeSubItem<UI_Minimap_ObjImg>(parent: mapImage.transform).gameObject;
@@ -187,8 +187,8 @@ public class MiniMap : UI_Popup
             // 위치 설정
 
             Vector3 tempVec;
-            tempVec.x = dict_pos[i].x;
-            tempVec.y = dict_pos[i].z;
+            tempVec.x = dict_map[i].x;
+            tempVec.y = dict_map[i].z;
             tempVec.z = 0;
             Debug.Log(tempVec);
             objImg.gameObject.transform.localPosition = tempVec;

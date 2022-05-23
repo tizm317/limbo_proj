@@ -97,8 +97,8 @@ public class GameScene : BaseScene
 
         // DataManager test - 외부에서 사용할 때
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
-        Dictionary<int, Data.Pos> dict_pos = Managers.Data.PosDict;
-
+        //Dictionary<int, Data.Pos> dict_pos = Managers.Data.PosDict;
+        Dictionary<int, Data.Map> dict_map = Managers.Data.MapDict;
 
         // 커서컨트롤러 @Scene
         gameObject.GetOrAddComponent<CursorController>();

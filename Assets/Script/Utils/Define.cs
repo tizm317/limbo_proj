@@ -8,9 +8,11 @@ public class Define
 
     public enum Layer
     {
+        Wall = 8,
         Monster = 9,
         Ground,
         Block,
+        Building,
     }
 
     public enum Scene
