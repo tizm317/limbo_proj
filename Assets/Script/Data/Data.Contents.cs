@@ -79,4 +79,35 @@ namespace Data
         }
     }
     #endregion
+
+    #region
+    [Serializable]
+    public class Map
+    {
+        public int code;
+        public string name;
+        public float x;
+        public float y;
+        public float z;
+    }
+
+    [Serializable]
+    public class MapData : ILoader<int, Map>
+    {
+        // ILoader 인터페이스 포함
+
+        // 이름 json 파일 안에 있는 이름하고 맞춰야함
+        public List<Map> map = new List<Map>();
+
+        public Dictionary<int, Map> MakeDict()
+        {
+            Dictionary<int, Map> dict = new Dictionary<int, Map>();
+
+            foreach (Map ele in map)
+                dict.Add(ele.code, ele);
+
+            return dict;
+        }
+    }
+    #endregion
 }
