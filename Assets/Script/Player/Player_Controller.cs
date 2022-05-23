@@ -11,12 +11,14 @@ public class Player_Controller : MonoBehaviour
     [SerializeField]
     InputManager input;
     [SerializeField]
-    Stat stat;
+    public List<Stat> stat = new List<Stat>();
     [SerializeField]
     PathFinding pathfinding;
     private PlayerStat my_stat;
     private Camera cam;
-    public GameObject player,my_enemy;
+    public GameObject player;
+    public List<GameObject> enemies = new List<GameObject>();
+    public List<GameObject> my_enemy = new List<GameObject>();
     private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
@@ -31,10 +33,12 @@ public class Player_Controller : MonoBehaviour
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
         player = GameObject.Find("Player");
-        cam = Camera.main;
+        //cam = Camera.main;
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
+        StartCoroutine(Enemy_Check());
     }
 
     // Update is called once per frame
@@ -42,7 +46,7 @@ public class Player_Controller : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
-        else if(my_enemy != null && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy.GetComponent<Transform>().position) < 1)
+        else if(my_enemy.Count != 0 && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 2)
         {
             if(!isAttack)
             {
@@ -66,17 +70,33 @@ public class Player_Controller : MonoBehaviour
                 if(hit.collider.tag == "ground")
                 {
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
-                    my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
-                    stat = null;//저장해둔 스텟도 지워줌
+                    my_enemy.Clear();//다시 땅 찍으면 타게팅을 풀어줌
+                    stat.Clear();//저장해둔 스텟도 지워줌
                 }
                 else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
                 {
                     Lock_On(hit.transform.gameObject);//타게팅용
-                    Set_Destination(my_enemy.GetComponent<Transform>().position);
+                    Set_Destination(my_enemy[0].GetComponent<Transform>().position);
                 }
                 else
                 { 
                     return;
+                }
+                float[] temp = new float[enemies.Count];//적들과의 거리를 계산하기 위한 변수
+                for(int i  = 0; i < enemies.Count; i++)
+                {
+                    if(enemies[i]!=null)
+                    {
+                        temp[i] = Vector3.Distance(enemies[i].GetComponent<Transform>().position,hit.point);
+                    }
+                }
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    if(temp[i] > 0 && temp[i] < 2)
+                    {
+                        my_enemy.Add(enemies[i]);
+                        stat.Add(enemies[i].GetComponent<Stat>());
+                    }
                 }
             }
         }
@@ -110,10 +130,40 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    IEnumerator Enemy_Check()
+    {
+        while(true)
+        {
+            GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach(GameObject i in temp)
+                if(!enemies.Contains(i))
+                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
+            if(enemies.Count > 0)//적이 다 죽은거 아니면
+            {
+                foreach(GameObject i in enemies)
+                {
+                    if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                    {
+                        if(!my_enemy.Contains(i))
+                        {
+                            my_enemy.Add(i);
+                            stat.Add(i.GetComponent<Stat>());
+                        }
+                    }
+                }
+            }
+            if(destination.Count == 0 && my_enemy.Count > 0)
+                destination.Add(my_enemy[0].GetComponent<Transform>().position);
+            yield return new WaitForEndOfFrame();  
+        }
+    }
+
     private void Lock_On(GameObject enemy)
     {
-        my_enemy = enemy;
-        stat = my_enemy.GetComponent<Stat>();
+        my_enemy.Clear();
+        stat.Clear();
+        my_enemy.Add(enemy);
+        stat.Add(my_enemy[0].GetComponent<Stat>());
     }
     IEnumerator Attack(int damage,float attack_delay)
     {
@@ -122,15 +172,20 @@ public class Player_Controller : MonoBehaviour
         ani.SetBool("IsAttack", true);
         ani.SetBool("IsMove",false);
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
-        while(my_enemy != null)
+        while(my_enemy.Count != 0)
         {
             
-            stat.Hp = stat.Hp - damage;
-            player.GetComponent<Transform>().forward = new Vector3(my_enemy.GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy.GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
-            if(stat.Hp <= 0)
+            stat[0].Hp = stat[0].Hp - damage;
+            player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
+            if(stat[0].Hp <= 0)
             {
-                ani.SetBool("IsAttack", false);
-                Destroy(my_enemy);
+                if(my_enemy.Count == 0)
+                    ani.SetBool("IsAttack", false);
+                    
+                Destroy(my_enemy[0]);
+                enemies.Remove(my_enemy[0]);
+                my_enemy.RemoveAt(0);
+                stat.RemoveAt(0);
             }
             yield return new WaitForSeconds(attack_delay);
         }
