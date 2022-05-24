@@ -42,45 +42,7 @@ namespace Data
         }
     }
     #endregion
-    // (추가)
     #region Map
-    [Serializable]
-    public class Pos
-    {
-        // json 파일에서의 이름하고 이 파일에서의 이름 맞춰야함 (다르면 못 찾음)
-        // 타입도 맞춰야함
-        // public 변수이여야 읽어들임, 아니면 [SerializedField]
-        public int code;
-        public string name;
-        public float x;
-        public float y;
-        public float z;
-        //public Vector3 position;
-
-        // 포맷만 맞춰두고 한번에 불러옴
-    }
-
-    [Serializable]
-    public class PosData : ILoader<int, Pos>
-    {
-        // ILoader 인터페이스 포함
-
-        // 이름 json 파일 안에 있는 이름하고 맞춰야함
-        public List<Pos> pos = new List<Pos>();
-
-        public Dictionary<int, Pos> MakeDict()
-        {
-            Dictionary<int, Pos> dict = new Dictionary<int, Pos>();
-
-            foreach (Pos ele in pos)
-                dict.Add(ele.code, ele);
-
-            return dict;
-        }
-    }
-    #endregion
-
-    #region
     [Serializable]
     public class Map
     {
@@ -105,6 +67,37 @@ namespace Data
 
             foreach (Map ele in map)
                 dict.Add(ele.code, ele);
+
+            return dict;
+        }
+    }
+    #endregion
+    // (추가)
+
+
+    // 여기부터 다시
+    #region Inventory
+    [Serializable] // 메모리에서 들고 있는걸 파일로 변환할수있다는 의미
+    public class Item
+    {
+        public int id;
+        public string name;
+        public string type;     // 아이템 종류 구분
+        public string grade;    // 희귀성
+        public int count;       // 몇개 가지고 있는지
+    }
+
+    [Serializable]
+    public class ItemData : ILoader<int, Item>
+    {
+        public List<Item> items = new List<Item>();
+
+        public Dictionary<int, Item> MakeDict()
+        {
+            Dictionary<int, Item> dict = new Dictionary<int, Item>();
+
+            foreach (Item item in items)
+                dict.Add(item.id, item);
 
             return dict;
         }

@@ -32,12 +32,13 @@ public class DataManager
     //(추가 하는 부분)
     //public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
+    public Dictionary<int, Data.Item> InvenDict { get; private set; } = new Dictionary<int, Data.Item>();
 
     public void Init()
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
-        //PosDict = LoadJson<Data.PosData, int, Data.Pos>("PosData").MakeDict();
+        InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
         // (추가 하는 부분)
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
@@ -71,6 +72,7 @@ public class DataManager
         
         // Map Dictionary 만듦
         MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
+
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

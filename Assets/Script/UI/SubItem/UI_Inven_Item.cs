@@ -14,7 +14,13 @@ public class UI_Inven_Item : UI_Base
         ItemNameText,
     }
 
+    // item 정보 (묶어서 정리할것)
+    int _id;
     string _name;
+    string _type;
+    string _grade;
+    int _count;
+    //
 
     Vector3 _originalPos;
     Vector3 _originalLocalPosition;
@@ -39,8 +45,8 @@ public class UI_Inven_Item : UI_Base
         Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<Text>().text = _name;
 
         // event 랑 바인딩해서 아이콘 클릭하면 로그 뜸 // ?
-        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => {  _originalPos = PointerEventData.position; Debug.Log($"아이템 클릭 : {_name}"); });
-
+        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => 
+        {  _originalPos = PointerEventData.position; Debug.Log($"아이템 이름 : {_name}, 타입 : {_type}, 등급 : {_grade}, 갯수 : {_count}"); });
         
 
         // Drag event 랑 아이콘이랑 연결하고, UI_Inven_Item 위치를 마우스 따라감 -> 빼버림
@@ -95,10 +101,16 @@ public class UI_Inven_Item : UI_Base
 
     }
 
-
-    public void SetInfo(string name)
+    public void SetInfo(int key)
     {
-        _name = name;
+        Dictionary<int, Data.Item> invenDict = Managers.Data.InvenDict;
+
+        // item 정보 저장
+        _id = invenDict[key].id;
+        _name = invenDict[key].name;
+        _type = invenDict[key].type;
+        _grade = invenDict[key].grade;
+        _count = invenDict[key].count;
     }
 
 
