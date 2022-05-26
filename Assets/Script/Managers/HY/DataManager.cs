@@ -42,7 +42,9 @@ public class DataManager
         // (추가 하는 부분)
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
-        string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
+        //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
+        string path = "Data/MapData.json";
+
         if (!File.Exists(path))
         {
             // 맵 안에 있는 오브젝트 갯수 카운트
@@ -138,11 +140,20 @@ public class DataManager
     void SaveJson(string json)
     {
         // json 파일로 저장하는 함수
-        string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
+        string path = "Assets/Resources/Data/MapData.json"; // 경로 수정 필요
 
         // 저장
         File.WriteAllText(path, json);
     }
 
-    
+    void SaveJson(string json, string path)
+    {
+        // json 파일로 저장하는 함수
+        string path1 = "Data/{path}"; // 경로 수정 필요
+
+        // 저장
+        File.WriteAllText(path1, json);
+    }
+
+
 }
