@@ -27,7 +27,6 @@ public class Player_Controller : MonoBehaviour
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
-
     void Start()
     {
         Managers.Input.MouseAction -= OnMouseClicked;
@@ -181,7 +180,7 @@ public class Player_Controller : MonoBehaviour
             {
                 if(my_enemy.Count == 0)
                     ani.SetBool("IsAttack", false);
-                    
+
                 Destroy(my_enemy[0]);
                 enemies.Remove(my_enemy[0]);
                 my_enemy.RemoveAt(0);
