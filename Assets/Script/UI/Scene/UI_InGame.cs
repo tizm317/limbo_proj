@@ -73,7 +73,27 @@ public class UI_InGame : UI_Scene
             if(!ui_Inven)
                 ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
             else
-               Managers.UI.ClosePopupUI(ui_Inven);
+            {
+                // 여기부터 이어서
+                //// 인벤토리 내용(변경사항) json 저장
+                //{
+                //    // 맵 안에 있는 오브젝트 갯수 카운트
+                //    string json = "";
+
+
+                //    // 맵 오브젝트(child) 순회
+                //    foreach (Transform child in ui_Inven.transform)
+                //    {
+                //        // MakeList() 에서 List 만들어서 반환
+                //        json = MakeList(child.gameObject, objCount);
+                //    }
+                //    // List 최종본이 json에 저장된 채로 나옴
+
+                //    // json파일 저장
+                //    SaveJson(json);
+                //}
+                Managers.UI.ClosePopupUI(ui_Inven);
+            }
         }
         else if(Input.GetKeyDown(KeyCode.M))
         {
