@@ -18823,10 +18823,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a818ec05894edd749963a632eca07ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stat: {fileID: 0}
+  stat:
+  - {fileID: 0}
   pathfinding: {fileID: 0}
   player: {fileID: 0}
-  my_enemy: {fileID: 0}
+  enemies: []
+  my_enemy:
+  - {fileID: 0}
   magicNumber: 100
 --- !u!1001 &545339921
 PrefabInstance:
