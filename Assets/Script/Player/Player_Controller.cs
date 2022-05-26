@@ -27,6 +27,7 @@ public class Player_Controller : MonoBehaviour
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
+
     void Start()
     {
         Managers.Input.MouseAction -= OnMouseClicked;
@@ -38,6 +39,7 @@ public class Player_Controller : MonoBehaviour
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
         StartCoroutine(Enemy_Check());
+
     }
 
     // Update is called once per frame
@@ -181,15 +183,20 @@ public class Player_Controller : MonoBehaviour
                 if(my_enemy.Count == 0)
                     ani.SetBool("IsAttack", false);
 
-                Destroy(my_enemy[0]);
+                Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
+                enemy_Ani.SetTrigger("isDead");
+                Destroy(my_enemy[0], 1);
+                stat.RemoveAt(0);
                 enemies.Remove(my_enemy[0]);
                 my_enemy.RemoveAt(0);
-                stat.RemoveAt(0);
+
+                ani.SetBool("IsAttack", false);
+                //isAttack = false;
             }
             yield return new WaitForSeconds(attack_delay);
         }
-        ani.SetBool("IsAttack", false);
-        isAttack = false;
+        //ani.SetBool("IsAttack", false);
+        //isAttack = false;
     }
     
     IEnumerator Dash(float x)

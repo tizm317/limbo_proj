@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController2 : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class EnemyController2 : MonoBehaviour
 
         //랜덤하게 point를 이동하도록
         nextIdx = Random.Range(1, points.Length);
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -47,18 +49,22 @@ public class EnemyController2 : MonoBehaviour
     void Update()
     {
         float dist = Vector3.Distance(tr.position, playerTr.position);  //enemy와 player와의 추적 사정  거리
+        //NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
 
         if (dist <= 1.0f)
         {
+            
             isAttack = true; //아래 추적 루틴을 건너뛰기 위하여
         }
         else if (dist <= 5.0f) //else if로 해야함! if문으로 하면 공격을 안하고 player 주위만 돔
         {
+            
             movePos = playerTr.position; //player의 위치로 이동
             isAttack = false;
         }
         else
         {
+            
             movePos = points[nextIdx].position;  // 5.0f 이상(거리가 멀리 떨어진)의 경우 다음 waypoint 위치로 이동
             isAttack = false;
         }
@@ -68,6 +74,7 @@ public class EnemyController2 : MonoBehaviour
 
         if (!isAttack) //공격하지 않을 떄
         {
+            
             Quaternion rot = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, rot, damping * Time.deltaTime);  //점진적 회전(smooth하게 회전)
             tr.Translate(Vector3.forward * Time.deltaTime * speed);  //앞으로 이동
@@ -82,8 +89,8 @@ public class EnemyController2 : MonoBehaviour
     {
         if (coll.tag == "WAY_POINT")  //Tag가 WAY_POINT인 인덱스 순으로 이동
         {
-            //nextIdx = (++nextIdx >= points.Length) ? 1 : nextIdx;
-            nextIdx = (++nextIdx >= points.Length) ? 1 : Random.Range(1, points.Length);
+            nextIdx = (++nextIdx >= points.Length) ? 1 : nextIdx;
+            //nextIdx = (++nextIdx >= points.Length) ? 1 : Random.Range(1, points.Length);
 
             //nextIdx = Random.Range(1, points.Length);
         }
