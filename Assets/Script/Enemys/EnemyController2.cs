@@ -31,7 +31,7 @@ public class EnemyController2 : MonoBehaviour
         //랜덤하게 point를 이동하도록
         nextIdx = Random.Range(1, points.Length);
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Start is called before the first frame update
@@ -40,8 +40,9 @@ public class EnemyController2 : MonoBehaviour
         tr = GetComponent<Transform>();  //enemy 위치
         playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();  //player Tag를 가진 게임오브젝트 위치
         points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();  //waypointgroup 안 (부모포함) 게임오브젝트 위치
-        anim = GetComponent<Animator>();
         GameObject _lockTarget = GameObject.FindGameObjectWithTag("Player");
+        anim = GetComponent<Animator>();
+
         init();
     }
 
@@ -53,18 +54,15 @@ public class EnemyController2 : MonoBehaviour
 
         if (dist <= 1.0f)
         {
-            
             isAttack = true; //아래 추적 루틴을 건너뛰기 위하여
         }
         else if (dist <= 5.0f) //else if로 해야함! if문으로 하면 공격을 안하고 player 주위만 돔
         {
-            
             movePos = playerTr.position; //player의 위치로 이동
             isAttack = false;
         }
         else
-        {
-            
+        { 
             movePos = points[nextIdx].position;  // 5.0f 이상(거리가 멀리 떨어진)의 경우 다음 waypoint 위치로 이동
             isAttack = false;
         }
@@ -74,7 +72,6 @@ public class EnemyController2 : MonoBehaviour
 
         if (!isAttack) //공격하지 않을 떄
         {
-            
             Quaternion rot = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, rot, damping * Time.deltaTime);  //점진적 회전(smooth하게 회전)
             tr.Translate(Vector3.forward * Time.deltaTime * speed);  //앞으로 이동
@@ -90,9 +87,7 @@ public class EnemyController2 : MonoBehaviour
         if (coll.tag == "WAY_POINT")  //Tag가 WAY_POINT인 인덱스 순으로 이동
         {
             nextIdx = (++nextIdx >= points.Length) ? 1 : nextIdx;
-            //nextIdx = (++nextIdx >= points.Length) ? 1 : Random.Range(1, points.Length);
-
-            //nextIdx = Random.Range(1, points.Length);
+            
         }
     }
     void OnHitEvent()

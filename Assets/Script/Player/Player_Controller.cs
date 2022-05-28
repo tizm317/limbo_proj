@@ -175,7 +175,6 @@ public class Player_Controller : MonoBehaviour
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy.Count != 0)
         {
-            
             stat[0].Hp = stat[0].Hp - damage;
             player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
             if(stat[0].Hp <= 0)
@@ -184,8 +183,10 @@ public class Player_Controller : MonoBehaviour
                     ani.SetBool("IsAttack", false);
 
                 Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
+
                 enemy_Ani.SetTrigger("isDead");
-                Destroy(my_enemy[0], 1);
+
+                Destroy(my_enemy[0], 2);
                 stat.RemoveAt(0);
                 enemies.Remove(my_enemy[0]);
                 my_enemy.RemoveAt(0);
