@@ -30,32 +30,40 @@ public class Player_Controller : MonoBehaviour
 
     void Start()
     {
+        Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
         player = GameObject.Find("Player");
-        //cam = Camera.main;
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
-        StartCoroutine(Enemy_Check());
-
     }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
-            StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
-        else if(my_enemy.Count != 0 && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 2)
+            StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
+        
+        else if(my_enemy.Count != 0 && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
         {
             if(!isAttack)
             {
                 StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
             }
+
         }
         else
             move(speed);
+    }
+    private void Enemy_Update()
+    {
+        enemies.Clear();
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach(GameObject i in temp)
+                if(!enemies.Contains(i))
+                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
     }
 
 
@@ -82,22 +90,6 @@ public class Player_Controller : MonoBehaviour
                 else
                 { 
                     return;
-                }
-                float[] temp = new float[enemies.Count];//적들과의 거리를 계산하기 위한 변수
-                for(int i  = 0; i < enemies.Count; i++)
-                {
-                    if(enemies[i]!=null)
-                    {
-                        temp[i] = Vector3.Distance(enemies[i].GetComponent<Transform>().position,hit.point);
-                    }
-                }
-                for(int i = 0; i < enemies.Count; i++)
-                {
-                    if(temp[i] > 0 && temp[i] < 2)
-                    {
-                        my_enemy.Add(enemies[i]);
-                        stat.Add(enemies[i].GetComponent<Stat>());
-                    }
                 }
             }
         }
@@ -131,31 +123,19 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
-    IEnumerator Enemy_Check()
+    void Get_Enemy()
     {
-        while(true)
+        Enemy_Update();
+        if(enemies.Count > 0 && my_enemy.Count == 0)//적이 다 죽은거 아니면
         {
-            GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
-            foreach(GameObject i in temp)
-                if(!enemies.Contains(i))
-                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
-            if(enemies.Count > 0)//적이 다 죽은거 아니면
+            foreach(GameObject i in enemies)
             {
-                foreach(GameObject i in enemies)
+                if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
                 {
-                    if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
-                    {
-                        if(!my_enemy.Contains(i))
-                        {
-                            my_enemy.Add(i);
-                            stat.Add(i.GetComponent<Stat>());
-                        }
-                    }
+                    Lock_On(i);
+                    break;
                 }
             }
-            if(destination.Count == 0 && my_enemy.Count > 0)
-                destination.Add(my_enemy[0].GetComponent<Transform>().position);
-            yield return new WaitForEndOfFrame();  
         }
     }
 
@@ -187,17 +167,21 @@ public class Player_Controller : MonoBehaviour
                 enemy_Ani.SetTrigger("isDead");
 
                 Destroy(my_enemy[0], 2);
-                stat.RemoveAt(0);
-                enemies.Remove(my_enemy[0]);
-                my_enemy.RemoveAt(0);
-
-                ani.SetBool("IsAttack", false);
-                //isAttack = false;
+                GameObject temp = my_enemy[0];
+                my_enemy.Clear();
+                Enemy_Update();
+                foreach(GameObject i in enemies)
+                    if(i != temp && Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                    {
+                        Lock_On(i);
+                        break;
+                    }
+       
             }
             yield return new WaitForSeconds(attack_delay);
         }
-        //ani.SetBool("IsAttack", false);
-        //isAttack = false;
+        ani.SetBool("IsAttack", false);
+        isAttack = false;
     }
     
     IEnumerator Dash(float x)
@@ -311,6 +295,7 @@ public class Player_Controller : MonoBehaviour
                 }
             }
         }
+        Get_Enemy();
     }
     #endregion
 
@@ -320,35 +305,3 @@ public class Player_Controller : MonoBehaviour
         return isObstacle;
     }
 }
-//삭제된 코드
-/*private void Mouse_Right_Click()
-{
-    RaycastHit hit;//레이케스트 선언
-    bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-    if (!raycastHit) return; // raycast 실패하면 return
-    if(hit.collider.tag == "ground")
-    {
-        Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
-        my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
-        stat = null;//저장해둔 스텟도 지워줌
-        ani.SetBool("IsAttack",false);
-    }
-    else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
-    {
-        Lock_On(hit.transform.gameObject);//타게팅용
-        Set_Destination(my_enemy.GetComponent<Transform>().position);
-    }
-    else
-        return;
-}*/
-/*void Camera_follow()
-{
-    cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-10);//이동중에는 카메라도 따라다님
-}
-void start_camera_set()
-{
-    cam = Camera.main;
-    player = GameObject.Find("Player");
-    cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-15);
-    cam.GetComponent<Transform>().rotation = Quaternion.Euler(30,0,0);
-}*/
