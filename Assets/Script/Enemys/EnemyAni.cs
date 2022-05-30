@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyAni : MonoBehaviour
 {
-    public const string MOVING = "moving";
-    public const string ATTACK = "Attack";
-    public const string DIE = "Die";
+    public const string WALK = "walk";
+    public const string ATTACK = "attack1";
+    public const string DIE = "death1";
 
     Animation anim;
 

@@ -1,18 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 public class EnemyController3 : MonoBehaviour
 {
     public enum EnemyState  //Enemy variable
     {
-        Moving,
-        Attack,
-        Die,
+        walk,
+        attack1,
+        death1,
     }
 
-    public EnemyState currentState = EnemyState.Moving;
+    public EnemyState currentState = EnemyState.walk;
 
     EnemyAni myAni;
 
@@ -32,8 +29,10 @@ public class EnemyController3 : MonoBehaviour
 
     void Init()
     {
+        // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+
 
         //랜덤하게 point를 이동하도록
         nextIdx = Random.Range(1, points.Length);
@@ -41,17 +40,19 @@ public class EnemyController3 : MonoBehaviour
     void Start()
     {
         myAni = GetComponent<EnemyAni>();
-        ChangeState(EnemyState.Moving, EnemyAni.MOVING);
+        ChangeState(EnemyState.walk, EnemyAni.WALK);
 
         GameObject _lockTarget = GameObject.FindGameObjectWithTag("Player");
 
         tr = GetComponent<Transform>();  //enemy 위치
         playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();  //player Tag를 가진 게임오브젝트 위치
         points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();  //waypointgroup 안 (부모포함) 게임오브젝트 위치
+
+        Init();
     }
     public void ChangeState(EnemyState newState, string aniName)
     {
-        if(currentState == newState)
+        if (currentState == newState)
         {
             return;
         }
@@ -68,13 +69,21 @@ public class EnemyController3 : MonoBehaviour
 
         if (dist <= 1.0f)
         {
-            ChangeState(EnemyState.Attack, EnemyAni.ATTACK);
+            ChangeState(EnemyState.attack1, EnemyAni.ATTACK);
+
+            Stat myStat = gameObject.GetComponent<Stat>();
+            if (myStat.Hp <= 0)
+            {
+                ChangeState(EnemyState.death1, EnemyAni.DIE);
+
+                Destroy(this, 1);
+            }
 
         }
         else if (dist <= 5.0f) //else if로 해야함! if문으로 하면 공격을 안하고 player 주위만 돔
         {
             movePos = playerTr.position; //player의 위치로 이동
-            ChangeState(EnemyState.Moving, EnemyAni.MOVING);
+            ChangeState(EnemyState.walk, EnemyAni.WALK);
 
             Quaternion rot = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, rot, damping * Time.deltaTime);  //점진적 회전(smooth하게 회전)
@@ -83,7 +92,7 @@ public class EnemyController3 : MonoBehaviour
         else
         {
             movePos = points[nextIdx].position;  // 5.0f 이상(거리가 멀리 떨어진)의 경우 다음 waypoint 위치로 이동
-            ChangeState(EnemyState.Moving, EnemyAni.MOVING);
+            ChangeState(EnemyState.walk, EnemyAni.WALK);
 
             Quaternion rot = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, rot, damping * Time.deltaTime);  //점진적 회전(smooth하게 회전)
@@ -115,10 +124,11 @@ public class EnemyController3 : MonoBehaviour
             {
                 float dist = (_lockTarget.transform.position - transform.position).magnitude;
                 if (dist <= 1.0f)
-                    ChangeState(EnemyState.Attack, EnemyAni.ATTACK);
+                    ChangeState(EnemyState.attack1, EnemyAni.ATTACK);
                 else
-                    ChangeState(EnemyState.Moving, EnemyAni.MOVING);
+                    ChangeState(EnemyState.walk, EnemyAni.WALK);
             }
+
         }
     }
 }
