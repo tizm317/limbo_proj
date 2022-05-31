@@ -30,6 +30,7 @@ public class Player_Controller : MonoBehaviour
 
     void Start()
     {
+        Set_BGM();
         Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
@@ -70,7 +71,6 @@ public class Player_Controller : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
-        Debug.Log(on_skill);
         if(!on_skill)
         {
             if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
@@ -158,6 +158,7 @@ public class Player_Controller : MonoBehaviour
         while(my_enemy.Count != 0)
         {
             stat[0].Hp = stat[0].Hp - damage;
+            
             player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
             if(stat[0].Hp <= 0)
             {
@@ -185,6 +186,7 @@ public class Player_Controller : MonoBehaviour
                     break;
                 }         
             }
+            Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             yield return new WaitForSeconds(attack_delay);
         }
         ani.SetBool("IsAttack", false);
@@ -197,6 +199,7 @@ public class Player_Controller : MonoBehaviour
         {
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             dash_cool = false;
+            my_enemy.Clear();
             ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
             isMove = true;
             RaycastHit hit;//레이케스트 선언
@@ -289,6 +292,7 @@ public class Player_Controller : MonoBehaviour
                     }
                 }
             }
+            Managers.Sound.Play("Sound/Footsteps - Essentials/Footsteps_Grass/Footsteps_Grass_Run/Footsteps_Grass_Run_02",Define.Sound.Effect, 1.0f, true);
         }
         else if(destination.Count == 0 && isMove == true)
         {
@@ -297,7 +301,7 @@ public class Player_Controller : MonoBehaviour
             return;
         }
         else
-            Get_Enemy();
+            Get_Enemy();//이동 안할때는 주변에 적을 탐색
     }
     #endregion
 
@@ -305,5 +309,10 @@ public class Player_Controller : MonoBehaviour
     {
         // 미니맵에서 isObstacle 값 가져오기 위한 public 함수_HY
         return isObstacle;
+    }
+
+    public void Set_BGM()
+    {
+        Managers.Sound.Play("Sound/Destructive Force (Action Cinematic Music)/Destructive Force_Looped (Cinematic Ambient Version)",Define.Sound.Bgm); 
     }
 }
