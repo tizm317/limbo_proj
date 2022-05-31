@@ -19,7 +19,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject player;
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> my_enemy = new List<GameObject>();
-    private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
+    public List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
@@ -46,12 +46,13 @@ public class Player_Controller : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         
-        else if(my_enemy.Count != 0 && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
+        else if(my_enemy.Count != 0) 
         {
-            if(!isAttack)
-            {
-                StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
-            }
+            if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
+                if(!isAttack)
+                {
+                    StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+                }
 
         }
         else
@@ -69,6 +70,7 @@ public class Player_Controller : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
+        Debug.Log(on_skill);
         if(!on_skill)
         {
             if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
@@ -168,15 +170,20 @@ public class Player_Controller : MonoBehaviour
 
                 Destroy(my_enemy[0], 2);
                 GameObject temp = my_enemy[0];
+                bool check = true;;
                 my_enemy.Clear();
                 Enemy_Update();
                 foreach(GameObject i in enemies)
                     if(i != temp && Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
                     {
                         Lock_On(i);
+                        check = false;
                         break;
                     }
-       
+                if(check)
+                {
+                    break;
+                }         
             }
             yield return new WaitForSeconds(attack_delay);
         }
@@ -200,9 +207,11 @@ public class Player_Controller : MonoBehaviour
             destination.Add(dash_dst);
             ani.SetBool("IsMove",false);
             speed = PlayerSpeed*2;
+            float deltaTime = 0.0f;
             while(true)
             {
-                if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)
+                deltaTime += Time.deltaTime;
+                if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4||deltaTime > 1f)
                 {
                     speed = PlayerSpeed;
                     on_skill  = false;
@@ -258,8 +267,7 @@ public class Player_Controller : MonoBehaviour
                 {
                     if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
                     {
-                        isMove = false;
-                        ani.SetBool("IsMove",false);
+                        destination.RemoveAt(0);
                         return;
                     }
                     else
@@ -270,22 +278,9 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4 && destination.Count != 0)//너무 가깝게 찍으면 움직일 필요 없음
                     {
-
-                        if(destination.Count == 1)
-                        {
-                            isMove = false;
-                            ani.SetBool("IsMove",false);
-                            return;
-                        }
-                        else
-                        {
-                            if(destination.Count != 1)
-                            {
-                                destination.RemoveAt(0);
-                            }
-                        }
+                        destination.RemoveAt(0);    
                     }
                     else
                     {
@@ -295,7 +290,14 @@ public class Player_Controller : MonoBehaviour
                 }
             }
         }
-        Get_Enemy();
+        else if(destination.Count == 0 && isMove == true)
+        {
+            isMove = false;
+            ani.SetBool("IsMove",false);
+            return;
+        }
+        else
+            Get_Enemy();
     }
     #endregion
 
