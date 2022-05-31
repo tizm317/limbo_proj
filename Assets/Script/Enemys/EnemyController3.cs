@@ -114,7 +114,7 @@ public class EnemyController3 : MonoBehaviour
     {
         if (_lockTarget != null)
         {
-            Debug.Log("ONHITEVENT");
+            //Debug.Log("ONHITEVENT");
             Stat targetStat = _lockTarget.GetComponent<Stat>();
             Stat myStat = gameObject.GetComponent<Stat>();
             int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
