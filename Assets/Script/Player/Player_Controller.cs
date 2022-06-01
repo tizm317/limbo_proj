@@ -40,8 +40,8 @@ public class Player_Controller : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
-        //else if(Input.GetKeyDown(KeyCode.R))
-            //StartCoroutine(Ultimate_Skill());
+        else if(Input.GetKeyDown(KeyCode.R))
+            StartCoroutine(Ultimate_Skill());
         else if(my_enemy.Count != 0) 
         {
             if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
@@ -169,7 +169,6 @@ public class Player_Controller : MonoBehaviour
     {
         Enemy_Update();
         my_enemy.Clear();
-        Debug.Log(point);
         if(enemies.Count > 0)//적이 다 죽은거 아니면
         {
             foreach(GameObject i in enemies)
@@ -284,6 +283,7 @@ public class Player_Controller : MonoBehaviour
             on_skill = true;
             RaycastHit hit;//레이케스트 선언
             bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+            Debug.Log(hit.collider.tag);
             if(hit.collider.tag == "ground")
             {
                 Vector3 dir = Vector3.Normalize(hit.point - player.GetComponent<Transform>().position);
