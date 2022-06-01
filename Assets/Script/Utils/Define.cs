@@ -18,6 +18,7 @@ public class Define
     public enum Scene
     {
         // 씬 타입 Define 에서 관리
+        // 순서 말고 type으로 받아서 상관x
         Unknown, // 디폴트
         Login,
         Lobby,

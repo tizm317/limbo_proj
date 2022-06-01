@@ -5,9 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Potal : MonoBehaviour
 {
-    // Start is called before the first frame update
     void OnCollisionEnter(Collision collision)
     {
-        SceneManager.LoadScene(2);
+        Managers.Scene.LoadScene(Define.Scene.MapTest);
     }
 }

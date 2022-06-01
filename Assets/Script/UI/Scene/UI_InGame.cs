@@ -81,6 +81,8 @@ public class UI_InGame : UI_Scene
             else
             {
                 // 인벤토리 내용(변경사항) json 저장
+                if (!ui_Inven.IsPeek())
+                    return;
                 saveInven();
                 Managers.UI.ClosePopupUI(ui_Inven);
             }
@@ -89,56 +91,71 @@ public class UI_InGame : UI_Scene
         {
             // 미니맵 UI
             // off -> 최소 -> 중간 -> 최대 -> off
+            if (miniMap && !miniMap.IsPeek()) // 미니맵은 켜져있으면서 팝업 첫번째 아니면 리턴
+                return;
 
-            switch (miniMapStep)
-            {
-                case (int)minimap.Off:
-                    if(Managers.Data.MapDict.Count == 0) // 처음에 안 생긴 경우만
-                        Managers.Data.MakeMapDict();
-                    miniMap = Managers.UI.ShowPopupUI<MiniMap>();
-                    miniMapStep = (int)minimap.Min;
-                    miniMap.SizeControl(miniMapStep);
-                    Debug.Log("Step : " + miniMapStep);
-                    break;
-                case (int)minimap.Min:
-                    miniMapStep = (int)minimap.Middle;
-                    Debug.Log("Step : " + miniMapStep);
-                    miniMap.SizeControl(miniMapStep);
-                    break;
-                case (int)minimap.Middle:
-                    miniMapStep = (int)minimap.Max;
-                    Debug.Log("Step : " + miniMapStep);
-                    miniMap.SizeControl(miniMapStep);
-                    break;
-                case (int)minimap.Max:
-                    miniMap.SizeControl(miniMapStep);
-                    Managers.UI.ClosePopupUI(miniMap);
-                    miniMapStep = (int)minimap.Off;
-                    miniMapZoom = (int)zoom.defaultZoom; // 줌도 초기화
-                    Debug.Log("Step : " + miniMapStep);
-                    break;
-            }
+            ChangeMiniMapStep();
         }
         else if(Input.GetKeyDown(KeyCode.Z))
         {
-            if (!miniMap)
+            if (!miniMap.IsPeek())
                 return;
+            changeMinimapZoom();
+        }
+    }
 
-            switch (miniMapZoom)
-            {
-                case (int)zoom.defaultZoom:
-                    miniMapZoom++;
-                    miniMap.Zoom(miniMapZoom);
-                    break;
-                case (int)zoom.secondZoom:
-                    miniMapZoom++;
-                    miniMap.Zoom(miniMapZoom);
-                    break;
-                case (int)zoom.MaxZoom:
-                    miniMapZoom = (int)zoom.defaultZoom;
-                    miniMap.Zoom(miniMapZoom);
-                    break;
-            }
+    public void ChangeMiniMapStep()
+    {
+
+        switch (miniMapStep)
+        {
+            case (int)minimap.Off:
+                if (Managers.Data.MapDict.Count == 0) // 처음에 안 생긴 경우만
+                    Managers.Data.MakeMapDict();
+                miniMap = Managers.UI.ShowPopupUI<MiniMap>();
+                miniMapStep = (int)minimap.Min;
+                miniMap.SizeControl(miniMapStep);
+                Debug.Log("Step : " + miniMapStep);
+                break;
+            case (int)minimap.Min:
+                miniMapStep = (int)minimap.Middle;
+                Debug.Log("Step : " + miniMapStep);
+                miniMap.SizeControl(miniMapStep);
+                break;
+            case (int)minimap.Middle:
+                miniMapStep = (int)minimap.Max;
+                Debug.Log("Step : " + miniMapStep);
+                miniMap.SizeControl(miniMapStep);
+                break;
+            case (int)minimap.Max:
+                //miniMap.SizeControl(miniMapStep);
+                miniMapStep = (int)minimap.Off;
+                miniMapZoom = (int)zoom.defaultZoom; // 줌도 초기화
+                Managers.UI.ClosePopupUI(miniMap);
+                Debug.Log("Step : " + miniMapStep);
+                break;
+        }
+    }
+
+    public void changeMinimapZoom()
+    {
+        if (!miniMap)
+            return;
+
+        switch (miniMapZoom)
+        {
+            case (int)zoom.defaultZoom:
+                miniMapZoom++;
+                miniMap.Zoom(miniMapZoom);
+                break;
+            case (int)zoom.secondZoom:
+                miniMapZoom++;
+                miniMap.Zoom(miniMapZoom);
+                break;
+            case (int)zoom.MaxZoom:
+                miniMapZoom = (int)zoom.defaultZoom;
+                miniMap.Zoom(miniMapZoom);
+                break;
         }
     }
 

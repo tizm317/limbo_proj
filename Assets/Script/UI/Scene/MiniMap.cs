@@ -282,7 +282,10 @@ public class MiniMap : UI_Popup
         // 0(off),1,2,3
         // UI_InGame에서 사용하기 위해 퍼블릭함수
 
-        switch(step)
+        if (!IsPeek())
+            return;
+
+        switch (step)
         {
             case 0: // off
                 // 초기화
@@ -313,6 +316,9 @@ public class MiniMap : UI_Popup
     public void Zoom(int step)
     {
         // 미니맵 줌 기능
+        if (!IsPeek())
+            return;
+
         switch (step)
         {
             case 0:  // default
@@ -329,5 +335,10 @@ public class MiniMap : UI_Popup
                 break;
 
         }
+    }
+
+    public override bool IsPeek()
+    {
+        return Managers.UI.IsPeek(this);
     }
 }

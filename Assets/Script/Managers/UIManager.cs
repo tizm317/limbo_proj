@@ -158,6 +158,17 @@ public class UIManager
         ClosePopupUI();
     }
 
+    public bool IsPeek(UI_Popup popup)
+    {
+        // 현재 맨 앞 팝업창인지 확인
+
+        bool isPeek = false;
+        if (_popupStack.Peek() == popup)
+            isPeek = true;
+
+        return isPeek;
+    }
+
     public void ClosePopupUI()
     {
         // 닫기 : 스택에서 하나씩 뺌

@@ -19,4 +19,9 @@ public class UI_Popup : UI_Base
         // UI_Popup 상속받은 애들 쉽게 Close popup 쓰도록 만든 인터페이스
         Managers.UI.ClosePopupUI(this);
     }
+
+    public virtual bool IsPeek()
+    {
+        return Managers.UI.IsPeek(this);
+    }
 }
