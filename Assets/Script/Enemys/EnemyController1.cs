@@ -33,6 +33,7 @@ public class EnemyController1 : MonoBehaviour
             switch (_state)
             {
                 case EnemyState.Die:
+                    anim.CrossFade("DIE", 0.2f);
                     break;
                 case EnemyState.Idle:
                     anim.CrossFade("WAIT", 0.2f);
@@ -42,7 +43,7 @@ public class EnemyController1 : MonoBehaviour
                     break;
                 case EnemyState.Skill:
                     anim.CrossFade("ATTACK", 0.2f, -1, 0.0f);
-                    break;
+                    break;                   
             }
         }
     }
@@ -60,8 +61,20 @@ public class EnemyController1 : MonoBehaviour
     }
     void UpdateDie()
     {
-        //Debug.Log("UpdateDie");
-        //미정
+        //Stat myStat = gameObject.GetComponent<Stat>();
+
+        /*
+        if (myStat.Hp <= 0)
+        {
+            myStat.Hp = 0;
+            State = EnemyState.Die;
+            Destroy(this, 3);
+            GetComponent <EnemyController1> ().enabled = false;
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<UI_HPBar>().enabled = false;
+        }
+        */
+
     }
     void UpdateIdle()
     {

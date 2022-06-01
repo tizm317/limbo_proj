@@ -19,7 +19,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject player;
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> my_enemy = new List<GameObject>();
-    private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
+    public List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
@@ -27,33 +27,45 @@ public class Player_Controller : MonoBehaviour
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
+
     void Start()
     {
+        Set_BGM();
+        Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
         player = GameObject.Find("Player");
-        //cam = Camera.main;
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
-        StartCoroutine(Enemy_Check());
     }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
-            StartCoroutine(Dash(5));//거리 5만큼 떨어진 곳으로 이동
-        else if(my_enemy.Count != 0 && Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 2)
+            StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
+        
+        else if(my_enemy.Count != 0) 
         {
-            if(!isAttack)
-            {
-                StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
-            }
+            if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
+                if(!isAttack)
+                {
+                    StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+                }
+
         }
         else
             move(speed);
+    }
+    private void Enemy_Update()
+    {
+        enemies.Clear();
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach(GameObject i in temp)
+                if(!enemies.Contains(i))
+                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
     }
 
 
@@ -80,22 +92,6 @@ public class Player_Controller : MonoBehaviour
                 else
                 { 
                     return;
-                }
-                float[] temp = new float[enemies.Count];//적들과의 거리를 계산하기 위한 변수
-                for(int i  = 0; i < enemies.Count; i++)
-                {
-                    if(enemies[i]!=null)
-                    {
-                        temp[i] = Vector3.Distance(enemies[i].GetComponent<Transform>().position,hit.point);
-                    }
-                }
-                for(int i = 0; i < enemies.Count; i++)
-                {
-                    if(temp[i] > 0 && temp[i] < 2)
-                    {
-                        my_enemy.Add(enemies[i]);
-                        stat.Add(enemies[i].GetComponent<Stat>());
-                    }
                 }
             }
         }
@@ -129,31 +125,19 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
-    IEnumerator Enemy_Check()
+    void Get_Enemy()
     {
-        while(true)
+        Enemy_Update();
+        if(enemies.Count > 0 && my_enemy.Count == 0)//적이 다 죽은거 아니면
         {
-            GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
-            foreach(GameObject i in temp)
-                if(!enemies.Contains(i))
-                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
-            if(enemies.Count > 0)//적이 다 죽은거 아니면
+            foreach(GameObject i in enemies)
             {
-                foreach(GameObject i in enemies)
+                if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
                 {
-                    if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
-                    {
-                        if(!my_enemy.Contains(i))
-                        {
-                            my_enemy.Add(i);
-                            stat.Add(i.GetComponent<Stat>());
-                        }
-                    }
+                    Lock_On(i);
+                    break;
                 }
             }
-            if(destination.Count == 0 && my_enemy.Count > 0)
-                destination.Add(my_enemy[0].GetComponent<Transform>().position);
-            yield return new WaitForEndOfFrame();  
         }
     }
 
@@ -173,19 +157,36 @@ public class Player_Controller : MonoBehaviour
         ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
         while(my_enemy.Count != 0)
         {
-            
             stat[0].Hp = stat[0].Hp - damage;
+            
             player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
             if(stat[0].Hp <= 0)
             {
                 if(my_enemy.Count == 0)
                     ani.SetBool("IsAttack", false);
 
-                Destroy(my_enemy[0]);
-                enemies.Remove(my_enemy[0]);
-                my_enemy.RemoveAt(0);
-                stat.RemoveAt(0);
+                Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
+
+                enemy_Ani.SetTrigger("isDead");
+
+                Destroy(my_enemy[0], 2);
+                GameObject temp = my_enemy[0];
+                bool check = true;;
+                my_enemy.Clear();
+                Enemy_Update();
+                foreach(GameObject i in enemies)
+                    if(i != temp && Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                    {
+                        Lock_On(i);
+                        check = false;
+                        break;
+                    }
+                if(check)
+                {
+                    break;
+                }         
             }
+            Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             yield return new WaitForSeconds(attack_delay);
         }
         ani.SetBool("IsAttack", false);
@@ -198,6 +199,7 @@ public class Player_Controller : MonoBehaviour
         {
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             dash_cool = false;
+            my_enemy.Clear();
             ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
             isMove = true;
             RaycastHit hit;//레이케스트 선언
@@ -208,9 +210,11 @@ public class Player_Controller : MonoBehaviour
             destination.Add(dash_dst);
             ani.SetBool("IsMove",false);
             speed = PlayerSpeed*2;
+            float deltaTime = 0.0f;
             while(true)
             {
-                if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)
+                deltaTime += Time.deltaTime;
+                if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4||deltaTime > 1f)
                 {
                     speed = PlayerSpeed;
                     on_skill  = false;
@@ -266,8 +270,7 @@ public class Player_Controller : MonoBehaviour
                 {
                     if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
                     {
-                        isMove = false;
-                        ani.SetBool("IsMove",false);
+                        destination.RemoveAt(0);
                         return;
                     }
                     else
@@ -278,22 +281,9 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4 && destination.Count != 0)//너무 가깝게 찍으면 움직일 필요 없음
                     {
-
-                        if(destination.Count == 1)
-                        {
-                            isMove = false;
-                            ani.SetBool("IsMove",false);
-                            return;
-                        }
-                        else
-                        {
-                            if(destination.Count != 1)
-                            {
-                                destination.RemoveAt(0);
-                            }
-                        }
+                        destination.RemoveAt(0);    
                     }
                     else
                     {
@@ -302,7 +292,16 @@ public class Player_Controller : MonoBehaviour
                     }
                 }
             }
+            Managers.Sound.Play("Sound/Footsteps - Essentials/Footsteps_Grass/Footsteps_Grass_Run/Footsteps_Grass_Run_02",Define.Sound.Effect, 1.0f, true);
         }
+        else if(destination.Count == 0 && isMove == true)
+        {
+            isMove = false;
+            ani.SetBool("IsMove",false);
+            return;
+        }
+        else
+            Get_Enemy();//이동 안할때는 주변에 적을 탐색
     }
     #endregion
 
@@ -311,36 +310,9 @@ public class Player_Controller : MonoBehaviour
         // 미니맵에서 isObstacle 값 가져오기 위한 public 함수_HY
         return isObstacle;
     }
-}
-//삭제된 코드
-/*private void Mouse_Right_Click()
-{
-    RaycastHit hit;//레이케스트 선언
-    bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-    if (!raycastHit) return; // raycast 실패하면 return
-    if(hit.collider.tag == "ground")
+
+    public void Set_BGM()
     {
-        Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
-        my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
-        stat = null;//저장해둔 스텟도 지워줌
-        ani.SetBool("IsAttack",false);
+        Managers.Sound.Play("Sound/Destructive Force (Action Cinematic Music)/Destructive Force_Looped (Cinematic Ambient Version)",Define.Sound.Bgm); 
     }
-    else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
-    {
-        Lock_On(hit.transform.gameObject);//타게팅용
-        Set_Destination(my_enemy.GetComponent<Transform>().position);
-    }
-    else
-        return;
-}*/
-/*void Camera_follow()
-{
-    cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-10);//이동중에는 카메라도 따라다님
 }
-void start_camera_set()
-{
-    cam = Camera.main;
-    player = GameObject.Find("Player");
-    cam.GetComponent<Transform>().position = player.GetComponent<Transform>().position + new Vector3(0,5,-15);
-    cam.GetComponent<Transform>().rotation = Quaternion.Euler(30,0,0);
-}*/
