@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MiniMap : UI_Popup
 {
@@ -27,6 +28,15 @@ public class MiniMap : UI_Popup
         MapImage,
         PlayerImage,
         DestinationImage,
+        BorderImage,
+        ZoomIn,
+        ZoomOut,
+        
+    }
+    enum Buttons
+    {
+        ZoomInButton,
+        ZoomOutButton,
     }
 
     [SerializeField] Transform player;
@@ -35,7 +45,10 @@ public class MiniMap : UI_Popup
     Player_Controller player_Controller;
     public GameObject Scene;
     public RectTransform mapImage;
+    public RectTransform boarderImage;
     public RectTransform mask;
+
+    UI_InGame uI_InGame;
 
     Dictionary<int, Data.Map> dict_map;
 
@@ -77,11 +90,19 @@ public class MiniMap : UI_Popup
         // 플레이어 위치(파란색), 목적지(빨간색) 표시
 
         Vector3 playerPos = player.position;
-       
+
+        // 미니맵 플레이어, 도착지 이미지 방향
+        RotationControl(playerImage);
+        if (destinationImage)
+            RotationControl(destinationImage);
+
         // 플레이어
         playerPos.y = player.position.z;
         playerPos.z = 0;
         //playerImage.localPosition = playerPos;
+
+        
+
         switch (curZoom)
         {
             case zoom.DefaultZoom:
@@ -165,7 +186,17 @@ public class MiniMap : UI_Popup
 
         base.Init();
 
+        // 버튼 관련해서 추가
+        uI_InGame = GameObject.Find("UI_InGame").GetComponent<UI_InGame>();
+
+
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Button>(typeof(Buttons));
+
+
+        // zoom 관련 버튼 이벤트랑 묶기
+        GetButton((int)Buttons.ZoomInButton).gameObject.BindEvent(OnZoomInButtonClicked);
+        GetButton((int)Buttons.ZoomOutButton).gameObject.BindEvent(OnZoomOutButtonClicked);
 
         player = GameObject.Find("Player").transform;
 
@@ -293,20 +324,25 @@ public class MiniMap : UI_Popup
                 Zoom(0);
                 //mapImage.localScale = new Vector3(1, 1, 0);
                 mask.localScale = new Vector3(1, 1, 0);
+                boarderImage.localScale = new Vector3(1, 1, 0);
+
                 break;
             case 1: // defaultSize
                 curSize = size.DefaultSize;
                 mask.localScale = new Vector3(1, 1, 0);
+                boarderImage.localScale = new Vector3(1, 1, 0);
                 //mapImage.localScale = new Vector3(1, 1, 0);
                 break;
             case 2: // middleSize
                 curSize = size.MiddleSize;
                 mask.localScale = new Vector3(2, 2, 0);
+                boarderImage.localScale = new Vector3(2, 2, 0);
                 //mapImage.localScale = new Vector3(2, 2, 0);
                 break;
             case 3: // MaxSize
                 curSize = size.MaxSize;
                 mask.localScale = new Vector3(3, 3, 0);
+                boarderImage.localScale = new Vector3(3, 3, 0);
                 //mapImage.localScale = new Vector3(3, 3, 0);
                 break;
         }
@@ -340,5 +376,25 @@ public class MiniMap : UI_Popup
     public override bool IsPeek()
     {
         return Managers.UI.IsPeek(this);
+    }
+
+    // +, - 버튼으로 zoom 조절
+    public void OnZoomInButtonClicked(PointerEventData data)
+    {
+        int zoomStep = uI_InGame.changeZoomStep(true);
+        Zoom(zoomStep);
+    }
+
+    public void OnZoomOutButtonClicked(PointerEventData data)
+    {
+        int zoomStep = uI_InGame.changeZoomStep(false);
+        Zoom(zoomStep);
+    }
+
+    void RotationControl(RectTransform image)
+    {
+        Vector3 compassRotation = image.transform.eulerAngles;
+        compassRotation.z = player.eulerAngles.y;
+        image.transform.eulerAngles = compassRotation * -1;
     }
 }

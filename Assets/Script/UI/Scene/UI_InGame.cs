@@ -177,4 +177,21 @@ public class UI_InGame : UI_Scene
         // List 최종본이 json에 저장된 채로 나옴
         Managers.Data.SaveJson(json, "InvenData.json");
     }
+
+    public int changeZoomStep(bool IsZoomIn)
+    {
+        if(IsZoomIn)
+        {
+            ++miniMapZoom;
+            miniMapZoom %= 3; // 범위 : 2 위로 넘어가는 거 방지
+        }
+        else // zoom out
+        {
+            // 범위 : 0 밑으로 내려가는 거 방지
+            miniMapZoom += 3;
+            --miniMapZoom;
+            miniMapZoom %= 3;
+        }
+        return miniMapZoom;
+    }
 }
