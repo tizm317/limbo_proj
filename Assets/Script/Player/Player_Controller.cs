@@ -24,13 +24,14 @@ public class Player_Controller : MonoBehaviour
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
-    private bool dash_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
+    private bool dash_cool = true, Ult_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
 
     void Start()
     {
+        
         Init();
     }
 
@@ -39,8 +40,8 @@ public class Player_Controller : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
-        else if(Input.GetKeyDown(KeyCode.R))
-            StartCoroutine(Ultimate_Skill());
+        //else if(Input.GetKeyDown(KeyCode.R))
+            //StartCoroutine(Ultimate_Skill());
         else if(my_enemy.Count != 0) 
         {
             if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
@@ -109,17 +110,25 @@ public class Player_Controller : MonoBehaviour
     #region 스킬
     IEnumerator SkillCool(string skill, float cool_time)//스킬의 이름을 string으로 입력하고 쿨타임 지정해주면 됨
     {
+        Image img;
+        img = GameObject.Find(skill).GetComponent<Image>();
+        float max = cool_time;
         switch(skill)
         {
             case "Dash":
+                
                 dash_cool = false;
+                break;
+            case "Ultimate_Skill":
+                Ult_cool = false;
                 break;
             default:
                 break;
         }
 
         while(cool_time > 0)
-        {
+        {   
+            img.fillAmount = (max - cool_time)/max;
             cool_time -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -128,6 +137,9 @@ public class Player_Controller : MonoBehaviour
         {
             case "Dash":
                 dash_cool = true;
+                break;
+            case "Ultimate_Skill":
+                Ult_cool = true;
                 break;
             default:
                 break;
@@ -189,6 +201,8 @@ public class Player_Controller : MonoBehaviour
             ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
             while(my_enemy.Count != 0)
             {
+                if(on_skill)
+                    break;
                 stat[0].Hp = stat[0].Hp - damage;
                 
                 player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
@@ -234,7 +248,7 @@ public class Player_Controller : MonoBehaviour
             dash_cool = false;
             my_enemy.Clear();
             if(isMove)
-                ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
+                ani.CrossFade("Dash",0.5f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
             else
                 ani.CrossFade("Dash",0.3f);
             isMove = true;
@@ -265,39 +279,46 @@ public class Player_Controller : MonoBehaviour
 
     IEnumerator Ultimate_Skill()
     {
-        on_skill = true;
-        RaycastHit hit;//레이케스트 선언
-        bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-        Vector3 dir = Vector3.Normalize(hit.point - player.GetComponent<Transform>().position);
-        Set_Destination(hit.point);
-        
-        while(true)
+        if(Ult_cool)
         {
-            if(Vector3.Distance(player.GetComponent<Transform>().position,hit.point) < 0.5)
+            on_skill = true;
+            RaycastHit hit;//레이케스트 선언
+            bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+            if(hit.collider.tag == "ground")
             {
-                Get_Enemy(player.GetComponent<Transform>().position,5);
-                if(isMove)
-                    ani.CrossFade("Ult_Attack",0.3f);
-                else
-                    ani.CrossFade("Ult_Attack",0.0f);
-                break;
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        yield return new WaitForSeconds(2.4f);
-        foreach(GameObject a in my_enemy_for_skill)
-        {
-            a.GetComponent<Stat>().Hp -= 50;
-            if(a.GetComponent<Stat>().Hp <= 0)
-            {
-                Animator enemy_Ani = a.GetComponent<Animator>();
-                enemy_Ani.SetTrigger("isDead");
-                Destroy(a, 2);
-            }
+                Vector3 dir = Vector3.Normalize(hit.point - player.GetComponent<Transform>().position);
+                Set_Destination(hit.point);
                 
+                while(true)
+                {
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,hit.point) < 0.4)
+                    {
+                        Get_Enemy(player.GetComponent<Transform>().position,5);
+                        if(isMove)
+                            ani.CrossFade("Ult_Attack",0.5f);
+                        else
+                            ani.CrossFade("Ult_Attack",0.3f);
+                        break;
+                    }
+                    yield return new WaitForEndOfFrame();
+                }
+                yield return new WaitForSeconds(1.5f);
+                foreach(GameObject a in my_enemy_for_skill)
+                {
+                    a.GetComponent<Stat>().Hp -= 50;
+                    if(a.GetComponent<Stat>().Hp <= 0)
+                    {
+                        Animator enemy_Ani = a.GetComponent<Animator>();
+                        enemy_Ani.SetTrigger("isDead");
+                        Destroy(a, 2);
+                    }
+                        
+                }
+                my_enemy_for_skill.Clear();
+                StartCoroutine(SkillCool("Ultimate_Skill",5.0f));
+            }
+            on_skill = false;
         }
-        my_enemy_for_skill.Clear();
-        on_skill = false;
     }
     #endregion
 
