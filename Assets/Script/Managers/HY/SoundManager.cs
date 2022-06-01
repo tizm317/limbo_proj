@@ -13,15 +13,22 @@ public class SoundManager
 
     AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount]; // BGM, SFX 2����
 
+
     // �����Ŭ�� ��ųʸ� - ĳ�� ���� : ȿ������ �Ź� ���ҽ��Ŵ��� �̿��ؼ� ã�ƿ��� �ʹ� ����
     // SoundManager ������ -> ��� �߰��� �Ǵٰ� �޸� ������ ����
     // Ŭ�����ϴ� �͵� �Ű� �����
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
+    AudioMixer audioMixer;
+
     public void Init()
     {
         // AudioSource �� ������Ʈ -> ����� new �� �� ����
         // �� ������Ʈ(@Sound) ���� ��, �ű⿡ AudioSource ������Ʈ�� ���̴� �ʱ�ȭ �Լ�
+
+        // 오디오 믹서
+        // 호영 : null 레퍼런스 오류 떠서 찾아서 넣어줌
+        audioMixer = Managers.Resource.Load<AudioMixer>("Master");
 
         GameObject sound = GameObject.Find("@Sound"); // Sound�� Root ������Ʈ
         if (sound == null)
@@ -42,8 +49,14 @@ public class SoundManager
             // Bgm loop ����
             _audioSources[(int)Define.Sound.Bgm].loop = true;
             _audioSources[(int)Define.Sound.Effect].loop = false;//영찬
-            _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup.name = "BGM";//영찬
-            _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup.name = "SFX";//영찬
+            
+            // 호영 : null 레퍼런스 오류 떠서 찾아서 넣어줌
+            AudioMixerGroup[] audioMixerGroups = audioMixer.FindMatchingGroups("Master");
+            _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = audioMixerGroups[1];
+            _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = audioMixerGroups[2];
+
+            //_audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup.name = "BGM";//영찬
+            //_audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup.name = "SFX";//영찬
         }
     }
 
