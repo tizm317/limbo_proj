@@ -12,7 +12,6 @@ public class EnemyController1 : MonoBehaviour
         Moving,
         Skill,
         Die,
-        
     }
     [SerializeField] Vector3 _destPos;  //타켓 위치
     [SerializeField] EnemyState _state = EnemyState.Idle;  //상태 초기값 = wait(idle)
@@ -43,7 +42,7 @@ public class EnemyController1 : MonoBehaviour
                     break;
                 case EnemyState.Skill:
                     anim.CrossFade("ATTACK", 0.2f, -1, 0.0f);
-                    break;                   
+                    break;
             }
         }
     }
@@ -61,19 +60,9 @@ public class EnemyController1 : MonoBehaviour
     }
     void UpdateDie()
     {
-        //Stat myStat = gameObject.GetComponent<Stat>();
-
-        /*
-        if (myStat.Hp <= 0)
-        {
-            myStat.Hp = 0;
+        PlayerStat targetStat = _lockTarget.GetComponent<PlayerStat>();
+        if (targetStat.Hp <= 0)
             State = EnemyState.Die;
-            Destroy(this, 3);
-            GetComponent <EnemyController1> ().enabled = false;
-            GetComponent<CapsuleCollider>().enabled = false;
-            GetComponent<UI_HPBar>().enabled = false;
-        }
-        */
 
     }
     void UpdateIdle()
@@ -127,7 +116,6 @@ public class EnemyController1 : MonoBehaviour
         }
         
     }
-
     void UpdateSkill()
     {
         if (_lockTarget != null)
@@ -142,7 +130,7 @@ public class EnemyController1 : MonoBehaviour
         //체력
         if (_lockTarget != null)
         {
-            Stat targetStat = _lockTarget.GetComponent<Stat>();
+            PlayerStat targetStat = _lockTarget.GetComponent<PlayerStat>();
             Stat myStat = gameObject.GetComponent<Stat>();
             int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
             targetStat.Hp -= damage;
@@ -166,7 +154,6 @@ public class EnemyController1 : MonoBehaviour
             State = EnemyState.Idle;
         }
     }
-    
 
     void Update()
     {
@@ -183,7 +170,7 @@ public class EnemyController1 : MonoBehaviour
                 break;
             case EnemyState.Die:
                 UpdateDie();
-                break;
+                break;  
         }
     }
 }

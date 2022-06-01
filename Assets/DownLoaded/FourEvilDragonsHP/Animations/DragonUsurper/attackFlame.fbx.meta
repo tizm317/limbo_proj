@@ -794,19 +794,10 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.048245613
-        functionName: FreezeDragon
+      - time: 0.56650245
+        functionName: OnHitEvent
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 806143b70b38dd34ca683b3e0993ab4d,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 1
-        functionName: UnFreezeDragon
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 806143b70b38dd34ca683b3e0993ab4d,
-          type: 3}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
