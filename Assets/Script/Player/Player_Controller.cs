@@ -30,15 +30,7 @@ public class Player_Controller : MonoBehaviour
 
     void Start()
     {
-        Set_BGM();
-        Enemy_Update();
-        Managers.Input.MouseAction -= OnMouseClicked;
-        Managers.Input.MouseAction += OnMouseClicked;
-        player = GameObject.Find("Player");
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        ani = player.GetComponent<Animator>();
-        my_stat = player.GetComponent<PlayerStat>();
-        pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
+        Init();
     }
 
     // Update is called once per frame
@@ -59,6 +51,20 @@ public class Player_Controller : MonoBehaviour
         else
             move(speed);
     }
+
+    public void Init()
+    {
+        Set_BGM();
+        Enemy_Update();
+        Managers.Input.MouseAction -= OnMouseClicked;
+        Managers.Input.MouseAction += OnMouseClicked;
+        player = GameObject.Find("Player");
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        ani = player.GetComponent<Animator>();
+        my_stat = player.GetComponent<PlayerStat>();
+        pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
+    }
+
     private void Enemy_Update()
     {
         enemies.Clear();
@@ -76,6 +82,7 @@ public class Player_Controller : MonoBehaviour
             if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
             {
                 RaycastHit hit;//레이케스트 선언
+                if (!cam) return; // 호영 : 씬 전환 시 missing 레퍼 오류로 인해 없을 때 return 시킴
                 bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
                 if (!raycastHit) return; // raycast 실패하면 return
                 if(hit.collider.tag == "ground")

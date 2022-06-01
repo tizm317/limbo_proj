@@ -33,7 +33,7 @@ public class MiniMap : UI_Popup
     public RectTransform playerImage;
     public RectTransform destinationImage;
     Player_Controller player_Controller;
-    public GameObject inputManager;
+    public GameObject Scene;
     public RectTransform mapImage;
     public RectTransform mask;
 
@@ -98,25 +98,33 @@ public class MiniMap : UI_Popup
                 break;
         }
 
-        Vector3 destination = player_Controller.Get_Destination();
-        if (destination.y != player_Controller.magicNumber)
+        if (player_Controller.Get_Destination() != null)
         {
+            // null 레퍼 오류로 인해 감싸줌
 
-            float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
+            Vector3 destination =  player_Controller.Get_Destination();
 
-            // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
-            // 일정 거리 이내면 목적지 표시 x
-            if (dist < 1.0f)
-                destinationImage.gameObject.SetActive(false);
-            else
-                destinationImage.gameObject.SetActive(true);
+            if (destination.y != player_Controller.magicNumber)
+            {
 
-            // 목적지
-            destination.y = destination.z;
-            destination.z = 0;
-            destinationImage.localPosition = destination;
+                float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
 
+                // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
+                // 일정 거리 이내면 목적지 표시 x
+                if (dist < 1.0f)
+                    destinationImage.gameObject.SetActive(false);
+                else
+                    destinationImage.gameObject.SetActive(true);
+
+                // 목적지
+                destination.y = destination.z;
+                destination.z = 0;
+                destinationImage.localPosition = destination;
+
+            }
         }
+
+        
 
         // 플레이어 원점으로 두고 나머지 이동하도록 수정
         // 플레이어 반대방향으로 지도 반대로 이동(고정된 물체 한번에 같이 이동시키기 위해서)
@@ -163,8 +171,9 @@ public class MiniMap : UI_Popup
 
         //InputManager = Managers._Input;
 
-        inputManager = GameObject.Find("InputManager");
-        player_Controller = inputManager.GetComponent<Player_Controller>();
+        Scene = GameObject.Find("@Scene");
+
+        player_Controller = Scene.GetComponent<Player_Controller>();
 
         //GameObject playerImage = Get<GameObject>((int)GameObjects.PlayerImage);
 
