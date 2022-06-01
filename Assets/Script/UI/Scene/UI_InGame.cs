@@ -43,6 +43,12 @@ public class UI_InGame : UI_Scene
         Managers.Input.KeyAction += ControlPopUpUI;
     }
 
+    private void OnApplicationQuit()
+    {
+        // 꺼질 때에도 저장해야 함
+        saveInven();
+    }
+
     UI_Inven ui_Inven;
     MiniMap miniMap;
 
@@ -74,24 +80,8 @@ public class UI_InGame : UI_Scene
                 ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
             else
             {
-                // 여기부터 이어서
-                //// 인벤토리 내용(변경사항) json 저장
-                //{
-                //    // 맵 안에 있는 오브젝트 갯수 카운트
-                //    string json = "";
-
-
-                //    // 맵 오브젝트(child) 순회
-                //    foreach (Transform child in ui_Inven.transform)
-                //    {
-                //        // MakeList() 에서 List 만들어서 반환
-                //        json = MakeList(child.gameObject, objCount);
-                //    }
-                //    // List 최종본이 json에 저장된 채로 나옴
-
-                //    // json파일 저장
-                //    SaveJson(json);
-                //}
+                // 인벤토리 내용(변경사항) json 저장
+                saveInven();
                 Managers.UI.ClosePopupUI(ui_Inven);
             }
         }
@@ -103,6 +93,8 @@ public class UI_InGame : UI_Scene
             switch (miniMapStep)
             {
                 case (int)minimap.Off:
+                    if(Managers.Data.MapDict.Count == 0) // 처음에 안 생긴 경우만
+                        Managers.Data.MakeMapDict();
                     miniMap = Managers.UI.ShowPopupUI<MiniMap>();
                     miniMapStep = (int)minimap.Min;
                     miniMap.SizeControl(miniMapStep);
@@ -148,5 +140,24 @@ public class UI_InGame : UI_Scene
                     break;
             }
         }
+    }
+
+    public void saveInven()
+    {
+        // dictionary 변경 있으면 json 저장
+        //state machine 써야하나..?
+
+        Managers.Data.resetSaveData2(); // json에 덮여쓰이는거 막기 위함
+
+        Dictionary<int, Data.Item> invenDict = Managers.Data.InvenDict;
+        string json = "";
+
+        for (int key = 0; key < invenDict.Count; key++)
+        {
+            // MakeList() 에서 List 만들어서 반환
+            json = Managers.Data.MakeListInDict(invenDict[key]);
+        }
+        // List 최종본이 json에 저장된 채로 나옴
+        Managers.Data.SaveJson(json, "InvenData.json");
     }
 }

@@ -15,11 +15,11 @@ public class UI_Inven_Item : UI_Base
     }
 
     // item 정보 (묶어서 정리할것)
-    int _id;
-    string _name;
-    string _type;
-    string _grade;
-    int _count;
+    public int _id;
+    public string _name;
+    public string _type;
+    public string _grade;
+    public int _count;
     //
 
     Vector3 _originalPos;
@@ -27,6 +27,7 @@ public class UI_Inven_Item : UI_Base
 
     GameObject gridPanel;
 
+    //Dictionary<int, Data.Item> invenDict = Managers.Data.InvenDict;
 
     /*void Start()
     {
@@ -45,8 +46,8 @@ public class UI_Inven_Item : UI_Base
         Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<Text>().text = _name;
 
         // event 랑 바인딩해서 아이콘 클릭하면 로그 뜸 // ?
-        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => 
-        {  _originalPos = PointerEventData.position; Debug.Log($"아이템 이름 : {_name}, 타입 : {_type}, 등급 : {_grade}, 갯수 : {_count}"); });
+        //Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => 
+        //{  _originalPos = PointerEventData.position; Debug.Log($"아이템 이름 : {_name}, 타입 : {_type}, 등급 : {_grade}, 갯수 : {_count}"); });
         
 
         // Drag event 랑 아이콘이랑 연결하고, UI_Inven_Item 위치를 마우스 따라감 -> 빼버림
@@ -87,8 +88,22 @@ public class UI_Inven_Item : UI_Base
                         disX = Mathf.Abs(data.position.x - gridPanel.transform.position.x); disY = Mathf.Abs(data.position.y - gridPanel.transform.position.y);
                         if (disX > rectTransform.rect.width / 2 || disY > rectTransform.rect.height / 2)//(Mathf.Abs(gameObject.GetComponent<RectTransform>().localPosition.x - _originalLocalPosition.x) > 100)
                         {
-                            Managers.Resource.Destroy(gameObject); // pool로 반환
+                            // count 갯수 줄이기
+                            if (_count > 1)
+                            {
+                                _count--;
+                                changeCount(_id);
+                                //invenDict[_id].count = _count;
+                            }
+                            else
+                            {
+                                _count--;
+                                changeCount(_id);
+                                //invenDict[_id].count = _count;
+                                Managers.Resource.Destroy(gameObject); // pool로 반환
+                            }
                         }
+                        Debug.Log($"아이템 이름 : {_name}, 타입 : {_type}, 등급 : {_grade}, 갯수 : {_count}");
                         //Debug.Log("Delete"); 
                         //else
                         //gameObject.GetComponent<RectTransform>().localPosition = _originalLocalPosition; 
@@ -113,6 +128,24 @@ public class UI_Inven_Item : UI_Base
         _count = invenDict[key].count;
     }
 
+    public void changeCount(int id)
+    {
+        Dictionary<int, Data.Item> invenDict = Managers.Data.InvenDict;
+
+        invenDict[id].count = _count;
+
+        if (invenDict[id].count == 0)
+        {
+            for(int i = id; i < invenDict.Count -1; i++)
+            {
+                invenDict.Remove(i);
+                invenDict.Add(i, invenDict[i + 1]);
+                invenDict[i].id = i; // id 수정
+            }
+            invenDict.Remove(invenDict.Count - 1); // 마지막꺼 지우기
+        }
+
+    }
 
     //public void SetPos(Vector3 InitPos)
     //{

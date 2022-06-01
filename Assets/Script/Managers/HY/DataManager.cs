@@ -55,12 +55,26 @@ public class DataManager
             // 맵 오브젝트 담긴 부모 오브젝트
             GameObject prop = GameObject.Find("prop");
 
+
             // 맵 오브젝트(child) 순회
             foreach (Transform child in prop.transform)
             {
                 // Layer 가 Building 아니면 continue (나중에 조건 바뀔 수 있음 - 중요 건물만 한다던가)
                 if (child.gameObject.layer != (int)Define.Layer.Building)
                     continue;
+
+                // dictionary에 바로 넣기
+                {
+                    Data.Map obj = new Data.Map();
+
+                    obj.code = objCount;
+                    obj.name = child.name;
+                    obj.x = child.position.x;
+                    obj.y = child.position.y;
+                    obj.z = child.position.z;
+
+                    MapDict.Add(objCount, obj);
+                }
 
                 // MakeList() 에서 List 만들어서 반환
                 json = MakeList(child.gameObject, objCount);
@@ -70,23 +84,33 @@ public class DataManager
 
             // json파일 저장
             SaveJson(json);
-        }
-        
-        // Map Dictionary 만듦
-        MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
 
+            // 미니맵 킬 때, Map Dictionary 만들어줌
+            // UI_InGame에서 MakeMapDict() 호출
+        }
+        else
+        {
+            // Map Dictionary 만듦
+            MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
+        }
+
+    }
+
+    public void MakeMapDict()
+    {
+        // 처음에 json 파일이 없어서 save 하고 바로 load 못해서 미니맵 킬 때 load하도록
+        MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
     {
         // json 파일 읽어오는 함수
         // 추가할 때 따로 건들 필요 없음
-        
+
         // 파일 포맷 맞춰야 함 : json vs xml
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
 
-        //Debug.Log("dd");
-        
+
         // 유니티 json 파싱 제공
         // FromJson : json -> class로 <-> ToJson
         return JsonUtility.FromJson<Loader>(textAsset.text);
@@ -111,8 +135,21 @@ public class DataManager
     }
     SaveData saveData = new SaveData();
 
+    public class SaveData2
+    {
+        // List 만들기 위해서
+        public List<itemContainer> items = new List<itemContainer>();
+    }
+
+    SaveData2 saveData2 = new SaveData2();
+    public void resetSaveData2()
+    {
+        // 새로 덮어쓰기위해서?
+        saveData2.items.Clear();
+    }
+
     // 리스트 만드는 부분(MakeList)이랑 저장하는 부분(SaveJson) 나눔
-    string MakeList(GameObject obj, int count)
+    public string MakeList(GameObject obj, int count)
     {
         // 리스트 만드는 함수
 
@@ -137,7 +174,44 @@ public class DataManager
         return json;
     }
 
-    void SaveJson(string json)
+    // 임시로.. 아이템용
+    [System.Serializable]
+    public class itemContainer
+    {
+        public int id = 0;
+        public string name;
+        public string type;
+        public string grade;
+        public int count;
+    }
+
+    public string MakeListInDict(Data.Item item)
+    {
+        // 리스트 만드는 함수
+
+        // 오브젝트 정보 담을 컨테이너
+        itemContainer MyItemContainer = new itemContainer();
+
+        // 정보 넣어주고
+        MyItemContainer.id = item.id;
+        MyItemContainer.name = item.name;
+        MyItemContainer.type = item.type;
+        MyItemContainer.grade = item.grade;
+        MyItemContainer.count = item.count;
+
+        // List 에 add
+        saveData2.items.Add(MyItemContainer); 
+
+        // List를 json으로
+        // List 계속 새로 덮이는데
+        // 결국 마지막꺼로 덮여서 저장됨 (최종본으로..)
+        string json = JsonUtility.ToJson(saveData2, true);
+        
+        return json;
+    }
+
+
+    public void SaveJson(string json)
     {
         // json 파일로 저장하는 함수
         string path = "Assets/Resources/Data/MapData.json"; // 경로 수정 필요
@@ -146,10 +220,10 @@ public class DataManager
         File.WriteAllText(path, json);
     }
 
-    void SaveJson(string json, string path)
+    public void SaveJson(string json, string path)
     {
         // json 파일로 저장하는 함수
-        string path1 = "Data/{path}"; // 경로 수정 필요
+        string path1 = $"Assets/Resources/Data/{path}"; // 경로 수정 필요
 
         // 저장
         File.WriteAllText(path1, json);

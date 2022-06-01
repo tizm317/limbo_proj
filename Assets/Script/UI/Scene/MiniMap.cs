@@ -51,6 +51,21 @@ public class MiniMap : UI_Popup
 
     //bool draw;
 
+    enum size
+    {
+        DefaultSize,
+        MiddleSize,
+        MaxSize,
+    }
+    enum zoom
+    {
+        DefaultZoom,
+        MiddleZoom,
+        MaxZoom,
+    }
+
+    size curSize;
+    zoom curZoom;
 
     void Start()
     {
@@ -66,7 +81,22 @@ public class MiniMap : UI_Popup
         // 플레이어
         playerPos.y = player.position.z;
         playerPos.z = 0;
-        playerImage.localPosition = playerPos;
+        //playerImage.localPosition = playerPos;
+        switch (curZoom)
+        {
+            case zoom.DefaultZoom:
+                playerImage.localPosition = playerPos;
+                mapImage.localPosition = playerPos * -1;
+                break;
+            case zoom.MiddleZoom:
+                 playerImage.localPosition = playerPos;
+                mapImage.localPosition = playerPos * -2;
+                break;
+            case zoom.MaxZoom:
+                playerImage.localPosition = playerPos;
+                mapImage.localPosition = playerPos * -3;
+                break;
+        }
 
         Vector3 destination = player_Controller.Get_Destination();
         if (destination.y != player_Controller.magicNumber)
@@ -90,7 +120,7 @@ public class MiniMap : UI_Popup
 
         // 플레이어 원점으로 두고 나머지 이동하도록 수정
         // 플레이어 반대방향으로 지도 반대로 이동(고정된 물체 한번에 같이 이동시키기 위해서)
-        mapImage.localPosition = playerPos * -1;
+        //mapImage.localPosition = playerPos * -1;
 
         // path 정보
         // 노드 연결해서 가는 길 표시?
@@ -124,6 +154,7 @@ public class MiniMap : UI_Popup
 
     public override void Init()
     {
+
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
@@ -150,12 +181,36 @@ public class MiniMap : UI_Popup
         {
             if (data.pointerId != -1) return;
             //destinationImage.transform.localPosition = new Vector3(data.position.x - 784.375f, data.position.y - 316.25f, 0); // 이거 수정하자
-            destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0);
+
+            switch (curSize)
+            {
+                case size.DefaultSize:
+                    destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0);
+                    break;
+                case size.MiddleSize:
+                    destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0) / 2;
+                    break;
+                case size.MaxSize:
+                    destinationImage.transform.localPosition = new Vector3(data.position.x  - playerImage.position.x, data.position.y - playerImage.position.y, 0) / 3;
+                    break;
+            }
+            switch (curZoom)
+            {
+                case zoom.DefaultZoom:
+                    break;
+                case zoom.MiddleZoom:
+                    destinationImage.transform.localPosition /= 2;
+                    break;
+                case zoom.MaxZoom:
+                    destinationImage.transform.localPosition /= 3;
+                    break;
+            }
 
             // 수정 -> 덜덜거림
             temp.x = destinationImage.transform.localPosition.x + player.transform.position.x;
             temp.z = destinationImage.transform.localPosition.y + player.transform.position.z;
             temp.y = 1;
+
             player_Controller.Set_Destination(temp);
         }, Define.UIEvent.Click);
 
@@ -167,6 +222,7 @@ public class MiniMap : UI_Popup
             if(child.GetComponent<UI_Minimap_ObjImg>() == true)
                 Managers.Resource.Destroy(child.gameObject);
         }
+
 
         // 맵 데이터
         // static object data
@@ -221,19 +277,23 @@ public class MiniMap : UI_Popup
         {
             case 0: // off
                 // 초기화
+                curSize = size.DefaultSize;
                 Zoom(0);
                 //mapImage.localScale = new Vector3(1, 1, 0);
                 mask.localScale = new Vector3(1, 1, 0);
                 break;
             case 1: // defaultSize
+                curSize = size.DefaultSize;
                 mask.localScale = new Vector3(1, 1, 0);
                 //mapImage.localScale = new Vector3(1, 1, 0);
                 break;
             case 2: // middleSize
+                curSize = size.MiddleSize;
                 mask.localScale = new Vector3(2, 2, 0);
                 //mapImage.localScale = new Vector3(2, 2, 0);
                 break;
             case 3: // MaxSize
+                curSize = size.MaxSize;
                 mask.localScale = new Vector3(3, 3, 0);
                 //mapImage.localScale = new Vector3(3, 3, 0);
                 break;
@@ -247,15 +307,18 @@ public class MiniMap : UI_Popup
         switch (step)
         {
             case 0:  // default
+                curZoom = zoom.DefaultZoom;
                 mapImage.localScale = new Vector3(1, 1, 0);
                 break;
             case 1:  // second
+                curZoom = zoom.MiddleZoom;
                 mapImage.localScale = new Vector3(2, 2, 0);
                 break;
             case 2: // max
+                curZoom = zoom.MaxZoom;
                 mapImage.localScale = new Vector3(3, 3, 0);
                 break;
-        
+
         }
     }
 }
