@@ -54,9 +54,6 @@ public class SoundManager
             AudioMixerGroup[] audioMixerGroups = audioMixer.FindMatchingGroups("Master");
             _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = audioMixerGroups[1];
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = audioMixerGroups[2];
-
-            //_audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup.name = "BGM";//영찬
-            //_audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup.name = "SFX";//영찬
         }
     }
 

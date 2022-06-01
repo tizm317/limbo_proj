@@ -8,7 +8,7 @@ public class Setting : MonoBehaviour
     public Slider[] AudioSlide;
     public Toggle[] Toggle;
     private float[] temp = new float[10];
-    private Light light;
+    private new Light light;
     public AudioMixer master;
     public Slider BrightSlide;
     // Start is called before the first frame update

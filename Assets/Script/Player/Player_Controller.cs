@@ -270,7 +270,7 @@ public class Player_Controller : MonoBehaviour
     {
         if(destination.Count > 0)
         {
-            dir = new Vector3(destination[0].x - player.GetComponent<Transform>().position.x,0,destination[0].z - player.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
+            dir = new Vector3(destination[0].x - player.GetComponent<Transform>().position.x, 0f,destination[0].z - player.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
             if(isMove)//움직여도 되는가?
             {
                 if(!isObstacle)//장애물이 없다면
