@@ -36,6 +36,8 @@ public class DataManager
 
     public void Init()
     {
+        
+
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
@@ -43,7 +45,12 @@ public class DataManager
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
         //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
-        string path = "Data/MapData.json";
+
+        // 밑에는 인게임씬 맵데이터
+        if (Managers.Scene.CurrentScene.SceneType != Define.Scene.InGame)
+            return;
+
+        string path = "Data/MapData.json"; // InGame 씬 맵 데이터 정보
 
         if (!File.Exists(path))
         {

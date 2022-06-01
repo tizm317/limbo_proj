@@ -23,6 +23,7 @@ public class UI_Login : UI_Scene
 
     enum Images
     {
+        BackGroundImage
     }
 
     private void Start()
@@ -36,6 +37,7 @@ public class UI_Login : UI_Scene
 
         Bind<Button>(typeof(Buttons)); // Buttons 의 enum 타입을 넘기겠다 는 의미
         Bind<Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
 
         GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
     }

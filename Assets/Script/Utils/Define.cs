@@ -22,6 +22,7 @@ public class Define
         Login,
         Lobby,
         InGame,
+        MapTest,
     }
 
     public enum Sound
