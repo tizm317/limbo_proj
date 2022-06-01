@@ -38,7 +38,8 @@ public class Player_Controller : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
-        
+        else if(Input.GetKeyDown(KeyCode.R))
+            StartCoroutine(Dash(6));
         else if(my_enemy.Count != 0) 
         {
             if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
@@ -207,7 +208,10 @@ public class Player_Controller : MonoBehaviour
             on_skill = true;//스킬을 사용중에는 새로운 목적지를 설정할 수 없도록 설정
             dash_cool = false;
             my_enemy.Clear();
-            ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
+            if(isMove)
+                ani.CrossFade("Dash",1f);//"Dash"모션을 스테이트 머신이 아닌 크로스페이드로 지정해주고, 스테이트 머신으로 애니메이션 종료 후 IDle 혹은 Move로 이동하도록 구현
+            else
+                ani.CrossFade("Dash",0.3f);
             isMove = true;
             RaycastHit hit;//레이케스트 선언
             Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//스크린상에서 마우스 포인터의 위치
