@@ -19,6 +19,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject player;
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> my_enemy = new List<GameObject>();
+    public List<GameObject> my_enemy_for_skill = new List<GameObject>();
     public List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private float speed = PlayerSpeed;//플레이어의 이동속도
@@ -39,7 +40,7 @@ public class Player_Controller : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         else if(Input.GetKeyDown(KeyCode.R))
-            StartCoroutine(Dash(6));
+            StartCoroutine(Ultimate_Skill());
         else if(my_enemy.Count != 0) 
         {
             if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
@@ -135,18 +136,39 @@ public class Player_Controller : MonoBehaviour
 
     void Get_Enemy()
     {
-        Enemy_Update();
-        if(enemies.Count > 0 && my_enemy.Count == 0)//적이 다 죽은거 아니면
+        if(!on_skill)
         {
-            foreach(GameObject i in enemies)
+            Enemy_Update();
+            if(enemies.Count > 0 && my_enemy.Count == 0)//적이 다 죽은거 아니면
             {
-                if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                foreach(GameObject i in enemies)
                 {
-                    Lock_On(i);
-                    break;
+                    if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                    {
+                        Lock_On(i);
+                        break;
+                    }
                 }
             }
         }
+    }
+
+    void Get_Enemy(Vector3 point, float distance)
+    {
+        Enemy_Update();
+        my_enemy.Clear();
+        Debug.Log(point);
+        if(enemies.Count > 0)//적이 다 죽은거 아니면
+        {
+            foreach(GameObject i in enemies)
+            {
+                if(Vector3.Distance(i.GetComponent<Transform>().position,point) < distance)
+                {
+                    my_enemy_for_skill.Add(i);
+                }
+            }
+        }
+        
     }
 
     private void Lock_On(GameObject enemy)
@@ -158,47 +180,50 @@ public class Player_Controller : MonoBehaviour
     }
     IEnumerator Attack(int damage,float attack_delay)
     {
-        isAttack = true;
-        isMove = false;
-        ani.SetBool("IsAttack", true);
-        ani.SetBool("IsMove",false);
-        ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
-        while(my_enemy.Count != 0)
+        if(!on_skill)
         {
-            stat[0].Hp = stat[0].Hp - damage;
-            
-            player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
-            if(stat[0].Hp <= 0)
+            isAttack = true;
+            isMove = false;
+            ani.SetBool("IsAttack", true);
+            ani.SetBool("IsMove",false);
+            ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
+            while(my_enemy.Count != 0)
             {
-                if(my_enemy.Count == 0)
-                    ani.SetBool("IsAttack", false);
-
-                Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
-
-                enemy_Ani.SetTrigger("isDead");
-
-                Destroy(my_enemy[0], 2);
-                GameObject temp = my_enemy[0];
-                bool check = true;;
-                my_enemy.Clear();
-                Enemy_Update();
-                foreach(GameObject i in enemies)
-                    if(i != temp && Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
-                    {
-                        Lock_On(i);
-                        check = false;
-                        break;
-                    }
-                if(check)
+                stat[0].Hp = stat[0].Hp - damage;
+                
+                player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
+                if(stat[0].Hp <= 0)
                 {
-                    break;
-                }         
+                    if(my_enemy.Count == 0)
+                        ani.SetBool("IsAttack", false);
+
+                    Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
+
+                    enemy_Ani.SetTrigger("isDead");
+
+                    Destroy(my_enemy[0], 2);
+                    GameObject temp = my_enemy[0];
+                    bool check = true;;
+                    my_enemy.Clear();
+                    Enemy_Update();
+                    foreach(GameObject i in enemies)
+                        if(i != temp && Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                        {
+                            Lock_On(i);
+                            check = false;
+                            break;
+                        }
+                    if(check)
+                    {
+                        break;
+                    }         
+                }
+                Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
+                yield return new WaitForSeconds(attack_delay);
             }
-            Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
-            yield return new WaitForSeconds(attack_delay);
+            ani.SetBool("IsAttack", false);
+            isAttack = false;
         }
-        ani.SetBool("IsAttack", false);
-        isAttack = false;
     }
     
     IEnumerator Dash(float x)
@@ -236,6 +261,43 @@ public class Player_Controller : MonoBehaviour
             }
             StartCoroutine(SkillCool("Dash",1.0f));
         }   
+    }
+
+    IEnumerator Ultimate_Skill()
+    {
+        on_skill = true;
+        RaycastHit hit;//레이케스트 선언
+        bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
+        Vector3 dir = Vector3.Normalize(hit.point - player.GetComponent<Transform>().position);
+        Set_Destination(hit.point);
+        
+        while(true)
+        {
+            if(Vector3.Distance(player.GetComponent<Transform>().position,hit.point) < 0.5)
+            {
+                Get_Enemy(player.GetComponent<Transform>().position,5);
+                if(isMove)
+                    ani.CrossFade("Ult_Attack",0.3f);
+                else
+                    ani.CrossFade("Ult_Attack",0.0f);
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForSeconds(2.4f);
+        foreach(GameObject a in my_enemy_for_skill)
+        {
+            a.GetComponent<Stat>().Hp -= 50;
+            if(a.GetComponent<Stat>().Hp <= 0)
+            {
+                Animator enemy_Ani = a.GetComponent<Animator>();
+                enemy_Ani.SetTrigger("isDead");
+                Destroy(a, 2);
+            }
+                
+        }
+        my_enemy_for_skill.Clear();
+        on_skill = false;
     }
     #endregion
 
