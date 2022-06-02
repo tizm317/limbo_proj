@@ -30,4 +30,11 @@ public class PlayerStat : Stat
     {
         HP_bar.fillAmount = _hp/100.0f;
     }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "Potal")
+            Managers.Scene.LoadScene(Define.Scene.MapTest);
+    }
 }

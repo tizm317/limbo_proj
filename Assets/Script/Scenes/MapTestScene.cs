@@ -29,6 +29,9 @@ public class MapTestScene : BaseScene
         gameObject.GetOrAddComponent<Setting>();
         gameObject.GetOrAddComponent<Player_Controller>();
 
+        //
+        Managers.Data.MapDict.Clear();
+        Managers.Data.MapTestSceneMapDataLoad();
     }
     public override void Clear()
     {

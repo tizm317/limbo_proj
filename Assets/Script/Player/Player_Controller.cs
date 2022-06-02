@@ -28,17 +28,32 @@ public class Player_Controller : MonoBehaviour
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
+    public GameObject potal;
 
     void Start()
     {
         
         Init();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        // 충돌 감지 안돼서 임시로 추가
+        if(Managers.Scene.CurrentScene.SceneType == Define.Scene.InGame)
+        {
+            if(!potal)
+                potal = GameObject.Find("Potal").gameObject;
+
+        float dist = Vector3.Distance(player.transform.position, potal.transform.position);
+            if (dist < 3.0)
+                Managers.Scene.LoadScene(Define.Scene.MapTest);
+            //
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         else if(Input.GetKeyDown(KeyCode.R))
             StartCoroutine(Ultimate_Skill());

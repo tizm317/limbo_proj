@@ -98,9 +98,8 @@ public class DataManager
                 MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
             }
         }
-        
 
-        
+
 
     }
 
