@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerStat : Stat
 {
 
@@ -11,7 +11,7 @@ public class PlayerStat : Stat
 
     public int Exp { get { return _exp; } set { _exp = value; } }
     public int Gold { get { return _gold; } set { _gold = value; } }
-
+    private Image HP_bar;
     private void Start()
     {
         _level = 1;
@@ -23,5 +23,11 @@ public class PlayerStat : Stat
         _turnSpeed = 20.0f;
         _exp = 0;
         _gold = 0;
+        HP_bar = GameObject.Find("Filler").GetComponent<Image>();
+    }
+
+    void Update()
+    {
+        HP_bar.fillAmount = _hp/100.0f;
     }
 }
