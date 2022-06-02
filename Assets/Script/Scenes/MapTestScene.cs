@@ -28,6 +28,7 @@ public class MapTestScene : BaseScene
         // @Scene으로 옮김
         gameObject.GetOrAddComponent<Setting>();
         gameObject.GetOrAddComponent<Player_Controller>();
+
     }
     public override void Clear()
     {

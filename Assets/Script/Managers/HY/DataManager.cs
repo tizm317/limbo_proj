@@ -36,8 +36,6 @@ public class DataManager
 
     public void Init()
     {
-        
-
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
@@ -47,60 +45,121 @@ public class DataManager
         //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
 
         // 밑에는 인게임씬 맵데이터
-        if (Managers.Scene.CurrentScene.SceneType != Define.Scene.InGame)
-            return;
-
-        string path = "Data/MapData.json"; // InGame 씬 맵 데이터 정보
-
-        if (!File.Exists(path))
+        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.InGame)
         {
-            // 맵 안에 있는 오브젝트 갯수 카운트
-            int objCount = 0;
+            string path = "Data/MapData.json"; // InGame 씬 맵 데이터 정보
 
-            string json = "";
-
-            // 맵 오브젝트 담긴 부모 오브젝트
-            GameObject prop = GameObject.Find("prop");
-
-
-            // 맵 오브젝트(child) 순회
-            foreach (Transform child in prop.transform)
+            if (!File.Exists(path))
             {
-                // Layer 가 Building 아니면 continue (나중에 조건 바뀔 수 있음 - 중요 건물만 한다던가)
-                if (child.gameObject.layer != (int)Define.Layer.Building)
-                    continue;
+                // 맵 안에 있는 오브젝트 갯수 카운트
+                int objCount = 0;
 
-                // dictionary에 바로 넣기
+                string json = "";
+
+                // 맵 오브젝트 담긴 부모 오브젝트
+                GameObject prop = GameObject.Find("prop");
+
+
+                // 맵 오브젝트(child) 순회
+                foreach (Transform child in prop.transform)
                 {
-                    Data.Map obj = new Data.Map();
+                    // Layer 가 Building 아니면 continue (나중에 조건 바뀔 수 있음 - 중요 건물만 한다던가)
+                    if (child.gameObject.layer != (int)Define.Layer.Building)
+                        continue;
 
-                    obj.code = objCount;
-                    obj.name = child.name;
-                    obj.x = child.position.x;
-                    obj.y = child.position.y;
-                    obj.z = child.position.z;
+                    // dictionary에 바로 넣기
+                    {
+                        Data.Map obj = new Data.Map();
 
-                    MapDict.Add(objCount, obj);
+                        obj.code = objCount;
+                        obj.name = child.name;
+                        obj.x = child.position.x;
+                        obj.y = child.position.y;
+                        obj.z = child.position.z;
+
+                        MapDict.Add(objCount, obj);
+                    }
+
+                    // MakeList() 에서 List 만들어서 반환
+                    json = MakeList(child.gameObject, objCount);
+                    objCount++;
                 }
+                // List 최종본이 json에 저장된 채로 나옴
 
-                // MakeList() 에서 List 만들어서 반환
-                json = MakeList(child.gameObject, objCount);
-                objCount++;
+                // json파일 저장
+                SaveJson(json, "MapData.json");
+
+                // 미니맵 킬 때, Map Dictionary 만들어줌
+                // UI_InGame에서 MakeMapDict() 호출
             }
-            // List 최종본이 json에 저장된 채로 나옴
-
-            // json파일 저장
-            SaveJson(json);
-
-            // 미니맵 킬 때, Map Dictionary 만들어줌
-            // UI_InGame에서 MakeMapDict() 호출
+            else
+            {
+                // Map Dictionary 만듦
+                MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
+            }
         }
-        else
+        
+
+        
+
+    }
+
+    public void MapTestSceneMapDataLoad()
+    {
+        ///// ...?
+        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.MapTest)
         {
-            // Map Dictionary 만듦
-            MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
-        }
+            string path = "Data/MapData2.json"; // InGame 씬 맵 데이터 정보
 
+            if (!File.Exists(path))
+            {
+                // 맵 안에 있는 오브젝트 갯수 카운트
+                int objCount = 0;
+
+                string json = "";
+
+                // 맵 오브젝트 담긴 부모 오브젝트
+                GameObject prop = GameObject.Find("prop");
+
+
+                // 맵 오브젝트(child) 순회
+                foreach (Transform child in prop.transform)
+                {
+                    // Layer 가 Building 아니면 continue (나중에 조건 바뀔 수 있음 - 중요 건물만 한다던가)
+                    if (child.gameObject.layer != (int)Define.Layer.Building)
+                        continue;
+
+                    // dictionary에 바로 넣기
+                    {
+                        Data.Map obj = new Data.Map();
+
+                        obj.code = objCount;
+                        obj.name = child.name;
+                        obj.x = child.position.x;
+                        obj.y = child.position.y;
+                        obj.z = child.position.z;
+
+                        MapDict.Add(objCount, obj);
+                    }
+
+                    // MakeList() 에서 List 만들어서 반환
+                    json = MakeList(child.gameObject, objCount);
+                    objCount++;
+                }
+                // List 최종본이 json에 저장된 채로 나옴
+
+                // json파일 저장
+                SaveJson(json, "MapData2.json");
+
+                // 미니맵 킬 때, Map Dictionary 만들어줌
+                // UI_InGame에서 MakeMapDict() 호출
+            }
+            else
+            {
+                // Map Dictionary 만듦
+                MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData2").MakeDict();
+            }
+        }
     }
 
     public void MakeMapDict()

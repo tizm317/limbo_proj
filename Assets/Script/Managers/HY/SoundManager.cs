@@ -54,6 +54,9 @@ public class SoundManager
             AudioMixerGroup[] audioMixerGroups = audioMixer.FindMatchingGroups("Master");
             _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = audioMixerGroups[1];
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = audioMixerGroups[2];
+
+            //
+            Set_BGM();
         }
     }
 
@@ -159,5 +162,10 @@ public class SoundManager
             Debug.Log($"AudioClip missing : {path}");
 
         return audioClip;
+    }
+
+    public void Set_BGM()
+    {
+        Managers.Sound.Play("Sound/Destructive Force (Action Cinematic Music)/Destructive Force_Looped (Cinematic Ambient Version)", Define.Sound.Bgm);
     }
 }
