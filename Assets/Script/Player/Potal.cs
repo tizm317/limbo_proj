@@ -8,5 +8,6 @@ public class Potal : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         Managers.Scene.LoadScene(Define.Scene.MapTest);
+        Debug.Log("test");
     }
 }
