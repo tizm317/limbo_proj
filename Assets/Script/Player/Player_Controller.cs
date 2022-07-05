@@ -147,6 +147,8 @@ public class Player_Controller : MonoBehaviour
             cool_time -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        if(cool_time < 0)
+            img.fillAmount = 1;
         
         switch(skill)
         {

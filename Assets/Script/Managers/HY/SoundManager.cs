@@ -28,7 +28,7 @@ public class SoundManager
 
         // 오디오 믹서
         // 호영 : null 레퍼런스 오류 떠서 찾아서 넣어줌
-        audioMixer = Managers.Resource.Load<AudioMixer>("Master");
+        audioMixer = Managers.Resource.Load<AudioMixer>("Sound/Master");
 
         GameObject sound = GameObject.Find("@Sound"); // Sound�� Root ������Ʈ
         if (sound == null)
