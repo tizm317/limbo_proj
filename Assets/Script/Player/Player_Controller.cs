@@ -48,7 +48,7 @@ public class Player_Controller : MonoBehaviour
 
         float dist = Vector3.Distance(player.transform.position, potal.transform.position);
             if (dist < 3.0)
-                Managers.Scene.LoadScene(Define.Scene.MapTest);
+                Managers.Scene.LoadScene(Define.Scene.Village);
             //
         }
 

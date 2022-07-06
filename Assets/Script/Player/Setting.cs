@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-public class Setting : MonoBehaviour
+public class Setting : UI_Popup
 {
     public Slider[] AudioSlide;
     public Toggle[] Toggle;

@@ -106,7 +106,7 @@ public class DataManager
     public void MapTestSceneMapDataLoad()
     {
         ///// ...?
-        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.MapTest)
+        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.Village)
         {
             string path = "Data/MapData2.json"; // InGame æ¿ ∏  µ•¿Ã≈Õ ¡§∫∏
 

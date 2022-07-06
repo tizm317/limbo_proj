@@ -35,6 +35,6 @@ public class PlayerStat : Stat
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "Potal")
-            Managers.Scene.LoadScene(Define.Scene.MapTest);
+            Managers.Scene.LoadScene(Define.Scene.Village);
     }
 }

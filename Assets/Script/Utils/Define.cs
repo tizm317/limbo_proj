@@ -23,7 +23,7 @@ public class Define
         Login,
         Lobby,
         InGame,
-        MapTest,
+        Village,
     }
 
     public enum Sound

@@ -51,6 +51,7 @@ public class UI_InGame : UI_Scene
 
     UI_Inven ui_Inven;
     MiniMap miniMap;
+    Setting setting;
 
     int miniMapStep = (int)minimap.Off;
     enum minimap
@@ -101,6 +102,18 @@ public class UI_InGame : UI_Scene
             if (!miniMap.IsPeek())
                 return;
             changeMinimapZoom();
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!setting)
+                setting = Managers.UI.ShowPopupUI<Setting>();
+            else
+            {
+                // 인벤토리 내용(변경사항) json 저장
+                if (!setting.IsPeek())
+                    return;
+                Managers.UI.ClosePopupUI(setting);
+            }
         }
     }
 
