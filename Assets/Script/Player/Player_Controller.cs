@@ -31,6 +31,7 @@ public class Player_Controller : MonoBehaviour
     public GameObject potal;
 
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
+    private UI_Dialogue ui_Dialogue;
 
     void Start()
     {
@@ -130,6 +131,8 @@ public class Player_Controller : MonoBehaviour
                     if (dist < audibleDistance)
                     {
                         // 대화 시스템
+                        if (!ui_Dialogue)
+                            ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
                     }
                     else // 이동 후 대화 UI창 팝업
                         Set_Destination(hit.collider.transform.position);
