@@ -30,6 +30,8 @@ public class Player_Controller : MonoBehaviour
     private Animator ani;
     public GameObject potal;
 
+    private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
+
     void Start()
     {
         
@@ -113,6 +115,24 @@ public class Player_Controller : MonoBehaviour
                 {
                     Lock_On(hit.transform.gameObject);//타게팅용
                     Set_Destination(my_enemy[0].GetComponent<Transform>().position);
+                }
+                else if (hit.collider.tag == "NPC")
+                {
+                    my_enemy.Clear();
+                    stat.Clear();
+
+                    // NPC 와의 거리 체크
+                    float dist = Vector3.Distance(player.transform.position, hit.collider.transform.position);
+                    //Debug.Log(dist);
+                    //print(hit.collider.tag);
+
+                    // audibleDistance 보다 작으면 이동 안하고 바로 대화 UI창 팝업
+                    if (dist < audibleDistance)
+                    {
+                        // 대화 시스템
+                    }
+                    else // 이동 후 대화 UI창 팝업
+                        Set_Destination(hit.collider.transform.position);
                 }
                 else
                 { 

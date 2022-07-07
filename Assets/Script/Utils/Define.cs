@@ -13,6 +13,7 @@ public class Define
         Ground,
         Block,
         Building,
+        NPC,
     }
 
     public enum Scene

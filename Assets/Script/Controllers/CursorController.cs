@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class CursorController : MonoBehaviour
 {
-    int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster);
+    int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster) | (1 << (int)Define.Layer.NPC);
 
     Texture2D _attackIcon;
     Texture2D _handIcon;
     Texture2D _removeIcon;
+    Texture2D _basicIcon;
 
 
     enum CursorType
@@ -17,6 +18,7 @@ public class CursorController : MonoBehaviour
         Attack,
         Hand,
         Remove,
+        Basic,
     }
 
     CursorType _cursorType = CursorType.None;
@@ -26,6 +28,7 @@ public class CursorController : MonoBehaviour
         _attackIcon = Managers.Resource.Load<Texture2D>("Textures/Cursors/Attack");
         _handIcon = Managers.Resource.Load<Texture2D>("Textures/Cursors/Hand");
         _removeIcon = Managers.Resource.Load<Texture2D>("Textures/Cursors/Remove");
+        _basicIcon = Managers.Resource.Load<Texture2D>("Textures/Cursors/Basic");
     }
 
     void Update()
@@ -63,12 +66,20 @@ public class CursorController : MonoBehaviour
                     _cursorType = CursorType.Attack;
                 }
             }
+            else if(hit.collider.gameObject.layer == (int)Define.Layer.NPC)
+            {
+                if (_cursorType != CursorType.Hand) 
+                {
+                    Cursor.SetCursor(_handIcon, new Vector2(_handIcon.width / 3, 0), CursorMode.Auto);
+                    _cursorType = CursorType.Hand;
+                }
+            }
             else
             {
-                if (_cursorType != CursorType.Hand)
+                if (_cursorType != CursorType.Basic)
                 {
-                    Cursor.SetCursor(_handIcon, new Vector2(_handIcon.width / 3, 0), CursorMode.Auto); // 3번째 인자 : Auto(하드웨어 최적화) / ForceSoftware(SW적으로 그리는작업)
-                    _cursorType = CursorType.Hand;
+                    Cursor.SetCursor(_basicIcon, new Vector2(_basicIcon.width / 3, 0), CursorMode.Auto); // 3번째 인자 : Auto(하드웨어 최적화) / ForceSoftware(SW적으로 그리는작업)
+                    _cursorType = CursorType.Basic;
 
                 }
             }
