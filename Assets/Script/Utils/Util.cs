@@ -8,7 +8,7 @@ public class Util
 
     public static T GetOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
     {
-        // 컴포넌트를 있으면 추가, 없으면 생성하는 기능
+        // 컴포넌트를 있으면 get, 없으면 생성 후 get 기능
 
         T component = go.GetComponent<T>();
 
@@ -38,8 +38,8 @@ public class Util
     {
         // FindChild - (컴포넌트로 찾는 버전)
 
-        // 하는 일 : 최상위부모 밑 오브젝트들 중에서 T 가진 오브젝트 찾는 기능
-        // 입력 : 최상위부모 , 이름 , 재귀적으로 찾을지(자식들까지)
+        // 하는 일 : 최상위부모 밑 오브젝트들 중에서 T(컴포넌트) 가진 오브젝트 찾는 기능
+        // 입력 : 최상위부모 , 이름 , 재귀적으로 찾을지(자식의 자식들까지)
         // T : 찾고 싶은 컴포넌트 / 제한사항 : 유니티 오브젝트만
         // 이름 입력 안하면 T 타입 찾으면 반환
 

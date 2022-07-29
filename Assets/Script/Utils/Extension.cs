@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public static class Extension
 {
-    // 유니티에서 제공되는 클래스에 함수 추가하는 기능 : ExtensionMethod
+    // 유니티에서 제공되는 클래스에 '사용자 정의 함수' 추가하는 기능 : ExtensionMethod
     // static class
     // Extension 해줄 함수 추가
 

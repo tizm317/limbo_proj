@@ -71,4 +71,9 @@ public class UI_Dialogue : UI_Popup
     {
         Managers.UI.ClosePopupUI(this);
     }
+
+    public override bool IsPeek()
+    {
+        return Managers.UI.IsPeek(this);
+    }
 }

@@ -26,9 +26,6 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
         if (OnClickHandler != null)
             OnClickHandler.Invoke(eventData); // 구독 신청한 애들한테 전파
     }
-
-
-
     public void OnDrag(PointerEventData eventData)
     {
         //transform.position = eventData.position;

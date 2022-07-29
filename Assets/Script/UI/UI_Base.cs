@@ -38,7 +38,7 @@ public abstract class UI_Base : MonoBehaviour
         // 1. C# 기능으로 이름 변환 enum -> string 변환
         string[] names = Enum.GetNames(type); 
 
-        // 2. 개수만큼 리스트 생성
+        // 2. 개수만큼 오브젝트 리스트 생성
         UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
         
         // 3. 타입별로 리스트를 딕셔너리에 넣기
