@@ -44,9 +44,10 @@ public class UI_Inven : UI_Popup
 
         // 드래그 event 추가
         //GetObject((int)GameObjects.GridPanel).gameObject.BindEvent(OnMouseDrag, Define.UIEvent.Drag);
-        GameObject go = GetObject((int)GameObjects.GridPanel).gameObject;
-        BindEvent(go, (PointerEventData data) => { if (data.pointerId != -1) return;
-            go.transform.position = data.position; panel.transform.position = data.position; }, Define.UIEvent.Drag);
+        //GameObject go = GetObject((int)GameObjects.GridPanel).gameObject; // gridPanel 하고 겹쳐서 빼버림
+        // pointerId : 0, -1, -2, -3 (터치, 좌클, 우클, 휠클릭)
+        BindEvent(gridPanel, (PointerEventData data) => { if (data.pointerId != -1) return;
+            gridPanel.transform.position = data.position; panel.transform.position = data.position; }, Define.UIEvent.Drag);
 
         invenDict = Managers.Data.InvenDict;
 

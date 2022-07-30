@@ -6,15 +6,19 @@ using UnityEngine.UI;
 
 public class UI_Login : UI_Scene
 {
+    // 로그인 씬 용 UI
+
     enum Buttons
     {
-        PointButton,
+        StartButton,
+        EndButton,
     }
 
     enum Texts
     {
         TitleText,
-        PointText,
+        StartText,
+        EndText,
     }
 
     enum GameObjects
@@ -35,16 +39,22 @@ public class UI_Login : UI_Scene
     {
         base.Init();
 
-        Bind<Button>(typeof(Buttons)); // Buttons 의 enum 타입을 넘기겠다 는 의미
+        Bind<Button>(typeof(Buttons)); 
         Bind<Text>(typeof(Texts));
         Bind<Image>(typeof(Images));
 
-        GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
+        GetButton((int)Buttons.StartButton).gameObject.BindEvent(StartButtonClicked);
+        GetButton((int)Buttons.EndButton).gameObject.BindEvent(EndButtonClicked);
+
     }
 
 
-    public void OnButtonClicked(PointerEventData data)
+    private void StartButtonClicked(PointerEventData data)
     {
         Managers.Scene.LoadScene(Define.Scene.InGame);
+    }
+    private void EndButtonClicked(PointerEventData data)
+    {
+        Util.Quit();
     }
 }

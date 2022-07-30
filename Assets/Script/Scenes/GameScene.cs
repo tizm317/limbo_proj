@@ -102,7 +102,7 @@ public class GameScene : BaseScene
         // 커서컨트롤러 @Scene
         gameObject.GetOrAddComponent<CursorController>();
         // @Scene으로 옮김
-        gameObject.GetOrAddComponent<Setting>();
+        //gameObject.GetOrAddComponent<UI_Setting>();
         gameObject.GetOrAddComponent<Player_Controller>();
     }
 

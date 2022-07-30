@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UI_InGame : UI_Scene
 {
+    // 수정(추가)해야 함
+
     enum Buttons
     {
         //PointButton,
@@ -51,7 +53,7 @@ public class UI_InGame : UI_Scene
 
     UI_Inven ui_Inven;
     MiniMap miniMap;
-    Setting setting;
+    UI_Setting setting;
 
     int miniMapStep = (int)minimap.Off;
     enum minimap
@@ -106,7 +108,7 @@ public class UI_InGame : UI_Scene
         else if(Input.GetKeyDown(KeyCode.Escape))
         {
             if (!setting)
-                setting = Managers.UI.ShowPopupUI<Setting>();
+                setting = Managers.UI.ShowPopupUI<UI_Setting>();
             else
             {
                 // 인벤토리 내용(변경사항) json 저장
