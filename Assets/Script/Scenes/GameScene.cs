@@ -62,7 +62,6 @@ public class GameScene : BaseScene
     protected override void Init()
     {
         // 초기화
-        
         base.Init();
 
         // 씬타입 설정
@@ -73,6 +72,8 @@ public class GameScene : BaseScene
         //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
+        // InGame Scene BGM 설정
+        Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
         // 풀매니저 테스트
         //for (int i = 0; i < 5; i++)
@@ -140,6 +141,7 @@ public class GameScene : BaseScene
     public override void Clear()
     {
         // 이 씬이 종료될 때 날려줘야 하는 부분 넣어줘야 함
+        Debug.Log("InGameScene Clear");
     }
 
 

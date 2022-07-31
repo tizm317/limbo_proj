@@ -7,6 +7,10 @@ public class LoginScene : BaseScene
 {
     // ·Î±×ÀÎ ¾À
     // @Scene
+    void Awake()
+    {
+        Init();
+    }
 
     protected override void Init()
     {
@@ -16,6 +20,9 @@ public class LoginScene : BaseScene
 
         // ¾À UI
         Managers.UI.ShowSceneUI<UI_Login>("UI_Login");
+
+        // Login Scene BGM
+        Managers.Sound.Play("Sound/BGM/BGM_Ambient_Version", Define.Sound.Bgm);
 
         //List<GameObject> list = new List<GameObject>();
 

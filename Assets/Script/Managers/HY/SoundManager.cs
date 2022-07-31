@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+
 public class SoundManager
 {
     // ���� �Ŵ���
@@ -55,8 +57,8 @@ public class SoundManager
             _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = audioMixerGroups[1];
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = audioMixerGroups[2];
 
-            //
-            Set_BGM();
+            // (호영) -> 각 씬 클래스 Init 함수에서 BGM 설정
+            //Set_BGM();
         }
     }
 
@@ -164,8 +166,71 @@ public class SoundManager
         return audioClip;
     }
 
-    public void Set_BGM()
+
+
+    // 사운드 조절
+    public float GetVolume(string soundType)
     {
-        Managers.Sound.Play("Sound/Destructive Force (Action Cinematic Music)/Destructive Force_Looped (Cinematic Ambient Version)", Define.Sound.Bgm);
+        float volume;
+        audioMixer.GetFloat(soundType, out volume);
+        return volume;
+    }
+    public void SetVolume(int idx, Slider[] AudioSlide, Toggle[] Toggle)
+    {
+        string name;
+        switch (idx)
+        {
+            case 0:
+                name = "BGM";
+                break;
+            case 1:
+                name = "SFX";
+                break;
+            default:
+                name = "BGM";
+                break;
+        }
+        float volume = AudioSlide[idx].value;
+        if (volume != -40f)
+        {
+            audioMixer.SetFloat(name, volume);
+            Toggle[idx].isOn = false;
+        }
+        else
+        {
+            audioMixer.SetFloat(name, -80);//음소거
+            Toggle[idx].isOn = true;
+        }
+    }
+    float[] temp = new float[10];
+    public void Volume_Toggle(int idx, Slider[] AudioSlide, Toggle[] Toggle)
+    {
+        string name;
+        switch (idx)
+        {
+            case 0:
+                name = "BGM";
+                break;
+            case 1:
+                name = "SFX";
+                break;
+            default:
+                name = "BGM";
+                break;
+        }
+        float volume = AudioSlide[idx].value;
+        if (Toggle[idx].isOn)
+        {
+            temp[idx] = volume;
+            //Debug.Log(temp[idx]);
+            volume = -80f;
+        }
+        else
+        {
+            //Debug.Log(temp[idx]);
+            volume = temp[idx];
+        }
+        AudioSlide[idx].value = volume;
+        audioMixer.SetFloat(name, volume);
     }
 }

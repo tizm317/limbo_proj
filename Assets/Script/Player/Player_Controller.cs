@@ -75,7 +75,6 @@ public class Player_Controller : MonoBehaviour
 
     public void Init()
     {
-        Set_BGM();
         Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
@@ -445,8 +444,4 @@ public class Player_Controller : MonoBehaviour
         return isObstacle;
     }
 
-    public void Set_BGM()
-    {
-        Managers.Sound.Play("Sound/Destructive Force (Action Cinematic Music)/Destructive Force_Looped (Cinematic Ambient Version)",Define.Sound.Bgm); 
-    }
 }
