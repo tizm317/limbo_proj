@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Potal : MonoBehaviour
 {
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        //d
-        Managers.Scene.LoadScene(Define.Scene.Village);
+        if(collision.gameObject.name == "Player")
+            Managers.Scene.LoadScene(Define.Scene.Village);
     }
 }

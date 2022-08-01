@@ -43,19 +43,6 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 충돌 감지 안돼서 임시로 추가
-        if(Managers.Scene.CurrentScene.SceneType == Define.Scene.InGame)
-        {
-            if(!potal)
-                potal = GameObject.Find("Potal").gameObject;
-
-        float dist = Vector3.Distance(player.transform.position, potal.transform.position);
-            if (dist < 3.0)
-                Managers.Scene.LoadScene(Define.Scene.Village);
-            //
-        }
-
-
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         else if(Input.GetKeyDown(KeyCode.R))

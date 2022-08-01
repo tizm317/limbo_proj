@@ -40,13 +40,13 @@ public class MiniMap : UI_Popup
     }
 
     [SerializeField] Transform player;
-    public RectTransform playerImage;
-    public RectTransform destinationImage;
     Player_Controller player_Controller;
-    public GameObject Scene;
-    public RectTransform mapImage;
-    public RectTransform boarderImage;
-    public RectTransform mask;
+    private GameObject Scene;
+    private RectTransform playerImage;
+    private RectTransform destinationImage;
+    private RectTransform mapImage;
+    private RectTransform boarderImage;
+    private RectTransform mask;
 
     UI_InGame uI_InGame;
 
@@ -183,16 +183,21 @@ public class MiniMap : UI_Popup
 
     public override void Init()
     {
-
         base.Init();
 
         // 버튼 관련해서 추가
         uI_InGame = GameObject.Find("UI_InGame").GetComponent<UI_InGame>();
 
-
+        // 바인딩
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
 
+        //
+        playerImage = GetObject((int)GameObjects.PlayerImage).GetComponent<RectTransform>();
+        destinationImage = GetObject((int)GameObjects.DestinationImage).GetComponent<RectTransform>();
+        mapImage = GetObject((int)GameObjects.MapImage).GetComponent<RectTransform>();
+        boarderImage = GetObject((int)GameObjects.BorderImage).GetComponent<RectTransform>();
+        mask = GetObject((int)GameObjects.Mask).GetComponent<RectTransform>();
 
         // zoom 관련 버튼 이벤트랑 묶기
         GetButton((int)Buttons.ZoomInButton).gameObject.BindEvent(OnZoomInButtonClicked);
@@ -206,18 +211,14 @@ public class MiniMap : UI_Popup
 
         player_Controller = Scene.GetComponent<Player_Controller>();
 
-        //GameObject playerImage = Get<GameObject>((int)GameObjects.PlayerImage);
-
         // path 받아오려고
         pathFinding = GameObject.Find("A*").GetComponent<PathFinding>();
 
         Vector3 temp = new Vector3(0, 0, 0);
-        //
-        GameObject go = GetObject((int)GameObjects.MapImage).gameObject;
-        GameObject destinationImage = GetObject((int)GameObjects.DestinationImage).gameObject;
+
         destinationImage.gameObject.SetActive(false);
 
-        BindEvent(go, (PointerEventData data) =>
+        BindEvent(mapImage.gameObject, (PointerEventData data) =>
         {
             if (data.pointerId != -1) return;
             //destinationImage.transform.localPosition = new Vector3(data.position.x - 784.375f, data.position.y - 316.25f, 0); // 이거 수정하자
@@ -256,20 +257,16 @@ public class MiniMap : UI_Popup
 
 
 
-        GameObject mapImage = Get<GameObject>((int)GameObjects.MapImage);
         foreach (Transform child in mapImage.transform)
         {
             if(child.GetComponent<UI_Minimap_ObjImg>() == true)
                 Managers.Resource.Destroy(child.gameObject);
         }
 
-
         // 맵 데이터
         // static object data
         dict_map = Managers.Data.MapDict;
         
-
-
         // 맵 오브젝트 개수만큼 붙이기
         for (int i = 0; i < dict_map.Count; i++) // 실제 정보 참고해서 몇개 만들지 고려
         {

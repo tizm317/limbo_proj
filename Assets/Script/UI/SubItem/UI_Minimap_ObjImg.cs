@@ -11,7 +11,6 @@ public class UI_Minimap_ObjImg : UI_Base
 
     public override void Init()
     {
-
         //Debug.Log("Init");
     }
 }

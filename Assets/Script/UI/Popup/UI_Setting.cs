@@ -134,8 +134,6 @@ public class UI_Setting : UI_Popup
         //Volume_Toggle(1);
         Managers.Sound.Volume_Toggle(1, AudioSlide, Toggle);
     }
-
-    
     public void Set_BrightNess(PointerEventData data)
     {
         light.intensity = BrightSlide.value;

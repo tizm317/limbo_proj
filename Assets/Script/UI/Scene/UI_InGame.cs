@@ -129,7 +129,7 @@ public class UI_InGame : UI_Scene
                     Managers.Data.MakeMapDict();
                 miniMap = Managers.UI.ShowPopupUI<MiniMap>();
                 miniMapStep = (int)minimap.Min;
-                miniMap.SizeControl(miniMapStep);
+                //miniMap.SizeControl(miniMapStep);
                 Debug.Log("Step : " + miniMapStep);
                 break;
             case (int)minimap.Min:
