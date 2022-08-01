@@ -6,6 +6,15 @@ public class Define
 {
     // 여러가지 정보들 enum type 으로 관리하는 class
 
+
+    public enum State
+    {
+        Idle,
+        Moving,
+        Skill,
+        Hit,
+        Die,
+    }
     public enum Layer
     {
         Wall = 8,
