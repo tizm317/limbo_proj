@@ -8,14 +8,16 @@ public class UI_InGame : UI_Scene
 {
     // 수정(추가)해야 함
 
+    // 연관된 팝업 UI 목록
+    UI_Inven ui_Inven;
+    UI_MiniMap miniMap;
+    UI_Setting setting;
+
     enum Buttons
     {
-        //PointButton,
     }
-
     enum Texts
     {
-        //PointText,
     }
 
     enum GameObjects
@@ -35,11 +37,6 @@ public class UI_InGame : UI_Scene
     {
         base.Init();
 
-        //Bind<Button>(typeof(Buttons)); // Buttons 의 enum 타입을 넘기겠다 는 의미
-        //Bind<Text>(typeof(Texts));
-
-        //GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
-
         // 연결
         Managers.Input.KeyAction -= ControlPopUpUI;
         Managers.Input.KeyAction += ControlPopUpUI;
@@ -49,27 +46,6 @@ public class UI_InGame : UI_Scene
     {
         // 꺼질 때에도 저장해야 함
         saveInven();
-    }
-
-    UI_Inven ui_Inven;
-    MiniMap miniMap;
-    UI_Setting setting;
-
-    int miniMapStep = (int)minimap.Off;
-    enum minimap
-    {
-        Off,
-        Min,
-        Middle,
-        Max,
-    }
-
-    int miniMapZoom = (int)zoom.defaultZoom;
-    enum zoom
-    {
-        defaultZoom,
-        secondZoom,
-        MaxZoom,
     }
 
     void ControlPopUpUI()
@@ -94,16 +70,17 @@ public class UI_InGame : UI_Scene
         {
             // 미니맵 UI
             // off -> 최소 -> 중간 -> 최대 -> off
-            if (miniMap && !miniMap.IsPeek()) // 미니맵은 켜져있으면서 팝업 첫번째 아니면 리턴
-                return;
-
-            ChangeMiniMapStep();
+            if (!miniMap)
+                miniMap = Managers.UI.ShowPopupUI<UI_MiniMap>();
+            else
+                miniMap.SizeControl(); // 미니맵 크기 조절
         }
         else if(Input.GetKeyDown(KeyCode.Z))
         {
-            if (!miniMap.IsPeek())
+            if (!miniMap)
                 return;
-            changeMinimapZoom();
+            // 미니맵 줌 조절
+            miniMap.Zoom();
         }
         else if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -119,63 +96,10 @@ public class UI_InGame : UI_Scene
         }
     }
 
-    public void ChangeMiniMapStep()
-    {
-
-        switch (miniMapStep)
-        {
-            case (int)minimap.Off:
-                if (Managers.Data.MapDict.Count == 0) // 처음에 안 생긴 경우만
-                    Managers.Data.MakeMapDict();
-                miniMap = Managers.UI.ShowPopupUI<MiniMap>();
-                miniMapStep = (int)minimap.Min;
-                //miniMap.SizeControl(miniMapStep);
-                Debug.Log("Step : " + miniMapStep);
-                break;
-            case (int)minimap.Min:
-                miniMapStep = (int)minimap.Middle;
-                Debug.Log("Step : " + miniMapStep);
-                miniMap.SizeControl(miniMapStep);
-                break;
-            case (int)minimap.Middle:
-                miniMapStep = (int)minimap.Max;
-                Debug.Log("Step : " + miniMapStep);
-                miniMap.SizeControl(miniMapStep);
-                break;
-            case (int)minimap.Max:
-                //miniMap.SizeControl(miniMapStep);
-                miniMapStep = (int)minimap.Off;
-                miniMapZoom = (int)zoom.defaultZoom; // 줌도 초기화
-                Managers.UI.ClosePopupUI(miniMap);
-                Debug.Log("Step : " + miniMapStep);
-                break;
-        }
-    }
-
-    public void changeMinimapZoom()
-    {
-        if (!miniMap)
-            return;
-
-        switch (miniMapZoom)
-        {
-            case (int)zoom.defaultZoom:
-                miniMapZoom++;
-                miniMap.Zoom(miniMapZoom);
-                break;
-            case (int)zoom.secondZoom:
-                miniMapZoom++;
-                miniMap.Zoom(miniMapZoom);
-                break;
-            case (int)zoom.MaxZoom:
-                miniMapZoom = (int)zoom.defaultZoom;
-                miniMap.Zoom(miniMapZoom);
-                break;
-        }
-    }
-
     public void saveInven()
     {
+        // 여기 있을게 아닌거 같은디..
+
         // dictionary 변경 있으면 json 저장
         //state machine 써야하나..?
 
@@ -191,22 +115,5 @@ public class UI_InGame : UI_Scene
         }
         // List 최종본이 json에 저장된 채로 나옴
         Managers.Data.SaveJson(json, "InvenData.json");
-    }
-
-    public int changeZoomStep(bool IsZoomIn)
-    {
-        if(IsZoomIn)
-        {
-            ++miniMapZoom;
-            miniMapZoom %= 3; // 범위 : 2 위로 넘어가는 거 방지
-        }
-        else // zoom out
-        {
-            // 범위 : 0 밑으로 내려가는 거 방지
-            miniMapZoom += 3;
-            --miniMapZoom;
-            miniMapZoom %= 3;
-        }
-        return miniMapZoom;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MiniMap : UI_Popup
+public class UI_MiniMap : UI_Popup
 {
     // 미니맵
     /* 
@@ -48,27 +48,23 @@ public class MiniMap : UI_Popup
     private RectTransform boarderImage;
     private RectTransform mask;
 
-    UI_InGame uI_InGame;
-
     Dictionary<int, Data.Map> dict_map;
 
     // 길찾기
     //GRID grid;
     PathFinding pathFinding;
     List<Vector3> path;
-
     public GameObject linePrefab;
     GameObject line;
-
     LineRenderer lr;
 
-    //bool draw;
-
+    // 미니맵
     enum size
     {
         DefaultSize,
         MiddleSize,
         MaxSize,
+        Off,
     }
     enum zoom
     {
@@ -77,8 +73,8 @@ public class MiniMap : UI_Popup
         MaxZoom,
     }
 
-    size curSize;
-    zoom curZoom;
+    size curSize = size.DefaultSize;
+    zoom curZoom = zoom.DefaultZoom;
 
     void Start()
     {
@@ -186,7 +182,7 @@ public class MiniMap : UI_Popup
         base.Init();
 
         // 버튼 관련해서 추가
-        uI_InGame = GameObject.Find("UI_InGame").GetComponent<UI_InGame>();
+        //uI_InGame = GameObject.Find("UI_InGame").GetComponent<UI_InGame>();
 
         // 바인딩
         Bind<GameObject>(typeof(GameObjects));
@@ -204,11 +200,7 @@ public class MiniMap : UI_Popup
         GetButton((int)Buttons.ZoomOutButton).gameObject.BindEvent(OnZoomOutButtonClicked);
 
         player = GameObject.Find("Player").transform;
-
-        //InputManager = Managers._Input;
-
         Scene = GameObject.Find("@Scene");
-
         player_Controller = Scene.GetComponent<Player_Controller>();
 
         // path 받아오려고
@@ -256,7 +248,8 @@ public class MiniMap : UI_Popup
         }, Define.UIEvent.Click);
 
 
-
+        #region 맵 마커
+        // 지우기
         foreach (Transform child in mapImage.transform)
         {
             if(child.GetComponent<UI_Minimap_ObjImg>() == true)
@@ -272,22 +265,11 @@ public class MiniMap : UI_Popup
         {
             // 1. UI_Minimap_ObjImag 생성해서 MapImage 산하에 붙임
             GameObject item = Managers.UI.MakeSubItem<UI_Minimap_ObjImg>(parent: mapImage.transform).gameObject;
-
-
-            // 1번째 방법 - 코드로 추가 : Util.GetOrAddComponent<UI_Inven_Item>(item);
-            UI_Minimap_ObjImg objImg = item.GetOrAddComponent<UI_Minimap_ObjImg>(); // Extension 사용
-
-            // 위치 설정
-
-            Vector3 tempVec;
-            tempVec.x = dict_map[i].x;
-            tempVec.y = dict_map[i].z;
-            tempVec.z = 0;
-            Debug.Log(tempVec);
-            objImg.gameObject.transform.localPosition = tempVec;
-
-            //invenItem.SetInfo($"집행검{i}번");
+            UI_Minimap_ObjImg objImg = item.GetOrAddComponent<UI_Minimap_ObjImg>();
+            // 2. 위치 설정
+            objImg.setMarkerPos(i);
         }
+        #endregion
 
         // 길찾기
         //lr = playerImage.gameObject.GetComponent<LineRenderer>();
@@ -303,89 +285,76 @@ public class MiniMap : UI_Popup
 
     }
 
-    public void SizeControl(int step)
+    public override bool IsPeek()
+    {
+        return Managers.UI.IsPeek(this);
+    }
+    public void SizeControl()
     {
         // 미니맵 사이즈 조절
-        // step에 맞게
-        // 0(off),1,2,3
-        // UI_InGame에서 사용하기 위해 퍼블릭함수
 
         if (!IsPeek())
             return;
 
-        switch (step)
-        {
-            case 0: // off
-                // 초기화
-                curSize = size.DefaultSize;
-                Zoom(0);
-                //mapImage.localScale = new Vector3(1, 1, 0);
-                mask.localScale = new Vector3(1, 1, 0);
-                boarderImage.localScale = new Vector3(1, 1, 0);
+        curSize = (size)(((int)curSize + 1) % 4);
 
-                break;
-            case 1: // defaultSize
-                curSize = size.DefaultSize;
+        switch ((int)curSize)
+        {
+            case 0: 
+                Zoom();
+                //mapImage.localScale = new Vector3(1, 1, 0);
                 mask.localScale = new Vector3(1, 1, 0);
                 boarderImage.localScale = new Vector3(1, 1, 0);
-                //mapImage.localScale = new Vector3(1, 1, 0);
                 break;
-            case 2: // middleSize
-                curSize = size.MiddleSize;
+            case 1:
                 mask.localScale = new Vector3(2, 2, 0);
                 boarderImage.localScale = new Vector3(2, 2, 0);
                 //mapImage.localScale = new Vector3(2, 2, 0);
                 break;
-            case 3: // MaxSize
-                curSize = size.MaxSize;
+            case 2:
                 mask.localScale = new Vector3(3, 3, 0);
                 boarderImage.localScale = new Vector3(3, 3, 0);
                 //mapImage.localScale = new Vector3(3, 3, 0);
                 break;
+            case 3:
+                Managers.UI.ClosePopupUI();
+                break;
         }
 
     }
-
-    public void Zoom(int step)
+    public void Zoom(bool reverse = false)
     {
         // 미니맵 줌 기능
         if (!IsPeek())
             return;
 
-        switch (step)
+        if(reverse)
+            curZoom = (zoom)(((int)curZoom + 2) % 3);
+        else
+            curZoom = (zoom)(((int)curZoom + 1) % 3);
+
+        switch ((int)curZoom)
         {
             case 0:  // default
-                curZoom = zoom.DefaultZoom;
                 mapImage.localScale = new Vector3(1, 1, 0);
                 break;
             case 1:  // second
-                curZoom = zoom.MiddleZoom;
                 mapImage.localScale = new Vector3(2, 2, 0);
                 break;
             case 2: // max
-                curZoom = zoom.MaxZoom;
                 mapImage.localScale = new Vector3(3, 3, 0);
                 break;
-
         }
-    }
-
-    public override bool IsPeek()
-    {
-        return Managers.UI.IsPeek(this);
     }
 
     // +, - 버튼으로 zoom 조절
     public void OnZoomInButtonClicked(PointerEventData data)
     {
-        int zoomStep = uI_InGame.changeZoomStep(true);
-        Zoom(zoomStep);
+        Zoom();
     }
-
     public void OnZoomOutButtonClicked(PointerEventData data)
     {
-        int zoomStep = uI_InGame.changeZoomStep(false);
-        Zoom(zoomStep);
+        Zoom(reverse:true);
     }
 
     void RotationControl(RectTransform image)
