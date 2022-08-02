@@ -29,9 +29,9 @@ public class Stat : MonoBehaviour
         _level = 1;
         _hp = 100;
         _maxHp = 100;
-        _attack = 10;
+        _attack = 5;
         _defense = 0;
-        _moveSpeed = 4.0f;
+        _moveSpeed = 2.0f;
         _turnSpeed = 20.0f;
     }
 }
