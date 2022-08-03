@@ -53,7 +53,7 @@ public class Enemy_Skeleton : Enemy
                 return;
             }
         }
-
+        
         //이동
         Vector3 dir = _destPos - transform.position;
         if (dir.magnitude < 0.1f)
@@ -82,15 +82,16 @@ public class Enemy_Skeleton : Enemy
     protected override void UpdateHit()
     {
         Debug.Log("enemy UpdateHit(damage)");
-
+        //State = Define.State.Hit; 
 
     }
 
     protected override void UpdateDie()
     {
-        PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
-        if (targetStat.Hp <= 0)
+        Debug.Log("die");
+        if (_stat.Hp <= 0)
             State = Define.State.Die;
+
     }
 
     void OnHitEvent()
@@ -99,9 +100,8 @@ public class Enemy_Skeleton : Enemy
         if (lockTarget != null)
         {
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
-            Stat myStat = gameObject.GetComponent<Stat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage;
+            int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
+            targetStat.Hp -= damage; //플레이어 데미지
 
             //죽었는지 여부 체크 
             if (targetStat.Hp > 0)

@@ -59,8 +59,8 @@ public class PoolManager
             if (poolable == null)
                 return;
 
-            //poolable.transform.parent = Root;
-            poolable.transform.SetParent(Root);
+            poolable.transform.parent = Root;
+            //poolable.transform.SetParent(Root);
             poolable.gameObject.SetActive(false);
             poolable.IsUsing = false;
 
@@ -81,17 +81,17 @@ public class PoolManager
             else
                 poolable = Create();
 
+            // DontDestroyOnLoad 해제 용도
+            if (parent == null)
+                //poolable.transform.SetParent(Managers.Scene.CurrentScene.transform);
+                poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+
             // 활성화
             poolable.gameObject.SetActive(true);
 
-            // DontDestroyOnLoad 해제 용도
-            if (parent == null)
-                poolable.transform.SetParent(Managers.Scene.CurrentScene.transform);
-            //poolable.transform.parent = Managers.Scene.CurrentScene.transform;
-
             // parent 연결
-            poolable.transform.SetParent(parent);
-            //poolable.transform.parent = parent;
+            //poolable.transform.SetParent(parent);
+            poolable.transform.parent = parent;
             // IsUsing
             poolable.IsUsing = true;
 
@@ -101,7 +101,7 @@ public class PoolManager
     #endregion
 
 
-    // 풀매니저 : 딕셔너리로 Pool 관리
+    // 풀매니저 : 딕셔너리로 Pool 관리 (string을 통해 이름 구별)
     Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();  // 여러개의 pool 관리하는 딕셔너리
     
     Transform _root; // cf) GameObject 도 상관 없음 (걍 Transform은 항상 포함되는 컴포넌트라)
@@ -185,14 +185,12 @@ public class PoolManager
         // 대부분의 게임에서 굳이 날릴 필요는 없는데
         // mmoRPG 에서 지역마다 오브젝트가 많이 다른 경우 정도만?
         // 일단 만들어줌
-        
+
         // @Pool_Root(_root) 산하 child 모두 지우기
         foreach (Transform child in _root)
-        {
             GameObject.Destroy(child.gameObject);
 
-            // 풀 매니저도 초기화
-            _pool.Clear();
-        }
+        // 풀 매니저도 초기화
+        _pool.Clear();
     }
 }

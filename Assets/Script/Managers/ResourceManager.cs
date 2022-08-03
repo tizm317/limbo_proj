@@ -39,7 +39,8 @@ public class ResourceManager
 
     public GameObject Instantiate(string path, Transform parent = null)
     {
-        // 1) 경로 찾아서 로드해서 원본을 메모리에 로드 - 씬에서 아직 보이지 않음
+        // 1) original 이미 들고 있으면 바로 사용
+        // 경로 찾아서 로드해서 원본을 메모리에 로드 - 씬에서 아직 보이지 않음
         GameObject original = Load<GameObject>($"Prefabs/{path}"); // 프리팹 산하 경로 (필요시 경로 수정하면 됨)
         if (original == null)
         {
