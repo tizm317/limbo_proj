@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CursorController : MonoBehaviour
 {
+    // 目辑 牧飘费矾 : 目辑 包府
     int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster) | (1 << (int)Define.Layer.NPC);
 
     Texture2D _attackIcon;
     Texture2D _handIcon;
     Texture2D _removeIcon;
     Texture2D _basicIcon;
-
 
     enum CursorType
     {
