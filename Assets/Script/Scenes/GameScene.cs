@@ -76,8 +76,17 @@ public class GameScene : BaseScene
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
         // 풀매니저 테스트
+        List<GameObject> list = new List<GameObject>();
+
+        for (int i = 0; i < 5; i++)
+            list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
         //for (int i = 0; i < 5; i++)
-        //    Managers.Resource.Instantiate("Skeleton");
+        //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
+        //Managers.Resource.Instantiate("Enemy_Skeleton");
+
+        // 다시 넣기
+        //foreach (GameObject obj in list)
+        //    Managers.Resource.Destroy(obj);
 
 
         /*

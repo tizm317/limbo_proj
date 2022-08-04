@@ -26,9 +26,10 @@ public class LoginScene : BaseScene
 
         //List<GameObject> list = new List<GameObject>();
 
-        //// 풀매니저 테스트
+        // 풀매니저 테스트
         //for (int i = 0; i < 5; i++)
-        //    list.Add(Managers.Resource.Instantiate("UnityChan"));
+            //Managers.Resource.Instantiate("Enemy_Skeleton");
+            //list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
 
         // 다시 넣기
         //foreach (GameObject obj in list)
