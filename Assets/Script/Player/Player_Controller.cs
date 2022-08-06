@@ -14,6 +14,8 @@ public class Player_Controller : MonoBehaviour
     public List<Stat> stat = new List<Stat>();
     [SerializeField]
     PathFinding pathfinding;
+    [SerializeField]
+    Effect effect;
     private PlayerStat my_stat;
     private Camera cam;
     public GameObject player;
