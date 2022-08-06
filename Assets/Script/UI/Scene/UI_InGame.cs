@@ -10,6 +10,7 @@ public class UI_InGame : UI_Scene
 
     // 연관된 팝업 UI 목록
     UI_Inven ui_Inven;
+    UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
     UI_Setting setting;
 
@@ -56,7 +57,10 @@ public class UI_InGame : UI_Scene
             // 인벤토리 UI
 
             if(!ui_Inven)
+            {
+                ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
                 ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
+            }
             else
             {
                 // 인벤토리 내용(변경사항) json 저장
@@ -64,6 +68,7 @@ public class UI_InGame : UI_Scene
                     return;
                 saveInven();
                 Managers.UI.ClosePopupUI(ui_Inven);
+                ui_Equipment.ClosePopupUI();
             }
         }
         else if(Input.GetKeyDown(KeyCode.M))
