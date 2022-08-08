@@ -32,6 +32,8 @@ public class UI_Dialogue : UI_Popup
     {
     }
 
+    public bool isOn = false;
+
     private void Start()
     {
         Init();
@@ -48,6 +50,8 @@ public class UI_Dialogue : UI_Popup
         GetButton((int)Buttons.DialogueButton).gameObject.BindEvent(startDialogue);
         GetButton((int)Buttons.TradeButton).gameObject.BindEvent(startTrade);
         GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
+
+        isOn = true;
     }
 
     public void startDialogue(PointerEventData data)
@@ -69,6 +73,7 @@ public class UI_Dialogue : UI_Popup
 
     public override void ClosePopupUI()
     {
+        isOn = false;
         Managers.UI.ClosePopupUI(this);
     }
 
@@ -76,4 +81,5 @@ public class UI_Dialogue : UI_Popup
     {
         return Managers.UI.IsPeek(this);
     }
+    
 }

@@ -32,8 +32,12 @@ public class Player_Controller : MonoBehaviour
     private Animator ani;
     public GameObject potal;
 
+    // npc 한테 이동
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
     private UI_Dialogue ui_Dialogue;
+    private bool toNpc = false;
+    private bool lookatnpc = false;
+    private Transform npcTransform = null;
 
     void Start()
     {
@@ -59,7 +63,20 @@ public class Player_Controller : MonoBehaviour
 
         }
         else
-            move(speed);
+        {
+            if (lookatnpc)
+                lookat(npcTransform);
+
+            if (ui_Dialogue && ui_Dialogue.isOn)
+                camZoom(45);
+            else
+                camZoom(60);
+
+            if (toNpc)
+                move2Npc(speed, audibleDistance);
+            else
+                move(speed);
+        }
     }
 
     public void Init()
@@ -86,9 +103,12 @@ public class Player_Controller : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
+        if (ui_Dialogue)
+            return;
+
         if(!on_skill)
         {
-            if(evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
+            if (evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
             {
                 RaycastHit hit;//레이케스트 선언
                 if (!cam) return; // 호영 : 씬 전환 시 missing 레퍼 오류로 인해 없을 때 return 시킴
@@ -99,34 +119,50 @@ public class Player_Controller : MonoBehaviour
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
                     my_enemy.Clear();//다시 땅 찍으면 타게팅을 풀어줌
                     stat.Clear();//저장해둔 스텟도 지워줌
+
+                    lookatnpc = false;
+                    toNpc = false;
+
                 }
                 else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
                 {
                     Lock_On(hit.transform.gameObject);//타게팅용
                     Set_Destination(my_enemy[0].GetComponent<Transform>().position);
+
+                    lookatnpc = false;
+                    toNpc = false;
+
                 }
                 else if (hit.collider.tag == "NPC")
                 {
                     my_enemy.Clear();
                     stat.Clear();
 
-                    // NPC 와의 거리 체크
                     float dist = Vector3.Distance(player.transform.position, hit.collider.transform.position);
-                    //Debug.Log(dist);
-                    //print(hit.collider.tag);
-
-                    // audibleDistance 보다 작으면 이동 안하고 바로 대화 UI창 팝업
-                    if (dist < audibleDistance)
+                    if(dist > audibleDistance)
                     {
-                        // 대화 시스템
+                        Set_Destination(hit.collider.transform.position);
+                        toNpc = true;
+                        
+                        lookatnpc = false;
+                        npcTransform = null;
+                    }
+                    else
+                    {
+                        //player.transform.LookAt(hit.collider.transform.position); // npc 쳐다보기
+                        lookatnpc = true;
+                        npcTransform = hit.collider.transform;
+                        toNpc = false;
+
                         if (!ui_Dialogue)
                             ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
+
                     }
-                    else // 이동 후 대화 UI창 팝업
-                        Set_Destination(hit.collider.transform.position);
                 }
                 else
-                { 
+                {
+                    lookatnpc = false;
+                    toNpc = false;
                     return;
                 }
             }
@@ -381,7 +417,7 @@ public class Player_Controller : MonoBehaviour
         return destination[destination.Count -1];
     }
 
-    private void move(float speed)
+    private void move(float speed, float arrivalRange = 0.4f)
     {
         if(destination.Count > 0)
         {
@@ -390,7 +426,7 @@ public class Player_Controller : MonoBehaviour
             {
                 if(!isObstacle)//장애물이 없다면
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<= arrivalRange)//너무 가깝게 찍으면 움직일 필요 없음
                     {
                         destination.RemoveAt(0);
                         return;
@@ -403,7 +439,7 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4 && destination.Count != 0)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<= arrivalRange && destination.Count != 0)//너무 가깝게 찍으면 움직일 필요 없음
                     {
                         destination.RemoveAt(0);    
                     }
@@ -425,7 +461,38 @@ public class Player_Controller : MonoBehaviour
         else
             Get_Enemy();//이동 안할때는 주변에 적을 탐색
     }
+    
+    private void move2Npc(float speed, float arrivalRange = 0.4f)
+    {
+        // move npc 한테 가는 버전
+        // 도착 범위 다름
+
+        float dist = Vector3.Distance(player.transform.position, destination[0]);
+        if (dist < arrivalRange)
+        {
+            // 도착
+            player.transform.LookAt(destination[0]); // npc 쳐다보기
+            toNpc = false;
+            destination.Clear();
+            if (!ui_Dialogue)
+                ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
+        }
+        else
+            move(speed, arrivalRange);
+    }
     #endregion
+
+    private void lookat(Transform npc)
+    {
+        Quaternion lookOnlook = Quaternion.LookRotation(npc.position - player.transform.position);
+        player.transform.rotation = Quaternion.Slerp(player.transform.rotation, lookOnlook, Time.deltaTime * 5);
+    }
+
+    private void camZoom(int value)
+    {
+        if (Mathf.Abs(cam.fieldOfView - value) > 1.0f)
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, value, Time.deltaTime * 2);
+    }
 
     public bool get_isObstacle()
     {
