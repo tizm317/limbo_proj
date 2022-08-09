@@ -38,6 +38,7 @@ public class Player_Controller : MonoBehaviour
     private bool toNpc = false;
     private bool lookatnpc = false;
     private Transform npcTransform = null;
+    private Npc npc;
 
     void Start()
     {
@@ -138,6 +139,8 @@ public class Player_Controller : MonoBehaviour
                     my_enemy.Clear();
                     stat.Clear();
 
+                    npc = hit.collider.GetComponent<Npc>();
+
                     float dist = Vector3.Distance(player.transform.position, hit.collider.transform.position);
                     if(dist > audibleDistance)
                     {
@@ -155,7 +158,11 @@ public class Player_Controller : MonoBehaviour
                         toNpc = false;
 
                         if (!ui_Dialogue)
+                        {
+                            npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                             ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
+                            ui_Dialogue.getNpcInfo(npc);
+                        }
 
                     }
                 }
@@ -475,7 +482,11 @@ public class Player_Controller : MonoBehaviour
             toNpc = false;
             destination.Clear();
             if (!ui_Dialogue)
+            {
+                npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                 ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
+                ui_Dialogue.getNpcInfo(npc);
+            }
         }
         else
             move(speed, arrivalRange);
