@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ResourceManager
 {
+    [SerializeField] protected Define.State state;
     // 프리팹을 코드 상에서 만들어주기 위한 리소스 매니저
     // 3가지 인터페이스 제공
     // Load
@@ -83,7 +84,7 @@ public class ResourceManager
             Managers.Pool.Push(poolable);
             return;
         }
-
+        
         // 풀링 대상 아니면 destroy
         Object.Destroy(go);
     }

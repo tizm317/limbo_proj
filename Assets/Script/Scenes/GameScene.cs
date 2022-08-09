@@ -78,7 +78,7 @@ public class GameScene : BaseScene
         // 풀매니저 테스트
         List<GameObject> list = new List<GameObject>();
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 2; i++)
             list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
         //for (int i = 0; i < 5; i++)
         //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
