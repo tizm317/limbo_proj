@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Player_Controller : MonoBehaviour
 {
-    const float PlayerSpeed = 5.0f;
-    const float AttackDelay = 1.0f;
+    const float PlayerSpeed = 4.0f;
+    const float AttackDelay = 2.6f;
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;

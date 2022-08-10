@@ -70,14 +70,15 @@ public class Npc : MonoBehaviour
         {
             _curState = cs;
             _event = e;
-            _action = act;
+            //foreach(Action act in act_arr)
+            //_action += act;
             _nextState = ns;
         }
     }
 
 
 
-    EventActionTable[] table = new EventActionTable[] 
+    EventActionTable[] table = new EventActionTable[]
     {
         new EventActionTable(State.STATE_READY, Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, State.STATE_NPC_UI_POPUP),
         new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_DIALOGUE, null, State.STATE_DIALOGUE),
@@ -86,7 +87,8 @@ public class Npc : MonoBehaviour
     };
 
 
-    void start()
+
+    public void Start()
     {
         Init();
     }
@@ -95,6 +97,10 @@ public class Npc : MonoBehaviour
     {
         //
         curState = State.STATE_READY;
+
+        // action 등록...
+        table[0]._action -= lookAtPlayer;
+        table[0]._action += lookAtPlayer;
     }
 
 
@@ -112,12 +118,14 @@ public class Npc : MonoBehaviour
         // json 파일 읽어서 진행
     }
 
-
-    public void lookAtPlayer(Transform player)
+    public void lookAtPlayer()
     {
-        Quaternion lookOnlook = Quaternion.LookRotation(player.position - this.transform.position);
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, Time.deltaTime * 5);
+        Debug.Log("플레이어 쳐다보기");
+        //Transform player;
+        //Quaternion lookOnlook = Quaternion.LookRotation(player.position - this.transform.position);
+        //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, Time.deltaTime * 5);
     }
+
 
     public void stateMachine(Event inputEvent)
     {
@@ -138,6 +146,8 @@ public class Npc : MonoBehaviour
                 {
                     // 해당 트랜지션이 발생할 때 수행해야할 함수들을 실행시킴
                     // ...
+                    if(table[i]._action != null)
+                        table[i]._action.Invoke();
                     // 테이블에 정의된 다음 상태로 현재 상태 변경
                     curState = table[i]._nextState;
                     break;
