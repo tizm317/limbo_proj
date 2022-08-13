@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 파일 포맷 ( 어떻게 불러읽어들일지) 나타내는 부분 
-// Contents용 Data
+// Contents용 Data (AI 용 따로)
 
 namespace Data
 {
@@ -74,6 +74,56 @@ namespace Data
     #endregion
     // (추가)
 
+    #region NPC
+    [Serializable]
+    public class Npc
+    {
+        public int id;
+        public string name;
+        public string job;
+    }
+
+    [Serializable]
+    public class NpcData : ILoader<int, Npc>
+    {
+        public List<Npc> npcs = new List<Npc>();
+
+        public Dictionary<int, Npc> MakeDict()
+        {
+            Dictionary<int, Npc> dict = new Dictionary<int, Npc>();
+
+            foreach (Npc ele in npcs)
+                dict.Add(ele.id, ele);
+
+            return dict;
+        }
+    }
+    #endregion
+
+    #region Dialog
+    [Serializable] // 메모리에서 들고 있는걸 파일로 변환할수있다는 의미
+    public class Dialog
+    {
+        public int lineNum;
+        public string script;
+    }
+
+    [Serializable]
+    public class DialogData : ILoader<int, Dialog>
+    {
+
+        public List<Dialog> dialogs = new List<Dialog>();
+
+        public Dictionary<int, Dialog> MakeDict()
+        {
+            Dictionary<int, Dialog> dict = new Dictionary<int, Dialog>();
+            foreach (Dialog dialog in dialogs)
+                dict.Add(dialog.lineNum, dialog);
+
+            return dict;
+        }
+    }
+    #endregion
 
     // 여기부터 다시
     #region Inventory

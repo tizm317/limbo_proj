@@ -62,4 +62,11 @@ public class Camera_Controller : MonoBehaviour
         if((_delta.z < -5 && wheel > 0) || (_delta.z > -15 && wheel < 0))
             _delta += new Vector3(0, -1.2f * wheel * speed ,wheel * speed);
     }
+
+    public void FOV_Control(int value)
+    {
+        Camera cam = this.gameObject.GetComponent<Camera>();
+        if (Mathf.Abs(cam.fieldOfView - value) > 1.0f)
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, value, Time.deltaTime * 2);
+    }
 }

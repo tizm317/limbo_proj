@@ -36,6 +36,7 @@ public class UI_Dialogue : UI_Popup
     public bool isOn = false;
 
     Npc npc;
+    int lineNum = 0;
 
     private void Start()
     {
@@ -56,14 +57,22 @@ public class UI_Dialogue : UI_Popup
 
         isOn = true;
 
-
     }
 
     public void startDialogue(PointerEventData data)
     {
         // 대화
-        Debug.Log("대화");
-        npc.stateMachine(Npc.Event.EVENT_PUSH_DIALOGUE);
+
+        if (lineNum != -1)
+        {
+            Debug.Log("대화");
+            npc.stateMachine(Npc.Event.EVENT_PUSH_DIALOGUE);
+            lineNum = npc.dialogue(lineNum);
+        }
+
+        // 대화 끝 : 버튼 비활성화
+        if (lineNum == -1)
+            GetButton((int)Buttons.DialogueButton).gameObject.GetComponent<Button>().interactable = false;
     }
 
     public void startTrade(PointerEventData data)
@@ -94,4 +103,5 @@ public class UI_Dialogue : UI_Popup
         // 대화창 UI 랑 대화하는 NPC 연결해주기 위함
         npc = clickedNpc;
     }
+
 }

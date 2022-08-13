@@ -36,9 +36,11 @@ public class Player_Controller : MonoBehaviour
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
     private UI_Dialogue ui_Dialogue;
     private bool toNpc = false;
-    private bool lookatnpc = false;
-    private Transform npcTransform = null;
+    private Vector3 npcPos;
     private Npc npc;
+    private float turnSpeed = 4.0f;
+    private float turnTimeCount = 0.0f;
+    private Coroutine co_turn;
 
     void Start()
     {
@@ -65,19 +67,18 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
-            if (lookatnpc)
-                lookat(npcTransform);
 
             if (ui_Dialogue && ui_Dialogue.isOn)
-                camZoom(45);
+                cam.GetComponent<Camera_Controller>().FOV_Control(45);
             else
-                camZoom(60);
+                cam.GetComponent<Camera_Controller>().FOV_Control(60);
 
             if (toNpc)
                 move2Npc(speed, audibleDistance);
             else
                 move(speed);
         }
+
     }
 
     public void Init()
@@ -121,7 +122,6 @@ public class Player_Controller : MonoBehaviour
                     my_enemy.Clear();//다시 땅 찍으면 타게팅을 풀어줌
                     stat.Clear();//저장해둔 스텟도 지워줌
 
-                    lookatnpc = false;
                     toNpc = false;
 
                 }
@@ -130,7 +130,6 @@ public class Player_Controller : MonoBehaviour
                     Lock_On(hit.transform.gameObject);//타게팅용
                     Set_Destination(my_enemy[0].GetComponent<Transform>().position);
 
-                    lookatnpc = false;
                     toNpc = false;
 
                 }
@@ -146,19 +145,16 @@ public class Player_Controller : MonoBehaviour
                     {
                         Set_Destination(hit.collider.transform.position);
                         toNpc = true;
-                        
-                        lookatnpc = false;
-                        npcTransform = null;
                     }
                     else
                     {
                         //player.transform.LookAt(hit.collider.transform.position); // npc 쳐다보기
-                        lookatnpc = true;
-                        npcTransform = hit.collider.transform;
+                        npcPos = hit.collider.transform.position;
                         toNpc = false;
-
                         if (!ui_Dialogue)
                         {
+                            //co_turn = StartCoroutine(turn());
+                            npc.clickedPlayer = player; // npc한테 플레이어 넘겨줌
                             npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                             ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
                             ui_Dialogue.getNpcInfo(npc);
@@ -168,7 +164,6 @@ public class Player_Controller : MonoBehaviour
                 }
                 else
                 {
-                    lookatnpc = false;
                     toNpc = false;
                     return;
                 }
@@ -478,11 +473,13 @@ public class Player_Controller : MonoBehaviour
         if (dist < arrivalRange)
         {
             // 도착
-            player.transform.LookAt(destination[0]); // npc 쳐다보기
+            //player.transform.LookAt(destination[0]); // npc 쳐다보기
+            npcPos = destination[0];
             toNpc = false;
             destination.Clear();
             if (!ui_Dialogue)
             {
+                npc.clickedPlayer = player; // npc한테 플레이어 넘겨줌
                 npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                 ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
                 ui_Dialogue.getNpcInfo(npc);
@@ -493,17 +490,20 @@ public class Player_Controller : MonoBehaviour
     }
     #endregion
 
-    private void lookat(Transform npc)
+    IEnumerator turn()
     {
-        Quaternion lookOnlook = Quaternion.LookRotation(npc.position - player.transform.position);
-        player.transform.rotation = Quaternion.Slerp(player.transform.rotation, lookOnlook, Time.deltaTime * 5);
+        
+        turnTimeCount = 0.0f;
+        while (turnTimeCount < 1.0f)
+        {
+            Quaternion lookOnlook = Quaternion.LookRotation(npcPos - player.transform.position);
+            player.transform.rotation = Quaternion.Slerp(player.transform.rotation, lookOnlook, Time.deltaTime * turnSpeed);
+            turnTimeCount = Time.deltaTime * turnSpeed;
+            yield return null;
+        }
+
     }
 
-    private void camZoom(int value)
-    {
-        if (Mathf.Abs(cam.fieldOfView - value) > 1.0f)
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, value, Time.deltaTime * 2);
-    }
 
     public bool get_isObstacle()
     {

@@ -34,11 +34,17 @@ public class DataManager
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
     public Dictionary<int, Data.Item> InvenDict { get; private set; } = new Dictionary<int, Data.Item>();
 
+    public Dictionary<int, Data.Npc> NpcDict { get; private set; } = new Dictionary<int, Data.Npc>();
+
+    public Dictionary<int, Data.Dialog> DialogDict { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
+
     public void Init()
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
+        NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
+        DialogDict = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict(); // 테스트용
         // (추가 하는 부분)
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,

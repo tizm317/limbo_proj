@@ -11,13 +11,20 @@ public class Npc : MonoBehaviour
      */
 
     // attributes
-    static int _id;     // id
+    static int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
+    int _id;            // id
     string _name;       // 이름
+    string _job;
     string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
     float _moveSpeed;   // 이동 속도
     bool _isPatrol;     // 패트롤여부
 
+    public GameObject clickedPlayer = null;
+    float turnSpeed = 4.0f;
     public State curState { get; set; }
+
+    Dictionary<int, Data.Dialog> dialogDict;
+
 
     // state
     public enum State
@@ -87,7 +94,6 @@ public class Npc : MonoBehaviour
     };
 
 
-
     public void Start()
     {
         Init();
@@ -101,6 +107,24 @@ public class Npc : MonoBehaviour
         // action 등록...
         table[0]._action -= lookAtPlayer;
         table[0]._action += lookAtPlayer;
+
+        // Npc 정보 읽기
+        Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
+        _id = dict[num_npc].id;
+        _name = dict[_id].name;
+        _job = dict[_id].job;
+        // 대사
+        switch (_id)
+        {
+            case 0:
+                dialogDict = Managers.Data.DialogDict; // 대사 테스트
+                break;
+            default:
+                dialogDict = null;
+                break;
+        }
+
+        num_npc++; // static 변수 이용
     }
 
 
@@ -112,20 +136,51 @@ public class Npc : MonoBehaviour
         // 여기서 어떤 UI 뜰지 확인
     }
 
-    public void dialogue()
+    public int dialogue(int lineNum)
     {
         // 대화 시스템
         // json 파일 읽어서 진행
+        if(dialogDict != null)
+        {
+            Debug.Log(dialogDict[lineNum].script);
+            lineNum++;
+            if (lineNum == dialogDict.Count)
+                return -1;
+            else
+                return lineNum;
+        }
+
+        return -1;
+    }
+
+
+    IEnumerator turn()
+    {
+        float timeCount = 0.0f;
+        while(timeCount < 1.0f)
+        {
+            Quaternion lookOnlook = Quaternion.LookRotation(clickedPlayer.transform.position - this.transform.position);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, timeCount);
+            timeCount = Time.deltaTime * turnSpeed;
+            yield return null;
+        }
     }
 
     public void lookAtPlayer()
     {
         Debug.Log("플레이어 쳐다보기");
-        //Transform player;
-        //Quaternion lookOnlook = Quaternion.LookRotation(player.position - this.transform.position);
-        //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, Time.deltaTime * 5);
+        StartCoroutine(turn());
+
+        showNpcInfo();
     }
 
+    private void showNpcInfo()
+    {
+        // 확인용
+        Debug.Log(_id);
+        Debug.Log(_name);
+        Debug.Log(_job);
+    }
 
     public void stateMachine(Event inputEvent)
     {
@@ -133,7 +188,8 @@ public class Npc : MonoBehaviour
         // 외부에서 인자로 다음 이벤트 넣어줌
         Debug.Log($"현재 상태 : {curState}");
         Debug.Log($"입력된 이벤트 : {inputEvent}");
-
+        
+        StopAllCoroutines(); // 그 전 코루틴 꺼주기
 
         //  테이블에 정의된 각 행에 대해 비교
         for (int i = 0; i < table.Length; i++)
@@ -157,4 +213,5 @@ public class Npc : MonoBehaviour
         Debug.Log("트랜지션 완료");
         Debug.Log($"현재 상태 : {curState}");
     }
+    
 }
