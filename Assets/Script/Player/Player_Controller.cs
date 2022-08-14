@@ -40,7 +40,6 @@ public class Player_Controller : MonoBehaviour
     private Npc npc;
     private float turnSpeed = 4.0f;
     private float turnTimeCount = 0.0f;
-    private Coroutine co_turn;
 
     void Start()
     {
@@ -49,7 +48,6 @@ public class Player_Controller : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -78,7 +76,6 @@ public class Player_Controller : MonoBehaviour
             else
                 move(speed);
         }
-
     }
 
     public void Init()
@@ -153,7 +150,6 @@ public class Player_Controller : MonoBehaviour
                         toNpc = false;
                         if (!ui_Dialogue)
                         {
-                            //co_turn = StartCoroutine(turn());
                             npc.clickedPlayer = player; // npc한테 플레이어 넘겨줌
                             npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                             ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
@@ -501,7 +497,7 @@ public class Player_Controller : MonoBehaviour
             turnTimeCount = Time.deltaTime * turnSpeed;
             yield return null;
         }
-
+        yield break;
     }
 
 

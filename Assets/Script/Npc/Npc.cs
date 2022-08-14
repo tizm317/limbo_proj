@@ -13,7 +13,7 @@ public class Npc : MonoBehaviour
     // attributes
     static int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
     int _id;            // id
-    string _name;       // 이름
+    public string _name { get; private set; }       // 이름
     string _job;
     string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
     float _moveSpeed;   // 이동 속도
