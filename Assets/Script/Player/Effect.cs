@@ -1,17 +1,14 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Effect : MonoBehaviour
 {
     // Start is called before the first frame update
-    GameObject obj, grand_parent,parent;
-    void Awake()
-    {
-        
-    }
+    GameObject grand_parent,parent;
+    GameObject[] obj = new GameObject[12];
     void Start()
     {
-        //StartCoroutine(Play_Effect());
+        Play_Effect();
     }
     void Update()
     {
@@ -21,7 +18,7 @@ public class Effect : MonoBehaviour
 
     void Play_Effect()
     {
-        obj = Resources.Load<GameObject>("Prefabs/Shard");
+        obj = Resources.LoadAll<GameObject>("Prefabs/Effect/Crust");
         grand_parent = GameObject.Find("Effect");
         if(grand_parent==null)
             grand_parent = new GameObject("Effect");
@@ -30,37 +27,39 @@ public class Effect : MonoBehaviour
         int count = Random.Range(15, 25);
         for(int i = 0; i < count; i++)
         {
-            GameObject temp = Instantiate(obj);
+            GameObject temp = Instantiate(obj[(int)Random.Range(0,12)]);
             temp.transform.SetParent(parent.transform);
             temp.name = i.ToString();
-            temp.transform.localScale += new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f));
+            temp.transform.localScale = new Vector3(Random.Range(0,0.05f),Random.Range(0,0.05f),Random.Range(0,0.05f));
             Rigidbody rigid = temp.GetComponent<Rigidbody>();
-            rigid.AddForce(new Vector3(Random.Range(-0.5f,0.5f),1,Random.Range(-0.5f,0.5f)) * Random.Range(0f,1f),ForceMode.Impulse);
+            rigid.AddForce(new Vector3(Random.Range(-1f,1f),0.5f,Random.Range(-1f,1f)) * Random.Range(0f,1f),ForceMode.Impulse);
         }
-        StartCoroutine(CameraShake(0.5f));
-        StartCoroutine(Destroy_Effect(parent));
+        StartCoroutine(CameraShake(1f,parent));
     }
 
-    IEnumerator Destroy_Effect(GameObject p)
-    {
-        yield return new WaitForSeconds(2f);
-        Destroy(p);
-    }
-
-    IEnumerator CameraShake(float duration)
+    IEnumerator CameraShake(float duration,GameObject p)
     {
         Vector3 original_position = Camera.main.transform.position;
         float time = 0f;
+        float range = 0.2f;
         while(time < duration)
         {
+            Vector3 new_pos = original_position;
             if(Camera.main.transform.position != original_position)
-                Camera.main.transform.position = original_position;
+                new_pos = original_position;
             else
-                Camera.main.transform.position += new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0);
-            time += 0.05f;
-            Debug.Log(time);
+                new_pos = original_position +new Vector3((Random.Range(-1f,1)>0)?range:-range,(Random.Range(-1f,1)>0)?range:-range,0);
+            Camera.main.transform.position = new_pos;
             yield return new WaitForSeconds(0.1f);
+            time += 0.1f;           
         }
-        Camera.main.transform.position = original_position;
+        
+        if(Camera.main.transform.position != original_position)
+        {
+            Camera.main.transform.position = original_position;
+        }
+        yield return new WaitForSeconds(0.5f);
+        Destroy(p);
     }
+    
 }

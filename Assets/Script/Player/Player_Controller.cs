@@ -301,9 +301,10 @@ public class Player_Controller : MonoBehaviour
 
                     Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
 
-                    enemy_Ani.SetTrigger("isDead");
 
-                    Destroy(my_enemy[0], 2);
+                    enemy_Ani.SetTrigger("isDead");
+                    Managers.Resource.Destroy(my_enemy[0]);
+                    //Destroy(my_enemy[0], 2);
                     GameObject temp = my_enemy[0];
                     bool check = true;;
                     my_enemy.Clear();
@@ -327,7 +328,8 @@ public class Player_Controller : MonoBehaviour
             isAttack = false;
         }
     }
-    
+
+
     IEnumerator Dash(float x)
     {
         if(dash_cool)//쿨타임이 도는중인지 먼저 확인
@@ -399,7 +401,9 @@ public class Player_Controller : MonoBehaviour
                     {
                         Animator enemy_Ani = a.GetComponent<Animator>();
                         enemy_Ani.SetTrigger("isDead");
-                        Destroy(a, 2);
+                        Managers.Resource.Destroy(a);
+                        //Destroy(a, 2);
+                        
                     }
                         
                 }

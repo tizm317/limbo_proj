@@ -82,15 +82,13 @@ public class Enemy_Skeleton : Enemy
     protected override void UpdateHit()
     {
         Debug.Log("enemy UpdateHit(damage)");
-        //State = Define.State.Hit; 
+        State = Define.State.Hit; 
 
     }
 
     protected override void UpdateDie()
     {
-        Debug.Log("die");
-        if (_stat.Hp <= 0)
-            State = Define.State.Die;
+        State = Define.State.Die;
 
     }
 
