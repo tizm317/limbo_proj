@@ -37,6 +37,8 @@ public class DataManager
     public Dictionary<int, Data.Npc> NpcDict { get; private set; } = new Dictionary<int, Data.Npc>();
 
     public Dictionary<int, Data.Dialog> DialogDict { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
+    public Dictionary<int, Data.Dialog> DialogDict2 { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
+
 
     public void Init()
     {
@@ -46,6 +48,11 @@ public class DataManager
         NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
         DialogDict = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict(); // 테스트용
         // (추가 하는 부분)
+
+        // csv 파일 파싱 테스트 (csv to json 파일 저장)
+        //ParseTextData("test");
+        DialogDict2 = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict(); // 테스트용
+
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
         //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
@@ -185,6 +192,63 @@ public class DataManager
         // 유니티 json 파싱 제공
         // FromJson : json -> class로 <-> ToJson
         return JsonUtility.FromJson<Loader>(textAsset.text);
+    }
+
+    [Serializable]
+    public class ContainerTextData
+    {
+        // container for textData
+        public TextData[] dialogs;
+    }
+    [Serializable]
+    public class TextData
+    {
+        public int lineNum;
+        public string name;
+        public string script;
+    }
+
+    public void ParseTextData(string path)
+    {
+        Debug.Log("Parsing Test");
+
+        // csv 파일 읽기
+        // csv to json
+        List<TextData> textDatas = new List<TextData>();
+        ContainerTextData container = new ContainerTextData();
+
+        TextAsset textAsset = Resources.Load<TextAsset>($"Data/{path}");
+        // , \r\n 으로 구분
+
+        // \n 으로 구분 -> 줄(행) 단위 구분
+        string[] rows = textAsset.text.Split('\n');
+        
+        // '\r' -> '' 교체 + ',' 로 열 구분
+        for(int i = 1; i < rows.Length; i++)
+        {
+            string[] cols = rows[i].Replace("\r", "").Split(',');
+
+            // list 에 넣어주기
+            textDatas.Add(new TextData()
+            {
+                lineNum = i - 1,
+                name = cols[0],
+                script = cols[1],
+            });
+
+            Debug.Log($"{textDatas[i-1].lineNum} | {textDatas[i - 1].name} : {textDatas[i - 1].script}");
+        }
+
+        // 직접적으로 변환이 안되어서 감싸주는 형태로..
+        container.dialogs = textDatas.ToArray();
+        string json = JsonUtility.ToJson(container);
+        //Debug.Log(json);
+
+
+        // json 으로 저장 (이름은 csv 파일 그대로)
+        path = $"Assets/Resources/Data/{path}.json";
+        File.WriteAllText(path, json);
+
     }
 
     // 저장 기능 (MakeList , Savejson)

@@ -22,6 +22,8 @@ public class UI_Dialogue : UI_Popup
         DialogueText,
         TradeText,
         EndText,
+        ScriptText,
+        SpeakerNameText,
     }
 
     enum GameObjects
@@ -55,6 +57,10 @@ public class UI_Dialogue : UI_Popup
         GetButton((int)Buttons.TradeButton).gameObject.BindEvent(startTrade);
         GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
 
+        // 대사 초기화
+        GetText((int)Texts.ScriptText).text = "";
+        GetText((int)Texts.SpeakerNameText).text = "";
+
         isOn = true;
 
     }
@@ -67,7 +73,20 @@ public class UI_Dialogue : UI_Popup
         {
             Debug.Log("대화");
             npc.stateMachine(Npc.Event.EVENT_PUSH_DIALOGUE);
-            lineNum = npc.dialogue(lineNum);
+            //lineNum = npc.dialogue(lineNum);
+
+            // 받아온 게 null 이면 대화 끝이라 가정 lineNum을 -1로 세팅해서 종료시킴
+            if (npc.getSpeakersNScripts(lineNum) != null)
+            {
+                // Speaker Name
+                GetText((int)Texts.SpeakerNameText).text = (npc.getSpeakersNScripts(lineNum).Item1 + ":");
+                // Script
+                GetText((int)Texts.ScriptText).text = npc.getSpeakersNScripts(lineNum).Item2;
+                lineNum++;
+            }
+            else
+                lineNum = -1;
+            
         }
 
         // 대화 끝 : 버튼 비활성화

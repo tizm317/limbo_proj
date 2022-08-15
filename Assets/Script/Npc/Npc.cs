@@ -94,7 +94,7 @@ public class Npc : MonoBehaviour
     };
 
 
-    public void Start()
+    public void Awake()
     {
         Init();
     }
@@ -117,6 +117,9 @@ public class Npc : MonoBehaviour
         switch (_id)
         {
             case 0:
+                dialogDict = Managers.Data.DialogDict2;
+                break;
+            case 1:
                 dialogDict = Managers.Data.DialogDict; // 대사 테스트
                 break;
             default:
@@ -136,22 +139,42 @@ public class Npc : MonoBehaviour
         // 여기서 어떤 UI 뜰지 확인
     }
 
-    public int dialogue(int lineNum)
+    public Tuple<string ,string> getSpeakersNScripts(int lineNum)
     {
-        // 대화 시스템
-        // json 파일 읽어서 진행
-        if(dialogDict != null)
-        {
-            Debug.Log(dialogDict[lineNum].script);
-            lineNum++;
-            if (lineNum == dialogDict.Count)
-                return -1;
-            else
-                return lineNum;
-        }
+        // return Speaker's name and scripts using tuple
 
-        return -1;
+        if (dialogDict != null)
+        {
+            if (lineNum >= dialogDict.Count)
+                return null;
+
+            return Tuple.Create(dialogDict[lineNum].name, dialogDict[lineNum].script);
+        }
+        return null;
     }
+    // 여기서 하는 것보다 UI쪽에서 출력하는 것이 맞다 판단
+    // 대사만 넘겨주는 게 맞아보임
+    //public int dialogue(int lineNum)
+    //{
+    //    // 대화 시스템
+    //    // json 파일 읽어서 진행
+    //    // Debug.log 로 대사 출력하고
+    //    // lineNum 증가시켜주고 리턴함
+    //    // 다 읽으면 -1 리턴
+
+
+    //    if(dialogDict != null)
+    //    {
+    //        Debug.Log($"{dialogDict[lineNum].name} : {dialogDict[lineNum].script}");
+    //        lineNum++;
+    //        if (lineNum == dialogDict.Count)
+    //            return -1;
+    //        else
+    //            return lineNum;
+    //    }
+
+    //    return -1;
+    //}
 
 
     IEnumerator turn()
@@ -176,7 +199,7 @@ public class Npc : MonoBehaviour
 
     private void showNpcInfo()
     {
-        // 확인용
+        // 디버깅용
         Debug.Log(_id);
         Debug.Log(_name);
         Debug.Log(_job);

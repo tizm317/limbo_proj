@@ -105,6 +105,7 @@ namespace Data
     public class Dialog
     {
         public int lineNum;
+        public string name;
         public string script;
     }
 

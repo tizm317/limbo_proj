@@ -40,16 +40,35 @@ public class Player_Controller : MonoBehaviour
     private Npc npc;
     private float turnSpeed = 4.0f;
     private float turnTimeCount = 0.0f;
+    private bool isTurning = false;
+    private Coroutine co_turn;
+    private IEnumerator enumerator;
 
     void Start()
     {
         
         Init();
-
+        enumerator = turn();
     }
 
     void Update()
     {
+        if(isTurning)
+        {
+            StartCoroutine(enumerator);
+            //if (co_turn == null)
+            //    co_turn = StartCoroutine("turn");
+        }
+        else
+        {
+            StopCoroutine(enumerator);
+            //if (co_turn != null)
+            //{
+            //    StopCoroutine(co_turn);
+            //    co_turn = null;
+            //}
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         else if(Input.GetKeyDown(KeyCode.R))
@@ -67,9 +86,15 @@ public class Player_Controller : MonoBehaviour
         {
 
             if (ui_Dialogue && ui_Dialogue.isOn)
+            {
                 cam.GetComponent<Camera_Controller>().FOV_Control(45);
+                isTurning = true;
+            }
             else
+            {
                 cam.GetComponent<Camera_Controller>().FOV_Control(60);
+                isTurning = false;
+            }
 
             if (toNpc)
                 move2Npc(speed, audibleDistance);
@@ -146,6 +171,8 @@ public class Player_Controller : MonoBehaviour
                     else
                     {
                         //player.transform.LookAt(hit.collider.transform.position); // npc 쳐다보기
+                        //isTurning = true;
+                        //Debug.Log(isTurning);
                         npcPos = hit.collider.transform.position;
                         toNpc = false;
                         if (!ui_Dialogue)
@@ -488,7 +515,8 @@ public class Player_Controller : MonoBehaviour
 
     IEnumerator turn()
     {
-        
+        //isTurning = true;
+        Debug.Log("코루틴 돌기 시작");
         turnTimeCount = 0.0f;
         while (turnTimeCount < 1.0f)
         {
@@ -497,7 +525,8 @@ public class Player_Controller : MonoBehaviour
             turnTimeCount = Time.deltaTime * turnSpeed;
             yield return null;
         }
-        yield break;
+        isTurning = false;
+        Debug.Log("코루틴 끝");
     }
 
 
