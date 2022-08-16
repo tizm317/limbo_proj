@@ -76,12 +76,12 @@ public class UI_Dialogue : UI_Popup
             //lineNum = npc.dialogue(lineNum);
 
             // 받아온 게 null 이면 대화 끝이라 가정 lineNum을 -1로 세팅해서 종료시킴
-            if (npc.getSpeakersNScripts(lineNum) != null)
+            if (npc.getSpeakersNScripts(npc._id.ToString(), lineNum) != null)
             {
                 // Speaker Name
-                GetText((int)Texts.SpeakerNameText).text = (npc.getSpeakersNScripts(lineNum).Item1 + ":");
+                GetText((int)Texts.SpeakerNameText).text = (npc.getSpeakersNScripts(npc._id.ToString(), lineNum).Item1 + ":");
                 // Script
-                GetText((int)Texts.ScriptText).text = npc.getSpeakersNScripts(lineNum).Item2;
+                GetText((int)Texts.ScriptText).text = npc.getSpeakersNScripts(npc._id.ToString(), lineNum).Item2;
                 lineNum++;
             }
             else
@@ -98,6 +98,8 @@ public class UI_Dialogue : UI_Popup
     {
         // 거래
         Debug.Log("거래");
+        npc.stateMachine(Npc.Event.EVENT_PUSH_SHOP);
+
     }
 
     public void endButtonClicked(PointerEventData data)

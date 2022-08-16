@@ -12,7 +12,7 @@ public class Npc : MonoBehaviour
 
     // attributes
     static int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
-    int _id;            // id
+    public int _id { get; private set; }            // id
     public string _name { get; private set; }       // 이름
     string _job;
     string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
@@ -30,11 +30,11 @@ public class Npc : MonoBehaviour
     public enum State
     {
         // 기본
-        STATE_READY,
+        STATE_IDLE,
         STATE_NPC_UI_POPUP,
         STATE_DIALOGUE,
         // 상점
-        //STATE_SHOP_UI_POPUP,
+        STATE_SHOP_UI_POPUP,
         //STATE_BUY_UI_POPUP,
         //STATE_SELL_UI_POPUP,
         //// 창고
@@ -52,12 +52,12 @@ public class Npc : MonoBehaviour
         //EVENT_OTHER_DIALOGUE,
         EVENT_QUIT_DIALOGUE,
         // 상점
-        //EVENT_PUSH_SHOP,
+        EVENT_PUSH_SHOP,
         //EVENT_PUSH_BUY,
         //EVENT_QUIT_BUY,
         //EVENT_PUSH_SELL,
         //EVENT_QUIT_SELL,
-        //EVENT_QUIT_SHOP,
+        EVENT_QUIT_SHOP,
         // 창고
         // ...
         // 퀘스트
@@ -87,10 +87,12 @@ public class Npc : MonoBehaviour
 
     EventActionTable[] table = new EventActionTable[]
     {
-        new EventActionTable(State.STATE_READY, Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, State.STATE_NPC_UI_POPUP),
+        new EventActionTable(State.STATE_IDLE, Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, State.STATE_NPC_UI_POPUP),
         new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_DIALOGUE, null, State.STATE_DIALOGUE),
-        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_QUIT_DIALOGUE, null, State.STATE_READY),
-        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_READY),
+        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_QUIT_DIALOGUE, null, State.STATE_IDLE),
+        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_IDLE),
+        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_SHOP,  null, State.STATE_SHOP_UI_POPUP),
+        new EventActionTable(State.STATE_SHOP_UI_POPUP, Event.EVENT_QUIT_SHOP,  null, State.STATE_NPC_UI_POPUP),
     };
 
 
@@ -102,30 +104,40 @@ public class Npc : MonoBehaviour
     void Init()
     {
         //
-        curState = State.STATE_READY;
+        curState = State.STATE_IDLE;
 
         // action 등록...
         table[0]._action -= lookAtPlayer;
         table[0]._action += lookAtPlayer;
+
 
         // Npc 정보 읽기
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
         _id = dict[num_npc].id;
         _name = dict[_id].name;
         _job = dict[_id].job;
-        // 대사
-        switch (_id)
-        {
-            case 0:
-                dialogDict = Managers.Data.DialogDict2;
-                break;
-            case 1:
-                dialogDict = Managers.Data.DialogDict; // 대사 테스트
-                break;
-            default:
-                dialogDict = null;
-                break;
-        }
+
+        //// 대사 (이건 지금 딱 1개 대사 딕셔너리만 가져오는 상황.. / 실제로는 여러개)
+        //if (_id < Managers.Data.Dict_DialogDict.Count)
+        //{
+        //    dialogDict = Managers.Data.Dict_DialogDict[_id.ToString()];
+        //}
+        //else
+        //    dialogDict = null;
+        //switch (_id)
+        //{
+        //    case 0:
+        //        dialogDict = Managers.Data.Dict_DialogDict[_id];
+        //        //dialogDict = Managers.Data.DialogDict2;
+        //        break;
+        //    case 1:
+        //        dialogDict = Managers.Data.Dict_DialogDict[_id];
+        //        dialogDict = Managers.Data.DialogDict; // 대사 테스트
+        //        break;
+        //    default:
+        //        dialogDict = null;
+        //        break;
+        //}
 
         num_npc++; // static 변수 이용
     }
@@ -137,6 +149,22 @@ public class Npc : MonoBehaviour
         // 클릭되어서 npc UI 뜨는거
         // 맨 처음
         // 여기서 어떤 UI 뜰지 확인
+    }
+
+
+    public Tuple<string, string> getSpeakersNScripts(string key, int lineNum)
+    {
+        // key 로 상황에 맞는 대사 가져옴
+        // return Speaker's name and scripts using tuple
+        
+        if (Managers.Data.Dict_DialogDict.ContainsKey(key))
+        {
+            if (lineNum >= Managers.Data.Dict_DialogDict[key].Count)
+                return null;
+
+            return Tuple.Create(Managers.Data.Dict_DialogDict[key][lineNum].name, Managers.Data.Dict_DialogDict[key][lineNum].script);
+        }
+        return null;
     }
 
     public Tuple<string ,string> getSpeakersNScripts(int lineNum)
