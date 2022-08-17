@@ -14,7 +14,8 @@ public class Npc : MonoBehaviour
     static int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
     public int _id { get; private set; }            // id
     public string _name { get; private set; }       // 이름
-    string _job;
+    public string _job { get; private set; }
+
     string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
     float _moveSpeed;   // 이동 속도
     bool _isPatrol;     // 패트롤여부
@@ -25,6 +26,8 @@ public class Npc : MonoBehaviour
 
     Dictionary<int, Data.Dialog> dialogDict;
 
+    UI_Dialogue _UI_Dialogue;
+    UI_Shop _UI_Shop;
 
     // state
     public enum State
@@ -48,6 +51,7 @@ public class Npc : MonoBehaviour
     {
         // 기본 NPC EVENT
         EVENT_NPC_CLICKED_IN_DISTANCE,
+        //EVENT_QUIT_UI_POPUP,
         EVENT_PUSH_DIALOGUE,
         //EVENT_OTHER_DIALOGUE,
         EVENT_QUIT_DIALOGUE,
@@ -88,10 +92,14 @@ public class Npc : MonoBehaviour
     EventActionTable[] table = new EventActionTable[]
     {
         new EventActionTable(State.STATE_IDLE, Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, State.STATE_NPC_UI_POPUP),
+
         new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_DIALOGUE, null, State.STATE_DIALOGUE),
-        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_QUIT_DIALOGUE, null, State.STATE_IDLE),
-        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_IDLE),
         new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_SHOP,  null, State.STATE_SHOP_UI_POPUP),
+        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_QUIT_DIALOGUE, null, State.STATE_IDLE),
+
+        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_PUSH_DIALOGUE,  null, State.STATE_DIALOGUE),
+        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_NPC_UI_POPUP),
+
         new EventActionTable(State.STATE_SHOP_UI_POPUP, Event.EVENT_QUIT_SHOP,  null, State.STATE_NPC_UI_POPUP),
     };
 
@@ -110,6 +118,12 @@ public class Npc : MonoBehaviour
         table[0]._action -= lookAtPlayer;
         table[0]._action += lookAtPlayer;
 
+
+        table[2]._action -= shop;
+        table[2]._action += shop;
+
+        table[6]._action -= closeShopUI;
+        table[6]._action += closeShopUI;
 
         // Npc 정보 읽기
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
@@ -182,27 +196,33 @@ public class Npc : MonoBehaviour
     }
     // 여기서 하는 것보다 UI쪽에서 출력하는 것이 맞다 판단
     // 대사만 넘겨주는 게 맞아보임
-    //public int dialogue(int lineNum)
-    //{
-    //    // 대화 시스템
-    //    // json 파일 읽어서 진행
-    //    // Debug.log 로 대사 출력하고
-    //    // lineNum 증가시켜주고 리턴함
-    //    // 다 읽으면 -1 리턴
+    public void dialogue(int lineNum)
+    {
+        // 대화 시스템
+        // json 파일 읽어서 진행
+        // Debug.log 로 대사 출력하고
+        // lineNum 증가시켜주고 리턴함
+        // 다 읽으면 -1 리턴
 
 
-    //    if(dialogDict != null)
-    //    {
-    //        Debug.Log($"{dialogDict[lineNum].name} : {dialogDict[lineNum].script}");
-    //        lineNum++;
-    //        if (lineNum == dialogDict.Count)
-    //            return -1;
-    //        else
-    //            return lineNum;
-    //    }
+        if (dialogDict != null)
+        {
+            //Debug.Log($"{dialogDict[lineNum].name} : {dialogDict[lineNum].script}");
+            lineNum++;
+            if (lineNum == dialogDict.Count)
+            {
+                
+            }
+                //return -1;
+            else
+            {
 
-    //    return -1;
-    //}
+            }
+                //return lineNum;
+        }
+
+        //return -1;
+    }
 
 
     IEnumerator turn()
@@ -265,4 +285,22 @@ public class Npc : MonoBehaviour
         Debug.Log($"현재 상태 : {curState}");
     }
     
+    public void connectUI(UI_Dialogue uI_Dialogue)
+    {
+        _UI_Dialogue = uI_Dialogue;
+
+        table[5]._action -= _UI_Dialogue.dialogEnd;
+        table[5]._action += _UI_Dialogue.dialogEnd;
+    }
+
+    public void shop()
+    {
+        _UI_Shop = Managers.UI.ShowPopupUI<UI_Shop>();
+        _UI_Shop.getNpcInfo(this);
+    }
+
+    public void closeShopUI()
+    {
+        _UI_Shop.ClosePopupUI();
+    }
 }

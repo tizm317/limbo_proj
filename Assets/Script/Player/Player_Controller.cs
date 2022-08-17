@@ -181,6 +181,7 @@ public class Player_Controller : MonoBehaviour
                             npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                             ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
                             ui_Dialogue.getNpcInfo(npc);
+                            npc.connectUI(ui_Dialogue);
                         }
 
                     }
@@ -510,6 +511,7 @@ public class Player_Controller : MonoBehaviour
                 npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                 ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
                 ui_Dialogue.getNpcInfo(npc);
+                npc.connectUI(ui_Dialogue);
             }
         }
         else

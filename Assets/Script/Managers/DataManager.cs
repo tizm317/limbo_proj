@@ -54,7 +54,7 @@ public class DataManager
 
         // 대사 딕셔너리
         Dict_DialogDict["0"] = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict();
-        //Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
 
 
 
@@ -207,7 +207,7 @@ public class DataManager
     [Serializable]
     public class TextData
     {
-        public int lineNum;
+        public string lineNum;
         public string name;
         public string script;
     }
@@ -236,7 +236,7 @@ public class DataManager
             // list 에 넣어주기
             textDatas.Add(new TextData()
             {
-                lineNum = i - 1,
+                lineNum = (i - 1).ToString(),
                 name = cols[0],
                 script = cols[1],
             });
