@@ -36,9 +36,11 @@ public class DataManager
 
     public Dictionary<int, Data.Npc> NpcDict { get; private set; } = new Dictionary<int, Data.Npc>();
 
-    public Dictionary<int, Data.Dialog> DialogDict { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
-    public Dictionary<int, Data.Dialog> DialogDict2 { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
+    //public Dictionary<int, Data.Dialog> DialogDict { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
+    //public Dictionary<int, Data.Dialog> DialogDict2 { get; private set; } = new Dictionary<int, Data.Dialog>(); // 테스트용
 
+    // 상황별 대사 딕셔너리 모아둔 전체 딕셔너리
+    public Dictionary<string, Dictionary<int, Data.Dialog>> Dict_DialogDict { get; private set; } = new Dictionary<string, Dictionary<int, Data.Dialog>>();
 
     public void Init()
     {
@@ -46,12 +48,14 @@ public class DataManager
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
         NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
-        DialogDict = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict(); // 테스트용
-        // (추가 하는 부분)
 
         // csv 파일 파싱 테스트 (csv to json 파일 저장)
         //ParseTextData("test");
-        DialogDict2 = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict(); // 테스트용
+
+        // 대사 딕셔너리
+        Dict_DialogDict["0"] = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict();
+        Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+
 
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
@@ -203,14 +207,15 @@ public class DataManager
     [Serializable]
     public class TextData
     {
-        public int lineNum;
+        public string lineNum;
         public string name;
         public string script;
     }
 
     public void ParseTextData(string path)
     {
-        Debug.Log("Parsing Test");
+        Debug.Log("CSV To JSON");
+
 
         // csv 파일 읽기
         // csv to json
@@ -231,7 +236,7 @@ public class DataManager
             // list 에 넣어주기
             textDatas.Add(new TextData()
             {
-                lineNum = i - 1,
+                lineNum = (i - 1).ToString(),
                 name = cols[0],
                 script = cols[1],
             });

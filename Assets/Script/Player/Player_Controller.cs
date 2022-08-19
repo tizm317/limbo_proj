@@ -32,43 +32,24 @@ public class Player_Controller : MonoBehaviour
     private Animator ani;
     public GameObject potal;
 
-    // npc 한테 이동
+    // go to NPC
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
-    private UI_Dialogue ui_Dialogue;
     private bool toNpc = false;
     private Vector3 npcPos;
     private Npc npc;
+    // turn To NPC
     private float turnSpeed = 4.0f;
     private float turnTimeCount = 0.0f;
     private bool isTurning = false;
-    private Coroutine co_turn;
-    private IEnumerator enumerator;
+    private IEnumerator enumerator; // turnToNPC 코루틴용
 
     void Start()
     {
-        
         Init();
-        enumerator = turn();
     }
 
     void Update()
     {
-        if(isTurning)
-        {
-            StartCoroutine(enumerator);
-            //if (co_turn == null)
-            //    co_turn = StartCoroutine("turn");
-        }
-        else
-        {
-            StopCoroutine(enumerator);
-            //if (co_turn != null)
-            //{
-            //    StopCoroutine(co_turn);
-            //    co_turn = null;
-            //}
-        }
-
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         else if(Input.GetKeyDown(KeyCode.R))
@@ -84,23 +65,30 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
-
-            if (ui_Dialogue && ui_Dialogue.isOn)
-            {
-                cam.GetComponent<Camera_Controller>().FOV_Control(45);
-                isTurning = true;
-            }
-            else
-            {
-                cam.GetComponent<Camera_Controller>().FOV_Control(60);
-                isTurning = false;
-            }
-
+            // NPC한테 이동하는지
             if (toNpc)
                 move2Npc(speed, audibleDistance);
             else
                 move(speed);
         }
+
+        // NPC 대화 상호작용
+        if (npc && npc.ui_dialogue_ison)
+        {
+            cam.GetComponent<Camera_Controller>().FOV_Control(45);
+            isTurning = true;
+        }
+        else
+        {
+            cam.GetComponent<Camera_Controller>().FOV_Control(60);
+            isTurning = false;
+        }
+
+        // 플레이어 NPC 바라보는 코루틴
+        if (isTurning)
+            StartCoroutine(enumerator);
+        else
+            StopCoroutine(enumerator);
     }
 
     public void Init()
@@ -113,6 +101,8 @@ public class Player_Controller : MonoBehaviour
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
+
+        enumerator = turnToNPC(); // 코루틴
     }
 
     private void Enemy_Update()
@@ -127,7 +117,8 @@ public class Player_Controller : MonoBehaviour
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
-        if (ui_Dialogue)
+        // NPC와 상호작용 중
+        if (npc && npc.ui_dialogue_ison)
             return;
 
         if(!on_skill)
@@ -143,17 +134,11 @@ public class Player_Controller : MonoBehaviour
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
                     my_enemy.Clear();//다시 땅 찍으면 타게팅을 풀어줌
                     stat.Clear();//저장해둔 스텟도 지워줌
-
-                    toNpc = false;
-
                 }
                 else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
                 {
                     Lock_On(hit.transform.gameObject);//타게팅용
                     Set_Destination(my_enemy[0].GetComponent<Transform>().position);
-
-                    toNpc = false;
-
                 }
                 else if (hit.collider.tag == "NPC")
                 {
@@ -165,31 +150,24 @@ public class Player_Controller : MonoBehaviour
                     float dist = Vector3.Distance(player.transform.position, hit.collider.transform.position);
                     if(dist > audibleDistance)
                     {
+                        // 대화 가능 범위보다 멀리 있는 경우
+                        // NPC2Move 로 이동
                         Set_Destination(hit.collider.transform.position);
                         toNpc = true;
                     }
                     else
                     {
-                        //player.transform.LookAt(hit.collider.transform.position); // npc 쳐다보기
-                        //isTurning = true;
-                        //Debug.Log(isTurning);
+                        // 대화 가능 범위 내
+                        // 바로 NPC와 대화 상호작용
                         npcPos = hit.collider.transform.position;
                         toNpc = false;
-                        if (!ui_Dialogue)
-                        {
-                            npc.clickedPlayer = player; // npc한테 플레이어 넘겨줌
-                            npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
-                            ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
-                            ui_Dialogue.getNpcInfo(npc);
-                        }
 
+                        npc.getPlayer(player); // npc한테 플레이어 넘겨줌
+                        npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }
                 }
                 else
-                {
-                    toNpc = false;
                     return;
-                }
             }
         }
     }
@@ -499,27 +477,22 @@ public class Player_Controller : MonoBehaviour
         if (dist < arrivalRange)
         {
             // 도착
-            //player.transform.LookAt(destination[0]); // npc 쳐다보기
             npcPos = destination[0];
             toNpc = false;
             destination.Clear();
-            if (!ui_Dialogue)
-            {
-                npc.clickedPlayer = player; // npc한테 플레이어 넘겨줌
-                npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
-                ui_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
-                ui_Dialogue.getNpcInfo(npc);
-            }
+
+            npc.getPlayer(player); 
+            npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
         }
         else
             move(speed, arrivalRange);
     }
     #endregion
 
-    IEnumerator turn()
+    IEnumerator turnToNPC()
     {
-        //isTurning = true;
-        Debug.Log("코루틴 돌기 시작");
+        // 플레이어가 NPC 바라보는 코루틴
+        //Debug.Log("코루틴 돌기 시작");
         turnTimeCount = 0.0f;
         while (turnTimeCount < 1.0f)
         {
@@ -529,7 +502,7 @@ public class Player_Controller : MonoBehaviour
             yield return null;
         }
         isTurning = false;
-        Debug.Log("코루틴 끝");
+        //Debug.Log("코루틴 끝");
     }
 
 
