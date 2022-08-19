@@ -20,14 +20,15 @@ public class Npc : MonoBehaviour
     float _moveSpeed;   // 이동 속도
     bool _isPatrol;     // 패트롤여부
 
-    public GameObject clickedPlayer = null;
+    GameObject clickedPlayer = null;
     float turnSpeed = 4.0f;
     public State curState { get; set; }
 
     Dictionary<int, Data.Dialog> dialogDict;
 
     UI_Dialogue _UI_Dialogue;
-    UI_Shop _UI_Shop;
+    public bool ui_dialogue_ison { get; private set; } = false; // UI 켜졌는지 Player_Controller에서 확인하기 위함
+    UI_Shop _UI_Shop; 
 
     // state
     public enum State
@@ -93,12 +94,12 @@ public class Npc : MonoBehaviour
     {
         new EventActionTable(State.STATE_IDLE, Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, State.STATE_NPC_UI_POPUP),
 
-        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_DIALOGUE, null, State.STATE_DIALOGUE),
+        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_DIALOGUE, null, State.STATE_DIALOGUE), // 대화 시작
         new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_SHOP,  null, State.STATE_SHOP_UI_POPUP),
         new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_QUIT_DIALOGUE, null, State.STATE_IDLE),
 
-        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_PUSH_DIALOGUE,  null, State.STATE_DIALOGUE),
-        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_NPC_UI_POPUP),
+        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_PUSH_DIALOGUE,  null, State.STATE_DIALOGUE), // 대화중
+        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_NPC_UI_POPUP), // 대화 끝 : 초기화
 
         new EventActionTable(State.STATE_SHOP_UI_POPUP, Event.EVENT_QUIT_SHOP,  null, State.STATE_NPC_UI_POPUP),
     };
@@ -109,19 +110,31 @@ public class Npc : MonoBehaviour
         Init();
     }
 
+
     void Init()
     {
         //
         curState = State.STATE_IDLE;
 
-        // action 등록...
+        // action 등록
+
+        // NPC 상호작용 시작
         table[0]._action -= lookAtPlayer;
         table[0]._action += lookAtPlayer;
+        table[0]._action -= npcUIPopUp;
+        table[0]._action += npcUIPopUp;
+        table[0]._action -= showNpcInfo;
+        table[0]._action += showNpcInfo;
 
-
+        // NPC 거래 버튼 클릭
         table[2]._action -= shop;
         table[2]._action += shop;
 
+        // NPC 상호작용 끝
+        table[3]._action -= npcUIClose;
+        table[3]._action += npcUIClose;
+
+        // NPC 거래 끝
         table[6]._action -= closeShopUI;
         table[6]._action += closeShopUI;
 
@@ -160,9 +173,36 @@ public class Npc : MonoBehaviour
 
     public void npcUIPopUp()
     {
-        // 클릭되어서 npc UI 뜨는거
-        // 맨 처음
-        // 여기서 어떤 UI 뜰지 확인
+        // 클릭되어서 맨 처음 npc UI 뜨는거
+        _UI_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
+        if (_UI_Dialogue)
+            ui_dialogue_ison = true;
+        else
+        {
+            Debug.Log("Error : No UI_Dialogue");
+            return;
+        }
+
+        // UI 쪽도 NPC 정보 필요
+        _UI_Dialogue.getNpcInfo(this);
+
+        // NPC 대화
+        table[1]._action -= _UI_Dialogue.dialogue;
+        table[1]._action += _UI_Dialogue.dialogue;
+        table[4]._action -= _UI_Dialogue.dialogue;
+        table[4]._action += _UI_Dialogue.dialogue;
+
+        // NPC 대화 끝
+        table[5]._action -= _UI_Dialogue.dialogEnd;
+        table[5]._action += _UI_Dialogue.dialogEnd;
+    }
+
+    public void npcUIClose()
+    {
+        // npc UI 꺼짐
+        _UI_Dialogue.ClosePopupUI();
+        ui_dialogue_ison = false;
+        _UI_Dialogue = null;
     }
 
 
@@ -225,7 +265,7 @@ public class Npc : MonoBehaviour
     }
 
 
-    IEnumerator turn()
+    IEnumerator turnToPlayer()
     {
         float timeCount = 0.0f;
         while(timeCount < 1.0f)
@@ -240,9 +280,7 @@ public class Npc : MonoBehaviour
     public void lookAtPlayer()
     {
         Debug.Log("플레이어 쳐다보기");
-        StartCoroutine(turn());
-
-        showNpcInfo();
+        StartCoroutine(turnToPlayer());
     }
 
     private void showNpcInfo()
@@ -285,13 +323,6 @@ public class Npc : MonoBehaviour
         Debug.Log($"현재 상태 : {curState}");
     }
     
-    public void connectUI(UI_Dialogue uI_Dialogue)
-    {
-        _UI_Dialogue = uI_Dialogue;
-
-        table[5]._action -= _UI_Dialogue.dialogEnd;
-        table[5]._action += _UI_Dialogue.dialogEnd;
-    }
 
     public void shop()
     {
@@ -303,4 +334,11 @@ public class Npc : MonoBehaviour
     {
         _UI_Shop.ClosePopupUI();
     }
+
+    public void getPlayer(GameObject player)
+    {
+        // 상호작용하는 플레이어 정보 얻기 위함
+        clickedPlayer = player;
+    }
+
 }

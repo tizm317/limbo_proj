@@ -35,7 +35,6 @@ public class UI_Dialogue : UI_Popup
     {
     }
 
-    public bool isOn = false;
 
     Npc npc;
     int lineNum = 0;
@@ -61,8 +60,6 @@ public class UI_Dialogue : UI_Popup
         GetText((int)Texts.ScriptText).text = "";
         GetText((int)Texts.SpeakerNameText).text = "";
 
-        isOn = true;
-
     }
 
     public void startDialogue(PointerEventData data)
@@ -73,29 +70,11 @@ public class UI_Dialogue : UI_Popup
         {
             Debug.Log("대화");
             npc.stateMachine(Npc.Event.EVENT_PUSH_DIALOGUE);
-            //lineNum = npc.dialogue(lineNum);
-
-            // 받아온 게 null 이면 대화 끝이라 가정 lineNum을 -1로 세팅해서 종료시킴
-            //if (npc.getSpeakersNScripts(npc._id.ToString(), lineNum) != null)
-            //{
-            //    // Speaker Name
-            //    GetText((int)Texts.SpeakerNameText).text = (npc.getSpeakersNScripts(npc._id.ToString(), lineNum).Item1 + ":");
-            //    // Script
-            //    GetText((int)Texts.ScriptText).text = npc.getSpeakersNScripts(npc._id.ToString(), lineNum).Item2;
-            //    lineNum++;
-            //}
-            //else
-            //{
-            //    lineNum = -1;
-            //    GetText((int)Texts.ScriptText).text = "대화를 마쳤습니다.";
-            //    GetText((int)Texts.SpeakerNameText).text = "";
-            //}
-
         }
 
         // 대화 끝 : 버튼 비활성화
         if (lineNum == -1)
-            GetButton((int)Buttons.DialogueButton).gameObject.GetComponent<Button>().interactable = false;
+            GetButton((int)Buttons.DialogueButton).interactable = false;
     }
 
     public void startTrade(PointerEventData data)
@@ -109,14 +88,10 @@ public class UI_Dialogue : UI_Popup
     public void endButtonClicked(PointerEventData data)
     {
         npc.stateMachine(Npc.Event.EVENT_QUIT_DIALOGUE);
-        if(npc.curState == Npc.State.STATE_IDLE)
-            ClosePopupUI();
     }
 
     public override void ClosePopupUI()
     {
-        isOn = false;
-        //npc.stateMachine(Npc.Event.EVENT_QUIT_UI_POPUP);
         Managers.UI.ClosePopupUI(this);
     }
 
@@ -140,5 +115,24 @@ public class UI_Dialogue : UI_Popup
 
         // 대화 버튼 활성화
         GetButton((int)Buttons.DialogueButton).gameObject.GetComponent<Button>().interactable = true;
+    }
+
+    public void dialogue()
+    {
+        //받아온 게 null 이면 대화 끝이라 가정 lineNum을 - 1로 세팅해서 종료시킴
+        if (npc.getSpeakersNScripts(npc._id.ToString(), lineNum) != null)
+        {
+            // Speaker Name
+            GetText((int)Texts.SpeakerNameText).text = (npc.getSpeakersNScripts(npc._id.ToString(), lineNum).Item1 + ":");
+            // Script
+            GetText((int)Texts.ScriptText).text = npc.getSpeakersNScripts(npc._id.ToString(), lineNum).Item2;
+            lineNum++;
+        }
+        else
+        {
+            lineNum = -1;
+            GetText((int)Texts.ScriptText).text = "대화를 마쳤습니다.";
+            GetText((int)Texts.SpeakerNameText).text = "";
+        }
     }
 }
