@@ -301,8 +301,7 @@ public class Player_Controller : MonoBehaviour
 
                     Animator enemy_Ani = my_enemy[0].GetComponent<Animator>();
 
-
-                    enemy_Ani.SetTrigger("isDead");
+                    //enemy_Ani.SetTrigger("isDead");
                     Managers.Resource.Destroy(my_enemy[0]);
                     //Destroy(my_enemy[0], 2);
                     GameObject temp = my_enemy[0];
