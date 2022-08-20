@@ -40,7 +40,8 @@ public class UI_Dialogue : UI_Popup
     int lineNum = 0;
 
 
-    private void Awake()
+
+    private void Start()
     {
         Init();
     }
@@ -147,6 +148,8 @@ public class UI_Dialogue : UI_Popup
         switch(state)
         {
             case 1: // STATE_NPC_UI_POPUP
+                if (GetButton((int)Buttons.DialogueButton) == null) // null 레퍼 오류
+                    break;
                 GetButton((int)Buttons.DialogueButton).interactable = true;
                 GetButton((int)Buttons.TradeButton).interactable = true;
                 GetButton((int)Buttons.EndButton).interactable = true;
@@ -179,4 +182,5 @@ public class UI_Dialogue : UI_Popup
 
         }
     }
+
 }

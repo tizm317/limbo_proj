@@ -14,6 +14,8 @@ public class UI_InGame : UI_Scene
     UI_MiniMap miniMap;
     UI_Setting setting;
 
+    Player_Controller player;
+
     enum Buttons
     {
     }
@@ -41,6 +43,8 @@ public class UI_InGame : UI_Scene
         // 연결
         Managers.Input.KeyAction -= ControlPopUpUI;
         Managers.Input.KeyAction += ControlPopUpUI;
+
+        player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
     }
 
     private void OnApplicationQuit()
@@ -51,6 +55,10 @@ public class UI_InGame : UI_Scene
 
     void ControlPopUpUI()
     {
+        // NPC와 상호작용중이면 X
+        if (player.IsInteractWithNPC)
+            return;
+
         // 키보드 입력 -> 팝업UI On/Off
         if (Input.GetKeyDown(KeyCode.I))
         {

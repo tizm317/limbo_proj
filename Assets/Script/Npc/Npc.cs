@@ -28,7 +28,8 @@ public class Npc : MonoBehaviour
 
     UI_Dialogue _UI_Dialogue;
     public bool ui_dialogue_ison { get; private set; } = false; // UI 켜졌는지 Player_Controller에서 확인하기 위함
-    UI_Shop _UI_Shop; 
+    UI_Shop _UI_Shop;
+    UI_Inven _UI_Inven;
 
     // state
     public enum State
@@ -119,24 +120,27 @@ public class Npc : MonoBehaviour
         // action 등록
 
         // NPC 상호작용 시작
+        table[0]._action -= checkNCloseOtherPopUpUI;
+        table[0]._action += checkNCloseOtherPopUpUI;
         table[0]._action -= lookAtPlayer;
         table[0]._action += lookAtPlayer;
         table[0]._action -= npcUIPopUp;
         table[0]._action += npcUIPopUp;
         table[0]._action -= showNpcInfo;
         table[0]._action += showNpcInfo;
+        
 
         // NPC 거래 버튼 클릭
-        table[2]._action -= shop;
-        table[2]._action += shop;
+        table[2]._action -= ShowTradeUI;
+        table[2]._action += ShowTradeUI;
 
         // NPC 상호작용 끝
         table[3]._action -= npcUIClose;
         table[3]._action += npcUIClose;
 
         // NPC 거래 끝
-        table[6]._action -= closeShopUI;
-        table[6]._action += closeShopUI;
+        table[6]._action -= CloseTradeUI;
+        table[6]._action += CloseTradeUI;
 
         // Npc 정보 읽기
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
@@ -329,16 +333,36 @@ public class Npc : MonoBehaviour
     }
     
 
-    public void shop()
+    public void ShowTradeUI()
     {
+        // Shop UI
         _UI_Shop = Managers.UI.ShowPopupUI<UI_Shop>();
         _UI_Shop.getNpcInfo(this);
+
+        // Inventory UI
+        _UI_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
     }
 
-    public void closeShopUI()
+    public void CloseTradeUI()
     {
+        // Inventory UI
+        _UI_Inven.ClosePopupUI();
+        _UI_Inven = null;
+
+        // Shop UI
         _UI_Shop.ClosePopupUI();
+        _UI_Shop = null;
     }
+
+    public void checkNCloseOtherPopUpUI()
+    {
+        // Before interact with NPC
+        // check Other Popup UIs
+        // and Close them
+
+        Managers.UI.CloseAllPopupUI();
+    }
+
 
     public void getPlayer(GameObject player)
     {

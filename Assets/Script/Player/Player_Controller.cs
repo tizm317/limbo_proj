@@ -43,6 +43,9 @@ public class Player_Controller : MonoBehaviour
     private bool isTurning = false;
     private IEnumerator enumerator; // turnToNPC 코루틴용
 
+    // NPC하고 상호작용중인지 확인용
+    public bool IsInteractWithNPC { get; private set; }
+
     void Start()
     {
         Init();
@@ -76,11 +79,13 @@ public class Player_Controller : MonoBehaviour
         if (npc && npc.ui_dialogue_ison)
         {
             cam.GetComponent<Camera_Controller>().FOV_Control(45);
+            IsInteractWithNPC = true;
             isTurning = true;
         }
         else
         {
             cam.GetComponent<Camera_Controller>().FOV_Control(60);
+            IsInteractWithNPC = false;
             isTurning = false;
         }
 
