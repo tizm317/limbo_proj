@@ -8,6 +8,7 @@ public class UI_Popup : UI_Base
 
     // 참고 : 팝업 뜰 때, 뒤에 뜬 팝업 UI 클릭 못하도록 UI 프리팹에 Blocker 이미지(패널) 만들어서 막음
 
+
     public override void Init()
     {
         // 팝업 UI : Canvas 내 order 변경 요청

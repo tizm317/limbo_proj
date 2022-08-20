@@ -33,6 +33,11 @@ public class UI_Inven_Item : UI_Base
     CursorController cursorController;
     bool tryRemoving = false;
 
+    private void Start()
+    {
+        Init();
+    }
+
     public override void Init()
     {
         // ¹ÙÀÎµù

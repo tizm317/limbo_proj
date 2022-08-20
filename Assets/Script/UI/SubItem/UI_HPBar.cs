@@ -11,6 +11,11 @@ public class UI_HPBar : UI_Base
     }
     Stat _stat;
 
+    private void Start()
+    {
+        Init();
+    }
+
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));

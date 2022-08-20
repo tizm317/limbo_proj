@@ -315,6 +315,11 @@ public class Npc : MonoBehaviour
                         table[i]._action.Invoke();
                     // 테이블에 정의된 다음 상태로 현재 상태 변경
                     curState = table[i]._nextState;
+
+                    // 버튼 활성화 셋팅
+                    if (_UI_Dialogue)
+                        _UI_Dialogue.setButtons((int)curState);
+
                     break;
                 }
             }

@@ -12,6 +12,11 @@ public class UI_NpcName : UI_Base
         NameText,
     }
 
+    private void Start()
+    {
+        Init();
+    }
+
     public override void Init()
     {
         Bind<Text>(typeof(Texts));

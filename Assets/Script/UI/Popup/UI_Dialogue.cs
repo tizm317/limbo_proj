@@ -39,7 +39,8 @@ public class UI_Dialogue : UI_Popup
     Npc npc;
     int lineNum = 0;
 
-    private void Start()
+
+    private void Awake()
     {
         Init();
     }
@@ -56,6 +57,7 @@ public class UI_Dialogue : UI_Popup
         GetButton((int)Buttons.TradeButton).gameObject.BindEvent(startTrade);
         GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
 
+      
         // 대사 초기화
         GetText((int)Texts.ScriptText).text = "";
         GetText((int)Texts.SpeakerNameText).text = "";
@@ -73,8 +75,8 @@ public class UI_Dialogue : UI_Popup
         }
 
         // 대화 끝 : 버튼 비활성화
-        if (lineNum == -1)
-            GetButton((int)Buttons.DialogueButton).interactable = false;
+        //if (lineNum == -1)
+        //    GetButton((int)Buttons.DialogueButton).interactable = false;
     }
 
     public void startTrade(PointerEventData data)
@@ -133,6 +135,48 @@ public class UI_Dialogue : UI_Popup
             lineNum = -1;
             GetText((int)Texts.ScriptText).text = "대화를 마쳤습니다.";
             GetText((int)Texts.SpeakerNameText).text = "";
+        }
+    }
+
+    public void setButtons(int state)
+    {
+        // Set Buttons Active or Not
+        // At NPC's StateMachine
+
+        // getButton 막 써도 괜찮은가..?
+        switch(state)
+        {
+            case 1: // STATE_NPC_UI_POPUP
+                GetButton((int)Buttons.DialogueButton).interactable = true;
+                GetButton((int)Buttons.TradeButton).interactable = true;
+                GetButton((int)Buttons.EndButton).interactable = true;
+                break;
+            case 2: // STATE_DIALOGUE
+                GetButton((int)Buttons.TradeButton).interactable = false;
+                if (lineNum == -1)
+                {
+                    // 대사 끝
+                    GetButton((int)Buttons.DialogueButton).interactable = false;
+                    GetButton((int)Buttons.EndButton).interactable = true;
+                }
+                else
+                {
+                    GetButton((int)Buttons.DialogueButton).interactable = true;
+                    GetButton((int)Buttons.EndButton).interactable = false;
+                }
+                break;
+            case 3: // STATE_SHOP_UI_POPUP
+                GetButton((int)Buttons.DialogueButton).interactable = false;
+                GetButton((int)Buttons.TradeButton).interactable = false;
+                GetButton((int)Buttons.EndButton).interactable = false;
+                break;
+            default: // STATE_IDLE,
+                Debug.Log("디폴트");
+                GetButton((int)Buttons.DialogueButton).interactable = true;
+                GetButton((int)Buttons.TradeButton).interactable = true;
+                GetButton((int)Buttons.EndButton).interactable = true;
+                break;
+
         }
     }
 }
