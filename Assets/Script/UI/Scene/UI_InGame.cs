@@ -84,9 +84,17 @@ public class UI_InGame : UI_Scene
             // 미니맵 UI
             // off -> 최소 -> 중간 -> 최대 -> off
             if (!miniMap)
-                miniMap = Managers.UI.ShowPopupUI<UI_MiniMap>();
-            else
-                miniMap.SizeControl(); // 미니맵 크기 조절
+                miniMap = GetComponentInChildren<UI_MiniMap>();
+
+            if (miniMap.gameObject.activeInHierarchy == false)
+                miniMap.gameObject.SetActive(true);
+            
+            miniMap.SizeControl(); /////////////////////////////////////////////////////////
+
+            //if (!miniMap)
+            //    miniMap = Managers.UI.ShowPopupUI<UI_MiniMap>();
+            //else
+            //    miniMap.SizeControl(); // 미니맵 크기 조절
         }
         else if(Input.GetKeyDown(KeyCode.Z))
         {

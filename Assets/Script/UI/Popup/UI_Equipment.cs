@@ -62,6 +62,7 @@ public class UI_Equipment : UI_Popup
     }
     private void OnDisable()
     {
-        selfCam.gameObject.SetActive(false);
+        if(selfCam)
+            selfCam.gameObject.SetActive(false);
     }
 }

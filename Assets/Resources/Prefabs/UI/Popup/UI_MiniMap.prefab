@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.892, y: 0.74469435}
   m_AnchorMax: {x: 0.892, y: 0.74469435}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -100, y: -15}
   m_SizeDelta: {x: 155, y: 155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2077999421917125376
@@ -201,7 +201,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.892, y: 0.74469435}
   m_AnchorMax: {x: 0.892, y: 0.74469435}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -100, y: -15}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3636765476496941216
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 3599771975241878828}
   - component: {fileID: 2111807665726289452}
   m_Layer: 5
-  m_Name: MiniMap
+  m_Name: UI_MiniMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,12 +618,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  playerImage: {fileID: 3464669994465371509}
-  destinationImage: {fileID: 8902329277137478578}
-  Scene: {fileID: 0}
-  mapImage: {fileID: 3435977477581910978}
-  boarderImage: {fileID: 9008810782696218295}
-  mask: {fileID: 6970845232097907754}
   linePrefab: {fileID: 2914009906560998733, guid: eab71c1ed79e39449a5ef6876a920d27,
     type: 3}
 --- !u!1 &4847035316877566519

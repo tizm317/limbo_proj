@@ -293,8 +293,8 @@ public class UI_MiniMap : UI_Popup
     {
         // 미니맵 사이즈 조절
 
-        if (!IsPeek())
-            return;
+        //if (!IsPeek())
+        //    return;
 
         curSize = (size)(((int)curSize + 1) % 4);
 
@@ -317,7 +317,8 @@ public class UI_MiniMap : UI_Popup
                 //mapImage.localScale = new Vector3(3, 3, 0);
                 break;
             case 3:
-                Managers.UI.ClosePopupUI();
+                //Managers.UI.ClosePopupUI();
+                this.gameObject.SetActive(false);
                 break;
         }
 
@@ -325,8 +326,8 @@ public class UI_MiniMap : UI_Popup
     public void Zoom(bool reverse = false)
     {
         // 미니맵 줌 기능
-        if (!IsPeek())
-            return;
+        //if (!IsPeek())
+        //    return;
 
         if(reverse)
             curZoom = (zoom)(((int)curZoom + 2) % 3);
@@ -363,4 +364,5 @@ public class UI_MiniMap : UI_Popup
         compassRotation.z = player.eulerAngles.y;
         image.transform.eulerAngles = compassRotation * -1;
     }
+
 }
