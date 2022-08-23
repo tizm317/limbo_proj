@@ -46,6 +46,9 @@ public class Player_Controller : MonoBehaviour
     // NPC하고 상호작용중인지 확인용
     public bool IsInteractWithNPC { get; private set; }
 
+    // 미니맵
+    public int routeChanged = 0;
+
     void Start()
     {
         Init();
@@ -108,6 +111,7 @@ public class Player_Controller : MonoBehaviour
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
 
         enumerator = turnToNPC(); // 코루틴
+
     }
 
     private void Enemy_Update()
@@ -415,6 +419,9 @@ public class Player_Controller : MonoBehaviour
         }
         isMove = true;//움직여도 되는지판별
         ani.SetBool("IsMove",true);
+
+        // 0 to 1 , 1 to 0
+        routeChanged = (routeChanged == 0) ? 1: 0;
     }
 
     public float magicNumber = 100.0f;

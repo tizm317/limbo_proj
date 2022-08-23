@@ -58,6 +58,8 @@ public class UI_MiniMap : UI_Popup
     GameObject line;
     LineRenderer lr;
 
+    int previous_route;
+
     // 미니맵
     enum size
     {
@@ -115,13 +117,15 @@ public class UI_MiniMap : UI_Popup
                 break;
         }
 
-        if (player_Controller.Get_Destination() != null)
+        // Update에서 계속 호출되어서 문제
+        if (player_Controller.Get_Destination() != null && player_Controller.Get_Destination().y < 100.0f)
         {
             // null 레퍼 오류로 인해 감싸줌
+            // 경로 업을때 y값을 100.0f로 설정시켰음
 
-            Vector3 destination =  player_Controller.Get_Destination();
+            Vector3 destination = player_Controller.Get_Destination();
 
-            if (destination.y != player_Controller.magicNumber)
+            if (destination.y < player_Controller.magicNumber)
             {
 
                 float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
@@ -138,10 +142,15 @@ public class UI_MiniMap : UI_Popup
                 destination.z = 0;
                 destinationImage.localPosition = destination;
 
+                //
+                drawLine();
             }
+            // 라인 그리기
+            //if(previous_route != player_Controller.routeChanged)
+            //    drawLine();
         }
 
-        
+
 
         // 플레이어 원점으로 두고 나머지 이동하도록 수정
         // 플레이어 반대방향으로 지도 반대로 이동(고정된 물체 한번에 같이 이동시키기 위해서)
@@ -150,31 +159,8 @@ public class UI_MiniMap : UI_Popup
         // path 정보
         // 노드 연결해서 가는 길 표시?
 
-        // 라인 그리기
         
-        //lr.SetPosition(0, playerImage.localPosition);
-        //lr.SetPosition(lr.positionCount - 1, destinationImage.localPosition);
 
-        DrawUILine drawUILine = mapImage.GetComponent<DrawUILine>();
-
-        if(destinationImage.localPosition != null)
-            drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
-
-        path = pathFinding.Return_Path(player);
-        //drawUILine.DrawLine(playerImage.localPosition, path);
-
-        //lr.SetPosition(0, playerImage.position);
-        //lr.SetPosition(1, destinationImage.position);
-
-        if (path.Count != 0 )
-        {
-            drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
-        }
-
-        if(path.Count != 0 && Vector3.Distance(playerImage.position, destinationImage.position) < 1.0f)
-        {
-            drawUILine.ClearLine();
-        }
     }
 
     public override void Init()
@@ -363,6 +349,28 @@ public class UI_MiniMap : UI_Popup
         Vector3 compassRotation = image.transform.eulerAngles;
         compassRotation.z = player.eulerAngles.y;
         image.transform.eulerAngles = compassRotation * -1;
+    }
+
+    public void drawLine()
+    {
+        DrawUILine drawUILine = mapImage.GetComponent<DrawUILine>();
+
+        path = pathFinding.Return_Path(player);
+
+        if (destinationImage.localPosition != null && player_Controller.get_isObstacle() == false)
+            drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+
+        if (path.Count != 0)
+        {
+            drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
+        }
+
+        if (path.Count != 0 && Vector3.Distance(playerImage.position, destinationImage.position) < 1.0f)
+        {
+            drawUILine.ClearLine();
+            path.Clear();
+        }
+        previous_route = player_Controller.routeChanged;
     }
 
 }

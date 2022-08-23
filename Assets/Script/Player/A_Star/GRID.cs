@@ -9,7 +9,7 @@ public class GRID : MonoBehaviour
     public LayerMask unwalkableMask; // HY 수정
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    public Node[,] grid;
     public List<Node> path;
     Node playerNode, targetNode;
     float nodeDiameter;

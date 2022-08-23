@@ -45,6 +45,7 @@ public class UI_InGame : UI_Scene
         Managers.Input.KeyAction += ControlPopUpUI;
 
         player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
+        miniMap = GetComponentInChildren<UI_MiniMap>();
     }
 
     private void OnApplicationQuit()
@@ -89,7 +90,7 @@ public class UI_InGame : UI_Scene
             if (miniMap.gameObject.activeInHierarchy == false)
                 miniMap.gameObject.SetActive(true);
             
-            miniMap.SizeControl(); /////////////////////////////////////////////////////////
+            miniMap.SizeControl();
 
             //if (!miniMap)
             //    miniMap = Managers.UI.ShowPopupUI<UI_MiniMap>();
