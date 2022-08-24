@@ -10,10 +10,11 @@ public class Enemy_Skeleton2 : Enemy
     [SerializeField] float _scanRange = 3;   //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
-    public Transform[] points;  //waypoints 배열
-    public int nextIdx = 1;     // waypoints 인덱스
+    private Transform[] points;  //waypoints 배열
+    private int nextIdx = 1;     // waypoints 인덱스
+    private int theNextIdx = 0;   // 다음 waypoint 확인용 인덱스
 
-    private Vector3 movePos;
+    private Vector3 movePos;  // waypoints 위치
     private Transform tr;  //enemy 위치
 
     public override void Init()
@@ -45,14 +46,19 @@ public class Enemy_Skeleton2 : Enemy
 
     protected override void UpdateMoving()
     {
-
+        if(nextIdx >= points.Length)
+        {
+            nextIdx = 1;
+        }
+        Debug.Log(nextIdx);
         movePos = points[nextIdx].position;  // 다음 waypoint 위치로 이동
 
-        Debug.Log(nextIdx + " 움직이기");
-       
-        Quaternion rot = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
-        tr.rotation = Quaternion.Slerp(tr.rotation, rot, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
+        Vector3 dir = movePos - tr.position;
+        Quaternion quat = Quaternion.LookRotation(dir);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
+        tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
         tr.Translate(Vector3.forward * Time.deltaTime * _stat.MoveSpeed);  //앞으로 이동
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
     }
 
@@ -61,16 +67,14 @@ public class Enemy_Skeleton2 : Enemy
         Debug.Log("때리기");
         if (lockTarget != null)
         {
-            Vector3 dir = lockTarget.transform.position - transform.position;
+            Vector3 dir = lockTarget.transform.position - tr.position;
             Quaternion quat = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
+            tr.rotation = Quaternion.Lerp(tr.rotation, quat, 10 * Time.deltaTime);
         }
     }
     protected override void UpdateHit()
     {
-        Debug.Log("맞기");
         State = Define.State.Hit;
-
     }
 
     protected override void UpdateDie()
@@ -81,20 +85,24 @@ public class Enemy_Skeleton2 : Enemy
     }
 
     void OnTriggerEnter(Collider coll)
-    {
+    {      
         if (coll.tag == "WAY_POINT")
-        {     
-            if(++nextIdx == nextIdx && nextIdx >= points.Length)
-            {
-                nextIdx = 1;
-            }
-            else
-            {
-                nextIdx = Random.Range(1, points.Length);
-            }
+        {
+            theNextIdx = Random.Range(1, points.Length);
 
-            //nextIdx = (++nextIdx >= points.Length) ? 1 : nextIdx;
-            //nextIdx = (++nextIdx >= points.Length) ? 1 : Random.Range(1, points.Length);
+            if(nextIdx != theNextIdx)
+            {
+                nextIdx = theNextIdx;
+            }
+            else if(nextIdx == theNextIdx)
+            {
+                nextIdx += 1;
+
+                if (nextIdx >= points.Length)
+                {
+                    nextIdx = 1;
+                }
+            }
             StartCoroutine("Idle");
         }
     }
@@ -105,7 +113,6 @@ public class Enemy_Skeleton2 : Enemy
         yield return new WaitForSeconds(2.0f);
 
         State = Define.State.Moving;
-
     }
 
     void OnHitEvent()

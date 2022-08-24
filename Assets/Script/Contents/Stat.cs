@@ -32,6 +32,6 @@ public class Stat : MonoBehaviour
         _attack = 3;
         _defense = 0;
         _moveSpeed = 1.09f;
-        _turnSpeed = 10.0f;
+        _turnSpeed = 5.0f;
     }
 }

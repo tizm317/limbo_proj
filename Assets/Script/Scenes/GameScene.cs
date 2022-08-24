@@ -80,6 +80,7 @@ public class GameScene : BaseScene
 
         for (int i = 0; i < 2; i++)
             list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
+
         //for (int i = 0; i < 5; i++)
         //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
         //Managers.Resource.Instantiate("Enemy_Skeleton");

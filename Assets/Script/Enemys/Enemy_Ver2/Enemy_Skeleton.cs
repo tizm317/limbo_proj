@@ -33,7 +33,6 @@ public class Enemy_Skeleton : Enemy
         {
             lockTarget = player;
             State = Define.State.Moving;
-            return;
         }
 
     }
