@@ -25,6 +25,9 @@ public abstract class Enemy : MonoBehaviour
                 case Define.State.Moving:
                     anim.CrossFade("WALK", 0.2f);
                     break;
+                case Define.State.Patroll:
+                    anim.CrossFade("WALK", 0.2f);
+                    break;
                 case Define.State.Skill:
                     anim.CrossFade("ATTACK", 0.2f, -1, 0.0f);
                     break;
@@ -57,6 +60,9 @@ public abstract class Enemy : MonoBehaviour
             case Define.State.Moving:
                 UpdateMoving();
                 break;
+            case Define.State.Patroll:
+                Updatepatroll();
+                break;
             case Define.State.Skill:
                 UpdateSkill();
                 break;
@@ -74,6 +80,9 @@ public abstract class Enemy : MonoBehaviour
     {
     }
     protected virtual void UpdateMoving()
+    {
+    }
+    protected virtual void Updatepatroll()
     {
     }
     protected virtual void UpdateSkill()

@@ -11,6 +11,7 @@ public class Define
     {
         Idle,
         Moving,
+        Patroll,
         Skill,
         Hit,
         Die,

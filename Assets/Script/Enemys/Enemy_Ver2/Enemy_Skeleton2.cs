@@ -7,23 +7,24 @@ public class Enemy_Skeleton2 : Enemy
 {
     Stat _stat;
 
-    [SerializeField] float _scanRange = 3;   //사정거리
+    [SerializeField] float _scanRange = 4;   //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
     private Transform[] points;  //waypoints 배열
     private int nextIdx = 1;     // waypoints 인덱스
     private int theNextIdx = 0;   // 다음 waypoint 확인용 인덱스
 
-    private Vector3 movePos;  // waypoints 위치
+    private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
+    private Transform playerTr; //player 위치
 
     public override void Init()
     {
         // 스탯
         _stat = gameObject.GetComponent<Stat>();
-        
+            
         // 디폴트 애니메이션 
-        State = Define.State.Moving;
+        State = Define.State.Patroll;
 
         // HPBar
         /*
@@ -36,6 +37,7 @@ public class Enemy_Skeleton2 : Enemy
         nextIdx = Random.Range(1, points.Length);
 
         tr = GetComponent<Transform>();  //enemy 위치
+        playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
     }
 
@@ -44,22 +46,32 @@ public class Enemy_Skeleton2 : Enemy
         State = Define.State.Idle;
     }
 
-    protected override void UpdateMoving()
+    protected override void Updatepatroll()
     {
-        if(nextIdx >= points.Length)
+        if (nextIdx >= points.Length)
         {
             nextIdx = 1;
         }
+        movePos = points[nextIdx].position;  //다음 waypoint 위치
         Debug.Log(nextIdx);
-        movePos = points[nextIdx].position;  // 다음 waypoint 위치로 이동
-
-        Vector3 dir = movePos - tr.position;
-        Quaternion quat = Quaternion.LookRotation(dir);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
+        Quaternion quat = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
         tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
         tr.Translate(Vector3.forward * Time.deltaTime * _stat.MoveSpeed);  //앞으로 이동
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-
+        if (player == null)  //Player가 없으면 대기
+            return;
+        float distance = (playerTr.position - tr.position).magnitude;
+        if (distance <= _scanRange)
+        {
+            Debug.Log("스캔랜지안에 in");
+            lockTarget = player;
+            State = Define.State.Moving;
+        }
+    }
+    protected override void UpdateMoving()
+    {
+        Debug.Log("move");
     }
 
     protected override void UpdateSkill()
@@ -67,13 +79,14 @@ public class Enemy_Skeleton2 : Enemy
         Debug.Log("때리기");
         if (lockTarget != null)
         {
-            Vector3 dir = lockTarget.transform.position - tr.position;
+            Vector3 dir = lockTarget.transform.position - transform.position;
             Quaternion quat = Quaternion.LookRotation(dir);
-            tr.rotation = Quaternion.Lerp(tr.rotation, quat, 10 * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
     }
     protected override void UpdateHit()
     {
+        Debug.Log("맞음");
         State = Define.State.Hit;
     }
 
@@ -112,7 +125,7 @@ public class Enemy_Skeleton2 : Enemy
 
         yield return new WaitForSeconds(2.0f);
 
-        State = Define.State.Moving;
+        State = Define.State.Patroll;
     }
 
     void OnHitEvent()
@@ -135,12 +148,12 @@ public class Enemy_Skeleton2 : Enemy
             }
             else
             {
-                State = Define.State.Idle;
+                State = Define.State.Patroll;
             }
         }
         else
         {
-            State = Define.State.Idle;
+            State = Define.State.Patroll;
         }
     }
 }
