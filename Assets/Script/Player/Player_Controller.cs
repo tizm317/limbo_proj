@@ -311,7 +311,21 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
-
+    public void Ranged_Attack(Vector3 position, float range, int damage)//범위공격 수행을 위한 함수
+    {
+        Enemy_Update();
+        my_enemy.Clear();
+        if(enemies.Count > 0)//적이 다 죽은거 아니면
+        {
+            foreach(GameObject i in enemies)
+            {
+                if(Vector3.Distance(i.GetComponent<Transform>().position,position) < range)
+                {
+                    i.GetComponent<Stat>().Hp -= damage;
+                }
+            }
+        }
+    }
     IEnumerator Dash(float x)
     {
         if(dash_cool)//쿨타임이 도는중인지 먼저 확인
