@@ -48,6 +48,7 @@ public class Player_Controller : MonoBehaviour
 
     // 미니맵
     public int routeChanged = 0;
+    UI_MiniMap ui_MiniMap;
 
     void Start()
     {
@@ -112,6 +113,8 @@ public class Player_Controller : MonoBehaviour
 
         enumerator = turnToNPC(); // 코루틴
 
+        // 미니맵
+        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>();
     }
 
     private void Enemy_Update()
@@ -422,6 +425,9 @@ public class Player_Controller : MonoBehaviour
 
         // 0 to 1 , 1 to 0
         routeChanged = (routeChanged == 0) ? 1: 0;
+
+        // 미니맵
+        ui_MiniMap.drawLine();
     }
 
     public float magicNumber = 100.0f;

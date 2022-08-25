@@ -53,7 +53,7 @@ public class UI_MiniMap : UI_Popup
     // 길찾기
     //GRID grid;
     PathFinding pathFinding;
-    List<Vector3> path;
+    //List<Vector3> path;
     public GameObject linePrefab;
     GameObject line;
     LineRenderer lr;
@@ -61,6 +61,8 @@ public class UI_MiniMap : UI_Popup
     int previous_route;
 
     // 미니맵
+    Vector3 playerPos;
+
     enum size
     {
         DefaultSize,
@@ -87,7 +89,7 @@ public class UI_MiniMap : UI_Popup
     {
         // 플레이어 위치(파란색), 목적지(빨간색) 표시
 
-        Vector3 playerPos = player.position;
+        playerPos = player.position;
 
         // 미니맵 플레이어, 도착지 이미지 방향
         RotationControl(playerImage);
@@ -117,39 +119,57 @@ public class UI_MiniMap : UI_Popup
                 break;
         }
 
-        // Update에서 계속 호출되어서 문제
-        if (player_Controller.Get_Destination() != null && player_Controller.Get_Destination().y < 100.0f)
-        {
-            // null 레퍼 오류로 인해 감싸줌
-            // 경로 업을때 y값을 100.0f로 설정시켰음
+        Vector3 destination = player_Controller.Get_Destination();
+        float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
 
-            Vector3 destination = player_Controller.Get_Destination();
+        // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
+        // 일정 거리 이내면 목적지 표시 x
+        if (dist < 1.0f)
+            destinationImage.gameObject.SetActive(false);
+        else
+            destinationImage.gameObject.SetActive(true);
 
-            if (destination.y < player_Controller.magicNumber)
-            {
+        #region 미니맵 경로
+        //// Update에서 계속 호출되어서 문제
+        //if (player_Controller.Get_Destination() != null && player_Controller.Get_Destination().y < 100.0f)
+        //{
+        //    // null 레퍼 오류로 인해 감싸줌
+        //    // 경로 업을때 y값을 100.0f로 설정시켰음
 
-                float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
+        //    Vector3 destination = player_Controller.Get_Destination();
 
-                // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
-                // 일정 거리 이내면 목적지 표시 x
-                if (dist < 1.0f)
-                    destinationImage.gameObject.SetActive(false);
-                else
-                    destinationImage.gameObject.SetActive(true);
+        //    if (destination.y < player_Controller.magicNumber)
+        //    {
 
-                // 목적지
-                destination.y = destination.z;
-                destination.z = 0;
-                destinationImage.localPosition = destination;
+        //        float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
 
-                //
-                drawLine();
-            }
-            // 라인 그리기
-            //if(previous_route != player_Controller.routeChanged)
-            //    drawLine();
-        }
+        //        // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
+        //        // 일정 거리 이내면 목적지 표시 x
+        //        if (dist < 1.0f)
+        //            destinationImage.gameObject.SetActive(false);
+        //        else
+        //            destinationImage.gameObject.SetActive(true);
 
+        //        // 목적지
+        //        destination.y = destination.z;
+        //        destination.z = 0;
+        //        destinationImage.localPosition = destination;
+
+        //        //
+        //        //drawLine();
+        //    }
+        //    // 라인 그리기
+        //    //if(previous_route != player_Controller.routeChanged)
+        //    //    drawLine();
+        //}
+        //else
+        //{
+        //    if (drawUILine)
+        //        drawUILine.ClearLine();
+        //    if (path != null)
+        //        path.Clear();
+        //}
+        #endregion
 
 
         // 플레이어 원점으로 두고 나머지 이동하도록 수정
@@ -159,7 +179,7 @@ public class UI_MiniMap : UI_Popup
         // path 정보
         // 노드 연결해서 가는 길 표시?
 
-        
+
 
     }
 
@@ -355,13 +375,22 @@ public class UI_MiniMap : UI_Popup
     {
         DrawUILine drawUILine = mapImage.GetComponent<DrawUILine>();
 
-        path = pathFinding.Return_Path(player);
+        drawUILine.ClearLine();
+        List<Vector3> path = pathFinding.Return_Path(player);
+        
+
 
         if (destinationImage.localPosition != null && player_Controller.get_isObstacle() == false)
+        {
+            // 장애물 없는 경우 - 직선코스
+            drawDestinationMark();
             drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+        }
 
         if (path.Count != 0)
         {
+            // 장애물 있는 경우
+            drawDestinationMark();
             drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
         }
 
@@ -371,6 +400,30 @@ public class UI_MiniMap : UI_Popup
             path.Clear();
         }
         previous_route = player_Controller.routeChanged;
+    }
+
+    public void drawDestinationMark()
+    {
+        Vector3 destination = player_Controller.Get_Destination();
+
+        if (destination.y < player_Controller.magicNumber)
+        {
+
+            float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
+
+            // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
+            // 일정 거리 이내면 목적지 표시 x
+            if (dist < 1.0f)
+                destinationImage.gameObject.SetActive(false);
+            else
+                destinationImage.gameObject.SetActive(true);
+
+            destinationImage.gameObject.SetActive(true);
+            // 목적지
+            destination.y = destination.z;
+            destination.z = 0;
+            destinationImage.localPosition = destination;
+        }
     }
 
 }
