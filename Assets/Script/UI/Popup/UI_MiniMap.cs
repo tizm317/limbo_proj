@@ -62,7 +62,8 @@ public class UI_MiniMap : UI_Popup
 
     // 미니맵
     Vector3 playerPos;
-
+    Vector3 destination;
+    DrawUILine drawUILine;
     enum size
     {
         DefaultSize,
@@ -119,15 +120,8 @@ public class UI_MiniMap : UI_Popup
                 break;
         }
 
-        Vector3 destination = player_Controller.Get_Destination();
-        float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
 
-        // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
-        // 일정 거리 이내면 목적지 표시 x
-        if (dist < 1.0f)
-            destinationImage.gameObject.SetActive(false);
-        else
-            destinationImage.gameObject.SetActive(true);
+
 
         #region 미니맵 경로
         //// Update에서 계속 호출되어서 문제
@@ -373,7 +367,7 @@ public class UI_MiniMap : UI_Popup
 
     public void drawLine()
     {
-        DrawUILine drawUILine = mapImage.GetComponent<DrawUILine>();
+        drawUILine = mapImage.GetComponent<DrawUILine>();
 
         drawUILine.ClearLine();
         List<Vector3> path = pathFinding.Return_Path(player);
@@ -402,9 +396,15 @@ public class UI_MiniMap : UI_Popup
         previous_route = player_Controller.routeChanged;
     }
 
+    public void clearLine()
+    {
+        destinationImage.gameObject.SetActive(false);
+        drawUILine.ClearLine();
+    }
+
     public void drawDestinationMark()
     {
-        Vector3 destination = player_Controller.Get_Destination();
+        destination = player_Controller.Get_Destination();
 
         if (destination.y < player_Controller.magicNumber)
         {

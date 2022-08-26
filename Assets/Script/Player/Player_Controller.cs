@@ -494,6 +494,8 @@ public class Player_Controller : MonoBehaviour
         {
             isMove = false;
             ani.SetBool("IsMove",false);
+
+            ui_MiniMap.clearLine(); // 미니맵 경로 지우기
             return;
         }
         else
