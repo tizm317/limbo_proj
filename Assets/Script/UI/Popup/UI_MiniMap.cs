@@ -39,31 +39,6 @@ public class UI_MiniMap : UI_Popup
         ZoomOutButton,
     }
 
-    [SerializeField] Transform player;
-    Player_Controller player_Controller;
-    private GameObject Scene;
-    private RectTransform playerImage;
-    private RectTransform destinationImage;
-    private RectTransform mapImage;
-    private RectTransform boarderImage;
-    private RectTransform mask;
-
-    Dictionary<int, Data.Map> dict_map;
-
-    // 길찾기
-    //GRID grid;
-    PathFinding pathFinding;
-    //List<Vector3> path;
-    public GameObject linePrefab;
-    GameObject line;
-    LineRenderer lr;
-
-    //int previous_route;
-
-    // 미니맵
-    Vector3 playerPos;
-    Vector3 destination;
-    DrawUILine drawUILine;
     enum size
     {
         DefaultSize,
@@ -77,9 +52,30 @@ public class UI_MiniMap : UI_Popup
         MiddleZoom,
         MaxZoom,
     }
-
     size curSize = size.DefaultSize;
     zoom curZoom = zoom.DefaultZoom;
+
+    [SerializeField] Transform player;
+    Player_Controller player_Controller;
+    private GameObject Scene;
+    private RectTransform playerImage;
+    private RectTransform destinationImage;
+    private RectTransform mapImage;
+    private RectTransform boarderImage;
+    private RectTransform mask;
+
+    Dictionary<int, Data.Map> dict_map;
+
+    // 길찾기
+    PathFinding pathFinding;
+    public GameObject linePrefab;
+    Vector3 playerPos;
+    Vector3 destination;
+    DrawUILine drawUILine;
+
+    float dist_PlayerDestinationImg; // 미니맵 마커 사이 거리
+    const float tempDist = 100.0f;
+    const float arriveDist = 1.0f;
 
     void Start()
     {
@@ -89,7 +85,6 @@ public class UI_MiniMap : UI_Popup
     void Update()
     {
         // 플레이어 위치(파란색), 목적지(빨간색) 표시
-
         playerPos = player.position;
 
         // 미니맵 플레이어, 도착지 이미지 방향
@@ -100,9 +95,6 @@ public class UI_MiniMap : UI_Popup
         // 플레이어
         playerPos.y = player.position.z;
         playerPos.z = 0;
-        //playerImage.localPosition = playerPos;
-
-        
 
         switch (curZoom)
         {
@@ -120,61 +112,9 @@ public class UI_MiniMap : UI_Popup
                 break;
         }
 
-
-
-
-        #region 미니맵 경로
-        //// Update에서 계속 호출되어서 문제
-        //if (player_Controller.Get_Destination() != null && player_Controller.Get_Destination().y < 100.0f)
-        //{
-        //    // null 레퍼 오류로 인해 감싸줌
-        //    // 경로 업을때 y값을 100.0f로 설정시켰음
-
-        //    Vector3 destination = player_Controller.Get_Destination();
-
-        //    if (destination.y < player_Controller.magicNumber)
-        //    {
-
-        //        float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
-
-        //        // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
-        //        // 일정 거리 이내면 목적지 표시 x
-        //        if (dist < 1.0f)
-        //            destinationImage.gameObject.SetActive(false);
-        //        else
-        //            destinationImage.gameObject.SetActive(true);
-
-        //        // 목적지
-        //        destination.y = destination.z;
-        //        destination.z = 0;
-        //        destinationImage.localPosition = destination;
-
-        //        //
-        //        //drawLine();
-        //    }
-        //    // 라인 그리기
-        //    //if(previous_route != player_Controller.routeChanged)
-        //    //    drawLine();
-        //}
-        //else
-        //{
-        //    if (drawUILine)
-        //        drawUILine.ClearLine();
-        //    if (path != null)
-        //        path.Clear();
-        //}
-        #endregion
-
-
         // 플레이어 원점으로 두고 나머지 이동하도록 수정
         // 플레이어 반대방향으로 지도 반대로 이동(고정된 물체 한번에 같이 이동시키기 위해서)
-        //mapImage.localPosition = playerPos * -1;
-
-        // path 정보
-        // 노드 연결해서 가는 길 표시?
-
-
-
+        // mapImage.localPosition = playerPos * -1;
     }
 
     public override void Init()
@@ -270,19 +210,6 @@ public class UI_MiniMap : UI_Popup
             objImg.setMarkerPos(i);
         }
         #endregion
-
-        // 길찾기
-        //lr = playerImage.gameObject.GetComponent<LineRenderer>();
-        //lr.startColor = Color.black;
-        //lr.endColor = Color.black;
-        //lr.startWidth = 1f;
-        //lr.endWidth = 1f;
-
-
-        //line = Instantiate(linePrefab);
-        //lr = line.GetComponent<LineRenderer>();
-        //lr.positionCount = 2;
-
     }
 
     public override bool IsPeek()
@@ -360,6 +287,7 @@ public class UI_MiniMap : UI_Popup
 
     void RotationControl(RectTransform image)
     {
+        // 회전
         Vector3 compassRotation = image.transform.eulerAngles;
         compassRotation.z = player.eulerAngles.y;
         image.transform.eulerAngles = compassRotation * -1;
@@ -371,31 +299,36 @@ public class UI_MiniMap : UI_Popup
 
         drawUILine.ClearLine();
         List<Vector3> path = pathFinding.Return_Path(player);
-        
-
 
         if (destinationImage.localPosition != null && player_Controller.get_isObstacle() == false)
         {
             // 장애물 없는 경우 - 직선코스
+            // 코루틴
+            StartCoroutine(Co_Draw_Line());
+            return;
+
             //drawDestinationMark();
             //drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
-            StartCoroutine(Co_Draw_Line());
         }
 
         if (path.Count != 0)
         {
-            // 장애물 있는 경우
+            // 장애물 있는 경우 - 커브드 코스
+            // 직선 경로 코루틴 정지
             StopAllCoroutines();
+            
+            // 
             drawDestinationMark();
             drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
+            return;
         }
 
-        if (path.Count != 0 && Vector3.Distance(playerImage.position, destinationImage.position) < 1.0f)
+        if (path.Count != 0 && Vector3.Distance(playerImage.position, destinationImage.position) < arriveDist)
         {
+            // path 는 있으나, 거리가 가까운 경우(?)
             drawUILine.ClearLine();
             path.Clear();
         }
-        //previous_route = player_Controller.routeChanged;
     }
 
     public void clearLine()
@@ -406,56 +339,40 @@ public class UI_MiniMap : UI_Popup
 
     public void drawDestinationMark()
     {
+        // 목적지 빨간색 표시 그리기
+
+        // 목적지 위치 받아옴
         destination = player_Controller.Get_Destination();
 
-        if (destination.y < player_Controller.magicNumber)
+        if (destination.y >= player_Controller.magicNumber)
+            return;
+
+        dist_PlayerDestinationImg = Mathf.Abs(playerPos.magnitude - destination.magnitude);
+
+        // 일정 거리(arriveDist) 이내면 목적지 표시 x
+        if (dist_PlayerDestinationImg < arriveDist)
         {
-
-            float dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
-
-            // 여기에 플레이어가 이동중인지를 확인하는 것도 괜찮을듯
-            // 일정 거리 이내면 목적지 표시 x
-            if (dist < 1.0f)
-                destinationImage.gameObject.SetActive(false);
-            else
-                destinationImage.gameObject.SetActive(true);
-
-            destinationImage.gameObject.SetActive(true);
-            // 목적지
-            destination.y = destination.z;
-            destination.z = 0;
-            destinationImage.localPosition = destination;
+            destinationImage.gameObject.SetActive(false);
+            return;
         }
+
+        // 목적지 미니맵 2d 위치
+        destination.y = destination.z;
+        destination.z = 0;
+        destinationImage.localPosition = destination;
+
+        destinationImage.gameObject.SetActive(true);
     }
 
     IEnumerator Co_Draw_Line()
     {
-        float dist = 100.0f;
+        dist_PlayerDestinationImg = tempDist; // while문 실행하기 위한 임시값 초기화
         
-        while (dist > 1.0f)
+        while (dist_PlayerDestinationImg > arriveDist)
         {
-            destination = player_Controller.Get_Destination();
-
-            if (destination.y < player_Controller.magicNumber)
-            {
-
-                dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
-
-                if (dist < 1.0f)
-                    destinationImage.gameObject.SetActive(false);
-                else
-                    destinationImage.gameObject.SetActive(true);
-
-                destinationImage.gameObject.SetActive(true);
-                // 목적지
-                destination.y = destination.z;
-                destination.z = 0;
-                destinationImage.localPosition = destination;
-
-                drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
-
-                yield return null;
-            }
+            drawDestinationMark();
+            drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+            yield return null;
         }
         //Debug.Log("코루틴 끝");
     }

@@ -43,10 +43,14 @@ public class Player_Controller : MonoBehaviour
     private bool isTurning = false;
     private IEnumerator enumerator; // turnToNPC 코루틴용
 
+    // Camera FOV Value for NPC Interact
+    private const int FOV_Interact = 45;
+    private const int FOV_Normal = 60;
+
     // NPC하고 상호작용중인지 확인용
     public bool IsInteractWithNPC { get; private set; }
 
-    // 미니맵
+    // 미니맵 경로 그리기
     UI_MiniMap ui_MiniMap;
 
     void Start()
@@ -81,13 +85,13 @@ public class Player_Controller : MonoBehaviour
         // NPC 대화 상호작용
         if (npc && npc.ui_dialogue_ison)
         {
-            cam.GetComponent<Camera_Controller>().FOV_Control(45);
+            cam.GetComponent<Camera_Controller>().FOV_Control(FOV_Interact);
             IsInteractWithNPC = true;
             isTurning = true;
         }
         else
         {
-            cam.GetComponent<Camera_Controller>().FOV_Control(60);
+            cam.GetComponent<Camera_Controller>().FOV_Control(FOV_Normal);
             IsInteractWithNPC = false;
             isTurning = false;
         }
@@ -440,16 +444,7 @@ public class Player_Controller : MonoBehaviour
         ui_MiniMap.drawLine();
     }
 
-    public float magicNumber = 100.0f;
-
-    public Vector3 Get_Destination()
-    {
-        // 목적지가 없을 때(클릭 없을 때) 리스트가 아예 없어서 y값을 Magic Number 로 설정해두고, 그 경우 미니맵 안 나타나도록
-        if (destination.Count == 0)
-            return new Vector3(0, magicNumber, 0);
-
-        return destination[destination.Count -1];
-    }
+    
 
     private void move(float speed, float arrivalRange = 0.4f)
     {
@@ -536,10 +531,21 @@ public class Player_Controller : MonoBehaviour
     }
 
 
+    #region 미니맵 경로 관련
+    public float magicNumber = 100.0f;
+    public Vector3 Get_Destination()
+    {
+        // 목적지가 없을 때(클릭 없을 때) 리스트가 아예 없어서 y값을 Magic Number 로 설정해두고, 그 경우 미니맵 안 나타나도록
+        if (destination.Count == 0)
+            return new Vector3(0, magicNumber, 0);
+
+        return destination[destination.Count - 1];
+    }
+
     public bool get_isObstacle()
     {
         // 미니맵에서 isObstacle 값 가져오기 위한 public 함수_HY
         return isObstacle;
     }
-
+    #endregion
 }
