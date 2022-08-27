@@ -46,6 +46,7 @@ public class DrawUILine : MonoBehaviour
 
     }
 
+
     public void DrawLine(Vector3 start, List<Vector3> path, bool isObstacle)
     {
         // 장애물 있는 경우
@@ -61,6 +62,8 @@ public class DrawUILine : MonoBehaviour
 
         if (path != null)
         {
+            lineList.Clear();
+
             for (int i = 0; i < path.Count - previousPathCount - 1; i++) 
             {
 
@@ -76,21 +79,22 @@ public class DrawUILine : MonoBehaviour
                     lineList[i].transform.localPosition = middle;
                     lineList[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, path[0] - start);
                     // 크기 조절
-                    Vector2 size = lineList[i].GetComponent<RectTransform>().sizeDelta;
+                    //Vector2 size = lineList[i].GetComponent<RectTransform>().sizeDelta;
                     //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(size.x, Vector3.Distance(start, path[0]));
                     lineList[i].GetComponent<RectTransform>().localScale = new Vector2(1.0f, 1.0f);
-                    float dist = Vector3.Distance(start, path[0]);
-                    lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, dist);
+                    //float dist = Vector3.Distance(start, path[0]);
+                    //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, dist);
+                    lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
                 }
                 else
                 {
                     // 위치 조절
                     Vector3 curPos = new Vector3(path[i].x, path[i].z, 0);
                     Vector3 nextPos = new Vector3(path[i + 1].x, path[i + 1].z, 0);
-                    Vector3 initialPos = new Vector3(-1,-1,-1);
+                    //Vector3 initialPos = new Vector3(-1,-1,-1);
 
                     middle = (nextPos + curPos) / 2;
-                    float dist = Vector3.Distance(curPos, nextPos);
+                    //float dist = Vector3.Distance(curPos, nextPos);
                     lineList[i].transform.localPosition = middle;
 
                     // 방향 조절
@@ -100,10 +104,10 @@ public class DrawUILine : MonoBehaviour
                     
                    
                     // 크기 조절
-                    Vector2 size = lineList[i].GetComponent<RectTransform>().sizeDelta;
+                    //Vector2 size = lineList[i].GetComponent<RectTransform>().sizeDelta;
                     lineList[i].GetComponent<RectTransform>().localScale = new Vector2(1.0f, 1.0f);
-                    lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, dist);
-                    //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 5.0f);
+                    //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, dist);
+                    lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
                 }
 
                 // child 위치 조정 (라인이 플레이어,도착 마크 가려서)

@@ -47,7 +47,6 @@ public class Player_Controller : MonoBehaviour
     public bool IsInteractWithNPC { get; private set; }
 
     // 미니맵
-    public int routeChanged = 0;
     UI_MiniMap ui_MiniMap;
 
     void Start()
@@ -436,9 +435,6 @@ public class Player_Controller : MonoBehaviour
         }
         isMove = true;//움직여도 되는지판별
         ani.SetBool("IsMove",true);
-
-        // 0 to 1 , 1 to 0
-        routeChanged = (routeChanged == 0) ? 1: 0;
 
         // 미니맵
         ui_MiniMap.drawLine();

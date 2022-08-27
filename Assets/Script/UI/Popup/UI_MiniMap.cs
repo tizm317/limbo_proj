@@ -58,7 +58,7 @@ public class UI_MiniMap : UI_Popup
     GameObject line;
     LineRenderer lr;
 
-    int previous_route;
+    //int previous_route;
 
     // 미니맵
     Vector3 playerPos;
@@ -377,13 +377,15 @@ public class UI_MiniMap : UI_Popup
         if (destinationImage.localPosition != null && player_Controller.get_isObstacle() == false)
         {
             // 장애물 없는 경우 - 직선코스
-            drawDestinationMark();
-            drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+            //drawDestinationMark();
+            //drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+            StartCoroutine(Co_Draw_Line());
         }
 
         if (path.Count != 0)
         {
             // 장애물 있는 경우
+            StopAllCoroutines();
             drawDestinationMark();
             drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
         }
@@ -393,7 +395,7 @@ public class UI_MiniMap : UI_Popup
             drawUILine.ClearLine();
             path.Clear();
         }
-        previous_route = player_Controller.routeChanged;
+        //previous_route = player_Controller.routeChanged;
     }
 
     public void clearLine()
@@ -424,6 +426,38 @@ public class UI_MiniMap : UI_Popup
             destination.z = 0;
             destinationImage.localPosition = destination;
         }
+    }
+
+    IEnumerator Co_Draw_Line()
+    {
+        float dist = 100.0f;
+        
+        while (dist > 1.0f)
+        {
+            destination = player_Controller.Get_Destination();
+
+            if (destination.y < player_Controller.magicNumber)
+            {
+
+                dist = Mathf.Abs(playerPos.magnitude - destination.magnitude);
+
+                if (dist < 1.0f)
+                    destinationImage.gameObject.SetActive(false);
+                else
+                    destinationImage.gameObject.SetActive(true);
+
+                destinationImage.gameObject.SetActive(true);
+                // 목적지
+                destination.y = destination.z;
+                destination.z = 0;
+                destinationImage.localPosition = destination;
+
+                drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
+
+                yield return null;
+            }
+        }
+        //Debug.Log("코루틴 끝");
     }
 
 }
