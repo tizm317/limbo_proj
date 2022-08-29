@@ -33,6 +33,9 @@ public class DataManager
     //public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
     public Dictionary<int, Data.Item> InvenDict { get; private set; } = new Dictionary<int, Data.Item>();
+    //public Dictionary<Tuple<string, int>, Data.Inventory> Inventories { get; private set; } = new Dictionary<Tuple<string, int>, Data.Inventory>();
+    public Dictionary<string, List<Data.Inventory>> Inventories { get; private set; } = new Dictionary<string, List<Data.Inventory>>();
+
 
     public Dictionary<int, Data.Npc> NpcDict { get; private set; } = new Dictionary<int, Data.Npc>();
 
@@ -42,12 +45,18 @@ public class DataManager
     // 상황별 대사 딕셔너리 모아둔 전체 딕셔너리
     public Dictionary<string, Dictionary<int, Data.Dialog>> Dict_DialogDict { get; private set; } = new Dictionary<string, Dictionary<int, Data.Dialog>>();
 
+    public Dictionary<int, Data.Item2> ItemTable { get; private set; } = new Dictionary<int, Data.Item2>();
+
     public void Init()
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
         NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
+
+        //Inventories = LoadJson<Data.InventoryData, Tuple<string, int>, Data.Inventory>("Inventories").MakeDict();
+        Inventories = LoadJson<Data.InventoryData, string, List<Data.Inventory>>("Inventories").MakeDict();
+        ItemTable = LoadJson<Data.ItemTable, int, Data.Item2>("ItemTable").MakeDict();
 
         // csv 파일 파싱 테스트 (csv to json 파일 저장)
         //ParseTextData("test");

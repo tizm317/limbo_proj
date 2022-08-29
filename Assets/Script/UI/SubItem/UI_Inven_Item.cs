@@ -111,6 +111,19 @@ public class UI_Inven_Item : UI_Base
         _count = invenDict[key].count;
     }
 
+    // 수정
+    public void SetItemInfo(int itemID, int itemCount)
+    {
+        Dictionary<int, Data.Item2> itemTable = Managers.Data.ItemTable;
+
+        // item 정보 저장
+        _id = itemTable[itemID].itemId;
+        _name = itemTable[itemID].itemName;
+        _type = itemTable[itemID].itemType;
+        _grade = itemTable[itemID].itemGrade;
+        _count = itemCount;
+    }
+
     // 아이템 버리기
     public void changeCount(int id)
     {
@@ -130,6 +143,7 @@ public class UI_Inven_Item : UI_Base
         }
 
     }
+
     public void ConfirmButtonClicked()
     {
         // UI_Item_Remove_Caution 경고창 UI 확인(Yes/No) 버튼 클릭 시 호출

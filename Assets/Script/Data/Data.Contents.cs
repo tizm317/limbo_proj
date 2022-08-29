@@ -154,4 +154,92 @@ namespace Data
         }
     }
     #endregion
+
+    #region Inventory2
+    [Serializable] 
+    public class Inventory
+    {
+        public string playerId;
+        public int itemID;
+        public int itemCount;
+    }
+
+    //[Serializable]
+    //public class InventoryData : ILoader<Tuple<string, int>, Inventory>
+    //{
+    //    public List<Inventory> inventories = new List<Inventory>();
+    //    Tuple<string, int> compositeKey; // playerId, itemID 복합키
+
+    //    public Dictionary<Tuple<string, int>, Inventory> MakeDict()
+    //    {
+    //        Dictionary<Tuple<string, int>, Inventory> dict = new Dictionary<Tuple<string, int>, Inventory>();
+
+    //        foreach (Inventory inven in inventories)
+    //        {
+    //            compositeKey = Tuple.Create(inven.playerId, inven.itemID);
+    //            dict.Add(compositeKey, inven);
+    //        }
+
+    //        return dict;
+    //    }
+    //}
+
+    [Serializable]
+    public class InventoryData : ILoader<string, List<Inventory>>
+    {
+        // 같은 player ID 의 인벤토리를 list로 만들기 위함
+
+        public List<Inventory> inventories = new List<Inventory>();
+        public Dictionary<string, List<Inventory>> MakeDict()
+        {
+            Dictionary<string, List<Inventory>> dict2 = new Dictionary<string, List<Inventory>>();
+
+            string playerId = null;
+            List<Inventory> items = null;
+            foreach (Inventory inven in inventories)
+            {
+                // 같은 ID 의 아이템 리스트 만들기 위함
+                if (playerId != inven.playerId)
+                    items = new List<Inventory>();
+                items.Add(inven);
+                //dict2.Add(inven.playerId, items);
+                dict2[inven.playerId] = items;
+                
+                playerId = inven.playerId;
+            }
+
+            return dict2;
+        }
+    }
+    #endregion
+
+
+    #region ItemTable
+    [Serializable]
+    public class Item2
+    {
+        // 일단은 아이템 클래스가 겹쳐서 Item2라고 네이밍해둠 (위에꺼는 인벤토리용이여서 전체적으로 수정필요)
+        // item 효과 는 일단 빼둠
+        public int itemId;
+        public string itemName;
+        public string itemType;
+        public string itemGrade;
+    }
+
+    [Serializable]
+    public class ItemTable : ILoader<int, Item2>
+    {
+        public List<Item2> itemTable = new List<Item2>();
+
+        public Dictionary<int, Item2> MakeDict()
+        {
+            Dictionary<int, Item2> dict = new Dictionary<int, Item2>();
+
+            foreach (Item2 it in itemTable)
+                dict.Add(it.itemId, it);
+
+            return dict;
+        }
+    }
+    #endregion
 }
