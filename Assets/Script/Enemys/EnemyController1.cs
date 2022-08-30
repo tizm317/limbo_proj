@@ -132,7 +132,7 @@ public class EnemyController1 : MonoBehaviour
         {
             PlayerStat targetStat = _lockTarget.GetComponent<PlayerStat>();
             Stat myStat = gameObject.GetComponent<Stat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
+            float damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
             targetStat.Hp -= damage;
 
             //죽었는지 여부 체크 
