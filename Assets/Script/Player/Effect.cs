@@ -4,24 +4,19 @@ using UnityEngine;
 public class Effect : MonoBehaviour
 {
     // Start is called before the first frame update
-    GameObject grand_parent,parent;
-    GameObject[] obj = new GameObject[12];
-    void Start()
-    {
-        Play_Effect();
-    }
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-            Play_Effect();
-    }
+    public GameObject grand_parent,parent;
+    public GameObject[] obj = new GameObject[12];
 
-    void Play_Effect()
+    public void Play_Effect()
     {
         obj = Resources.LoadAll<GameObject>("Prefabs/Effect/Crust");
-        grand_parent = GameObject.Find("Effect");
+        grand_parent = GameObject.Find("Effect_Manager");
         if(grand_parent==null)
-            grand_parent = new GameObject("Effect");
+        {
+            grand_parent = new GameObject("Effect_Manager");
+            //grand_parent.transform.SetParent(GameObject.Find("Player").gameObject.GetComponent<Transform>());
+            //grand_parent.transform.position = GameObject.Find("Player").gameObject.GetComponent<Transform>().position;
+        }
         parent = new GameObject("Effect" + grand_parent.transform.childCount.ToString());
         parent.transform.SetParent(grand_parent.transform);
         int count = Random.Range(15, 25);
@@ -61,5 +56,7 @@ public class Effect : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Destroy(p);
     }
+
+    
     
 }
