@@ -5,14 +5,8 @@ using UnityEngine.UI;
 
 public class Player_Controller : MonoBehaviour
 {
-    public enum PlayerState
-    {
-        Idle,
-        Moving,
-        Attack,
-        Skill,
-        Die,
-    }
+    const float PlayerSpeed = 4.0f;
+    const float AttackDelay = 2.6f;
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;
@@ -22,7 +16,7 @@ public class Player_Controller : MonoBehaviour
     PathFinding pathfinding;
     [SerializeField]
     Effect effect;
-    public PlayerStat my_stat;
+    private PlayerStat my_stat;
     private Camera cam;
     public GameObject player;
     public List<GameObject> enemies = new List<GameObject>();
@@ -30,7 +24,7 @@ public class Player_Controller : MonoBehaviour
     public List<GameObject> my_enemy_for_skill = new List<GameObject>();
     public List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
-    private float speed;//플레이어의 이동속도
+    private float speed = PlayerSpeed;//플레이어의 이동속도
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true, Ult_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
@@ -75,9 +69,9 @@ public class Player_Controller : MonoBehaviour
             if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
                 if(!isAttack)
                 {
-                    StartCoroutine(Attack(my_stat.Attack,my_stat.AttackSpeed));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+                    StartCoroutine(Attack(my_stat.Attack, AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
                 }
-
+            
         }
         else
         {
@@ -118,8 +112,6 @@ public class Player_Controller : MonoBehaviour
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
-        effect = player.GetComponent<Effect>();
-        speed = my_stat.MoveSpeed;
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
 
         enumerator = turnToNPC(); // 코루틴
@@ -363,14 +355,14 @@ public class Player_Controller : MonoBehaviour
             destination.Clear();//목적지를 비워줌
             destination.Add(dash_dst);
             ani.SetBool("IsMove",false);
-            speed = my_stat.MoveSpeed*2;
+            speed = PlayerSpeed*2;
             float deltaTime = 0.0f;
             while(true)
             {
                 deltaTime += Time.deltaTime;
                 if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<=0.4||deltaTime > 1f)
                 {
-                    speed = my_stat.MoveSpeed;
+                    speed = PlayerSpeed;
                     on_skill  = false;
                     destination.Clear();
                     break;
@@ -388,7 +380,7 @@ public class Player_Controller : MonoBehaviour
             on_skill = true;
             RaycastHit hit;//레이케스트 선언
             bool raycastHit = Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),out hit);//카메라의 위치에서 마우스 포인터의 위치에서 쏜 레이에 맞는 오브젝트의 위치 찾기
-            
+            Debug.Log(hit.collider.tag);
             if(hit.collider.tag == "ground")
             {
                 Vector3 dir = Vector3.Normalize(hit.point - player.GetComponent<Transform>().position);
@@ -408,8 +400,6 @@ public class Player_Controller : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 yield return new WaitForSeconds(1.5f);
-                
-                effect.Play_Effect();
                 foreach(GameObject a in my_enemy_for_skill)
                 {
                     a.GetComponent<Stat>().Hp -= 50;
