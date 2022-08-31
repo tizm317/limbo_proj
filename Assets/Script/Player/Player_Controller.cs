@@ -60,6 +60,9 @@ public class Player_Controller : MonoBehaviour
 
     void Update()
     {
+        //if(ani.GetCurrentAnimatorStateInfo(0).IsName("Idle") && ani.GetInteger("Emotion") != -1)
+        //    initEmotion();
+
         if (Input.GetKeyDown(KeyCode.Space))
             StartCoroutine(Dash(6));//거리 5만큼 떨어진 곳으로 이동
         else if(Input.GetKeyDown(KeyCode.R))
@@ -548,4 +551,17 @@ public class Player_Controller : MonoBehaviour
         return isObstacle;
     }
     #endregion
+
+    public void emotion(int num)
+    {
+        ani.SetInteger("Emotion", num);
+    }
+
+    private void initEmotion()
+    {
+        if (ani.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            ani.SetInteger("Emotion", -1);
+        }
+    }
 }

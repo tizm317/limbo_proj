@@ -50,6 +50,8 @@ public class Define
         Drag,
         PointerUp,
         PointerDown,
+        PointerEnter,
+        PointerExit,
     }
 
     public enum MouseEvent

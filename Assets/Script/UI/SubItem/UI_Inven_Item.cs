@@ -29,6 +29,7 @@ public class UI_Inven_Item : UI_Base
     float disY;
 
     UI_Item_Remove_Caution uI_Item_Remove_Caution;
+    UI_ItemDescription uI_ItemDescription;
 
     CursorController cursorController;
     bool tryRemoving = false;
@@ -97,6 +98,22 @@ public class UI_Inven_Item : UI_Base
                     }, Define.UIEvent.PointerUp
             );
         #endregion
+
+        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) =>
+        {
+            // item information popup
+            uI_ItemDescription = Managers.UI.ShowPopupUI<UI_ItemDescription>();
+            uI_ItemDescription.setDescription(_name, _type, _grade, _count, PointerEventData.position);
+
+        }, Define.UIEvent.PointerEnter);
+
+        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) =>
+        {
+            if (uI_ItemDescription)
+                uI_ItemDescription.ClosePopupUI();
+
+        }, Define.UIEvent.PointerExit);
+
     }
 
     public void SetInfo(int key)

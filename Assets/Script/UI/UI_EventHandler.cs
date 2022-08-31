@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler
+public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     // EventSystem에서 던져주는 이벤트 받아옴
     // UI 에서 캐치해서 콜백 날려줌
@@ -18,6 +18,8 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
     public Action<PointerEventData> OnClickHandler = null;
     public Action<PointerEventData> OnDragHandler = null;
     public Action<PointerEventData> OnPointerUpHandler = null;
+    public Action<PointerEventData> OnPointerEnterHandler = null;
+    public Action<PointerEventData> OnPointerExitHandler = null;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -39,5 +41,17 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
     {
         if (OnPointerUpHandler != null)
             OnPointerUpHandler.Invoke(eventData);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (OnPointerEnterHandler != null)
+            OnPointerEnterHandler.Invoke(eventData);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (OnPointerExitHandler != null)
+            OnPointerExitHandler.Invoke(eventData);
     }
 }
