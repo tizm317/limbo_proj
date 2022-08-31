@@ -555,6 +555,7 @@ public class Player_Controller : MonoBehaviour
     public void emotion(int num)
     {
         ani.SetInteger("Emotion", num);
+        ani.SetTrigger("EmotionTrigger");
     }
 
     private void initEmotion()
