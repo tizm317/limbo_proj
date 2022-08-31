@@ -46125,7 +46125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1468996138
 Transform:
   m_ObjectHideFlags: 0
@@ -69709,15 +69709,14 @@ GameObject:
   - component: {fileID: 8467636280180096727}
   - component: {fileID: 8467636280180096721}
   - component: {fileID: 5204226714830827821}
-  - component: {fileID: 5271617653506163066}
   - component: {fileID: 4675975255888908253}
   m_Layer: 9
   m_Name: Enemy_Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &4675975255888908253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70520,23 +70519,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5271617653506163066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675975255888908252}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4a4481d0ded7bc4c80018434b908d12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _destPos: {x: 0, y: 0, z: 0}
-  state: 0
-  lockTarget: {fileID: 0}
-  _scanRange: 10
-  _attachRange: 2
 --- !u!4 &5376491548071024481
 Transform:
   m_ObjectHideFlags: 0
@@ -72441,11 +72423,11 @@ GameObject:
   - component: {fileID: 6750634307807781646}
   m_Layer: 0
   m_Name: Enemy_Rabbit
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6750634307807781641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72510,7 +72492,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!195 &6750634307807781645
 NavMeshAgent:
@@ -74585,7 +74567,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &8467636280180096721
 MonoBehaviour:
@@ -74604,7 +74586,7 @@ MonoBehaviour:
   _maxHp: 0
   _attack: 0
   _defense: 0
-  _moveSpeed: 0
+  _moveSpeed: 0.9
   _turnSpeed: 0
 --- !u!195 &8467636280180096727
 NavMeshAgent:
@@ -74616,7 +74598,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.25
-  m_Speed: 3.5
+  m_Speed: 0.9
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

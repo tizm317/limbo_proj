@@ -285,7 +285,7 @@ public class Player_Controller : MonoBehaviour
                 if(on_skill)
                     break;
                 stat[0].Hp = stat[0].Hp - damage;
-                
+
                 player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
                 if(stat[0].Hp <= 0)
                 {
