@@ -25,12 +25,42 @@ public class PathFinding : MonoBehaviour
         // null 일때 문제 생겨서 추가
         if (Path == null)
             return route;
-
-        for (int i = 0; i < Path.Count; i++)
+        //원본
+        /*for (int i = 0; i < Path.Count; i++)
         {
             route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
+        }*/
+        //수정본
+        int idx = 0;
+        Vector3 dir;
+        Vector3 past_dir =  Vector3.zero;
+        for (int i = 0; i < Path.Count; i++)
+        {
+            if(i >= 2)
+            {
+                dir = new Vector3(Path[i].worldPosition.x - Path[i-1].worldPosition.x, 0, Path[i].worldPosition.z - Path[i-1].worldPosition.z).normalized;
+                if(dir == past_dir)
+                {
+                    route[idx] += dir;
+                }
+                else
+                {
+                    route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
+                    past_dir = dir;
+                    idx++;
+                }    
+            }
+            else if(i == 1)
+            {
+                route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
+                past_dir = new Vector3(Path[i].worldPosition.x - Path[i-1].worldPosition.x, 0, Path[i].worldPosition.z - Path[i-1].worldPosition.z).normalized;
+            }
+            else
+            {
+                route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
+            }
+            
         }
-
         return route;
     }
 
