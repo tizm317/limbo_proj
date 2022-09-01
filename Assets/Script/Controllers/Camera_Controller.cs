@@ -17,7 +17,10 @@ public class Camera_Controller : MonoBehaviour
     [SerializeField]
     Vector3 _yPos = new Vector3(0.0f, 1.0f, 0.0f);
 
-    //¹Ì´Ï¸Ê¿ë Ä«¸Þ¶ó
+    [SerializeField]
+    public bool camera_control = true;
+
+    //ï¿½Ì´Ï¸Ê¿ï¿½ Ä«ï¿½Þ¶ï¿½
     //Camera minimapCam;
 
 
@@ -30,23 +33,25 @@ public class Camera_Controller : MonoBehaviour
 
     void LateUpdate()
     {
-        wheel_Control(5);
-        if(_mode == Define.CameraMode.QuarterView)
+        if(camera_control)
         {
-            RaycastHit hit;
-            if(Physics.Raycast(_player.transform.position, _delta, out hit, _delta.magnitude, LayerMask.GetMask("Wall")))
+            wheel_Control(5);
+            if(_mode == Define.CameraMode.QuarterView)
             {
-                float dist = (hit.point - _player.transform.position).magnitude * 0.8f;
-                transform.position = _player.transform.position + _delta.normalized * dist + _yPos;
-            }
-            else
-            {
-                transform.position = _player.transform.position + _delta;
-                transform.LookAt(_player.transform);
+                RaycastHit hit;
+                if(Physics.Raycast(_player.transform.position, _delta, out hit, _delta.magnitude, LayerMask.GetMask("Wall")))
+                {
+                    float dist = (hit.point - _player.transform.position).magnitude * 0.8f;
+                    transform.position = _player.transform.position + _delta.normalized * dist + _yPos;
+                }
+                else
+                {
+                    transform.position = _player.transform.position + _delta;
+                    transform.LookAt(_player.transform);
+                }
             }
         }
-
-        // ¹Ì´Ï¸Ê Ä«¸Þ¶ó ÇÃ·¹ÀÌ¾î µû¶ó´Ù´Ï°Ô
+        // ï¿½Ì´Ï¸ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ù´Ï°ï¿½
        //minimapCam.transform.position = new Vector3(_player.transform.position.x, minimapCam.transform.position.y, _player.transform.position.z);
     }
 

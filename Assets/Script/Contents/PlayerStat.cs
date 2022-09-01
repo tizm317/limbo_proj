@@ -57,6 +57,7 @@ public class PlayerStat : Stat
         {
             Level++;
             level_up = true;
+            Stat_Update();
         }
         if(level_up)
         {
@@ -66,7 +67,6 @@ public class PlayerStat : Stat
             else
                 next_level_up = (2.5f * (Level+1) * (Level+1)) - (40.5f * (Level+1)) + 360f;
         }
-        Stat_Update();
     }
 
     void Stat_Update()
