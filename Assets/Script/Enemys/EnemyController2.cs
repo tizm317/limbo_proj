@@ -97,7 +97,7 @@ public class EnemyController2 : MonoBehaviour
             //Debug.Log("ONHITEVENT");
             Stat targetStat = _lockTarget.GetComponent<Stat>();
             Stat myStat = gameObject.GetComponent<Stat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
+            float damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
             targetStat.Hp -= damage;
 
             if (targetStat.Hp > 0)

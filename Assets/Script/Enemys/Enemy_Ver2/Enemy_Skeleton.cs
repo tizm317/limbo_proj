@@ -97,7 +97,7 @@ public class Enemy_Skeleton : Enemy
         if (lockTarget != null)
         {
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
-            int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
+            float damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
             targetStat.Hp -= damage; //플레이어 데미지
 
             //죽었는지 여부 체크 

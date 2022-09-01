@@ -72,9 +72,9 @@ public class Player_Controller : MonoBehaviour
             if(my_enemy[0] != null&& Vector3.Distance(player.GetComponent<Transform>().position,my_enemy[0].GetComponent<Transform>().position) < 3)
                 if(!isAttack)
                 {
-                    StartCoroutine(Attack(my_stat.Attack,AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+                    StartCoroutine(Attack(my_stat.Attack, AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
                 }
-
+            
         }
         else
         {
@@ -274,7 +274,7 @@ public class Player_Controller : MonoBehaviour
         my_enemy.Add(enemy);
         stat.Add(my_enemy[0].GetComponent<Stat>());
     }
-    IEnumerator Attack(int damage,float attack_delay)
+    IEnumerator Attack(float damage,float attack_delay)
     {
         if(!on_skill)
         {
@@ -288,7 +288,7 @@ public class Player_Controller : MonoBehaviour
                 if(on_skill)
                     break;
                 stat[0].Hp = stat[0].Hp - damage;
-                
+
                 player.GetComponent<Transform>().forward = new Vector3(my_enemy[0].GetComponent<Transform>().position.x - player.GetComponent<Transform>().position.x,0,my_enemy[0].GetComponent<Transform>().position.z - player.GetComponent<Transform>().position.z);
                 if(stat[0].Hp <= 0)
                 {
