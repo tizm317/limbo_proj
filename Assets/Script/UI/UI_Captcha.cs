@@ -36,7 +36,10 @@ public class UI_Captcha : MonoBehaviour
 
         //Change UI:
         for(int i = 0; i < Count; i++)
+        {
             uiCodeImage[i].sprite = currentCaptcha[i].Image;
+            uiCodeImage[i].transform.Rotate(Vector3.forward, Random.Range(-60, 61));
+        }
         uiErrorsText.gameObject.SetActive(false);
 
     }
