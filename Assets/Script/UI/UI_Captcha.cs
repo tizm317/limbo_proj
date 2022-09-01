@@ -38,6 +38,7 @@ public class UI_Captcha : MonoBehaviour
         for(int i = 0; i < Count; i++)
         {
             uiCodeImage[i].sprite = currentCaptcha[i].Image;
+            uiCodeImage[i].transform.localEulerAngles = new Vector3(0, 0, 0);
             uiCodeImage[i].transform.Rotate(Vector3.forward, Random.Range(-60, 61));
         }
         uiErrorsText.gameObject.SetActive(false);
