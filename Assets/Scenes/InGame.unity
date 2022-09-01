@@ -870,7 +870,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radialMenu: {fileID: 8599721987011651375}
-  key: 101
+  key_emoticon: 101
+  key_action: 103
   sprites_action:
   - {fileID: 21300000, guid: a85d9309978be914eb6076a0f64b7648, type: 3}
   - {fileID: 21300000, guid: 2833289d608ef2342957d86493d24a0a, type: 3}
@@ -41188,6 +41189,7 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
 --- !u!1 &1289187925
 GameObject:
   m_ObjectHideFlags: 0
@@ -41320,8 +41322,28 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
   _exp: 0
   _gold: 0
+  _next_level_up: 0
+  _regeneration: 0
+  _mana: 0
+  _mana_regeneration: 0
+  STR: 0
+  DEX: 0
+  INT: 0
+  LUC: 0
+  Item_Hp: 0
+  Item_Regeneration: 0
+  Item_Attack: 0
+  Item_MoveSpeed: 0
+  Item_AttackSpeed: 0
+  Item_Mana: 0
+  Item_Mana_Regeneration: 0
+  Item_Hp_percent: 0
+  Item_Attack_percent: 0
+  Item_Mana_percent: 0
+  Item_Mana_Regeneration_percent: 0
 --- !u!136 &1289193801
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -72911,6 +72933,7 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
 --- !u!54 &6750634307807781644
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75109,6 +75132,7 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
 --- !u!195 &8467636280180096727
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -75365,6 +75389,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RadialMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 6921733139289915564, guid: e6e9cd76935178747911dbf2cb961760,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6e9cd76935178747911dbf2cb961760, type: 3}
