@@ -24,7 +24,6 @@ public class CaptchaGenerator : ScriptableObject
     public bool IsCodeValid(string input, CaptchaAlphabets[] captcha)
     {
         int i = 0;
-        string answer = "";
 
         if (input.Length == 0)
             return false;
@@ -34,14 +33,11 @@ public class CaptchaGenerator : ScriptableObject
 
         foreach (char c in input)
         {
-            answer += captcha[i].Value.ToString();
-
             if (captcha[i] == null || c != captcha[i++].Value )
                 return false;
         }
 
         Debug.Log($"Input : {input}");
-        Debug.Log($"Captcha : {answer}");
         return true;
     }
 }
