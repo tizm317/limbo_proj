@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -870,7 +870,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radialMenu: {fileID: 8599721987011651375}
-  key: 101
+  key_emoticon: 101
+  key_action: 103
   sprites_action:
   - {fileID: 21300000, guid: a85d9309978be914eb6076a0f64b7648, type: 3}
   - {fileID: 21300000, guid: 2833289d608ef2342957d86493d24a0a, type: 3}
@@ -41188,6 +41189,7 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
 --- !u!1 &1289187925
 GameObject:
   m_ObjectHideFlags: 0
@@ -41320,8 +41322,28 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
   _exp: 0
   _gold: 0
+  _next_level_up: 0
+  _regeneration: 0
+  _mana: 0
+  _mana_regeneration: 0
+  STR: 0
+  DEX: 0
+  INT: 0
+  LUC: 0
+  Item_Hp: 0
+  Item_Regeneration: 0
+  Item_Attack: 0
+  Item_MoveSpeed: 0
+  Item_AttackSpeed: 0
+  Item_Mana: 0
+  Item_Mana_Regeneration: 0
+  Item_Hp_percent: 0
+  Item_Attack_percent: 0
+  Item_Mana_percent: 0
+  Item_Mana_Regeneration_percent: 0
 --- !u!136 &1289193801
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -53176,6 +53198,7 @@ MonoBehaviour:
   _delta: {x: 0, y: 6, z: -5}
   _player: {fileID: 0}
   _yPos: {x: 0, y: 1, z: 0}
+  camera_control: 1
 --- !u!1001 &1685260288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66199,6 +66222,7 @@ GameObject:
   - component: {fileID: 1289193802}
   - component: {fileID: 1289193801}
   - component: {fileID: 1289193800}
+  - component: {fileID: 919132148007775225}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -66206,6 +66230,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132148007775225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148007775224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: defd8981ae136b945b586c685b0fe710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grand_parent: {fileID: 0}
+  parent: {fileID: 0}
+  obj:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &919132148970774875
 GameObject:
   m_ObjectHideFlags: 0
@@ -72911,6 +72962,7 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
 --- !u!54 &6750634307807781644
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75109,6 +75161,7 @@ MonoBehaviour:
   _defense: 0
   _moveSpeed: 0
   _turnSpeed: 0
+  _attackSpeed: 0
 --- !u!195 &8467636280180096727
 NavMeshAgent:
   m_ObjectHideFlags: 0

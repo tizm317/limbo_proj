@@ -19,11 +19,13 @@ public class Effect : MonoBehaviour
         }
         parent = new GameObject("Effect" + grand_parent.transform.childCount.ToString());
         parent.transform.SetParent(grand_parent.transform);
+        parent.transform.position = GameObject.Find("Player").GetComponent<Transform>().position;
         int count = Random.Range(15, 25);
         for(int i = 0; i < count; i++)
         {
             GameObject temp = Instantiate(obj[(int)Random.Range(0,12)]);
             temp.transform.SetParent(parent.transform);
+            temp.transform.position = parent.transform.position;
             temp.name = i.ToString();
             temp.transform.localScale = new Vector3(Random.Range(0,0.05f),Random.Range(0,0.05f),Random.Range(0,0.05f));
             Rigidbody rigid = temp.GetComponent<Rigidbody>();
