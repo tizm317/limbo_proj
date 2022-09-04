@@ -38704,7 +38704,7 @@ PrefabInstance:
     - target: {fileID: 5761074839932479171, guid: 8b7a92fc52f22ca47a330c95e21f6ba9,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5761074839932479174, guid: 8b7a92fc52f22ca47a330c95e21f6ba9,
         type: 3}
@@ -66374,6 +66374,7 @@ GameObject:
   - component: {fileID: 1289193801}
   - component: {fileID: 1289193800}
   - component: {fileID: 919132148007775225}
+  - component: {fileID: 919132148007775226}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -66408,6 +66409,28 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &919132148007775226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148007775224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 067d63cdfd8a2ad4aaaf0136e8acdc2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathfinding: {fileID: 0}
+  effect: {fileID: 0}
+  enemies: []
+  stat: []
+  my_enemy: {fileID: 0}
+  my_enemy_stat: {fileID: 0}
+  my_enemy_for_skill: []
+  destination: []
+  potal: {fileID: 0}
+  magicNumber: 100
 --- !u!1 &919132148970774875
 GameObject:
   m_ObjectHideFlags: 0
@@ -75573,7 +75596,7 @@ PrefabInstance:
     - target: {fileID: 6921733139289915564, guid: e6e9cd76935178747911dbf2cb961760,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6e9cd76935178747911dbf2cb961760, type: 3}
