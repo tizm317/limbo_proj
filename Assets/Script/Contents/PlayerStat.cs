@@ -23,7 +23,7 @@ public class PlayerStat : Stat
     public int STR,DEX,INT,LUC;
     public int Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
-    private void Awake()
+    private void Start()
     {
         _level = 1;
         _hp = 100;

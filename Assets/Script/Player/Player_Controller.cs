@@ -116,7 +116,7 @@ public class Player_Controller : MonoBehaviour
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
-
+        effect = player.GetComponent<Effect>();
         enumerator = turnToNPC(); // 코루틴
 
         // 미니맵
@@ -402,7 +402,9 @@ public class Player_Controller : MonoBehaviour
                     }
                     yield return new WaitForEndOfFrame();
                 }
+                
                 yield return new WaitForSeconds(1.5f);
+                effect.Play_Effect();
                 foreach(GameObject a in my_enemy_for_skill)
                 {
                     a.GetComponent<Stat>().Hp -= 50;
