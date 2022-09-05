@@ -26,13 +26,13 @@ public class Player_State : MonoBehaviour
             switch(curState)
             {
                 case State.STATE_IDLE :
-                    anim.CrossFade("Idle", 0.2f, -1, 0.0f);
+                    anim.CrossFade("Idle", 0.2f);
                     break;
                 case State.STATE_MOVE :
-                    anim.CrossFade("Move", 0.2f, -1, 0.0f);
+                    anim.CrossFade("Move", 0.2f);
                     break;
                 case State.STATE_ATTACK :
-                    anim.CrossFade("Attack", 0.2f, -1, 0.0f);
+                    anim.CrossFade("Attack", 0.2f);
                     break;
                 case State.STATE_DIE :
                     anim.CrossFade("Die", 0.2f);
@@ -149,6 +149,10 @@ public class Player_State : MonoBehaviour
 
     void Move()
     {
+        if(my_enemy != null && destination.Count > 0)
+        {
+            destination[destination.Count -1] = my_enemy.transform.position;
+        }
         if(destination.Count > 0)
         {
             dir = new Vector3(destination[0].x - gameObject.GetComponent<Transform>().position.x, 0f,destination[0].z - gameObject.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
@@ -206,43 +210,32 @@ public class Player_State : MonoBehaviour
         else
         {
             if(!isAttack)
-                {
-                    StartCoroutine(Attack(my_stat.Attack, AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
-                }
+            {
+                StartCoroutine(Attack(my_stat.Attack, AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+            }
         }
     }
 
-    IEnumerator Attack(float damage,float attack_delay)
+    IEnumerator Attack(float damage, float attack_speed)
     {
         if(!on_skill)
         {
             isAttack = true;
             isMove = false;
-            
-            ani.SetFloat("AttackSpeed",1/attack_delay);//공격 속도조절,attack_delay가 커질수록 공격속도가 느려짐, 반대로 작아지면 공격속도 빨라짐
-            while(my_enemy != null)
+
+            curState = State.STATE_ATTACK;
+            Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
+            Ani_State_Change();
+            yield return new WaitForSeconds(0.867f);
+            my_enemy_stat.Hp -= damage;
+            if(my_enemy_stat.Hp <= 0)
             {
-                if(on_skill)
-                    break;
-                my_enemy_stat.Hp = my_enemy_stat.Hp - damage;
-
-                gameObject.GetComponent<Transform>().forward = new Vector3(my_enemy.GetComponent<Transform>().position.x - gameObject.GetComponent<Transform>().position.x,0,my_enemy.GetComponent<Transform>().position.z - gameObject.GetComponent<Transform>().position.z);
-                if(my_enemy_stat.Hp <= 0)
-                {
-                    my_enemy = null;
-                    Animator enemy_Ani = my_enemy.GetComponent<Animator>();
-
-                    //enemy_Ani.SetTrigger("isDead");
-                    Managers.Resource.Destroy(my_enemy);
-                    //Destroy(my_enemy[0], 2);
-                    curState = State.STATE_IDLE;
-                    Ani_State_Change();     
-                }
-                Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
-                yield return new WaitForSeconds(attack_delay);
+                my_enemy = null;
+                Managers.Resource.Destroy(my_enemy);
             }
             curState = State.STATE_IDLE;
             Ani_State_Change();
+            yield return new WaitForSeconds(1/attack_speed);
             isAttack = false;
         }
     }
