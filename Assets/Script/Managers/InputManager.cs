@@ -12,6 +12,7 @@ public class InputManager
     // 키 입력
     public Action KeyAction = null;
 
+
     // 마우스 입력
     public Action<Define.MouseEvent> MouseAction = null;
     bool _pressed = false;
@@ -28,14 +29,13 @@ public class InputManager
     {
         // UI 클릭이면 리턴시켜서 UI 클릭시 밑에꺼 무시하도록 만듦 (플레이어 이동 등)
         if (EventSystem.current.IsPointerOverGameObject())
-              return;
-   
-
+            return;
 
         // 1. 어떤 키 입력 있고, KeyAction이 null 이 아니면,
         // KeyAction event를 구독한 곳으로 전파
         if (Input.anyKey && KeyAction != null)
             KeyAction.Invoke();
+
 
         // 마우스 입력 있으면,
         if (MouseAction != null)

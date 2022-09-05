@@ -7,13 +7,13 @@ public class CaptchaGenerator : ScriptableObject
 {
     public CaptchaAlphabets[] alphabets;
 
-    //public static int Index = 0;
-    public int Count = 0;
+    [SerializeField]
+    private const int CodeLength = 6;
 
     public CaptchaAlphabets[] Generate()
     {
-        CaptchaAlphabets[] Captcha = new CaptchaAlphabets[Count];
-        for (int i = 0; i < Count; i++)
+        CaptchaAlphabets[] Captcha = new CaptchaAlphabets[CodeLength];
+        for (int i = 0; i < CodeLength; i++)
         {
             int idx = Random.Range(0, 26);
             Captcha[i] = alphabets[idx];
