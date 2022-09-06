@@ -11,16 +11,46 @@ public class TestRadialMenu : MonoBehaviour
     Player_Controller player;
     UI_Emoticon emoticon;
 
-    [Space]
-    public Sprite[] sprites_action;
-
-    [Space]
-    public Sprite[] sprites_emoticon;
+    private Sprite[] sprites_action;
+    private Sprite[] sprites_emoticon;
 
     Coroutine co;
-    
+
+    enum Action
+    {
+        angry,
+        pray,
+        card_shuffle,
+        twerk,
+        air_guitar,
+        dance,
+        hi,
+        surprise,
+        COUNT,
+    }
+
+    int emoticonCount = 9;
+
+    int pieceCount = 8;
+
     private void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
+        sprites_action = new Sprite[8];
+        sprites_emoticon = new Sprite[8];
+
+        string num;
+        for (int i = 0; i < pieceCount; i++)
+        {
+            num = (i % emoticonCount).ToString("000");
+            sprites_action[i] = Managers.Resource.Load<Sprite>($"Sprites/Action/{(Action)(i % (int)Action.COUNT)}");
+            sprites_emoticon[i] = Managers.Resource.Load<Sprite>($"Sprites/Emoticon/Emoticon{num}");
+        }
+
         radialMenu.SetPieceImageSprites(sprites_action);
 
         player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
@@ -30,8 +60,6 @@ public class TestRadialMenu : MonoBehaviour
         Managers.Input.KeyAction += keyDownCheck;
     }
 
-
- 
 
     public void keyDownCheck()
     {
