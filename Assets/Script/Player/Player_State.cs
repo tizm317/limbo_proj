@@ -7,6 +7,7 @@ public class Player_State : MonoBehaviour
     // Start is called before the first frame update
 
     public State curState { get; set; }
+    public Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
     public enum State
     {
         STATE_IDLE,
@@ -14,6 +15,14 @@ public class Player_State : MonoBehaviour
         STATE_ATTACK,
         STATE_SKILL,
         STATE_DIE,
+    }
+
+    public enum HotKey
+    {
+        Q,
+        W,
+        E,
+        R,
     }
 
     public State Ani_State
@@ -37,14 +46,30 @@ public class Player_State : MonoBehaviour
                 case State.STATE_DIE :
                     anim.CrossFade("Die", 0.2f);
                     break;
+                case State.STATE_SKILL :
+                    switch(skill)
+                    {
+                        case HotKey.Q :
+                            
+                            break;
+                        case HotKey.W :
+
+                            break;
+                        case HotKey.E :
+
+                            break;
+                        case HotKey.R :
+
+                            break;
+                    }
+                    break;
             }
         
         }
     }
 
     PlayerStat my_stat;
-    const float gameObjectSpeed = 4.0f;
-    const float AttackDelay = 2.6f;
+    HotKey skill;
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;
@@ -112,6 +137,12 @@ public class Player_State : MonoBehaviour
             case State.STATE_ATTACK :
                 Attack();
                 break;
+            case State.STATE_DIE :
+                Die();
+                break;
+            case State.STATE_SKILL :
+
+                break;
         }
         
     }
@@ -135,11 +166,7 @@ public class Player_State : MonoBehaviour
         ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>();
         
     }
-    void Ani_State_Change()
-    {
-        Ani_State = curState;
-        Debug.Log(curState);
-    }
+    
     void Idle()
     {
         Get_Enemy();
@@ -211,7 +238,7 @@ public class Player_State : MonoBehaviour
         {
             if(!isAttack)
             {
-                StartCoroutine(Attack(my_stat.Attack, AttackDelay));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+                StartCoroutine(Attack(my_stat.Attack, my_stat.AttackSpeed));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
             }
         }
     }
@@ -240,6 +267,20 @@ public class Player_State : MonoBehaviour
         }
     }
 
+    void Die()
+    {
+        StartCoroutine(Die(start_pos));
+    }
+    IEnumerator Die(Vector3 pos)
+    {
+        curState = State.STATE_DIE;
+        Ani_State_Change();
+        yield return new WaitForSeconds(3.9f);
+        curState = State.STATE_IDLE;
+        Ani_State_Change();
+        my_stat.Hp = my_stat.MaxHp;
+        gameObject.transform.position = pos;
+    }
     void OnMouseClicked(Define.MouseEvent evt)
     {
         // NPC와 상호작용 중
@@ -353,6 +394,12 @@ public class Player_State : MonoBehaviour
                 }
             }
         }
+    }
+
+    void Ani_State_Change()
+    {
+        Ani_State = curState;
+        Debug.Log(curState);
     }
 
     #region 호영이형
