@@ -55,7 +55,7 @@ public class Player_Controller : MonoBehaviour
 
     void Start()
     {
-        Init();
+        //Init();
     }
 
     void Update()
