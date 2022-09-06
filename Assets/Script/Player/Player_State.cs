@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -96,7 +96,7 @@ public class Player_State : MonoBehaviour
     private bool isAttack = false;
     private Animator ani;
     public GameObject potal;
-
+    public Skill SKILL;
     // go to NPC
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
     private bool toNpc = false;
@@ -141,7 +141,7 @@ public class Player_State : MonoBehaviour
                 Die();
                 break;
             case State.STATE_SKILL :
-
+                Run_Skill();
                 break;
         }
         
@@ -155,6 +155,10 @@ public class Player_State : MonoBehaviour
         Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
+
+        Managers.Input.KeyAction -= OnKeyClicked;
+        Managers.Input.KeyAction += OnKeyClicked;
+
 
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
@@ -281,6 +285,56 @@ public class Player_State : MonoBehaviour
         my_stat.Hp = my_stat.MaxHp;
         gameObject.transform.position = pos;
     }
+    
+    void Run_Skill()
+    {
+        switch(skill)
+        {
+            case HotKey.Q :
+                SKILL.Q();
+                break;
+            case HotKey.W :
+            
+                break;
+            case HotKey.E :
+            
+                break;
+            case HotKey.R :
+            
+                break;
+        }
+        curState = State.STATE_IDLE;
+        Ani_State_Change();
+    }
+
+    void OnKeyClicked()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            skill = HotKey.Q;
+            curState = State.STATE_SKILL;
+            Ani_State_Change();
+        }
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            skill = HotKey.W;
+            curState = State.STATE_SKILL;
+            Ani_State_Change();
+        }
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            skill = HotKey.E;
+            curState = State.STATE_SKILL;
+            Ani_State_Change();
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            skill = HotKey.R;
+            curState = State.STATE_SKILL;
+            Ani_State_Change();
+        }
+    }
+
     void OnMouseClicked(Define.MouseEvent evt)
     {
         // NPC와 상호작용 중
@@ -396,10 +450,9 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    void Ani_State_Change()
+    public void Ani_State_Change()
     {
         Ani_State = curState;
-        Debug.Log(curState);
     }
 
     #region 호영이형
