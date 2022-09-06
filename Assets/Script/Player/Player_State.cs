@@ -50,7 +50,7 @@ public class Player_State : MonoBehaviour
                     switch(skill)
                     {
                         case HotKey.Q :
-                            
+                            anim.CrossFade("Q",0.2f);
                             break;
                         case HotKey.W :
 
@@ -69,7 +69,7 @@ public class Player_State : MonoBehaviour
     }
 
     PlayerStat my_stat;
-    HotKey skill;
+    public HotKey skill;
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;
@@ -92,11 +92,12 @@ public class Player_State : MonoBehaviour
     private float arrivalRange = 0.4f;
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true, Ult_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
-    private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
+    [SerializeField]
+    public bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
     public GameObject potal;
-    public Skill SKILL;
+    private Skill SKILL;
     // go to NPC
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
     private bool toNpc = false;
@@ -151,7 +152,7 @@ public class Player_State : MonoBehaviour
     {
         curState = State.STATE_IDLE;
         my_stat = gameObject.GetComponent<PlayerStat>();
-
+        SKILL = gameObject.GetComponent<Skill>();
         Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
@@ -288,50 +289,34 @@ public class Player_State : MonoBehaviour
     
     void Run_Skill()
     {
-        switch(skill)
+        if(!on_skill)
         {
-            case HotKey.Q :
-                SKILL.Q();
-                break;
-            case HotKey.W :
-            
-                break;
-            case HotKey.E :
-            
-                break;
-            case HotKey.R :
-            
-                break;
+            curState = State.STATE_IDLE;
+            Ani_State_Change();
         }
-        curState = State.STATE_IDLE;
-        Ani_State_Change();
     }
 
     void OnKeyClicked()
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            skill = HotKey.Q;
-            curState = State.STATE_SKILL;
-            Ani_State_Change();
+            if(!on_skill)
+            {
+                on_skill = true;
+                SKILL.Q();
+            }
         }
         if(Input.GetKeyDown(KeyCode.W))
         {
-            skill = HotKey.W;
-            curState = State.STATE_SKILL;
-            Ani_State_Change();
+    
         }
         if(Input.GetKeyDown(KeyCode.E))
         {
-            skill = HotKey.E;
-            curState = State.STATE_SKILL;
-            Ani_State_Change();
+           
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
-            skill = HotKey.R;
-            curState = State.STATE_SKILL;
-            Ani_State_Change();
+            
         }
     }
 

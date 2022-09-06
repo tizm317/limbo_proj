@@ -66375,6 +66375,7 @@ GameObject:
   - component: {fileID: 1289193800}
   - component: {fileID: 919132148007775225}
   - component: {fileID: 919132148007775226}
+  - component: {fileID: 919132148007775227}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -66421,6 +66422,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067d63cdfd8a2ad4aaaf0136e8acdc2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  start_pos: {x: 1.2, y: 1, z: -62.6}
+  skill: 0
   pathfinding: {fileID: 0}
   effect: {fileID: 0}
   enemies: []
@@ -66431,6 +66434,28 @@ MonoBehaviour:
   destination: []
   potal: {fileID: 0}
   magicNumber: 100
+--- !u!114 &919132148007775227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148007775224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486b801bcddd99c4a9064863866e50c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cool:
+  - 0
+  - 0
+  - 0
+  - 0
+  Skill_img:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &919132148970774875
 GameObject:
   m_ObjectHideFlags: 0
