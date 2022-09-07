@@ -40,7 +40,7 @@ public class PlayerStat : Stat
 
     void Update()
     {
-        HP_bar.fillAmount = _hp/100.0f;
+        HP_Update();
         Level_Update();
     }
 
@@ -49,6 +49,17 @@ public class PlayerStat : Stat
     {
         if (collision.gameObject.name == "Potal")
             Managers.Scene.LoadScene(Define.Scene.Village);
+    }
+
+    void HP_Update()
+    {
+        HP_bar.fillAmount = _hp/MaxHp;
+        if(_hp < 0)
+        {
+            Player_State ps = gameObject.GetComponent<Player_State>();
+            ps.curState = Player_State.State.STATE_DIE;
+            ps.Ani_State_Change();
+        }
     }
 
     void Level_Update()

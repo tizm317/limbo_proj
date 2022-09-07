@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -50,7 +50,7 @@ public class Player_State : MonoBehaviour
                     switch(skill)
                     {
                         case HotKey.Q :
-                            
+                            anim.CrossFade("Q",0.2f);
                             break;
                         case HotKey.W :
 
@@ -69,7 +69,7 @@ public class Player_State : MonoBehaviour
     }
 
     PlayerStat my_stat;
-    HotKey skill;
+    public HotKey skill;
     // Start is called before the first frame update
     [SerializeField]
     InputManager input;
@@ -92,11 +92,12 @@ public class Player_State : MonoBehaviour
     private float arrivalRange = 0.4f;
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true, Ult_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
-    private bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
+    [SerializeField]
+    public bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
     private Animator ani;
     public GameObject potal;
-
+    private Skill SKILL;
     // go to NPC
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
     private bool toNpc = false;
@@ -141,7 +142,7 @@ public class Player_State : MonoBehaviour
                 Die();
                 break;
             case State.STATE_SKILL :
-
+                Run_Skill();
                 break;
         }
         
@@ -151,10 +152,14 @@ public class Player_State : MonoBehaviour
     {
         curState = State.STATE_IDLE;
         my_stat = gameObject.GetComponent<PlayerStat>();
-
+        SKILL = gameObject.GetComponent<Skill>();
         Enemy_Update();
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
+
+        Managers.Input.KeyAction -= OnKeyClicked;
+        Managers.Input.KeyAction += OnKeyClicked;
+
 
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
@@ -281,6 +286,40 @@ public class Player_State : MonoBehaviour
         my_stat.Hp = my_stat.MaxHp;
         gameObject.transform.position = pos;
     }
+    
+    void Run_Skill()
+    {
+        if(!on_skill)
+        {
+            curState = State.STATE_IDLE;
+            Ani_State_Change();
+        }
+    }
+
+    void OnKeyClicked()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            if(!on_skill)
+            {
+                on_skill = true;
+                SKILL.Q();
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+    
+        }
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+           
+        }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            
+        }
+    }
+
     void OnMouseClicked(Define.MouseEvent evt)
     {
         // NPC와 상호작용 중
@@ -396,10 +435,9 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    void Ani_State_Change()
+    public void Ani_State_Change()
     {
         Ani_State = curState;
-        Debug.Log(curState);
     }
 
     #region 호영이형
