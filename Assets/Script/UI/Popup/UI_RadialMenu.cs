@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RadialMenu : MonoBehaviour
+public class UI_RadialMenu : UI_Popup
 {
     [Header("Options")]
     [Range(2, 16)]
@@ -33,8 +33,13 @@ public class RadialMenu : MonoBehaviour
     private static readonly Color SelectedPieceColor = new Color(1f, 1f, 1f, 1f);
     private static readonly Color NotSelectedPieceColor = new Color(1f, 1f, 1f, 0.3f);
 
-    private void Awake()
+
+    public override void Init()
     {
+        Transform RadialMenuPanel = transform.GetChild(0);
+        _pieceSample = RadialMenuPanel.GetChild(0).gameObject;
+        _arrow = RadialMenuPanel.GetChild(1).GetComponentInChildren<RectTransform>();
+
         InitPieceImages();
         InitPieceDirections();
         HideGameObject();
