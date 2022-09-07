@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameScene : BaseScene
 {
-    // °ÔÀÓ¾À
-    // °ÔÀÓ¾ÀÀÇ ¼±ºÀ´ë ¿ªÇÒ
-    // @Scene ¿ÀºêÁ§Æ® : ¼±ºÀ´ë
+    // ï¿½ï¿½ï¿½Ó¾ï¿½
+    // ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // @Scene ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    // ÄÚ·çÆ¾ °ü·Ã
+    // ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
     /*
     //class Test
     //{
@@ -19,11 +19,11 @@ public class GameScene : BaseScene
     //{
     //    public IEnumerator GetEnumerator()
     //    {
-    //        //// return Å¸ÀÔ : System.Object ÀÌ¶ó ¸ðµç°Å ¸®ÅÏ °¡´É
-    //        //// yield return : ÀÏ½ÃÁ¤Áö
+    //        //// return Å¸ï¿½ï¿½ : System.Object ï¿½Ì¶ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //        //// yield return : ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½
     //        //yield return new Test() { Id = 1 }; 
-    //        ////yield return null; // null ÀÌ¿ëÇØ¼­ ³ª°¡±â ¹Ø¿¡¼­ null Ã¼Å©ÇØÁà¾ßÇÏ±äÇÔ
-    //        //yield break; // ÁøÂ¥ Á¾·áÇÏ´Â¹ý, ÀÏ¹Ý ÇÔ¼ö¿¡¼­ÀÇ return;
+    //        ////yield return null; // null ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¿ï¿½ï¿½ï¿½ null Ã¼Å©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ï¿½
+    //        //yield break; // ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Â¹ï¿½, ï¿½Ï¹ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ return;
 
     //        //// Unreachable
     //        //yield return new Test() { Id = 2 };
@@ -33,7 +33,7 @@ public class GameScene : BaseScene
     //        for(int i = 0; i < 1000000; i++)
     //        {
     //            if (i % 10000 == 0)
-    //                yield return null; // ¸¸¹øÂ° ´ÜÀ§·Î Àá½Ã ½¬±â
+    //                yield return null; // ï¿½ï¿½ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //        }
 
 
@@ -41,15 +41,15 @@ public class GameScene : BaseScene
 
     //    void GenerateItem()
     //    {
-    //        // ¾ÆÀÌÅÛÀ» ¸¸µé¾îÁØ´Ù
-    //        // DB ÀúÀå
+    //        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½
+    //        // DB ï¿½ï¿½ï¿½ï¿½
 
-    //        // ¸ØÃã
-    //        // ·ÎÁ÷
+    //        // ï¿½ï¿½ï¿½ï¿½
+    //        // ï¿½ï¿½ï¿½ï¿½
     //    }
     //}
 
-    Coroutine co; // handle ¿ªÇÒ
+    Coroutine co; // handle ï¿½ï¿½ï¿½ï¿½
     */
 
     // CAPTCHA system
@@ -59,28 +59,28 @@ public class GameScene : BaseScene
 
     void Awake()
     {
-        // cf) Awake : Start º¸´Ù ¸ÕÀú, ÄÄÆ÷³ÍÆ® ²¨Á®ÀÖ¾îµµ ¿ÀºêÁ§Æ®°¡ µé°í ÀÖÀ¸¸é °¡´É
-        // ÁÖÀÇ : ¿ÀºêÁ§Æ®°¡ ²¨Á®ÀÖÀ¸¸é ¾È µÊ.
+        // cf) Awake : Start ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾îµµ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½.
         Init();
     }
 
     protected override void Init()
     {
-        // ÃÊ±âÈ­
+        // ï¿½Ê±ï¿½È­
         base.Init();
 
-        // ¾ÀÅ¸ÀÔ ¼³Á¤
+        // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         SceneType = Define.Scene.InGame;
 
-        // ¾À UI
+        // ï¿½ï¿½ UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
         //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
-        // InGame Scene BGM ¼³Á¤
+        // InGame Scene BGM ï¿½ï¿½ï¿½ï¿½
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
-        // Ç®¸Å´ÏÀú Å×½ºÆ®
+        // Ç®ï¿½Å´ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
         List<GameObject> list = new List<GameObject>();
 
         for (int i = 0; i < 2; i++)
@@ -90,18 +90,18 @@ public class GameScene : BaseScene
         //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
         //Managers.Resource.Instantiate("Enemy_Skeleton");
 
-        // ´Ù½Ã ³Ö±â
+        // ï¿½Ù½ï¿½ ï¿½Ö±ï¿½
         //foreach (GameObject obj in list)
         //    Managers.Resource.Destroy(obj);
 
 
         /*
-         * ÄÚ·çÆ¾ °ü·Ã
-           ÄÚ·çÆ¾ Å×½ºÆ®
+         * ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
+           ï¿½Ú·ï¿½Æ¾ ï¿½×½ï¿½Æ®
         CoroutineTest test = new CoroutineTest();
         foreach(System.Object t in test)
         {
-            // ¿©±â¼­ ÆÇ´ÜÇØÁÜ
+            // ï¿½ï¿½ï¿½â¼­ ï¿½Ç´ï¿½ï¿½ï¿½ï¿½ï¿½
             Test value = (Test)t;
             Debug.Log(value.Id);
         }
@@ -111,13 +111,13 @@ public class GameScene : BaseScene
         */
 
 
-        // DataManager test - ¿ÜºÎ¿¡¼­ »ç¿ëÇÒ ¶§
+        // DataManager test - ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
         Dictionary<int, Data.Map> dict_map = Managers.Data.MapDict;
 
-        // Ä¿¼­ÄÁÆ®·Ñ·¯ @Scene
+        // Ä¿ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ @Scene
         gameObject.GetOrAddComponent<CursorController>();
-        // @SceneÀ¸·Î ¿Å±è
+        // @Sceneï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½
         //gameObject.GetOrAddComponent<UI_Setting>();
         gameObject.GetOrAddComponent<Player_Controller>();
 
@@ -135,7 +135,7 @@ public class GameScene : BaseScene
         }
     }
 
-    // ÄÚ·çÆ¾ °ü·Ã
+    // ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
     /*
     IEnumerator CoStopExplode(float seconds)
     {
@@ -151,13 +151,13 @@ public class GameScene : BaseScene
 
     IEnumerator CoExplodeAfterSeconds(float seconds)
     {
-        //yield return null; // ÇÑ¹ÚÀÚ ½¬°í ´ÙÀ½ Æ½¿¡¼­ ÀÌ¾î¼­
+        //yield return null; // ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾î¼­
 
         Debug.Log("Explode Enter");
 
-        // IEnumerator ´Â °ÔÀÓ¿ÀºêÁ§Æ® ¹ÝÈ¯ÇØ¼­ ÀÓÀÇ·Î Á¤ÀÇÇÑ Å¬·¡½º ³ÖÀ»¼öÀÖÀ½
-        // waitforseconds ´Â À¯´ÏÆ¼°¡ ¸¸µé¾îµÐ Å¬·¡½º
-        yield return new WaitForSeconds(seconds); // ´ÙÀ½ºÎºÐÀº seconds ÈÄ¿¡ ½ÇÇà
+        // IEnumerator ï¿½ï¿½ ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È¯ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // waitforseconds ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
+        yield return new WaitForSeconds(seconds); // ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ seconds ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         Debug.Log("Explode Execute!!");
 
@@ -168,7 +168,7 @@ public class GameScene : BaseScene
 
     public override void Clear()
     {
-        // ÀÌ ¾ÀÀÌ Á¾·áµÉ ¶§ ³¯·ÁÁà¾ß ÇÏ´Â ºÎºÐ ³Ö¾îÁà¾ß ÇÔ
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Îºï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         Debug.Log("InGameScene Clear");
     }
 
