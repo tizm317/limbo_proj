@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RadialMenu : MonoBehaviour
+public class UI_RadialMenu : UI_Popup
 {
     [Header("Options")]
     [Range(2, 16)]
-    [SerializeField] private int _pieceCount = 8; // 조각 개수
+    [SerializeField] public int _pieceCount = 8; // 조각 개수
 
     [Range(0.2f, 1f)]
     [SerializeField] private float _appearanceDuration = .3f; // 등장에 걸리는 시간
@@ -33,8 +33,13 @@ public class RadialMenu : MonoBehaviour
     private static readonly Color SelectedPieceColor = new Color(1f, 1f, 1f, 1f);
     private static readonly Color NotSelectedPieceColor = new Color(1f, 1f, 1f, 0.3f);
 
-    private void Awake()
+
+    public override void Init()
     {
+        Transform RadialMenuPanel = transform.GetChild(0);
+        _pieceSample = RadialMenuPanel.GetChild(0).gameObject;
+        _arrow = RadialMenuPanel.GetChild(1).GetComponentInChildren<RectTransform>();
+
         InitPieceImages();
         InitPieceDirections();
         HideGameObject();
@@ -55,8 +60,8 @@ public class RadialMenu : MonoBehaviour
             clone.name = $"Piece {i}";
 
             // Image, RectTransform 가져와 배열에 초기화
-            _pieceImages[i] = clone.GetComponent<Image>();
-            _pieceRects[i] = _pieceImages[i].rectTransform;
+            _pieceImages[i] = clone.transform.GetChild(0).GetComponent<Image>();
+            _pieceRects[i] = clone.GetComponent<RectTransform>();
         }
 
         _pieceSample.SetActive(false);

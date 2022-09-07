@@ -55,7 +55,7 @@ public class GameScene : BaseScene
     // CAPTCHA system
     UI_Captcha uI_Captcha;
     Coroutine co;
-    const float CaptchaDelaySeconds = 3600.0f;
+    const float CaptchaDelaySeconds = 3600.0f; // 1hour
 
     void Awake()
     {
@@ -122,8 +122,6 @@ public class GameScene : BaseScene
         gameObject.GetOrAddComponent<Player_Controller>();
 
         // CAPTCHA System
-        uI_Captcha = GameObject.Find("UI_Captcha").GetComponent<UI_Captcha>();
-        uI_Captcha.gameObject.SetActive(false);
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
     }
 
@@ -131,15 +129,10 @@ public class GameScene : BaseScene
     {
         while(true)
         {
-            uI_Captcha.gameObject.SetActive(true);
-            uI_Captcha.GenerateCaptcha();
             yield return new WaitForSeconds(seconds);
+            uI_Captcha = Managers.UI.ShowPopupUI<UI_Captcha>();
+            uI_Captcha.GenerateCaptcha();
         }
-        //if(co != null)
-        //{
-        //    StopCoroutine(co);
-        //    co = null;
-        //}
     }
 
     // �ڷ�ƾ ����

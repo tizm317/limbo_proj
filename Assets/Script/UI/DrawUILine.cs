@@ -69,10 +69,16 @@ public class DrawUILine : MonoBehaviour
                 middle = (path[0] + start) / 2;
                 lineList[i].transform.localPosition = middle;
                 // 방향
-                lineList[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, path[0] - start);
+                float angle;
+                Vector2 dir = (path[0] - start).normalized;
+                angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                lineList[i].transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+                //lineList[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, path[0] - start);
                 // 크기
                 lineList[i].GetComponent<RectTransform>().localScale = new Vector2(1.0f, 1.0f);
-                lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
+                //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
+                float lineWidth = Vector2.Distance(start, path[0]);
+                lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(lineWidth, 3.0f);
             }
             else
             {
@@ -84,12 +90,18 @@ public class DrawUILine : MonoBehaviour
 
                 // 미니맵에서 2d 방향
                 float angle;
-                angle = Mathf.Atan2(nextPos.y - curPos.y, nextPos.x - curPos.x) * Mathf.Rad2Deg;
-                lineList[i].transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+                Vector2 dir = (nextPos - curPos).normalized;
+                angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                //angle = Mathf.Atan2(nextPos.y - curPos.y, nextPos.x - curPos.x) * Mathf.Rad2Deg;
+                //lineList[i].transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+                lineList[i].transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
                 // 크기
+                float lineWidth = Vector2.Distance(curPos, nextPos);
+                lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(lineWidth, 3.0f);
+                //lineList[i].GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lineWidth);
                 lineList[i].GetComponent<RectTransform>().localScale = new Vector2(1.0f, 1.0f);
-                lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
+                //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
             }
 
             // child 위치 조정 (라인이 플레이어,도착 마크 가려서)
