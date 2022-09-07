@@ -55,7 +55,7 @@ public class Player_Controller : MonoBehaviour
 
     void Start()
     {
-        //Init();
+        Init();
     }
 
     void Update()
@@ -109,8 +109,8 @@ public class Player_Controller : MonoBehaviour
     public void Init()
     {
         Enemy_Update();
-        Managers.Input.MouseAction -= OnMouseClicked;
-        Managers.Input.MouseAction += OnMouseClicked;
+        //Managers.Input.MouseAction -= OnMouseClicked;
+        //Managers.Input.MouseAction += OnMouseClicked;
         player = GameObject.Find("Player");
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         ani = player.GetComponent<Animator>();

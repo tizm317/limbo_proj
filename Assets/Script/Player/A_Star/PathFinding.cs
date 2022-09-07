@@ -41,13 +41,12 @@ public class PathFinding : MonoBehaviour
                 dir = new Vector3(Path[i].worldPosition.x - Path[i-1].worldPosition.x, 0, Path[i].worldPosition.z - Path[i-1].worldPosition.z).normalized;
                 if(dir == past_dir)
                 {
-                    route[idx] += dir;
+                    route[route.Count -1] += dir;
                 }
                 else
                 {
                     route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
                     past_dir = dir;
-                    idx++;
                 }    
             }
             else if(i == 1)

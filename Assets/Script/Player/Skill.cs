@@ -109,6 +109,11 @@ public class Skill : MonoBehaviour
                         pos_selected = true;
                     }
                 }
+                else if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.R))
+                {
+                    canceled = true;
+                    player_state.on_skill = false;
+                }
                 yield return new WaitForEndOfFrame();
             }
             if(pos_selected)

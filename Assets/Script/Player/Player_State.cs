@@ -5,8 +5,6 @@ using System;
 public class Player_State : MonoBehaviour
 {
     // Start is called before the first frame update
-
-    public State curState { get; set; }
     public Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
     public enum State
     {
@@ -16,6 +14,9 @@ public class Player_State : MonoBehaviour
         STATE_SKILL,
         STATE_DIE,
     }
+
+    [SerializeField]
+    public State curState { get; set; }
 
     public enum HotKey
     {
@@ -300,7 +301,7 @@ public class Player_State : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            if(!on_skill)
+            if(!on_skill&&SKILL.cool[0] == 0)
             {
                 on_skill = true;
                 SKILL.Q();
