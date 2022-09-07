@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -46331,7 +46331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1468996138
 Transform:
   m_ObjectHideFlags: 0
@@ -66421,6 +66421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067d63cdfd8a2ad4aaaf0136e8acdc2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  start_pos: {x: 1.2, y: 1, z: -62.6}
   pathfinding: {fileID: 0}
   effect: {fileID: 0}
   enemies: []
@@ -70213,7 +70214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &4675975255888908253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73081,11 +73082,11 @@ GameObject:
   - component: {fileID: 6750634307807781646}
   m_Layer: 0
   m_Name: Enemy_Rabbit
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6750634307807781641
 MonoBehaviour:
   m_ObjectHideFlags: 0
