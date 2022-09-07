@@ -16,7 +16,7 @@ public class UI_InGame : UI_Scene
 
     #region RadialMenu
     private UI_RadialMenu radialMenu;
-    private KeyCode key_emoticon = KeyCode.E;
+    private KeyCode key_emoticon = KeyCode.T;
     private KeyCode key_action = KeyCode.G;
 
     UI_Emoticon emoticon;
