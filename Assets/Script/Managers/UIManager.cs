@@ -169,6 +169,11 @@ public class UIManager
         return isPeek;
     }
 
+    public UI_Popup Peek()
+    {
+        return _popupStack.Peek();
+    }
+
     public void ClosePopupUI()
     {
         // 닫기 : 스택에서 하나씩 뺌

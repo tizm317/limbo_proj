@@ -31,6 +31,11 @@ public class InputManager
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
+        // if Captcha UI pop up, keyAction, MouseAction doesn't work
+        if (Managers.UI.Peek().name == "UI_Captcha")
+            return;
+
+
         // 1. 어떤 키 입력 있고, KeyAction이 null 이 아니면,
         // KeyAction event를 구독한 곳으로 전파
         if (Input.anyKey && KeyAction != null)
