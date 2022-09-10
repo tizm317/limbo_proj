@@ -29,7 +29,8 @@ public class VillageScene : BaseScene
         gameObject.GetOrAddComponent<CursorController>();
         // @Scene으로 옮김
         //gameObject.GetOrAddComponent<UI_Setting>();
-        gameObject.GetOrAddComponent<Player_Controller>();
+        //gameObject.GetOrAddComponent<Player_Controller>();
+
 
         //
         Managers.Data.MapDict.Clear();

@@ -43,7 +43,8 @@ public class UI_InGame : UI_Scene
     int pieceCount = 8;
     #endregion
 
-    Player_Controller player;
+    //Player_Controller player;
+    Player_State player;
 
     enum Buttons
     {
@@ -73,7 +74,8 @@ public class UI_InGame : UI_Scene
         Managers.Input.KeyAction -= ControlPopUpUI;
         Managers.Input.KeyAction += ControlPopUpUI;
 
-        player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
+        //player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
+        player = GameObject.Find("Player").GetComponent<Player_State>();
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu
@@ -93,7 +95,6 @@ public class UI_InGame : UI_Scene
         radialMenu.SetPieceImageSprites(sprites_action);
         #endregion
 
-        player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
         emoticon = GameObject.Find("@UI_Root").GetComponentInChildren<UI_Emoticon>();
 
     }

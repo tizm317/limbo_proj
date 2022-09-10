@@ -56,7 +56,8 @@ public class UI_MiniMap : UI_Popup
     zoom curZoom = zoom.DefaultZoom;
 
     [SerializeField] Transform player;
-    Player_Controller player_Controller;
+    //Player_Controller player_Controller;
+    Player_State player_State;
     private GameObject Scene;
     private RectTransform playerImage;
     private RectTransform destinationImage;
@@ -141,7 +142,8 @@ public class UI_MiniMap : UI_Popup
 
         player = GameObject.Find("Player").transform;
         Scene = GameObject.Find("@Scene");
-        player_Controller = Scene.GetComponent<Player_Controller>();
+        //player_Controller = Scene.GetComponent<Player_Controller>();
+        player_State = player.GetComponent<Player_State>();
 
         // path 받아오려고
         pathFinding = GameObject.Find("A*").GetComponent<PathFinding>();
@@ -184,7 +186,7 @@ public class UI_MiniMap : UI_Popup
             temp.z = destinationImage.transform.localPosition.y + player.transform.position.z;
             temp.y = 1;
 
-            player_Controller.Set_Destination(temp);
+            player_State.Set_Destination(temp);
         }, Define.UIEvent.Click);
 
 
@@ -300,7 +302,7 @@ public class UI_MiniMap : UI_Popup
         drawUILine.ClearLine();
         List<Vector3> path = pathFinding.Return_Path(player);
 
-        if (destinationImage.localPosition != null && player_Controller.get_isObstacle() == false)
+        if (destinationImage.localPosition != null && player_State.get_isObstacle() == false)
         {
             // 장애물 없는 경우 - 직선코스
             // 코루틴
@@ -319,7 +321,7 @@ public class UI_MiniMap : UI_Popup
             
             // 
             drawDestinationMark();
-            drawUILine.DrawLine(playerImage.localPosition, path, player_Controller.get_isObstacle());
+            drawUILine.DrawLine(playerImage.localPosition, path, player_State.get_isObstacle());
             return;
         }
 
@@ -342,9 +344,9 @@ public class UI_MiniMap : UI_Popup
         // 목적지 빨간색 표시 그리기
 
         // 목적지 위치 받아옴
-        destination = player_Controller.Get_Destination();
+        destination = player_State.Get_Destination();
 
-        if (destination.y >= player_Controller.magicNumber)
+        if (destination.y >= player_State.magicNumber)
             return;
 
         dist_PlayerDestinationImg = Mathf.Abs(playerPos.magnitude - destination.magnitude);
