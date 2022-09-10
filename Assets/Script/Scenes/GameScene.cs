@@ -119,7 +119,7 @@ public class GameScene : BaseScene
         gameObject.GetOrAddComponent<CursorController>();
         // @Scene���� �ű�
         //gameObject.GetOrAddComponent<UI_Setting>();
-        gameObject.GetOrAddComponent<Player_Controller>();
+        //gameObject.GetOrAddComponent<Player_Controller>();
 
         // CAPTCHA System
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
