@@ -17,7 +17,7 @@ public class DrawUILine : MonoBehaviour
     int idx = 0; // linelist index
 
 
-    void Start()
+    void Awake()
     {
         Init();
     }
@@ -26,9 +26,10 @@ public class DrawUILine : MonoBehaviour
     {
         // 직선용 UIline
         UIline = Managers.Resource.Instantiate("UI/Scene/UILine");
+        UIline.SetActive(false);
+
         UIline.transform.SetParent(transform);
         UIline.transform.localPosition = transform.GetChild(0).position;
-        UIline.SetActive(false);
 
         UIline.transform.SetAsFirstSibling(); // hierachy 순서 지정
 
@@ -38,7 +39,7 @@ public class DrawUILine : MonoBehaviour
     public void DrawLine(Vector3 start, Vector3 end)
     {
         // 장애물 없는 직선 라인
-        UIline.SetActive(true);
+        UIline.SetActive(false);
 
         // 위치
         Vector3 middle = (end + start) /2 ;
@@ -52,6 +53,8 @@ public class DrawUILine : MonoBehaviour
         count = 1;
 
         idx = 0;
+
+        UIline.SetActive(true);
     }
     public void DrawLine(Vector3 start, List<Vector3> path, bool isObstacle)
     {
@@ -98,17 +101,20 @@ public class DrawUILine : MonoBehaviour
                 lineList[i].transform.localPosition = middle;
 
                 // 미니맵에서 2d 방향
-                float angle;
-                Vector2 dir = (nextPos - curPos).normalized;
-                angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                //angle = Mathf.Atan2(nextPos.y - curPos.y, nextPos.x - curPos.x) * Mathf.Rad2Deg;
-                //lineList[i].transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-                lineList[i].transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+                //float angle;
+                //Vector2 dir = (nextPos - curPos).normalized;
+                //angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                ////angle = Mathf.Atan2(nextPos.y - curPos.y, nextPos.x - curPos.x) * Mathf.Rad2Deg;
+                ////lineList[i].transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+                //lineList[i].transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+                //
+                lineList[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, nextPos - curPos);
+
 
                 // 크기
                 float lineWidth = Vector2.Distance(curPos, nextPos) * 1.2f;
                 lineWidth = (lineWidth <= 3.0f) ? 3.0f : lineWidth;
-                lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(lineWidth, 3.0f);
+                lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, lineWidth);
                 //lineList[i].GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lineWidth);
                 lineList[i].GetComponent<RectTransform>().localScale = new Vector2(1.0f, 1.0f);
                 //lineList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(3.0f, 3.0f);
@@ -135,7 +141,7 @@ public class DrawUILine : MonoBehaviour
         lineList.Clear();
     }
 
-    public bool checkLinelist(UILine uILine)
+    public bool checkLinelistOrder(UILine uILine)
     {
         // 충돌한 라인이 사라질 순번이 맞는지 확인
 

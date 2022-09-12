@@ -90,8 +90,8 @@ public class UI_MiniMap : UI_Popup
 
         // 미니맵 플레이어, 도착지 이미지 방향
         RotationControl(playerImage);
-        if (destinationImage)
-            RotationControl(destinationImage);
+        //if (destinationImage)
+        //    RotationControl(destinationImage);
 
         // 플레이어
         playerPos.y = player.position.z;
@@ -300,6 +300,8 @@ public class UI_MiniMap : UI_Popup
         drawUILine = mapImage.GetComponent<DrawUILine>();
 
         drawUILine.ClearLine();
+        destinationImage.gameObject.SetActive(false);
+
         List<Vector3> path = pathFinding.Return_Path(player);
 
         if (destinationImage.localPosition != null && player_State.get_isObstacle() == false)
@@ -320,8 +322,8 @@ public class UI_MiniMap : UI_Popup
             StopAllCoroutines();
             
             // 
-            drawDestinationMark();
             drawUILine.DrawLine(playerImage.localPosition, path, player_State.get_isObstacle());
+            drawDestinationMark();
             return;
         }
 
@@ -331,6 +333,7 @@ public class UI_MiniMap : UI_Popup
             drawUILine.ClearLine();
             path.Clear();
         }
+
     }
 
     public void clearLine()
@@ -362,6 +365,9 @@ public class UI_MiniMap : UI_Popup
         destination.y = destination.z;
         destination.z = 0;
         destinationImage.localPosition = destination;
+
+        // 방향
+        destinationImage.GetComponent<RectTransform>().rotation = mapImage.GetChild(0).GetComponent<RectTransform>().rotation;
 
         destinationImage.gameObject.SetActive(true);
     }

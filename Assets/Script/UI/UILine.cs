@@ -27,7 +27,7 @@ public class UILine : MonoBehaviour
             return;
 
         // 여러개인 경우(Curved Line인 경우)만 충돌 시 비활성화해주고, 한꺼번에 Destory한다
-        if (other.gameObject.name == "PlayerImage" && this.transform.parent.GetComponent<DrawUILine>().checkLinelist(this) == true)
+        if (other.gameObject.name == "PlayerImage" && this.transform.parent.GetComponent<DrawUILine>().checkLinelistOrder(this) == true)
             this.gameObject.SetActive(false);
             //Managers.Resource.Destroy(this.gameObject);
     }
