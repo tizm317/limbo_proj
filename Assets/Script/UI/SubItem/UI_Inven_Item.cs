@@ -29,7 +29,9 @@ public class UI_Inven_Item : UI_Base
     float disY;
 
     UI_Item_Remove_Caution uI_Item_Remove_Caution;
-    UI_ItemDescription uI_ItemDescription;
+    static UI_ItemDescription uI_ItemDescription; // tooltip 하나만 있으면 됨.
+    static bool tooltip = true;
+
 
     CursorController cursorController;
     bool tryRemoving = false;
@@ -101,15 +103,34 @@ public class UI_Inven_Item : UI_Base
 
         Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) =>
         {
+            // item information popup for use
+
+            // 우클
+            if (PointerEventData.pointerId != -2)
+                return;
+
+            tooltip = false;
+            if(!uI_ItemDescription)
+                uI_ItemDescription = Managers.UI.ShowPopupUI<UI_ItemDescription>();
+            uI_ItemDescription.setDescription(_name, _type, _grade, _count, PointerEventData.position, tooltip);
+
+        }, Define.UIEvent.Click);
+
+        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) =>
+        {
             // item information popup
-            uI_ItemDescription = Managers.UI.ShowPopupUI<UI_ItemDescription>();
-            uI_ItemDescription.setDescription(_name, _type, _grade, _count, PointerEventData.position);
+            if (!uI_ItemDescription)
+            {
+                tooltip = true;
+                uI_ItemDescription = Managers.UI.ShowPopupUI<UI_ItemDescription>();
+                uI_ItemDescription.setDescription(_name, _type, _grade, _count, PointerEventData.position, tooltip);
+            }
 
         }, Define.UIEvent.PointerEnter);
 
         Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) =>
         {
-            if (uI_ItemDescription)
+            if (uI_ItemDescription && tooltip)
                 uI_ItemDescription.ClosePopupUI();
 
         }, Define.UIEvent.PointerExit);
