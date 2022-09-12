@@ -32,7 +32,7 @@ public class InputManager
             return;
 
         // if Captcha UI pop up, keyAction, MouseAction doesn't work
-        if (Managers.UI.Peek().name == "UI_Captcha")
+        if (Managers.UI.Peek() != null && Managers.UI.Peek().name == "UI_Captcha")
             return;
 
 

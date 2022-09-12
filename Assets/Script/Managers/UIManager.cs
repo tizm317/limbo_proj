@@ -171,6 +171,9 @@ public class UIManager
 
     public UI_Popup Peek()
     {
+        if (_popupStack.Count == 0)
+            return null;
+
         return _popupStack.Peek();
     }
 
