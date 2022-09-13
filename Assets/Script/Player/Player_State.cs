@@ -6,6 +6,7 @@ public class Player_State : MonoBehaviour
 {
     // Start is called before the first frame update
     public Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
+    public string job;
     public enum State
     {
         STATE_IDLE,
@@ -42,7 +43,7 @@ public class Player_State : MonoBehaviour
                     anim.CrossFade("Move", 0.2f);
                     break;
                 case State.STATE_ATTACK :
-                    anim.CrossFade("Attack", 0.2f);
+                    anim.CrossFade(job + "_Attack", 0.2f);
                     break;
                 case State.STATE_DIE :
                     anim.CrossFade("Die", 0.2f);
@@ -51,16 +52,16 @@ public class Player_State : MonoBehaviour
                     switch(skill)
                     {
                         case HotKey.Q :
-                            anim.CrossFade("Q",0.2f);
+                            anim.CrossFade(job + "_Q", 0.2f);
                             break;
                         case HotKey.W :
-
+                            anim.CrossFade(job + "_W", 0.2f);
                             break;
                         case HotKey.E :
-
+                            anim.CrossFade(job + "_E", 0.2f);
                             break;
                         case HotKey.R :
-
+                            anim.CrossFade(job + "_R", 0.2f);
                             break;
                     }
                     break;
@@ -69,7 +70,7 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    PlayerStat my_stat;
+    public PlayerStat my_stat;
     public HotKey skill;
     // Start is called before the first frame update
     [SerializeField]
@@ -151,6 +152,7 @@ public class Player_State : MonoBehaviour
 
     void Init()
     {
+        job = "Warrior";
         curState = State.STATE_IDLE;
         my_stat = gameObject.GetComponent<PlayerStat>();
         SKILL = gameObject.GetComponent<Skill>();
@@ -309,15 +311,27 @@ public class Player_State : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.W))
         {
-    
+            if(!on_skill&&SKILL.cool[1] == 0)
+            {
+                on_skill = true;
+                SKILL.W();
+            }
         }
         if(Input.GetKeyDown(KeyCode.E))
         {
-           
+            if(!on_skill&&SKILL.cool[2] == 0)
+            {
+                on_skill = true;
+                SKILL.E();
+            }
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
-            
+            if(!on_skill&&SKILL.cool[3] == 0)
+            {
+                on_skill = true;
+                SKILL.R();
+            }
         }
     }
 
