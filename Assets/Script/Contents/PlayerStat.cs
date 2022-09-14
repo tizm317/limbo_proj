@@ -23,6 +23,7 @@ public class PlayerStat : Stat
     public int STR,DEX,INT,LUC;
     public int Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
+    float time;
     private void Start()
     {
         _level = 1;
@@ -36,6 +37,7 @@ public class PlayerStat : Stat
         _gold = 0;
         HP_bar = GameObject.Find("Filler").GetComponent<Image>();
         Level_Update();
+        time = 0;
     }
 
     void Update()
@@ -54,11 +56,21 @@ public class PlayerStat : Stat
     void HP_Update()
     {
         HP_bar.fillAmount = _hp/MaxHp;
+        time += Time.deltaTime;
         if(_hp < 0)
         {
             Player_State ps = gameObject.GetComponent<Player_State>();
             ps.curState = Player_State.State.STATE_DIE;
             ps.Ani_State_Change();
+        }
+        else if(_hp > MaxHp)
+        {
+            _hp = MaxHp;
+        }
+        else if(_hp < MaxHp && time >= 1)
+        {
+            _hp += Regeneration;
+            time = 0;
         }
     }
 
