@@ -177,7 +177,9 @@ public class Skill : MonoBehaviour
         player_state.curState = Player_State.State.STATE_SKILL;
         player_state.skill = Player_State.HotKey.E;
         player_state.Ani_State_Change();
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
+        Managers.Sound.Play("Sound/warrior_yelling",Define.Sound.Effect, 1.0f, true);
+        yield return new WaitForSeconds(4f);
         //적의 공격속도와 공격력을 감소시키는 내용이 있어야함 - 희진누나랑 상담해볼 부분
         cool[2] = cool_max[2];
         player_state.on_skill = false;
