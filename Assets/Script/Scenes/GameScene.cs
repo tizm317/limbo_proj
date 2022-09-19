@@ -83,12 +83,20 @@ public class GameScene : BaseScene
         // Ǯ�Ŵ��� �׽�Ʈ
         List<GameObject> list = new List<GameObject>();
 
-        for (int i = 0; i < 2; i++)
-            list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
+        //for (int i = 0; i < 2; i++)
+        //    list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
 
         //for (int i = 0; i < 5; i++)
         //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
         //Managers.Resource.Instantiate("Enemy_Skeleton");
+
+        //Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
+
+        /*
+        GameObject go = new GameObject { name = "SpawningPool" };
+        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+        pool.SetKeepMonsterCount(2);
+        */
 
         // �ٽ� �ֱ�
         //foreach (GameObject obj in list)

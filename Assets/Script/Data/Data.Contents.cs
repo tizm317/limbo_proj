@@ -16,8 +16,9 @@ namespace Data
         // 타입도 맞춰야함
         // public 변수이여야 읽어들임, 아니면 [SerializedField]
         public int level;
-        public int hp;
+        public int maxHp;
         public int attack;
+        public int totalExp;
 
         // 포맷만 맞춰두고 한번에 불러옴
     }

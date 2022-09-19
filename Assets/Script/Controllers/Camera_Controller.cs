@@ -35,6 +35,11 @@ public class Camera_Controller : MonoBehaviour
     {
         if(camera_control)
         {
+            
+            if(_player == null || !_player.activeSelf)
+            {
+                return;
+            }
             wheel_Control(5);
             if(_mode == Define.CameraMode.QuarterView)
             {

@@ -6,7 +6,12 @@ public class Define
 {
     // 여러가지 정보들 enum type 으로 관리하는 class
 
-
+    public enum WorldObject
+    {
+        Unknown,
+        Monster,
+        Player,
+    }
     public enum State
     {
         Idle,

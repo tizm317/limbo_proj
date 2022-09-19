@@ -5,9 +5,10 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] protected Vector3 _destPos;  //타켓 위치
-    [SerializeField] protected Define.State state = Define.State.Idle;  //상태 초기값 = wait(idle)
+    [SerializeField] protected Define.State state = Define.State.Moving;  //상태 초기값 
     [SerializeField] protected GameObject lockTarget;  //타켓
 
+    public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown; 
     public virtual Define.State State
     {
         get { return state; }
@@ -26,7 +27,7 @@ public abstract class Enemy : MonoBehaviour
                     anim.CrossFade("WALK", 0.2f);
                     break;
                 case Define.State.Skill:
-                    anim.CrossFade("ATTACK", 0.2f, -1, 0.0f);
+                    anim.CrossFade("ATTACK", 0.2f, -1, 0);
                     break;
                 case Define.State.Hit:
                     anim.CrossFade("DAMAGE", 0.2f);

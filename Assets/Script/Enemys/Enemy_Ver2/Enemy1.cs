@@ -20,6 +20,8 @@ public class Enemy1 : Enemy
 
     public override void Init()
     {
+        WorldObjectType = Define.WorldObject.Monster;
+
         // 스탯
         _stat = gameObject.GetComponent<Stat>();
             
@@ -53,6 +55,7 @@ public class Enemy1 : Enemy
     protected override void UpdateMoving()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //GameObject player = Managers.Game.GetPlayer();
         lockTarget = player;
         _destPos = lockTarget.transform.position;
         float dist = (_destPos - tr.position).magnitude;
@@ -104,7 +107,7 @@ public class Enemy1 : Enemy
         if (lockTarget != null)
         {
             Vector3 dir = lockTarget.transform.position - transform.position;
-            Quaternion quat = Quaternion.LookRotation(dir);
+            Quaternion quat = Quaternion.LookRotation(dir); //바라보고 싶은 방향
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
     }
@@ -154,10 +157,19 @@ public class Enemy1 : Enemy
     {
         if (lockTarget != null)
         {
+            
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
+            targetStat.OnAttacked(_stat);
+            /*
             float damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
             targetStat.Hp -= damage; //플레이어 데미지
 
+            
+            if(targetStat.Hp <= 0)
+            {
+                Managers.Game.Despawn(targetStat.gameObject);
+            }
+            */
             //죽었는지 여부 체크 
             if (targetStat.Hp > 0)
             {
