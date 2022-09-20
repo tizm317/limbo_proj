@@ -54,7 +54,7 @@ public class SpawningPool : MonoBehaviour
             randPos = _spawnPos + randDir;
 
             NavMeshPath path = new NavMeshPath();
-
+            yield return new WaitForEndOfFrame();
             if(nma.CalculatePath(randPos, path))
             {
                 break;
