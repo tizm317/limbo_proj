@@ -5,11 +5,12 @@ using UnityEngine.AI;
 
 public class Enemy2 : Enemy
 {
+    //wizard
     Stat _stat;
 
     [SerializeField] float _scanRange = 8;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
-
+    
     public Transform[] points;  //waypoints 배열
     private int nextIdx = 1;     // waypoints 인덱스
     private int theNextIdx = 0;   // 다음 waypoint 확인용 인덱스
@@ -61,6 +62,7 @@ public class Enemy2 : Enemy
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        _stat.MoveSpeed = 1.5f;
         nma.speed = _stat.MoveSpeed;
 
         if (dist <= _attachRange)
