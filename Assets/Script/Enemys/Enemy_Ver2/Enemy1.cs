@@ -10,7 +10,7 @@ public class Enemy1 : Enemy
     [SerializeField] float _scanRange = 8;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
 
-    private Transform[] points;  //waypoints 배열
+    public Transform[] points;  //waypoints 배열
     private int nextIdx = 1;     // waypoints 인덱스
     private int theNextIdx = 0;   // 다음 waypoint 확인용 인덱스
 
@@ -106,9 +106,10 @@ public class Enemy1 : Enemy
     {
         if (lockTarget != null)
         {
-            Vector3 dir = lockTarget.transform.position - transform.position;
+            Vector3 dir = lockTarget.transform.position - tr.position;
             Quaternion quat = Quaternion.LookRotation(dir); //바라보고 싶은 방향
-            transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
+            //tr.rotation = Quaternion.Lerp(tr.rotation, quat, 20 * Time.deltaTime);
+            tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
         }
     }
 

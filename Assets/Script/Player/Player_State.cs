@@ -262,8 +262,9 @@ public class Player_State : MonoBehaviour
             Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
             yield return new WaitForSeconds(0.867f);
-            my_enemy_stat.Hp -= damage;
-            if(my_enemy_stat.Hp <= 0)
+            //my_enemy_stat.Hp -= damage;
+            my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
+            if (my_enemy_stat.Hp <= 0)
             {
                 my_enemy = null;
                 Managers.Resource.Destroy(my_enemy);

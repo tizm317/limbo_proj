@@ -92,11 +92,11 @@ public class GameScene : BaseScene
 
         //Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
 
-        /*
-        GameObject go = new GameObject { name = "SpawningPool" };
-        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-        pool.SetKeepMonsterCount(2);
-        */
+        
+        //GameObject go = new GameObject { name = "SpawningPool" };
+        //SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+        //pool.SetKeepMonsterCount(2);
+        
 
         // �ٽ� �ֱ�
         //foreach (GameObject obj in list)
