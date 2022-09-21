@@ -11,111 +11,123 @@ public class Npc : MonoBehaviour
      */
 
     // attributes
-    static int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
-    public int _id { get; private set; }            // id
-    public string _name { get; private set; }       // 이름
-    public string _job { get; private set; }
+    public int _id { get; protected set; }            // id
+    public string _name { get; protected set; }       // 이름
+    
+    protected bool _patrolable;       // 패트롤여부
+    protected float _moveSpeed;       // 이동 속도
+    protected float _turnSpeed = 4.0f;
+    protected Vector3 _position;      // 시작 위치
 
-    string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
-    float _moveSpeed;   // 이동 속도
-    bool _isPatrol;     // 패트롤여부
+    // StateMachine
+    public Define.NpcState curState { get;  set; }
+    protected EventActionTable[] table;
 
-    GameObject clickedPlayer = null;
-    float turnSpeed = 4.0f;
-    public State curState { get; set; }
+    // Dialogue
+    protected Dictionary<int, Data.Dialog> dialogDict;
 
-    Dictionary<int, Data.Dialog> dialogDict;
+    // UI
+    protected UI_Dialogue _UI_Dialogue;
+    public bool ui_dialogue_ison { get; protected set; } = false; // UI 켜졌는지 Player_Controller에서 확인하기 위함
 
-    UI_Dialogue _UI_Dialogue;
-    public bool ui_dialogue_ison { get; private set; } = false; // UI 켜졌는지 Player_Controller에서 확인하기 위함
-    UI_Shop _UI_Shop;
-    UI_Inven _UI_Inven;
+    // 수정할 수도 있는 것들
+    static protected int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
+    public string _job { get; protected set; }
+    //string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
 
+
+    // turnToPlayer 에서 사용, 상호작용하는 player를 getPlayer() 이용해서 가져옴
+    protected GameObject clickedPlayer = null;
+
+    
+
+    // EventActionTable Class
+    // State, Event -> Define.NpcState, Define.Event
+    
     // state
-    public enum State
-    {
-        // 기본
-        STATE_IDLE,
-        STATE_NPC_UI_POPUP,
-        STATE_DIALOGUE,
-        // 상점
-        STATE_SHOP_UI_POPUP,
-        //STATE_BUY_UI_POPUP,
-        //STATE_SELL_UI_POPUP,
-        //// 창고
-        //STATE_STORAGE_UI_POPUP,
-        //// 퀘스트
-        //STATE_QUEST_UI_POPUP,
-    }
+    //public enum State
+    //{
+    //    // 기본
+    //    STATE_IDLE,
+    //    STATE_NPC_UI_POPUP,
+    //    STATE_DIALOGUE,
+    //    // 상점
+    //    STATE_SHOP_UI_POPUP,
+    //    //STATE_BUY_UI_POPUP,
+    //    //STATE_SELL_UI_POPUP,
+    //    //// 창고
+    //    //STATE_STORAGE_UI_POPUP,
+    //    //// 퀘스트
+    //    //STATE_QUEST_UI_POPUP,
+    //}
 
-    // Event
-    public enum Event
-    {
-        // 기본 NPC EVENT
-        EVENT_NPC_CLICKED_IN_DISTANCE,
-        //EVENT_QUIT_UI_POPUP,
-        EVENT_PUSH_DIALOGUE,
-        //EVENT_OTHER_DIALOGUE,
-        EVENT_QUIT_DIALOGUE,
-        // 상점
-        EVENT_PUSH_SHOP,
-        //EVENT_PUSH_BUY,
-        //EVENT_QUIT_BUY,
-        //EVENT_PUSH_SELL,
-        //EVENT_QUIT_SELL,
-        EVENT_QUIT_SHOP,
-        // 창고
-        // ...
-        // 퀘스트
-        // ...
-    }
-
-
-    class EventActionTable
-    {
-        public State _curState { get; set; }
-        public Event _event { get; set; }
-        // actions
-        public Action _action { get; set; }
-        public State _nextState { get; set; }
-
-        public EventActionTable(State cs, Event e, Action act, State ns)
-        {
-            _curState = cs;
-            _event = e;
-            //foreach(Action act in act_arr)
-            //_action += act;
-            _nextState = ns;
-        }
-    }
+    //// Event
+    //public enum Event
+    //{
+    //    // 기본 NPC EVENT
+    //    EVENT_NPC_CLICKED_IN_DISTANCE,
+    //    //EVENT_QUIT_UI_POPUP,
+    //    EVENT_PUSH_DIALOGUE,
+    //    //EVENT_OTHER_DIALOGUE,
+    //    EVENT_QUIT_DIALOGUE,
+    //    // 상점
+    //    EVENT_PUSH_SHOP,
+    //    //EVENT_PUSH_BUY,
+    //    //EVENT_QUIT_BUY,
+    //    //EVENT_PUSH_SELL,
+    //    //EVENT_QUIT_SELL,
+    //    EVENT_QUIT_SHOP,
+    //    // 창고
+    //    // ...
+    //    // 퀘스트
+    //    // ...
+    //}
 
 
+    //class EventActionTable
+    //{
+    //    public State _curState { get; set; }
+    //    public Event _event { get; set; }
+    //    // actions
+    //    public Action _action { get; set; }
+    //    public State _nextState { get; set; }
 
-    EventActionTable[] table = new EventActionTable[]
-    {
-        new EventActionTable(State.STATE_IDLE, Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, State.STATE_NPC_UI_POPUP),
-
-        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_DIALOGUE, null, State.STATE_DIALOGUE), // 대화 시작
-        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_PUSH_SHOP,  null, State.STATE_SHOP_UI_POPUP),
-        new EventActionTable(State.STATE_NPC_UI_POPUP, Event.EVENT_QUIT_DIALOGUE, null, State.STATE_IDLE),
-
-        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_PUSH_DIALOGUE,  null, State.STATE_DIALOGUE), // 대화중
-        new EventActionTable(State.STATE_DIALOGUE, Event.EVENT_QUIT_DIALOGUE,  null, State.STATE_NPC_UI_POPUP), // 대화 끝 : 초기화
-
-        new EventActionTable(State.STATE_SHOP_UI_POPUP, Event.EVENT_QUIT_SHOP,  null, State.STATE_NPC_UI_POPUP),
-    };
+    //    public EventActionTable(State cs, Event e, Action act, State ns)
+    //    {
+    //        _curState = cs;
+    //        _event = e;
+    //        //foreach(Action act in act_arr)
+    //        //_action += act;
+    //        _nextState = ns;
+    //    }
+    //}
 
 
-    public void Awake()
+    public virtual void Awake()
     {
         Init();
     }
 
 
-    void Init()
+    public virtual void Init()
     {
         //
-        curState = State.STATE_IDLE;
+        curState = Define.NpcState.STATE_IDLE;
+
+        // table init
+        table = new EventActionTable[]
+        {
+            new EventActionTable(Define.NpcState.STATE_IDLE, Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, Define.NpcState.STATE_NPC_UI_POPUP),
+
+            new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_PUSH_DIALOGUE, null, Define.NpcState.STATE_DIALOGUE), // 대화 시작
+            //new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_PUSH_SHOP,  null,    Define.NpcState.STATE_SHOP_UI_POPUP),
+            new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_QUIT_DIALOGUE, null, Define.NpcState.STATE_IDLE),
+
+            new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_PUSH_DIALOGUE,  null, Define.NpcState.STATE_DIALOGUE), // 대화중
+            new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_QUIT_DIALOGUE,  null, Define.NpcState.STATE_NPC_UI_POPUP), // 대화 끝 : 초기화
+                                    
+            //new EventActionTable(Define.NpcState.STATE_SHOP_UI_POPUP, Define.Event.EVENT_QUIT_SHOP,  null, Define.NpcState.STATE_NPC_UI_POPUP),
+        };
 
         // action 등록
 
@@ -130,17 +142,13 @@ public class Npc : MonoBehaviour
         table[0]._action += showNpcInfo;
         
 
-        // NPC 거래 버튼 클릭
-        table[2]._action -= ShowTradeUI;
-        table[2]._action += ShowTradeUI;
+        
 
         // NPC 상호작용 끝
-        table[3]._action -= npcUIClose;
-        table[3]._action += npcUIClose;
+        table[2]._action -= npcUIClose;
+        table[2]._action += npcUIClose;
 
-        // NPC 거래 끝
-        table[6]._action -= CloseTradeUI;
-        table[6]._action += CloseTradeUI;
+       
 
         // Npc 정보 읽기
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
@@ -148,7 +156,7 @@ public class Npc : MonoBehaviour
         _name = dict[_id].name;
         _job = dict[_id].job;
 
-        //// 대사 (이건 지금 딱 1개 대사 딕셔너리만 가져오는 상황.. / 실제로는 여러개)
+        // 대사 (이건 지금 딱 1개 대사 딕셔너리만 가져오는 상황.. / 실제로는 여러개)
         //if (_id < Managers.Data.Dict_DialogDict.Count)
         //{
         //    dialogDict = Managers.Data.Dict_DialogDict[_id.ToString()];
@@ -193,12 +201,12 @@ public class Npc : MonoBehaviour
         // NPC 대화
         table[1]._action -= _UI_Dialogue.dialogue;
         table[1]._action += _UI_Dialogue.dialogue;
-        table[4]._action -= _UI_Dialogue.dialogue;
-        table[4]._action += _UI_Dialogue.dialogue;
+        table[3]._action -= _UI_Dialogue.dialogue;
+        table[3]._action += _UI_Dialogue.dialogue;
 
         // NPC 대화 끝
-        table[5]._action -= _UI_Dialogue.dialogEnd;
-        table[5]._action += _UI_Dialogue.dialogEnd;
+        table[4]._action -= _UI_Dialogue.dialogEnd;
+        table[4]._action += _UI_Dialogue.dialogEnd;
     }
 
     public void npcUIClose()
@@ -276,7 +284,7 @@ public class Npc : MonoBehaviour
         {
             Quaternion lookOnlook = Quaternion.LookRotation(clickedPlayer.transform.position - this.transform.position);
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, timeCount);
-            timeCount = Time.deltaTime * turnSpeed;
+            timeCount = Time.deltaTime * _turnSpeed;
             yield return null;
         }
     }
@@ -287,7 +295,7 @@ public class Npc : MonoBehaviour
         StartCoroutine(turnToPlayer());
     }
 
-    private void showNpcInfo()
+    protected void showNpcInfo()
     {
         // 디버깅용
         Debug.Log(_id);
@@ -295,7 +303,7 @@ public class Npc : MonoBehaviour
         Debug.Log(_job);
     }
 
-    public void stateMachine(Event inputEvent)
+    public void stateMachine(Define.Event inputEvent)
     {
         // 이거만 호출
         // 외부에서 인자로 다음 이벤트 넣어줌
@@ -333,26 +341,7 @@ public class Npc : MonoBehaviour
     }
     
 
-    public void ShowTradeUI()
-    {
-        // Shop UI
-        _UI_Shop = Managers.UI.ShowPopupUI<UI_Shop>();
-        _UI_Shop.getNpcInfo(this);
-
-        // Inventory UI
-        _UI_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
-    }
-
-    public void CloseTradeUI()
-    {
-        // Inventory UI
-        _UI_Inven.ClosePopupUI();
-        _UI_Inven = null;
-
-        // Shop UI
-        _UI_Shop.ClosePopupUI();
-        _UI_Shop = null;
-    }
+    
 
     public void checkNCloseOtherPopUpUI()
     {
@@ -368,6 +357,11 @@ public class Npc : MonoBehaviour
     {
         // 상호작용하는 플레이어 정보 얻기 위함
         clickedPlayer = player;
+    }
+
+    private void patrol()
+    {
+
     }
 
 }

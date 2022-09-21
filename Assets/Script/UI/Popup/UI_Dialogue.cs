@@ -72,7 +72,7 @@ public class UI_Dialogue : UI_Popup
         if (lineNum != -1)
         {
             Debug.Log("대화");
-            npc.stateMachine(Npc.Event.EVENT_PUSH_DIALOGUE);
+            npc.stateMachine(Define.Event.EVENT_PUSH_DIALOGUE);
         }
 
         // 대화 끝 : 버튼 비활성화
@@ -84,13 +84,13 @@ public class UI_Dialogue : UI_Popup
     {
         // 거래
         Debug.Log("거래");
-        npc.stateMachine(Npc.Event.EVENT_PUSH_SHOP);
+        npc.stateMachine(Define.Event.EVENT_PUSH_SHOP);
 
     }
 
     public void endButtonClicked(PointerEventData data)
     {
-        npc.stateMachine(Npc.Event.EVENT_QUIT_DIALOGUE);
+        npc.stateMachine(Define.Event.EVENT_QUIT_DIALOGUE);
     }
 
     public override void ClosePopupUI()

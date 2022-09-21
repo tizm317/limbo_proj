@@ -384,7 +384,7 @@ public class Player_State : MonoBehaviour
                         toNpc = false;
 
                         npc.getPlayer(gameObject); // npc한테 플레이어 넘겨줌
-                        npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
+                        npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }
                 }
                 else
@@ -517,7 +517,7 @@ public class Player_State : MonoBehaviour
             destination.Clear();
 
             npc.getPlayer(gameObject); 
-            npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
+            npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
         }
         else
             Move();

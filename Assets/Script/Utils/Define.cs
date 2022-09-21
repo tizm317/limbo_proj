@@ -73,4 +73,43 @@ public class Define
     {
         QuarterView,
     }
+
+    // For NPC State Machine
+    public enum NpcState
+    {
+        // 기본
+        STATE_IDLE,
+        STATE_NPC_UI_POPUP,
+        STATE_DIALOGUE,
+        // 상점
+        STATE_SHOP_UI_POPUP,
+        //STATE_BUY_UI_POPUP,
+        //STATE_SELL_UI_POPUP,
+        //// 창고
+        //STATE_STORAGE_UI_POPUP,
+        //// 퀘스트
+        //STATE_QUEST_UI_POPUP,
+    }
+
+    // Event
+    public enum Event
+    {
+        // 기본 NPC EVENT
+        EVENT_NPC_CLICKED_IN_DISTANCE,
+        //EVENT_QUIT_UI_POPUP,
+        EVENT_PUSH_DIALOGUE,
+        //EVENT_OTHER_DIALOGUE,
+        EVENT_QUIT_DIALOGUE,
+        // 상점
+        EVENT_PUSH_SHOP,
+        //EVENT_PUSH_BUY,
+        //EVENT_QUIT_BUY,
+        //EVENT_PUSH_SELL,
+        //EVENT_QUIT_SELL,
+        EVENT_QUIT_SHOP,
+        // 창고
+        // ...
+        // 퀘스트
+        // ...
+    }
 }

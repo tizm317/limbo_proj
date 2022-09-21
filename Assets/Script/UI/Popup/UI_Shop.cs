@@ -41,7 +41,7 @@ public class UI_Shop : UI_Popup
     {
         // 거래 종료
         Debug.Log("거래 종료");
-        npc.stateMachine(Npc.Event.EVENT_QUIT_SHOP);
+        npc.stateMachine(Define.Event.EVENT_QUIT_SHOP);
     }
 
     public void getNpcInfo(Npc clickedNpc)

@@ -181,7 +181,7 @@ public class Player_Controller : MonoBehaviour
                         toNpc = false;
 
                         npc.getPlayer(player); // npc한테 플레이어 넘겨줌
-                        npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
+                        npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }
                 }
                 else
@@ -512,7 +512,7 @@ public class Player_Controller : MonoBehaviour
             destination.Clear();
 
             npc.getPlayer(player); 
-            npc.stateMachine(Npc.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
+            npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
         }
         else
             move(speed, arrivalRange);
