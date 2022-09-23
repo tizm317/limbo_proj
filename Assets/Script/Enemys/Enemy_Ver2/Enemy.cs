@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -85,5 +85,10 @@ public abstract class Enemy : MonoBehaviour
     }
     protected virtual void UpdateDie()
     {
+    }
+    
+    public void set_target(GameObject target)
+    {
+        lockTarget = target;
     }
 }

@@ -92,6 +92,7 @@ public class Player_State : MonoBehaviour
     [SerializeField]
     private float speed { get { return my_stat.MoveSpeed; } set { speed = value; } }
     private float arrivalRange = 0.4f;
+    private float attackRange = 3f;
     private Vector3 dir;//이동방향을 위한 변수
     private bool dash_cool = true, Ult_cool = true;//대쉬 스킬의 쿨타임을 확인하기위한 bool변수
     [SerializeField]
@@ -184,9 +185,12 @@ public class Player_State : MonoBehaviour
 
     void Move()
     {
-        if(my_enemy != null && destination.Count > 0)
+        if(my_enemy != null)
         {
-            destination[destination.Count -1] = my_enemy.transform.position;
+            if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) < attackRange)
+            {
+                destination.Clear();
+            }
         }
         if(destination.Count > 0)
         {
@@ -236,9 +240,10 @@ public class Player_State : MonoBehaviour
 
     void Attack()
     {
-        if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) > arrivalRange)
+        if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) > attackRange)
         {
-            Set_Destination(my_enemy.transform.position);
+            Vector3 dir = (gameObject.transform.position - my_enemy.transform.position).normalized * attackRange;
+            Set_Destination(my_enemy.transform.position - dir);
             curState = State.STATE_MOVE;
             Ani_State_Change();
         }
@@ -246,12 +251,12 @@ public class Player_State : MonoBehaviour
         {
             if(!isAttack)
             {
-                StartCoroutine(Attack(my_stat.Attack, my_stat.AttackSpeed));//현재 attack_delay는 1 공격속도는 2배로 늘어남 기본 1
+                StartCoroutine(Attack(my_stat.AttackSpeed));
             }
         }
     }
 
-    IEnumerator Attack(float damage, float attack_speed)
+    IEnumerator Attack(float attack_speed)
     {
         if(!on_skill)
         {
@@ -261,6 +266,7 @@ public class Player_State : MonoBehaviour
             curState = State.STATE_ATTACK;
             Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
+            gameObject.transform.LookAt(my_enemy.transform);
             yield return new WaitForSeconds(0.867f);
             //my_enemy_stat.Hp -= damage;
             my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬

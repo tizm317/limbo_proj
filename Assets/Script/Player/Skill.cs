@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +7,10 @@ public class Skill : MonoBehaviour
     // Start is called before the first frame update
     Effect effect;
     Player_State player_state;
+    PlayerStat my_stat;
     [SerializeField]
     public float[] cool = new float[4];
     private float[] cool_max = new float[4];
-    private bool[] isActive = new bool[4];
     public Image[] Skill_img = new Image[4];
     void Start()
     {
@@ -26,6 +26,7 @@ public class Skill : MonoBehaviour
     {
         effect = gameObject.GetComponent<Effect>();
         player_state = gameObject.GetComponent<Player_State>();
+        my_stat = gameObject.GetComponent<PlayerStat>();
         cool_max[0] = 5f;
         cool_max[1] = 4f;
         cool_max[2] = 3f;
@@ -33,7 +34,6 @@ public class Skill : MonoBehaviour
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
-            isActive[i] = true;
         }
     }
 
@@ -41,13 +41,10 @@ public class Skill : MonoBehaviour
     {
         for(int i = 0; i < cool.Length; i++)
         {
-            if(isActive[i])
-            {
-                if(cool[i] > 0)
-                    cool[i] -= Time.deltaTime;
-                else if(cool[i] < 0)
-                    cool[i] = 0;
-            }
+            if(cool[i] > 0)
+                cool[i] -= Time.deltaTime;
+            else if(cool[i] < 0)
+                cool[i] = 0;
             //Skill_img[i].fillAmount = cool_max[i] - cool[i]/cool_max[i];
         }
     }
@@ -69,7 +66,7 @@ public class Skill : MonoBehaviour
         {
             case "Warrior" :
                 if(cool[1] == 0)
-                    StartCoroutine(Warrior_W(2f,5f));
+                    StartCoroutine(Warrior_W(2f,5f,5f));
                 break;
         }
     }
@@ -80,7 +77,7 @@ public class Skill : MonoBehaviour
         {
             case "Warrior" :
                 if(cool[2] == 0)
-                    StartCoroutine(Warrior_E());
+                    StartCoroutine(Warrior_E(5f, 50));
                 break;
         }
     }
@@ -96,6 +93,17 @@ public class Skill : MonoBehaviour
         }
     }
 
+    public void Passive()
+    {
+        switch(player_state.job)
+        {
+            case "Warrior" :
+                StartCoroutine(Warrior_Passive(1f));
+                break;
+                
+        }
+    }
+#region 전사
     IEnumerator Warrior_Q(float SightAngle, float distance,float damage)
     {
         bool canceled = false;
@@ -154,7 +162,7 @@ public class Skill : MonoBehaviour
         }
     }
 
-    IEnumerator Warrior_W(float mul, float time)
+    IEnumerator Warrior_W(float mul, float time, float range)
     {
         //mul = 체젠 배율
         //time = 얼마나 오랫동안?
@@ -166,13 +174,22 @@ public class Skill : MonoBehaviour
         player_state.my_stat.Regeneration *= mul;
         cool[1] = cool_max[1];
         player_state.on_skill = false;
+
         //도발에 대한 내용이 있어야함 - 희진누나랑 상담해볼 부분
+        for(int i = 0; i < player_state.enemies.Count; i++)
+                {
+                    float far = Vector3.Distance(gameObject.transform.position, player_state.enemies[i].transform.position);
+
+                    if(far < range)
+                        player_state.enemies[i].GetComponent<Enemy>().set_target(gameObject);
+                }
+
         yield return new WaitForSeconds(time);
         player_state.my_stat.Regeneration /= mul;
         
         
     }
-    IEnumerator Warrior_E()
+    IEnumerator Warrior_E(float range, float percent)
     {
         player_state.curState = Player_State.State.STATE_SKILL;
         player_state.skill = Player_State.HotKey.E;
@@ -183,6 +200,26 @@ public class Skill : MonoBehaviour
         //적의 공격속도와 공격력을 감소시키는 내용이 있어야함 - 희진누나랑 상담해볼 부분
         cool[2] = cool_max[2];
         player_state.on_skill = false;
+        List<Stat> temp = new List<Stat>();
+        for(int i = 0; i < player_state.enemies.Count; i++)
+        {
+            float far = Vector3.Distance(gameObject.transform.position, player_state.enemies[i].transform.position);
+
+            if(far < range)
+            {
+                player_state.enemies[i].GetComponent<Stat>().Attack *= (percent / 100f);
+                player_state.enemies[i].GetComponent<Stat>().AttackSpeed *= (percent / 100f);
+                temp.Add(player_state.enemies[i].GetComponent<Stat>());
+            }
+        }
+
+        yield return new WaitForSeconds(5f);//이 시간만큼 공속과 이속을 깍아준 뒤
+
+        foreach(Stat i in temp)
+        {
+            i.Attack /= (percent / 100f);
+            i.AttackSpeed /= (percent / 100f);
+        }//원상복귀
     }
 
     IEnumerator Warrior_R(float range, float damage)
@@ -237,4 +274,22 @@ public class Skill : MonoBehaviour
         }
         
     }
+    IEnumerator Warrior_Passive(float percent)
+    {
+        //percent는 잃은 체력의 몇 퍼센트 인지를 나타냄
+        //이 함수는 초기에 한번만 돌려주면 됨
+        while(true)
+        {
+            yield return new WaitForSeconds(1f);//1초마다 반복해서 수행
+            if(my_stat.Hp < my_stat.MaxHp && player_state.curState != Player_State.State.STATE_DIE)//죽지 않고 최대 체력보다 체력이 적다면 패시브 동작
+            {
+                my_stat.Hp += (my_stat.MaxHp - my_stat.Hp)*percent/100f;
+                if(my_stat.Hp > my_stat.MaxHp)
+                    my_stat.Hp = my_stat.MaxHp;//패시브 돌렸는데 체력이 최대 체력보다 큰 경우는 그냥 최대체력으로 정의
+            }
+            else if(player_state.curState == Player_State.State.STATE_DIE)//만약 죽었다면 탈출(캐릭터를 삭제하고 새로 생성한다면 필요함, 그게 아니라면 지워도 됨)
+                break;
+        }
+    }
+#endregion
 }
