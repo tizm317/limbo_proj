@@ -15,6 +15,7 @@ public class UI_Dialogue : UI_Popup
         DialogueButton,
         TradeButton,
         EndButton,
+        QuestButton,
     }
 
     enum Texts
@@ -24,6 +25,7 @@ public class UI_Dialogue : UI_Popup
         EndText,
         ScriptText,
         SpeakerNameText,
+        QuestText,
     }
 
     enum GameObjects
@@ -57,6 +59,7 @@ public class UI_Dialogue : UI_Popup
         GetButton((int)Buttons.DialogueButton).gameObject.BindEvent(startDialogue);
         GetButton((int)Buttons.TradeButton).gameObject.BindEvent(startTrade);
         GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
+        GetButton((int)Buttons.QuestButton).gameObject.BindEvent(startQuest);
 
       
         // 대사 초기화
@@ -86,6 +89,12 @@ public class UI_Dialogue : UI_Popup
         Debug.Log("거래");
         npc.stateMachine(Define.Event.EVENT_PUSH_SHOP);
 
+    }
+
+    public void startQuest(PointerEventData data)
+    {
+        Debug.Log("퀘스트");
+        npc.stateMachine(Define.Event.EVENT_PUSH_QUEST);
     }
 
     public void endButtonClicked(PointerEventData data)
@@ -122,6 +131,7 @@ public class UI_Dialogue : UI_Popup
 
     public void dialogue()
     {
+
         //받아온 게 null 이면 대화 끝이라 가정 lineNum을 - 1로 세팅해서 종료시킴
         if (npc.getSpeakersNScripts(npc._id.ToString(), lineNum) != null)
         {

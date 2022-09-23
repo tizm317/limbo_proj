@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MerchantNpc : Npc
 {
-    // 옮겨야 함
     UI_Shop _UI_Shop;
     UI_Inven _UI_Inven;
 
@@ -69,6 +68,32 @@ public class MerchantNpc : Npc
         num_npc++; // static 변수 이용
 
         
+    }
+
+    public override void npcUIPopUp()
+    {
+        // 클릭되어서 맨 처음 npc UI 뜨는거
+        _UI_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
+        if (_UI_Dialogue)
+            ui_dialogue_ison = true;
+        else
+        {
+            Debug.Log("Error : No UI_Dialogue");
+            return;
+        }
+
+        // UI 쪽도 NPC 정보 필요
+        _UI_Dialogue.getNpcInfo(this);
+
+        // NPC 대화
+        table[1]._action -= _UI_Dialogue.dialogue;
+        table[1]._action += _UI_Dialogue.dialogue;
+        table[4]._action -= _UI_Dialogue.dialogue;
+        table[4]._action += _UI_Dialogue.dialogue;
+
+        // NPC 대화 끝
+        table[5]._action -= _UI_Dialogue.dialogEnd;
+        table[5]._action += _UI_Dialogue.dialogEnd;
     }
 
     public void ShowTradeUI()

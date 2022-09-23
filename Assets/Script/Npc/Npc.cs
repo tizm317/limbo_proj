@@ -9,17 +9,23 @@ public class Npc : MonoBehaviour
      * Npc
      * 
      */
-
     // attributes
+    [field: SerializeField]
     public int _id { get; protected set; }            // id
+    [field: SerializeField]
     public string _name { get; protected set; }       // 이름
     
+    [SerializeField]
     protected bool _patrolable;       // 패트롤여부
+    [SerializeField]
     protected float _moveSpeed;       // 이동 속도
+    [SerializeField]
     protected float _turnSpeed = 4.0f;
+    [SerializeField]
     protected Vector3 _position;      // 시작 위치
 
     // StateMachine
+    [field: SerializeField]
     public Define.NpcState curState { get;  set; }
     protected EventActionTable[] table;
 
@@ -183,7 +189,7 @@ public class Npc : MonoBehaviour
 
 
 
-    public void npcUIPopUp()
+    public virtual void npcUIPopUp()
     {
         // 클릭되어서 맨 처음 npc UI 뜨는거
         _UI_Dialogue = Managers.UI.ShowPopupUI<UI_Dialogue>();
@@ -359,9 +365,10 @@ public class Npc : MonoBehaviour
         clickedPlayer = player;
     }
 
-    private void patrol()
+    protected void patrol()
     {
-
+        Debug.Log("Patrol");
     }
+
 
 }

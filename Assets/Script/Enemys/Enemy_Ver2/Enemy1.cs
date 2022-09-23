@@ -90,7 +90,7 @@ public class Enemy1 : Enemy
                 nextIdx = 1;
             }
             movePos = points[nextIdx].position;  //다음 waypoint 위치
-            Debug.Log(nextIdx);
+            //Debug.Log(nextIdx);
             nma.SetDestination(movePos);
             //nma.speed = _stat.MoveSpeed;
 

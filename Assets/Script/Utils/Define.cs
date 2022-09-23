@@ -88,7 +88,7 @@ public class Define
         //// 창고
         //STATE_STORAGE_UI_POPUP,
         //// 퀘스트
-        //STATE_QUEST_UI_POPUP,
+        STATE_QUEST_UI_POPUP,
     }
 
     // Event
@@ -110,6 +110,9 @@ public class Define
         // 창고
         // ...
         // 퀘스트
-        // ...
+        EVENT_PUSH_QUEST,
+        EVENT_ACCEPT_QUEST,
+        EVENT_REJECT_QUEST,
+        //EVENT_QUIT_QUEST,
     }
 }
