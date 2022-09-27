@@ -82,6 +82,7 @@ namespace Data
         public int id;
         public string name;
         public string job;
+        public bool patrol;
     }
 
     [Serializable]

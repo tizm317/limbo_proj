@@ -7,6 +7,8 @@ public class MerchantNpc : Npc
     UI_Shop _UI_Shop;
     UI_Inven _UI_Inven;
 
+
+
     public override void Awake()
     {
         Init();
@@ -63,7 +65,9 @@ public class MerchantNpc : Npc
         _id = dict[num_npc].id;
         _name = dict[_id].name;
         _job = dict[_id].job;
-
+        _patrolable = dict[_id].patrol;
+        if (_patrolable) _moveSpeed = 5.0f;
+        else _moveSpeed = 0.0f;
 
         num_npc++; // static 변수 이용
 

@@ -89,6 +89,8 @@ public class Define
         //STATE_STORAGE_UI_POPUP,
         //// 퀘스트
         STATE_QUEST_UI_POPUP,
+        // 패트롤
+        STATE_PATROL,
     }
 
     // Event
@@ -114,5 +116,7 @@ public class Define
         EVENT_ACCEPT_QUEST,
         EVENT_REJECT_QUEST,
         //EVENT_QUIT_QUEST,
+        // 패트롤
+        EVENT_PATROL,
     }
 }

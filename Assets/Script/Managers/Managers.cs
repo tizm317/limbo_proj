@@ -24,6 +24,8 @@ public class Managers : MonoBehaviour
     SoundManager _sound = new SoundManager();
     UIManager _ui = new UIManager();
 
+    NpcManager _npc = new NpcManager();
+
     // 전역으로 사용
     public static GameManagerEx Game { get { return Instance._game; } }
     public static DataManager Data { get { return Instance._data; } }
@@ -34,6 +36,7 @@ public class Managers : MonoBehaviour
     public static SceneManagerEX Scene { get { return Instance._scene; } }
     public static SoundManager Sound { get { return Instance._sound; } }
     public static UIManager UI { get { return Instance._ui; } }
+    public static NpcManager NPC { get { return Instance._npc; } }
 
     void Start()
     {
