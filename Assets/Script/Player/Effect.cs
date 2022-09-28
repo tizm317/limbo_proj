@@ -5,7 +5,33 @@ public class Effect : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject grand_parent,parent;
+    public GameObject Indicator;//인디케이터 오브젝트
     public GameObject[] obj = new GameObject[12];
+
+    public IEnumerator Show_Indicator(bool body, bool pos_selected, float rad, float range)
+    {
+        Indicator.SetActive(true);
+        Indicator.GetComponent<MeshRenderer>().material.SetFloat("Angle",rad);
+        float _range = range * 2;
+        Indicator.transform.localScale = new Vector3(_range,_range,_range);
+        if(body)
+        {
+            while(!pos_selected)
+            { 
+                Indicator.transform.position = new Vector3(this.transform.position.x,0,this.transform.position.z);
+                Indicator.transform.LookAt(Input.mousePosition);
+                yield return new WaitForEndOfFrame();
+            }   
+        }
+        else
+        {
+            while(!pos_selected)
+            {
+                Indicator.transform.position = Input.mousePosition;
+                yield return new WaitForEndOfFrame();
+            }  
+        }
+    }
 
     public void Play_Effect()
     {
