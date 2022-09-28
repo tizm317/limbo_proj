@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy2 : Enemy
 {
-    //wizard
+    //wizard 원거리 공격 추가
     Stat _stat;
 
     [SerializeField] float _scanRange = 8;   //사정거리
