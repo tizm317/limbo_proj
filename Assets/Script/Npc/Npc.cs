@@ -45,7 +45,7 @@ public class Npc : MonoBehaviour
     // turnToPlayer 에서 사용, 상호작용하는 player를 getPlayer() 이용해서 가져옴
     protected GameObject clickedPlayer = null;
 
-    
+    protected Coroutine patrol_coroutine;
 
     // EventActionTable Class
     // State, Event -> Define.NpcState, Define.Event
@@ -133,6 +133,9 @@ public class Npc : MonoBehaviour
             new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_QUIT_DIALOGUE,  null, Define.NpcState.STATE_NPC_UI_POPUP), // 대화 끝 : 초기화
                                     
             //new EventActionTable(Define.NpcState.STATE_SHOP_UI_POPUP, Define.Event.EVENT_QUIT_SHOP,  null, Define.NpcState.STATE_NPC_UI_POPUP),
+
+            new EventActionTable(Define.NpcState.STATE_PATROL, Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE,  null, Define.NpcState.STATE_IDLE),
+            new EventActionTable(Define.NpcState.STATE_IDLE, Define.Event.EVENT_PATROL,  null, Define.NpcState.STATE_PATROL),
         };
 
         // action 등록
@@ -154,13 +157,24 @@ public class Npc : MonoBehaviour
         table[2]._action -= npcUIClose;
         table[2]._action += npcUIClose;
 
-       
+        table[2]._action -= startPatrol;
+        table[2]._action += startPatrol;
+
+        // 패트롤
+        table[5]._action -= stopPatrol;
+        table[5]._action += stopPatrol;
+
 
         // Npc 정보 읽기
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
         _id = dict[num_npc].id;
         _name = dict[_id].name;
         _job = dict[_id].job;
+        _patrolable = dict[_id].patrol;
+        if (_patrolable) _moveSpeed = 5.0f;
+        else _moveSpeed = 0.0f;
+
+        if (_patrolable) startPatrol();
 
         // 대사 (이건 지금 딱 1개 대사 딕셔너리만 가져오는 상황.. / 실제로는 여러개)
         //if (_id < Managers.Data.Dict_DialogDict.Count)
@@ -315,8 +329,9 @@ public class Npc : MonoBehaviour
         // 외부에서 인자로 다음 이벤트 넣어줌
         Debug.Log($"현재 상태 : {curState}");
         Debug.Log($"입력된 이벤트 : {inputEvent}");
-        
-        StopAllCoroutines(); // 그 전 코루틴 꺼주기
+
+        //StopAllCoroutines(); // 그 전 코루틴 꺼주기
+        StopCoroutine("turnToPlayer");
 
         //  테이블에 정의된 각 행에 대해 비교
         for (int i = 0; i < table.Length; i++)
@@ -365,10 +380,27 @@ public class Npc : MonoBehaviour
         clickedPlayer = player;
     }
 
-    protected void patrol()
+    protected IEnumerator patrol()
     {
-        Debug.Log("Patrol");
+        while(_patrolable)
+        {
+            Debug.Log("Patrol");
+            stateMachine(Define.Event.EVENT_PATROL);
+            yield return new WaitForSeconds(10.0f);
+            //Debug.Log("~ing");
+        }
     }
 
+    protected void startPatrol()
+    {
+        if (_patrolable)
+            patrol_coroutine = StartCoroutine(patrol());
+    }
+
+    protected void stopPatrol()
+    {
+        Debug.Log("Stop Patrol");
+        StopCoroutine(patrol_coroutine);
+    }
 
 }

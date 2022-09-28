@@ -1,19 +1,64 @@
-{
+﻿{
   "npcs": [
     {
       "id": "0",
-      "name": "brute mk0",
-      "job": "weapon shop"
+      "name": "무기 상인",
+      "job": "MerchantNpc",
+      "patrol": "false"
     },
     {
       "id": "1",
-      "name": "brute mk1",
-      "job": "variety shop"
+      "name": "방어구 상인",
+      "job": "MerchantNpc",
+      "patrol": "false"
     },
     {
       "id": "2",
-      "name": "brute mk2",
-      "job": "storage"
+      "name": "잡화점 상인",
+      "job": "MerchantNpc",
+      "patrol": "false"
+    },
+    {
+      "id": "3",
+      "name": "경비병 1",
+      "job": "Npc",
+      "patrol": "false"
+    },
+    {
+      "id": "4",
+      "name": "경비병 2",
+      "job": "Npc",
+      "patrol": "false"
+    },
+    {
+      "id": "5",
+      "name": "경비 대장",
+      "job": "QuestNpc",
+      "patrol": "false"
+    },
+    {
+      "id": "6",
+      "name": "마을 대표",
+      "job": "QuestNpc",
+      "patrol": "false"
+    },
+    {
+      "id": "7",
+      "name": "대장장이",
+      "job": "EnchantNpc",
+      "patrol": "false"
+    },
+    {
+      "id": "8",
+      "name": "일반 시민1",
+      "job": "QuestNpc",
+      "patrol": "true"
+    },
+    {
+      "id": "9",
+      "name": "일반 시민2",
+      "job": "QuestNpc",
+      "patrol": "true"
     }
   ]
 }
