@@ -12,6 +12,10 @@ public class Skill : MonoBehaviour
     public float[] cool = new float[4];
     private float[] cool_max = new float[4];
     public Image[] Skill_img = new Image[4];
+    public GameObject Indicator;//인디케이터 오브젝트
+    bool canceled = false;
+    bool pos_selected = false;
+    
     void Start()
     {
         Init();
@@ -106,9 +110,10 @@ public class Skill : MonoBehaviour
 #region 전사
     IEnumerator Warrior_Q(float SightAngle, float distance,float damage)
     {
-        bool canceled = false;
-        bool pos_selected = false;
+        pos_selected = false;
+        canceled = false;
         Vector3 pos;
+        StartCoroutine(Show_Indicator(true,SightAngle,distance));
         while(!canceled)
         {
             while(!pos_selected)
@@ -122,7 +127,6 @@ public class Skill : MonoBehaviour
                     else
                     {              
                         pos = hit.point;
-                        Debug.Log(pos);
                         gameObject.transform.forward = new Vector3(pos.x - gameObject.transform.position.x, 0, pos.z - gameObject.transform.position.z).normalized;
                         pos_selected = true;
                     }
@@ -131,6 +135,7 @@ public class Skill : MonoBehaviour
                 {
                     canceled = true;
                     player_state.on_skill = false;
+                    break;
                 }
                 yield return new WaitForEndOfFrame();
             }
@@ -160,6 +165,8 @@ public class Skill : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+        pos_selected = false;
+        canceled = false;
     }
 
     IEnumerator Warrior_W(float mul, float time, float range)
@@ -224,9 +231,10 @@ public class Skill : MonoBehaviour
 
     IEnumerator Warrior_R(float range, float damage)
     {
-        bool canceled = false;
-        bool pos_selected = false;
+        canceled = false;
+        pos_selected = false;
         Vector3 pos;
+        StartCoroutine(Show_Indicator(false,360,range));
         while(!canceled)
         {
             while(!pos_selected)
@@ -249,6 +257,7 @@ public class Skill : MonoBehaviour
                 {
                     canceled = true;
                     player_state.on_skill = false;
+                    break;
                 }
                 yield return new WaitForEndOfFrame();
             }
@@ -272,7 +281,8 @@ public class Skill : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        
+        pos_selected = false;
+        canceled = false;
     }
     IEnumerator Warrior_Passive(float percent)
     {
@@ -290,6 +300,41 @@ public class Skill : MonoBehaviour
             else if(player_state.curState == Player_State.State.STATE_DIE)//만약 죽었다면 탈출(캐릭터를 삭제하고 새로 생성한다면 필요함, 그게 아니라면 지워도 됨)
                 break;
         }
+    }
+#endregion
+
+#region 인디케이터 표시
+    public IEnumerator Show_Indicator(bool body, float rad, float range)
+    {
+        Indicator.SetActive(true);
+        Indicator.GetComponent<MeshRenderer>().material.SetFloat("_Angle",rad);
+        float _range = range * 2;
+        Indicator.transform.localScale = new Vector3(_range,_range,_range);
+        if(body)
+        {
+            while(!pos_selected && !canceled)
+            {
+                RaycastHit hit;
+                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                Indicator.transform.position = new Vector3(this.transform.position.x,1.1f,this.transform.position.z);
+                if(raycastHit)
+                    Indicator.transform.rotation = Quaternion.Euler(new Vector3(90f, -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
+                //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
+                yield return new WaitForEndOfFrame();
+            }   
+        }
+        else
+        {
+            while(!pos_selected && !canceled)
+            {
+                RaycastHit hit;
+                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                if(raycastHit)
+                    Indicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
+                yield return new WaitForEndOfFrame();
+            }  
+        }
+        Indicator.SetActive(false);
     }
 #endregion
 }
