@@ -118,5 +118,6 @@ public class Define
         //EVENT_QUIT_QUEST,
         // 패트롤
         EVENT_PATROL,
+        EVENT_STOP_PATROL,
     }
 }

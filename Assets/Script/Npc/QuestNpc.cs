@@ -43,14 +43,14 @@ public class QuestNpc : Npc
         // action 등록
 
         // NPC 상호작용 시작
-        table[0]._action -= checkNCloseOtherPopUpUI;
-        table[0]._action += checkNCloseOtherPopUpUI;
-        table[0]._action -= lookAtPlayer;
-        table[0]._action += lookAtPlayer;
+        table[0]._action -= ClosePopupBeforeInteract;
+        table[0]._action += ClosePopupBeforeInteract;
+        table[0]._action -= startTurnToPlayer;
+        table[0]._action += startTurnToPlayer;
         table[0]._action -= npcUIPopUp;
         table[0]._action += npcUIPopUp;
-        table[0]._action -= showNpcInfo;
-        table[0]._action += showNpcInfo;
+        table[0]._action -= showNpcInfo4Debug;
+        table[0]._action += showNpcInfo4Debug;
 
 
         // NPC 상호작용 끝

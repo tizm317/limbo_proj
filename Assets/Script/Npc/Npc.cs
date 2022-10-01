@@ -6,11 +6,8 @@ using UnityEngine.AI;
 
 public class Npc : MonoBehaviour
 {
-    /*
-     * Npc
-     * 
-     */
-    // attributes
+    #region Attributes
+    // Attributes
     [field: SerializeField]
     public int _id { get; protected set; }            // id
     [field: SerializeField]
@@ -46,16 +43,18 @@ public class Npc : MonoBehaviour
     // turnToPlayer 에서 사용, 상호작용하는 player를 getPlayer() 이용해서 가져옴
     protected GameObject clickedPlayer = null;
 
-    protected Coroutine patrol_coroutine;
 
     /* Patrol */
-    public Transform[] points;
+    public Transform[] wayPoints;
     [SerializeField]
-    private int destPoint = 0;
-    private NavMeshAgent agent;
+    protected int destPoint = 0;
+    protected NavMeshAgent agent;
     [SerializeField]
-    private bool isPatroling = false;
+    protected bool isPatroling = false;
+    protected Coroutine patrol_coroutine;
+    #endregion
 
+    protected Coroutine turn_coroutine;
 
 
     // EventActionTable Class
@@ -124,8 +123,6 @@ public class Npc : MonoBehaviour
     {
         Init();
     }
-
-
     public virtual void Init()
     {
         //
@@ -147,19 +144,20 @@ public class Npc : MonoBehaviour
 
             new EventActionTable(Define.NpcState.STATE_PATROL, Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE,  null, Define.NpcState.STATE_IDLE),
             new EventActionTable(Define.NpcState.STATE_IDLE, Define.Event.EVENT_PATROL,  null, Define.NpcState.STATE_PATROL),
+
         };
 
         // action 등록
 
         // NPC 상호작용 시작
-        table[0]._action -= checkNCloseOtherPopUpUI;
-        table[0]._action += checkNCloseOtherPopUpUI;
-        table[0]._action -= lookAtPlayer;
-        table[0]._action += lookAtPlayer;
+        table[0]._action -= ClosePopupBeforeInteract;
+        table[0]._action += ClosePopupBeforeInteract;
+        table[0]._action -= startTurnToPlayer;
+        table[0]._action += startTurnToPlayer;
         table[0]._action -= npcUIPopUp;
         table[0]._action += npcUIPopUp;
-        table[0]._action -= showNpcInfo;
-        table[0]._action += showNpcInfo;
+        table[0]._action -= showNpcInfo4Debug;
+        table[0]._action += showNpcInfo4Debug;
         
 
         
@@ -168,12 +166,15 @@ public class Npc : MonoBehaviour
         table[2]._action -= npcUIClose;
         table[2]._action += npcUIClose;
 
-        table[2]._action -= startPatrol;
-        table[2]._action += startPatrol;
+        if(_patrolable)
+        {
+            table[2]._action -= startPatrol;
+            table[2]._action += startPatrol;
 
-        // 패트롤
-        table[5]._action -= stopPatrol;
-        table[5]._action += stopPatrol;
+            // 패트롤
+            table[5]._action -= stopPatrol;
+            table[5]._action += stopPatrol;
+        }
 
 
         // Npc 정보 읽기
@@ -187,33 +188,109 @@ public class Npc : MonoBehaviour
 
         if (_patrolable) startPatrol();
 
-        // 대사 (이건 지금 딱 1개 대사 딕셔너리만 가져오는 상황.. / 실제로는 여러개)
-        //if (_id < Managers.Data.Dict_DialogDict.Count)
-        //{
-        //    dialogDict = Managers.Data.Dict_DialogDict[_id.ToString()];
-        //}
-        //else
-        //    dialogDict = null;
-        //switch (_id)
-        //{
-        //    case 0:
-        //        dialogDict = Managers.Data.Dict_DialogDict[_id];
-        //        //dialogDict = Managers.Data.DialogDict2;
-        //        break;
-        //    case 1:
-        //        dialogDict = Managers.Data.Dict_DialogDict[_id];
-        //        dialogDict = Managers.Data.DialogDict; // 대사 테스트
-        //        break;
-        //    default:
-        //        dialogDict = null;
-        //        break;
-        //}
-
         num_npc++; // static 변수 이용
+
+        #region Not Use
+        /*
+         대사 (이건 지금 딱 1개 대사 딕셔너리만 가져오는 상황.. / 실제로는 여러개)
+        if (_id < Managers.Data.Dict_DialogDict.Count)
+        {
+            dialogDict = Managers.Data.Dict_DialogDict[_id.ToString()];
+        }
+        else
+            dialogDict = null;
+        switch (_id)
+        {
+            case 0:
+                dialogDict = Managers.Data.Dict_DialogDict[_id];
+                //dialogDict = Managers.Data.DialogDict2;
+                break;
+            case 1:
+                dialogDict = Managers.Data.Dict_DialogDict[_id];
+                dialogDict = Managers.Data.DialogDict; // 대사 테스트
+                break;
+            default:
+                dialogDict = null;
+                break;
+        }
+        */
+        #endregion
+    }
+
+    public void stateMachine(Define.Event inputEvent)
+    {
+        // 이거만 호출
+        // 외부에서 인자로 다음 이벤트 넣어줌
+        Debug.Log($"현재 상태 : {curState} | 입력된 이벤트 : {inputEvent}");
+        //Debug.Log($"입력된 이벤트 : {inputEvent}");
+
+        if(turn_coroutine != null)  StopCoroutine(turn_coroutine);
+        //StopAllCoroutines(); // 그 전 코루틴 꺼주기 (모든 코루틴 꺼서 패트롤도 꺼버려서 수정)
+
+
+        //  테이블에 정의된 각 행에 대해 비교
+        for (int i = 0; i < table.Length; i++)
+        {
+            // 현재 상태와 일치하는지 검사
+            if (curState == table[i]._curState)
+            {
+                // 입력된 이벤트와 일치하는지 검사
+                if (inputEvent == table[i]._event)
+                {
+                    // 해당 트랜지션이 발생할 때 수행해야할 함수들을 실행시킴
+                    // ...
+                    if (table[i]._action != null)
+                        table[i]._action.Invoke();
+                    // 테이블에 정의된 다음 상태로 현재 상태 변경
+                    curState = table[i]._nextState;
+
+                    // 버튼 활성화 셋팅
+                    if (_UI_Dialogue)
+                        _UI_Dialogue.setButtons((int)curState);
+
+                    
+                    break;
+                }
+            }
+        }
+
+        //Debug.Log("트랜지션 완료");
+        Debug.Log($"변경된 상태 : {curState}");
     }
 
 
+    #region Turn To Player
+    public void startTurnToPlayer()
+    {
+        //Debug.Log("플레이어 쳐다보기");
+        turn_coroutine = StartCoroutine(turnToPlayer());
+    }
+    public void getPlayer(GameObject player)
+    {
+        // 상호작용하는 플레이어 정보 얻기 위함
+        clickedPlayer = player;
+    }
+    protected IEnumerator turnToPlayer()
+    {
+        float timeCount = 0.0f;
+        while (timeCount < 1.0f)
+        {
+            Quaternion lookOnlook = Quaternion.LookRotation(clickedPlayer.transform.position - this.transform.position);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, timeCount);
+            timeCount = Time.deltaTime * _turnSpeed;
+            yield return null;
+        }
+    }
+    #endregion
+    #region Interact With NPC
+    public void ClosePopupBeforeInteract()
+    {
+        // Before interact with NPC
+        // check Other Popup UIs
+        // and Close them
 
+        Managers.UI.CloseAllPopupUI();
+    }
     public virtual void npcUIPopUp()
     {
         // 클릭되어서 맨 처음 npc UI 뜨는거
@@ -239,7 +316,6 @@ public class Npc : MonoBehaviour
         table[4]._action -= _UI_Dialogue.dialogEnd;
         table[4]._action += _UI_Dialogue.dialogEnd;
     }
-
     public void npcUIClose()
     {
         // npc UI 꺼짐
@@ -247,13 +323,11 @@ public class Npc : MonoBehaviour
         ui_dialogue_ison = false;
         _UI_Dialogue = null;
     }
-
-
     public Tuple<string, string> getSpeakersNScripts(string key, int lineNum)
     {
         // key 로 상황에 맞는 대사 가져옴
         // return Speaker's name and scripts using tuple
-        
+
         if (Managers.Data.Dict_DialogDict.ContainsKey(key))
         {
             if (lineNum >= Managers.Data.Dict_DialogDict[key].Count)
@@ -263,8 +337,79 @@ public class Npc : MonoBehaviour
         }
         return null;
     }
+    #endregion
 
-    public Tuple<string ,string> getSpeakersNScripts(int lineNum)
+    #region Patrol
+    protected void startPatrol()
+    {
+        if (isPatroling) return;
+        isPatroling = true;
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
+        agent.speed = _moveSpeed;
+
+        GotoNextPoint();
+        if (_patrolable) patrol_coroutine = StartCoroutine(patrol());
+    }
+    protected IEnumerator patrol()
+    {
+        stateMachine(Define.Event.EVENT_PATROL);
+        //ChangeAnim();
+
+        while (_patrolable)
+        {
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                GotoNextPoint();
+            yield return null;
+        }
+    }
+    protected void stopPatrol()
+    {
+        isPatroling = false;
+        StopCoroutine(patrol_coroutine);
+        //ChangeAnim();
+    }
+    private void GotoNextPoint()
+    {
+        if (wayPoints.Length == 0) return;
+
+        agent.destination = wayPoints[destPoint].position;
+        destPoint = (destPoint + 1) % wayPoints.Length; // cycling
+    }
+
+    /* Animation */
+    // IDLE(DEFAULT) , PATROL
+    protected void ChangeAnim()
+    {
+        Animator anim = gameObject.GetComponent<Animator>();
+        switch (curState)
+        {
+            case Define.NpcState.STATE_IDLE:
+                anim.CrossFade("Idle", 0.2f);
+                break;
+            case Define.NpcState.STATE_PATROL:
+                anim.CrossFade("Move", 0.2f);
+                break;
+            default:
+                anim.CrossFade("Idle", 0.2f);
+                break;
+        }
+    }
+
+    #endregion
+
+    #region Debug
+    protected void showNpcInfo4Debug()
+    {
+        // 디버깅용
+        Debug.Log($"{_id}) {_name} : {_job}");
+        //Debug.Log(_name);
+        //Debug.Log(_job);
+    }
+    #endregion
+    #region Not Use
+    public Tuple<string, string> getSpeakersNScripts(int lineNum)
     {
         // return Speaker's name and scripts using tuple
 
@@ -294,168 +439,17 @@ public class Npc : MonoBehaviour
             lineNum++;
             if (lineNum == dialogDict.Count)
             {
-                
+
             }
-                //return -1;
+            //return -1;
             else
             {
 
             }
-                //return lineNum;
+            //return lineNum;
         }
 
         //return -1;
     }
-
-
-    IEnumerator turnToPlayer()
-    {
-        float timeCount = 0.0f;
-        while(timeCount < 1.0f)
-        {
-            Quaternion lookOnlook = Quaternion.LookRotation(clickedPlayer.transform.position - this.transform.position);
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, timeCount);
-            timeCount = Time.deltaTime * _turnSpeed;
-            yield return null;
-        }
-    }
-
-    public void lookAtPlayer()
-    {
-        Debug.Log("플레이어 쳐다보기");
-        StartCoroutine(turnToPlayer());
-    }
-
-    protected void showNpcInfo()
-    {
-        // 디버깅용
-        Debug.Log(_id);
-        Debug.Log(_name);
-        Debug.Log(_job);
-    }
-
-    public void stateMachine(Define.Event inputEvent)
-    {
-        // 이거만 호출
-        // 외부에서 인자로 다음 이벤트 넣어줌
-        Debug.Log($"현재 상태 : {curState}");
-        Debug.Log($"입력된 이벤트 : {inputEvent}");
-
-        //StopAllCoroutines(); // 그 전 코루틴 꺼주기
-        StopCoroutine("turnToPlayer");
-
-        //  테이블에 정의된 각 행에 대해 비교
-        for (int i = 0; i < table.Length; i++)
-        {
-            // 현재 상태와 일치하는지 검사
-            if(curState == table[i]._curState)
-            {
-                // 입력된 이벤트와 일치하는지 검사
-                if(inputEvent == table[i]._event)
-                {
-                    // 해당 트랜지션이 발생할 때 수행해야할 함수들을 실행시킴
-                    // ...
-                    if(table[i]._action != null)
-                        table[i]._action.Invoke();
-                    // 테이블에 정의된 다음 상태로 현재 상태 변경
-                    curState = table[i]._nextState;
-
-                    // 버튼 활성화 셋팅
-                    if (_UI_Dialogue)
-                        _UI_Dialogue.setButtons((int)curState);
-
-                    break;
-                }
-            }
-        }
-        Debug.Log("트랜지션 완료");
-        Debug.Log($"현재 상태 : {curState}");
-    }
-    
-
-    
-
-    public void checkNCloseOtherPopUpUI()
-    {
-        // Before interact with NPC
-        // check Other Popup UIs
-        // and Close them
-
-        Managers.UI.CloseAllPopupUI();
-    }
-
-
-    public void getPlayer(GameObject player)
-    {
-        // 상호작용하는 플레이어 정보 얻기 위함
-        clickedPlayer = player;
-    }
-
-    protected IEnumerator patrol()
-    {
-        stateMachine(Define.Event.EVENT_PATROL);
-        anim();
-
-        while (_patrolable)
-        {
-            //Debug.Log("Patrol");
-
-            if (!agent.pathPending && agent.remainingDistance < 0.5f)
-                GotoNextPoint();
-
-            //stateMachine(Define.Event.EVENT_PATROL);
-            yield return null;
-            //Debug.Log("~ing");
-        }
-    }
-
-    protected void startPatrol()
-    {
-        if (isPatroling) return;
-        isPatroling = true;
-
-        agent = GetComponent<NavMeshAgent>();
-        agent.autoBraking = false;
-        agent.speed = _moveSpeed;
-
-        GotoNextPoint();
-
-        if (_patrolable)
-            patrol_coroutine = StartCoroutine(patrol());
-    }
-
-    private void GotoNextPoint()
-    {
-        if (points.Length == 0) return;
-
-        agent.destination = points[destPoint].position;
-        destPoint = (destPoint + 1) % points.Length;
-    }
-
-    protected void stopPatrol()
-    {
-        Debug.Log("Stop Patrol");
-
-        anim();
-        isPatroling = false;
-        StopCoroutine(patrol_coroutine);
-    }
-
-    protected void anim()
-    {
-        Animator anim = gameObject.GetComponent<Animator>();
-        switch (curState)
-        {
-            case Define.NpcState.STATE_IDLE:
-                anim.CrossFade("Idle", 0.2f);
-                break;
-            case Define.NpcState.STATE_PATROL:
-                anim.CrossFade("Move", 0.2f);
-                break;
-            default:
-                anim.CrossFade("Idle", 0.2f);
-                break;
-        }
-    }
-
+    #endregion
 }
