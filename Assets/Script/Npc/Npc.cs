@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Npc : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class Npc : MonoBehaviour
     [SerializeField]
     protected float _moveSpeed;       // 이동 속도
     [SerializeField]
-    protected float _turnSpeed = 4.0f;
+    protected float _turnSpeed = 2.0f;
     [SerializeField]
     protected Vector3 _position;      // 시작 위치
 
@@ -47,9 +48,19 @@ public class Npc : MonoBehaviour
 
     protected Coroutine patrol_coroutine;
 
+    /* Patrol */
+    public Transform[] points;
+    [SerializeField]
+    private int destPoint = 0;
+    private NavMeshAgent agent;
+    [SerializeField]
+    private bool isPatroling = false;
+
+
+
     // EventActionTable Class
     // State, Event -> Define.NpcState, Define.Event
-    
+
     // state
     //public enum State
     //{
@@ -171,7 +182,7 @@ public class Npc : MonoBehaviour
         _name = dict[_id].name;
         _job = dict[_id].job;
         _patrolable = dict[_id].patrol;
-        if (_patrolable) _moveSpeed = 5.0f;
+        if (_patrolable) _moveSpeed = 2.0f;
         else _moveSpeed = 0.0f;
 
         if (_patrolable) startPatrol();
@@ -382,25 +393,69 @@ public class Npc : MonoBehaviour
 
     protected IEnumerator patrol()
     {
-        while(_patrolable)
+        stateMachine(Define.Event.EVENT_PATROL);
+        anim();
+
+        while (_patrolable)
         {
-            Debug.Log("Patrol");
-            stateMachine(Define.Event.EVENT_PATROL);
-            yield return new WaitForSeconds(10.0f);
+            //Debug.Log("Patrol");
+
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                GotoNextPoint();
+
+            //stateMachine(Define.Event.EVENT_PATROL);
+            yield return null;
             //Debug.Log("~ing");
         }
     }
 
     protected void startPatrol()
     {
+        if (isPatroling) return;
+        isPatroling = true;
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
+        agent.speed = _moveSpeed;
+
+        GotoNextPoint();
+
         if (_patrolable)
             patrol_coroutine = StartCoroutine(patrol());
+    }
+
+    private void GotoNextPoint()
+    {
+        if (points.Length == 0) return;
+
+        agent.destination = points[destPoint].position;
+        destPoint = (destPoint + 1) % points.Length;
     }
 
     protected void stopPatrol()
     {
         Debug.Log("Stop Patrol");
+
+        anim();
+        isPatroling = false;
         StopCoroutine(patrol_coroutine);
+    }
+
+    protected void anim()
+    {
+        Animator anim = gameObject.GetComponent<Animator>();
+        switch (curState)
+        {
+            case Define.NpcState.STATE_IDLE:
+                anim.CrossFade("Idle", 0.2f);
+                break;
+            case Define.NpcState.STATE_PATROL:
+                anim.CrossFade("Move", 0.2f);
+                break;
+            default:
+                anim.CrossFade("Idle", 0.2f);
+                break;
+        }
     }
 
 }

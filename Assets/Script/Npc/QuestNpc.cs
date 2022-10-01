@@ -81,7 +81,7 @@ public class QuestNpc : Npc
         _name = dict[_id].name;
         _job = dict[_id].job;
         _patrolable = dict[_id].patrol;
-        if (_patrolable) _moveSpeed = 5.0f;
+        if (_patrolable) _moveSpeed = 2.0f;
         else _moveSpeed = 0.0f;
 
         if (_patrolable) startPatrol();

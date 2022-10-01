@@ -768,6 +768,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &17125257
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9193,6 +9194,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &264857910
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10756,6 +10758,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &304039741
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13763,6 +13766,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &377152124
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -23325,6 +23329,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &632648598
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -35487,6 +35492,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &841614145
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -45362,6 +45368,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &1079934231
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -58695,6 +58702,7 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points: []
 --- !u!136 &1380626188
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -75198,6 +75206,7 @@ GameObject:
   - component: {fileID: 1786669123}
   - component: {fileID: 1786669122}
   - component: {fileID: 1786669121}
+  - component: {fileID: 1786669125}
   m_Layer: 13
   m_Name: npc (1)
   m_TagString: NPC
@@ -75224,6 +75233,13 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points:
+  - {fileID: 1598316600}
+  - {fileID: 770207310}
+  - {fileID: 2071216939}
+  - {fileID: 1091340956}
+  - {fileID: 500813772}
+  - {fileID: 699305542}
 --- !u!136 &1786669122
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -75273,6 +75289,28 @@ Transform:
   m_Father: {fileID: 1522279439}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &1786669125
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786669120}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1786947791
 GameObject:
   m_ObjectHideFlags: 0
@@ -120690,6 +120728,7 @@ GameObject:
   - component: {fileID: 5866666021020426651}
   - component: {fileID: 919132148970774876}
   - component: {fileID: 919132148970774877}
+  - component: {fileID: 919132148970774879}
   m_Layer: 13
   m_Name: npc
   m_TagString: NPC
@@ -120730,6 +120769,35 @@ MonoBehaviour:
   _turnSpeed: 4
   _position: {x: 0, y: 0, z: 0}
   <curState>k__BackingField: 0
+  points:
+  - {fileID: 1598316600}
+  - {fileID: 770207310}
+  - {fileID: 2071216939}
+  - {fileID: 1091340956}
+  - {fileID: 500813772}
+  - {fileID: 699305542}
+--- !u!195 &919132148970774879
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148970774875}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &934438376429626828
 GameObject:
   m_ObjectHideFlags: 0
