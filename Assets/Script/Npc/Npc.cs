@@ -43,6 +43,7 @@ public class Npc : MonoBehaviour
     // turnToPlayer 에서 사용, 상호작용하는 player를 getPlayer() 이용해서 가져옴
     protected GameObject clickedPlayer = null;
 
+    protected Coroutine turn_coroutine;
 
     /* Patrol */
     public Transform[] wayPoints;
@@ -54,70 +55,6 @@ public class Npc : MonoBehaviour
     protected Coroutine patrol_coroutine;
     #endregion
 
-    protected Coroutine turn_coroutine;
-
-
-    // EventActionTable Class
-    // State, Event -> Define.NpcState, Define.Event
-
-    // state
-    //public enum State
-    //{
-    //    // 기본
-    //    STATE_IDLE,
-    //    STATE_NPC_UI_POPUP,
-    //    STATE_DIALOGUE,
-    //    // 상점
-    //    STATE_SHOP_UI_POPUP,
-    //    //STATE_BUY_UI_POPUP,
-    //    //STATE_SELL_UI_POPUP,
-    //    //// 창고
-    //    //STATE_STORAGE_UI_POPUP,
-    //    //// 퀘스트
-    //    //STATE_QUEST_UI_POPUP,
-    //}
-
-    //// Event
-    //public enum Event
-    //{
-    //    // 기본 NPC EVENT
-    //    EVENT_NPC_CLICKED_IN_DISTANCE,
-    //    //EVENT_QUIT_UI_POPUP,
-    //    EVENT_PUSH_DIALOGUE,
-    //    //EVENT_OTHER_DIALOGUE,
-    //    EVENT_QUIT_DIALOGUE,
-    //    // 상점
-    //    EVENT_PUSH_SHOP,
-    //    //EVENT_PUSH_BUY,
-    //    //EVENT_QUIT_BUY,
-    //    //EVENT_PUSH_SELL,
-    //    //EVENT_QUIT_SELL,
-    //    EVENT_QUIT_SHOP,
-    //    // 창고
-    //    // ...
-    //    // 퀘스트
-    //    // ...
-    //}
-
-
-    //class EventActionTable
-    //{
-    //    public State _curState { get; set; }
-    //    public Event _event { get; set; }
-    //    // actions
-    //    public Action _action { get; set; }
-    //    public State _nextState { get; set; }
-
-    //    public EventActionTable(State cs, Event e, Action act, State ns)
-    //    {
-    //        _curState = cs;
-    //        _event = e;
-    //        //foreach(Action act in act_arr)
-    //        //_action += act;
-    //        _nextState = ns;
-    //    }
-    //}
-
 
     public virtual void Awake()
     {
@@ -125,31 +62,35 @@ public class Npc : MonoBehaviour
     }
     public virtual void Init()
     {
-        //
+        #region Read NPC Info from Dictionary
+        Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
+        _id = dict[num_npc].id;
+        _name = dict[_id].name;
+        _job = dict[_id].job;
+        _patrolable = dict[_id].patrol;
+
+        num_npc++; // static 변수 이용
+        #endregion
+
+        #region State Init
+        
+        // State init
         curState = Define.NpcState.STATE_IDLE;
 
-        // table init
+        // Table init
         table = new EventActionTable[]
         {
             new EventActionTable(Define.NpcState.STATE_IDLE, Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE, null, Define.NpcState.STATE_NPC_UI_POPUP),
-
-            new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_PUSH_DIALOGUE, null, Define.NpcState.STATE_DIALOGUE), // 대화 시작
-            //new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_PUSH_SHOP,  null,    Define.NpcState.STATE_SHOP_UI_POPUP),
+            new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_PUSH_DIALOGUE, null, Define.NpcState.STATE_DIALOGUE), 
             new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_QUIT_DIALOGUE, null, Define.NpcState.STATE_IDLE),
-
-            new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_PUSH_DIALOGUE,  null, Define.NpcState.STATE_DIALOGUE), // 대화중
-            new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_QUIT_DIALOGUE,  null, Define.NpcState.STATE_NPC_UI_POPUP), // 대화 끝 : 초기화
-                                    
-            //new EventActionTable(Define.NpcState.STATE_SHOP_UI_POPUP, Define.Event.EVENT_QUIT_SHOP,  null, Define.NpcState.STATE_NPC_UI_POPUP),
-
-            new EventActionTable(Define.NpcState.STATE_PATROL, Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE,  null, Define.NpcState.STATE_IDLE),
-            new EventActionTable(Define.NpcState.STATE_IDLE, Define.Event.EVENT_PATROL,  null, Define.NpcState.STATE_PATROL),
-
+            new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_PUSH_DIALOGUE,  null, Define.NpcState.STATE_DIALOGUE), 
+            new EventActionTable(Define.NpcState.STATE_DIALOGUE, Define.Event.EVENT_QUIT_DIALOGUE,  null, Define.NpcState.STATE_NPC_UI_POPUP), 
         };
 
-        // action 등록
 
-        // NPC 상호작용 시작
+        // Action Register
+
+        // 1. NPC Interact Begin
         table[0]._action -= ClosePopupBeforeInteract;
         table[0]._action += ClosePopupBeforeInteract;
         table[0]._action -= startTurnToPlayer;
@@ -158,37 +99,26 @@ public class Npc : MonoBehaviour
         table[0]._action += npcUIPopUp;
         table[0]._action -= showNpcInfo4Debug;
         table[0]._action += showNpcInfo4Debug;
-        
 
-        
-
-        // NPC 상호작용 끝
+        // 2. NPC Interact end
         table[2]._action -= npcUIClose;
         table[2]._action += npcUIClose;
 
-        if(_patrolable)
+        // 3. NPC Patrol
+        if (_patrolable)
         {
             table[2]._action -= startPatrol;
             table[2]._action += startPatrol;
 
-            // 패트롤
-            table[5]._action -= stopPatrol;
-            table[5]._action += stopPatrol;
+            table[0]._action -= stopPatrol;
+            table[0]._action += stopPatrol;
+
+            _moveSpeed = 2.0f;
+            startPatrol();
         }
-
-
-        // Npc 정보 읽기
-        Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
-        _id = dict[num_npc].id;
-        _name = dict[_id].name;
-        _job = dict[_id].job;
-        _patrolable = dict[_id].patrol;
-        if (_patrolable) _moveSpeed = 2.0f;
         else _moveSpeed = 0.0f;
 
-        if (_patrolable) startPatrol();
-
-        num_npc++; // static 변수 이용
+        #endregion
 
         #region Not Use
         /*
@@ -256,6 +186,9 @@ public class Npc : MonoBehaviour
 
         //Debug.Log("트랜지션 완료");
         Debug.Log($"변경된 상태 : {curState}");
+
+        // Change Animation
+        ChangeAnim();
     }
 
 
@@ -343,7 +276,6 @@ public class Npc : MonoBehaviour
     protected void startPatrol()
     {
         if (isPatroling) return;
-        isPatroling = true;
 
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
@@ -354,9 +286,9 @@ public class Npc : MonoBehaviour
     }
     protected IEnumerator patrol()
     {
-        stateMachine(Define.Event.EVENT_PATROL);
-        //ChangeAnim();
+        ChangeAnim();
 
+        isPatroling = true;
         while (_patrolable)
         {
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
@@ -368,7 +300,6 @@ public class Npc : MonoBehaviour
     {
         isPatroling = false;
         StopCoroutine(patrol_coroutine);
-        //ChangeAnim();
     }
     private void GotoNextPoint()
     {
@@ -379,24 +310,25 @@ public class Npc : MonoBehaviour
     }
 
     /* Animation */
-    // IDLE(DEFAULT) , PATROL
+    // IDLE(PATROL) , ETC
     protected void ChangeAnim()
     {
         Animator anim = gameObject.GetComponent<Animator>();
         switch (curState)
         {
             case Define.NpcState.STATE_IDLE:
-                anim.CrossFade("Idle", 0.2f);
-                break;
-            case Define.NpcState.STATE_PATROL:
-                anim.CrossFade("Move", 0.2f);
+                {
+                    if (_patrolable)
+                        anim.CrossFade("Move", 0.2f);
+                    else
+                        anim.CrossFade("Idle", 0.2f);
+                }
                 break;
             default:
                 anim.CrossFade("Idle", 0.2f);
                 break;
         }
     }
-
     #endregion
 
     #region Debug

@@ -22,5 +22,6 @@ public class EventActionTable
         //_action += act;
         _nextState = ns;
     }
+
 }
 
