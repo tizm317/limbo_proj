@@ -10,6 +10,7 @@ public class UI_InGame : UI_Scene
 
     // 연관된 팝업 UI 목록
     UI_Inven ui_Inven;
+    UI_Inventory uI_Inventory;
     UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
     UI_Setting setting;
@@ -119,15 +120,19 @@ public class UI_InGame : UI_Scene
             if(!ui_Inven)
             {
                 ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
-                ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
+                //ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
+                uI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
             }
             else
             {
                 // 인벤토리 내용(변경사항) json 저장
-                if (!ui_Inven.IsPeek())
+                //if (!ui_Inven.IsPeek())
+                //    return;
+                if (!uI_Inventory.IsPeek())
                     return;
-                saveInven();
-                Managers.UI.ClosePopupUI(ui_Inven);
+                //saveInven();
+                //Managers.UI.ClosePopupUI(ui_Inven);
+                Managers.UI.ClosePopupUI(uI_Inventory);
                 ui_Equipment.ClosePopupUI();
             }
         }

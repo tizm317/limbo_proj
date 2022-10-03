@@ -22,15 +22,6 @@ public class Npc : MonoBehaviour
 
     #endregion
 
-    public void setNpc()
-    {
-        Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
-        _id = dict[num_npc].id;
-        _name = dict[_id].name;
-        _job = dict[_id].job;
-        _patrolable = dict[_id].patrol;
-    }
-
     public virtual void Awake()
     {
         Init();
@@ -43,9 +34,8 @@ public class Npc : MonoBehaviour
         _name = dict[_id].name;
         _job = dict[_id].job;
         _patrolable = dict[_id].patrol;
-
-
         num_npc++; // static 변수 이용
+
         #endregion
         #region State Init
         
