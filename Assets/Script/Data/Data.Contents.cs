@@ -244,4 +244,30 @@ namespace Data
         }
     }
     #endregion
+
+
+    #region Player
+    [Serializable]
+    public class Player
+    {
+        public string ID;
+        public string PW;
+    }
+
+    [Serializable]
+    public class PlayerData : ILoader<string, Player>
+    {
+        public List<Player> players = new List<Player>();
+
+        public Dictionary<string, Player> MakeDict()
+        {
+            Dictionary<string, Player> dict = new Dictionary<string, Player>();
+
+            foreach (Player ele in players)
+                dict.Add(ele.ID, ele);
+
+            return dict;
+        }
+    }
+    #endregion
 }

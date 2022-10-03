@@ -33,4 +33,9 @@ public class NpcManager
             }
         }
     }
+
+    public void Clear()
+    {
+        Npcs = null;
+    }
 }

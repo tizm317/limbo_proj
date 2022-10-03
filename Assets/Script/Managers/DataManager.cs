@@ -47,6 +47,8 @@ public class DataManager
 
     public Dictionary<int, Data.Item2> ItemTable { get; private set; } = new Dictionary<int, Data.Item2>();
 
+    public Dictionary<string, Data.Player> PlayerTable { get; private set; } = new Dictionary<string, Data.Player>();
+
     public void Init()
     {
         // json 파일 읽어옴
@@ -65,7 +67,7 @@ public class DataManager
         Dict_DialogDict["0"] = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict();
         Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
 
-
+        PlayerTable = LoadJson<Data.PlayerData, string, Data.Player>("PlayerData").MakeDict();
 
         // path 내에 MapData 존재 안하면 json 파일로 저장 후,
         //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // 경로 수정 필요
