@@ -79,6 +79,8 @@ public class Managers : MonoBehaviour
             // 사운드매니저 초기화
             s_instance._sound.Init();
 
+            s_instance._npc.Init();
+
         }
 
 

@@ -7,54 +7,29 @@ using UnityEngine.AI;
 public class Npc : MonoBehaviour
 {
     #region Attributes
-    // Attributes
     [field: SerializeField]
     public int _id { get; protected set; }            // id
     [field: SerializeField]
     public string _name { get; protected set; }       // 이름
-    
-    [SerializeField]
-    protected bool _patrolable;       // 패트롤여부
-    [SerializeField]
-    protected float _moveSpeed;       // 이동 속도
-    [SerializeField]
-    protected float _turnSpeed = 2.0f;
-    [SerializeField]
-    protected Vector3 _position;      // 시작 위치
-
-    // StateMachine
-    [field: SerializeField]
-    public Define.NpcState curState { get;  set; }
-    protected EventActionTable[] table;
-
-    // Dialogue
-    protected Dictionary<int, Data.Dialog> dialogDict;
-
-    // UI
-    protected UI_Dialogue _UI_Dialogue;
-    public bool ui_dialogue_ison { get; protected set; } = false; // UI 켜졌는지 Player_Controller에서 확인하기 위함
 
     // 수정할 수도 있는 것들
+    [SerializeField]
+    protected Vector3 _position;      // 시작 위치
     static protected int num_npc = 0; // static 변수 : 처음에 npc 정보 분배할 때 사용
+    [field: SerializeField]
     public string _job { get; protected set; }
     //string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
 
-
-    // turnToPlayer 에서 사용, 상호작용하는 player를 getPlayer() 이용해서 가져옴
-    protected GameObject clickedPlayer = null;
-
-    protected Coroutine turn_coroutine;
-
-    /* Patrol */
-    public Transform[] wayPoints;
-    [SerializeField]
-    protected int destPoint = 0;
-    protected NavMeshAgent agent;
-    [SerializeField]
-    protected bool isPatroling = false;
-    protected Coroutine patrol_coroutine;
     #endregion
 
+    public void setNpc()
+    {
+        Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
+        _id = dict[num_npc].id;
+        _name = dict[_id].name;
+        _job = dict[_id].job;
+        _patrolable = dict[_id].patrol;
+    }
 
     public virtual void Awake()
     {
@@ -69,9 +44,9 @@ public class Npc : MonoBehaviour
         _job = dict[_id].job;
         _patrolable = dict[_id].patrol;
 
+
         num_npc++; // static 변수 이용
         #endregion
-
         #region State Init
         
         // State init
@@ -147,6 +122,12 @@ public class Npc : MonoBehaviour
         #endregion
     }
 
+
+    #region StateMachine
+    [field: SerializeField]
+    public Define.NpcState curState { get; set; }
+    protected EventActionTable[] table;
+    /*=======================================================================================================================*/
     public void stateMachine(Define.Event inputEvent)
     {
         // 이거만 호출
@@ -189,10 +170,16 @@ public class Npc : MonoBehaviour
 
         // Change Animation
         ChangeAnim();
+    /*=======================================================================================================================*/
     }
-
-
+    #endregion
     #region Turn To Player
+    [SerializeField]
+    protected float _turnSpeed = 2.0f;
+    protected Coroutine turn_coroutine;
+    // turnToPlayer 에서 사용, 상호작용하는 player를 getPlayer() 이용해서 가져옴
+    protected GameObject clickedPlayer = null;
+    /*=======================================================================================================================*/
     public void startTurnToPlayer()
     {
         //Debug.Log("플레이어 쳐다보기");
@@ -216,6 +203,14 @@ public class Npc : MonoBehaviour
     }
     #endregion
     #region Interact With NPC
+    /* Dialogue */
+    protected Dictionary<int, Data.Dialog> dialogDict;
+    /* UI */
+    protected UI_Dialogue _UI_Dialogue;
+    public bool ui_dialogue_ison { get; protected set; } = false; // UI 켜졌는지 Player_Controller에서 확인하기 위함
+    
+    /*=======================================================================================================================*/
+
     public void ClosePopupBeforeInteract()
     {
         // Before interact with NPC
@@ -271,13 +266,25 @@ public class Npc : MonoBehaviour
         return null;
     }
     #endregion
-
     #region Patrol
+    [SerializeField]
+    protected bool _patrolable;       // 패트롤여부
+    [SerializeField]
+    protected float _moveSpeed;       // 이동 속도
+    [SerializeField]
+    protected bool isPatroling = false;
+    public Transform[] wayPoints;
+    [SerializeField]
+    protected int destPoint = 0;
+    protected NavMeshAgent agent;
+    protected Coroutine patrol_coroutine;
+    /*=======================================================================================================================*/
+
     protected void startPatrol()
     {
         if (isPatroling) return;
 
-        agent = GetComponent<NavMeshAgent>();
+        agent = Util.GetOrAddComponent<NavMeshAgent>(this.gameObject);
         agent.autoBraking = false;
         agent.speed = _moveSpeed;
 
@@ -303,7 +310,7 @@ public class Npc : MonoBehaviour
     }
     private void GotoNextPoint()
     {
-        if (wayPoints.Length == 0) return;
+        if (wayPoints == null || wayPoints.Length == 0) return;
 
         agent.destination = wayPoints[destPoint].position;
         destPoint = (destPoint + 1) % wayPoints.Length; // cycling
@@ -340,6 +347,7 @@ public class Npc : MonoBehaviour
         //Debug.Log(_job);
     }
     #endregion
+
     #region Not Use
     public Tuple<string, string> getSpeakersNScripts(int lineNum)
     {
