@@ -307,7 +307,7 @@ public class Skill : MonoBehaviour
     public IEnumerator Show_Indicator(bool body, float rad, float range)
     {
         Indicator.SetActive(true);
-        Indicator.GetComponent<MeshRenderer>().material.SetFloat("_Angle",rad);
+        Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
         float _range = range * 2;
         Indicator.transform.localScale = new Vector3(_range,_range,_range);
         if(body)

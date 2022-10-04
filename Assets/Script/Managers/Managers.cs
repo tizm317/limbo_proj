@@ -79,6 +79,9 @@ public class Managers : MonoBehaviour
             // 사운드매니저 초기화
             s_instance._sound.Init();
 
+            // NPC Manager init
+            s_instance._npc.Init();
+
         }
 
 
@@ -97,6 +100,7 @@ public class Managers : MonoBehaviour
         Input.Clear();
         Scene.Clear();
         UI.Clear();
+        NPC.Clear();
 
         // 다른 곳에서 사용할 수도 있어서 마지막에 clear
         Pool.Clear();   

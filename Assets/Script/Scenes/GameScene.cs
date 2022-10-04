@@ -131,6 +131,9 @@ public class GameScene : BaseScene
 
         // CAPTCHA System
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
+
+        //
+        Managers.NPC.Init();
     }
 
     IEnumerator CoCaptcha(float seconds)
