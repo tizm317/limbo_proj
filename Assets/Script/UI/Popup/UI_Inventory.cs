@@ -48,7 +48,6 @@ public class UI_Inventory : UI_Popup
         _rrList = new List<RaycastResult>(10);
     }
 
-
     public void Quit_Inventory(PointerEventData data)
     {
         this.ClosePopupUI();
@@ -154,4 +153,10 @@ public class UI_Inventory : UI_Popup
         from.SwapIcon(to);
         //_inventory.Swap(from.Index, to.Index);
     }
+
+    public void SetAccessibleSlotRange(int capacity)
+    {
+        //TODO
+    }
+
 }
