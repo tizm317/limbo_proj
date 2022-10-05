@@ -80,7 +80,7 @@ public class Managers : MonoBehaviour
             s_instance._sound.Init();
 
             // NPC Manager init
-            s_instance._npc.Init();
+            //s_instance._npc.Init();
 
         }
 
