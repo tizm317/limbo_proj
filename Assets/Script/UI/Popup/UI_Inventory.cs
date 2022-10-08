@@ -141,22 +141,44 @@ public class UI_Inventory : UI_Popup
     {
         UI_ItemSlot endDragSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
 
-        if(endDragSlot && endDragSlot.HasItem)
+        if(endDragSlot && endDragSlot.IsAccessible)
         {
             TrySwapItems(_beginDragSlot, endDragSlot);
         }
     }
 
+
+    Inventory _inventory;
+
     private void TrySwapItems(UI_ItemSlot from, UI_ItemSlot to)
     {
         if (from == to) return;
         from.SwapIcon(to);
-        //_inventory.Swap(from.Index, to.Index);
+        _inventory.Swap(from.Index, to.Index);
     }
 
-    public void SetAccessibleSlotRange(int capacity)
+    public void SetAccessibleSlotRange(int accessibleSlotCount)
     {
         //TODO
     }
 
+    public void SetItemIcon(int idx, Sprite iconSprite)
+    {
+
+    }
+
+    public void SetItemAmountText(int idx, int amount)
+    {
+
+    }
+
+    public void HideItemAmountText(int idx)
+    {
+
+    }
+    
+    public void RemoveItem(int idx)
+    {
+
+    }
 }
