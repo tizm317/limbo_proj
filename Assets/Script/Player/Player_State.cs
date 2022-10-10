@@ -79,7 +79,6 @@ public class Player_State : MonoBehaviour
     [SerializeField]
     PathFinding pathfinding;
     [SerializeField]
-    Effect effect;
     private Camera cam;
     public List<GameObject> enemies = new List<GameObject>();
     [SerializeField]
@@ -168,7 +167,6 @@ public class Player_State : MonoBehaviour
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
-        effect = gameObject.GetComponent<Effect>();
         enumerator = turnToNPC(); // 코루틴
 
         // 미니맵
@@ -238,9 +236,9 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    void Attack()
+    void Attack()//공격 함수 조건부
     {
-        if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) > attackRange)
+        if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
         {
             Vector3 dir = (gameObject.transform.position - my_enemy.transform.position).normalized * attackRange;
             Set_Destination(my_enemy.transform.position - dir);
@@ -249,16 +247,16 @@ public class Player_State : MonoBehaviour
         }
         else
         {
-            if(!isAttack)
+            if(!isAttack)//공격을 이미 실행중이지 않은 경우에만 작동
             {
                 StartCoroutine(Attack(my_stat.AttackSpeed));
             }
         }
     }
 
-    IEnumerator Attack(float attack_speed)
+    IEnumerator Attack(float attack_speed)//공격 함수 구현부
     {
-        if(!on_skill)
+        if(!on_skill)//스킬을 사용중이라면 공격할 수 없음
         {
             isAttack = true;
             isMove = false;
@@ -267,39 +265,39 @@ public class Player_State : MonoBehaviour
             Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
             gameObject.transform.LookAt(my_enemy.transform);
-            yield return new WaitForSeconds(0.867f);
+            yield return new WaitForSeconds(0.867f);//공격 애니메이션 시간
             //my_enemy_stat.Hp -= damage;
             my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
-            if (my_enemy_stat.Hp <= 0)
+            if (my_enemy_stat.Hp <= 0)//적 체력이 0보다 작거나 같다면
             {
                 my_enemy = null;
                 Managers.Resource.Destroy(my_enemy);
             }
             curState = State.STATE_IDLE;
             Ani_State_Change();
-            yield return new WaitForSeconds(1/attack_speed);
+            yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
             isAttack = false;
         }
     }
 
-    void Die()
+    void Die()//사망 처리
     {
         StartCoroutine(Die(start_pos));
     }
-    IEnumerator Die(Vector3 pos)
+    IEnumerator Die(Vector3 pos)//사망 처리 구현부
     {
         curState = State.STATE_DIE;
         Ani_State_Change();
-        yield return new WaitForSeconds(3.9f);
+        yield return new WaitForSeconds(3.9f);//사망 애니메이션 시간
         curState = State.STATE_IDLE;
         Ani_State_Change();
-        my_stat.Hp = my_stat.MaxHp;
-        gameObject.transform.position = pos;
+        my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
+        gameObject.transform.position = pos;//초기 위치로 이동시켜줌
     }
     
-    void Run_Skill()
+    void Run_Skill()//스킬 사용 함수
     {
-        if(!on_skill)
+        if(!on_skill)//스킬 사용 조건부, 만약 스킬을 쓰고 있는 중이 아니라면 idle한 상태로 변환
         {
             curState = State.STATE_IDLE;
             Ani_State_Change();
