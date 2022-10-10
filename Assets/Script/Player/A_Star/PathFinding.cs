@@ -31,7 +31,6 @@ public class PathFinding : MonoBehaviour
             route.Add(new Vector3(Path[i].worldPosition.x, player.position.y, Path[i].worldPosition.z));
         }*/
         //수정본
-        int idx = 0;
         Vector3 dir;
         Vector3 past_dir =  Vector3.zero;
         for (int i = 0; i < Path.Count; i++)
