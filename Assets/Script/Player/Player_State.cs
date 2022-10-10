@@ -273,7 +273,7 @@ public class Player_State : MonoBehaviour
             if (my_enemy_stat.Hp <= 0)
             {
                 my_enemy = null;
-                Managers.Resource.Destroy(my_enemy);
+                //Managers.Resource.Destroy(my_enemy);
             }
             curState = State.STATE_IDLE;
             Ani_State_Change();

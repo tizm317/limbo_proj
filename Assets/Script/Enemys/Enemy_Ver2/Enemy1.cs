@@ -116,16 +116,11 @@ public class Enemy1 : Enemy
     //Hit 상태
     protected override void UpdateHit()
     {
-        Debug.Log("맞음");
-        State = Define.State.Hit;
     }
 
     //Die 상태
     protected override void UpdateDie()
     {
-        Debug.Log("죽기");
-        State = Define.State.Die;
-
     }
 
     void OnTriggerEnter(Collider coll)

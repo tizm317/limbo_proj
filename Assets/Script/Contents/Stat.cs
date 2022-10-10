@@ -16,6 +16,8 @@ public class Stat : MonoBehaviour
     [SerializeField] protected float _turnSpeed; // 턴하는 속도
     [SerializeField] protected float _attackSpeed; //공격속도
 
+    Enemy enemy;
+
     // 외부에서 사용할 때
     public int Level { get { return _level; } set { _level = value; } }
     public float Hp { get { return _hp; } set { _hp = value; } }
@@ -35,24 +37,42 @@ public class Stat : MonoBehaviour
         _moveSpeed = 0.5f;
         _turnSpeed = 5.0f;
     }
+    void Init()
+    {
+        enemy = gameObject.GetComponent<Enemy>();
+    }
 
     public virtual void OnAttacked(Stat attacker)
     {
+       
         float damage = Mathf.Max(0, attacker.Attack - Defense);
-        Hp -= damage;
-        if(Hp <= 0)
+        Hp -= damage; //나의 hp에서 demage 만큼 깎는다
+        if (Hp <= 0)  //음수 경우 hp = 0;
         {
-            Hp = 0;
+            Hp = 0;  //내가 죽었을 경우
+            enemy.State = Define.State.Hit;
             OnDead(attacker);
         }
     }
     protected virtual void OnDead(Stat attacker)
     {
         PlayerStat playerStat = attacker as PlayerStat;
-        if (playerStat != null)
+        /*
+        if (playerStat != null) //경험치
         {
-            playerStat.Exp += 1;
+            playerStat.Exp += 10;
         }
+        */
+        StartCoroutine(Die());
+
+    }
+    IEnumerator Die()
+    {
+        enemy.State = Define.State.Die;
+
+        yield return new WaitForSeconds(5.0f);
+
         Managers.Game.Despawn(gameObject);
+
     }
 }

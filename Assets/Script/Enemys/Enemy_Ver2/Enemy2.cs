@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Enemy2 : Enemy
 {
-    //wizard 원거리 공격 추가
     Stat _stat;
 
     [SerializeField] float _scanRange = 8;   //사정거리
@@ -18,6 +17,10 @@ public class Enemy2 : Enemy
     private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
     private Transform playerTr; //player 위치
+
+    Material mat;
+    private int probability = 0;
+    
 
     public override void Init()
     {
@@ -43,7 +46,7 @@ public class Enemy2 : Enemy
         tr = GetComponent<Transform>();
         playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
-
+        mat = GetComponent<MeshRenderer>().material;
     }
 
     //Idle 상태
@@ -99,8 +102,8 @@ public class Enemy2 : Enemy
             Quaternion quat = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
             tr.Translate(Vector3.forward * Time.deltaTime * _stat.MoveSpeed);  //앞으로 이동
-        }
 
+        }
     }
 
     //skill 상태
@@ -118,17 +121,13 @@ public class Enemy2 : Enemy
     //Hit 상태
     protected override void UpdateHit()
     {
-        Debug.Log("맞음");
-        State = Define.State.Hit;
     }
 
     //Die 상태
     protected override void UpdateDie()
     {
-        Debug.Log("죽기");
-        State = Define.State.Die;
-
     }
+
 
     void OnTriggerEnter(Collider coll)
     {
@@ -178,9 +177,13 @@ public class Enemy2 : Enemy
             {
                 float dist = (lockTarget.transform.position - tr.position).magnitude;
                 if (dist <= _attachRange)
+                {
                     State = Define.State.Skill;
+                }
                 else
+                {
                     State = Define.State.Moving;
+                }
             }
             else
             {
@@ -200,4 +203,16 @@ public class Enemy2 : Enemy
 
         State = Define.State.Moving;
     }
+
+
+    IEnumerator MakeSuper()
+    {
+        this.gameObject.layer = 14; //  super layer
+        mat.color = Color.red;
+        yield return new WaitForSeconds(2.0f);
+
+        this.gameObject.layer = 9; //enemy layer
+        mat.color = Color.clear;
+    }
+
 }
