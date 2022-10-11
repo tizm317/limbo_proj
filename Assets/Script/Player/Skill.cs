@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Skill : MonoBehaviour
 {
     // Start is called before the first frame update
-    Effect effect;
+    Camera cam;
     Player_State player_state;
     PlayerStat my_stat;
     [SerializeField]
@@ -28,7 +28,7 @@ public class Skill : MonoBehaviour
 
     void Init()
     {
-        effect = gameObject.GetComponent<Effect>();
+        cam = Camera.main;
         player_state = gameObject.GetComponent<Player_State>();
         my_stat = gameObject.GetComponent<PlayerStat>();
         cool_max[0] = 5f;
@@ -266,8 +266,9 @@ public class Skill : MonoBehaviour
                 player_state.curState = Player_State.State.STATE_SKILL;
                 player_state.skill = Player_State.HotKey.R;
                 player_state.Ani_State_Change();
-                yield return new WaitForSeconds(2.2f);
-
+                yield return new WaitForSeconds(1.8f);
+                StartCoroutine(CameraShake(0.5f));
+                yield return new WaitForSeconds(0.4f);
                 for(int i = 0; i < player_state.enemies.Count; i++)
                 {
                     float far = Vector3.Distance(gameObject.transform.position, player_state.enemies[i].transform.position);
@@ -304,7 +305,7 @@ public class Skill : MonoBehaviour
 #endregion
 
 #region 인디케이터 표시
-    public IEnumerator Show_Indicator(bool body, float rad, float range)
+    IEnumerator Show_Indicator(bool body, float rad, float range)
     {
         Indicator.SetActive(true);
         Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
@@ -335,6 +336,33 @@ public class Skill : MonoBehaviour
             }  
         }
         Indicator.SetActive(false);
+    }
+#endregion
+
+#region 카메라 쉐이크
+    IEnumerator CameraShake(float duration)
+    {
+        Vector3 original_position = cam.transform.position;
+        cam.GetComponent<Camera_Controller>().camera_control = false;
+        float time = 0f;
+        float range = 0.1f;
+        while(time < duration)
+        {
+            Vector3 new_pos = original_position;
+            if(Camera.main.transform.position != original_position)
+                new_pos = original_position;
+            else
+                new_pos = original_position +new Vector3((Random.Range(-1f,1)>0)?range:-range,(Random.Range(-1f,1)>0)?range:-range,0);
+            Camera.main.transform.position = new_pos;
+            yield return new WaitForSeconds(0.1f);
+            time += 0.05f;           
+        }
+        
+        if(Camera.main.transform.position != original_position)
+        {
+            cam.transform.position = original_position;
+        }
+        cam.GetComponent<Camera_Controller>().camera_control = true;
     }
 #endregion
 }

@@ -124,4 +124,9 @@ public class PlayerStat : Stat
         }
         Stat_Update();
     }
+
+    protected override void OnDead(Stat attacker)
+    {
+        //동작 없음
+    }
 }

@@ -82,11 +82,13 @@ public abstract class Enemy : MonoBehaviour
     }
     protected virtual void UpdateHit()
     {
+        State = Define.State.Hit;
     }
     protected virtual void UpdateDie()
     {
+        State = Define.State.Die;
     }
-    
+
     public void set_target(GameObject target)
     {
         lockTarget = target;
