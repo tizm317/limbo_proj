@@ -79,9 +79,11 @@ public class UI_Inventory : UI_Popup
     {
         _ped.position = Input.mousePosition;
 
+        OnPointerEnter(_ped.position);
         OnPointerDown();
         OnPointerDrag();
         OnPointerUp();
+        OnPointerExit(_ped.position);
     }
 
 
@@ -92,6 +94,40 @@ public class UI_Inventory : UI_Popup
         if (_rrList.Count == 0) return null;
         return _rrList[0].gameObject.GetComponent<T>();
     }
+
+    UI_ItemDescription ui_tooltip;
+
+
+    UI_ItemSlot itemSlot_tooltip;
+    private void OnPointerEnter(Vector2 pointer)
+    {
+        // 중복 수행 방지
+        if (itemSlot_tooltip == RaycastAndGetFirstComponent<UI_ItemSlot>())
+            return;
+        
+        itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
+        if(itemSlot_tooltip != null && itemSlot_tooltip.HasItem)
+        {
+            ItemData itemData = _inventory.GetItemData(itemSlot_tooltip.Index);
+            if (!ui_tooltip)
+            {
+                ui_tooltip = Managers.UI.ShowPopupUI<UI_ItemDescription>();
+                ui_tooltip.setTooltip(itemData, pointer);
+            }
+            else
+            {
+                ui_tooltip.setTooltip(itemData, pointer);
+            }
+        }
+    }
+
+    private void OnPointerExit(Vector2 pointer)
+    {
+        UI_ItemSlot itemSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
+        if ((itemSlot == null || !itemSlot.HasItem) && ui_tooltip)
+            ui_tooltip.ClosePopupUI();
+    }
+
 
     private void OnPointerDown()
     {

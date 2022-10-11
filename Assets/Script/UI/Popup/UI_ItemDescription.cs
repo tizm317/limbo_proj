@@ -59,6 +59,31 @@ public class UI_ItemDescription : UI_Popup
     }
 
 
+    public void setTooltip(ItemData data, Vector3 mousePointerPos)
+    {
+
+        Reset();
+        GetText((int)Texts.NameText).text += data.Name;
+
+        float panelWidth = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.width;
+        float panelHeight = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.height;
+        float xPosValue = panelWidth / 1.75f;
+        float yPosValue = panelHeight / 1.75f;
+
+        // 화면 범위 안 넘어가게 위치 조정
+        if (mousePointerPos.x + panelWidth > Screen.width)
+            mousePointerPos.x -= xPosValue;
+        else
+            mousePointerPos.x += xPosValue;
+
+        if (mousePointerPos.y - panelHeight < 0)
+            mousePointerPos.y += yPosValue;
+        else
+            mousePointerPos.y -= yPosValue;
+
+        GetObject((int)GameObjects.DescriptionPanel).transform.position = mousePointerPos;
+    }
+
     string _useText = "사용";
     public void setDescription(string name, string type, string grade, int count, Vector3 mousePointerPos, bool tooltip = true)
     {
