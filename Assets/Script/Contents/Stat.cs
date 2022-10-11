@@ -17,6 +17,7 @@ public class Stat : MonoBehaviour
     [SerializeField] protected float _attackSpeed; //공격속도
 
     Enemy enemy;
+    [SerializeField] private GameObject item;
 
     // 외부에서 사용할 때
     public int Level { get { return _level; } set { _level = value; } }
@@ -73,6 +74,12 @@ public class Stat : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
 
         Managers.Game.Despawn(gameObject);
+
+        if(GameObject.FindGameObjectWithTag("Boss"))
+        {
+            //입장권 드롭 시 아이템 생성 instantiate???
+            GameObject _item = Instantiate(item);
+        }
 
     }
 }

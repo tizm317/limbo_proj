@@ -4596,6 +4596,40 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 693233697}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &137403290 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7441866890815690395, guid: 47ffa5f7704e0c74eb93fd82fc6bf80b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7146617609978894759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &137403292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137403290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b3bbdb55fdf36499ff75231bc86049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destPos: {x: 0, y: 0, z: 0}
+  state: 1
+  lockTarget: {fileID: 0}
+  _scanRange: 8
+  _attachRange: 3
+  points: []
+  firePosition: {fileID: 894596574}
+  bombFactory: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5,
+    type: 3}
+  throwPower: 8
+--- !u!4 &137403298 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7443160450589523975, guid: 47ffa5f7704e0c74eb93fd82fc6bf80b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7146617609978894759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &138657497
 GameObject:
   m_ObjectHideFlags: 0
@@ -17774,16 +17808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a818ec05894edd749963a632eca07ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stat: []
-  pathfinding: {fileID: 0}
-  effect: {fileID: 0}
-  player: {fileID: 0}
-  enemies: []
-  my_enemy: []
-  my_enemy_for_skill: []
-  destination: []
-  potal: {fileID: 0}
-  magicNumber: 100
 --- !u!4 &482278037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: bdff47564c80c4c4faaf9f6eacc8def0,
@@ -37248,6 +37272,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894043234}
   m_Mesh: {fileID: 4300000, guid: 8201db635b8eeb24dba49e2825268185, type: 3}
+--- !u!1 &894596574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 894596575}
+  m_Layer: 9
+  m_Name: firePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &894596575
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894596574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 137403298}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &894785940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89127,22 +89181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: defd8981ae136b945b586c685b0fe710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grand_parent: {fileID: 0}
-  parent: {fileID: 0}
-  Indicator: {fileID: 8851632919246254930}
-  obj:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &919132148007775226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89160,7 +89198,7 @@ MonoBehaviour:
   my_stat: {fileID: 0}
   skill: 0
   pathfinding: {fileID: 0}
-  effect: {fileID: 0}
+  cam: {fileID: 0}
   enemies: []
   stat: []
   my_enemy: {fileID: 0}
@@ -96729,6 +96767,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Wizard
       objectReference: {fileID: 0}
+    - target: {fileID: 7441866890815690469, guid: 47ffa5f7704e0c74eb93fd82fc6bf80b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7443160450589523975, guid: 47ffa5f7704e0c74eb93fd82fc6bf80b,
         type: 3}
       propertyPath: m_RootOrder
@@ -96784,7 +96827,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7441866890815690469, guid: 47ffa5f7704e0c74eb93fd82fc6bf80b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 47ffa5f7704e0c74eb93fd82fc6bf80b, type: 3}
 --- !u!4 &7283959204643598690
 Transform:
