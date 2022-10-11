@@ -59,19 +59,21 @@ public class Inventory : MonoBehaviour
         Add(w1.Data, 1);
         ArmorItem a1 = new ArmorItem(armorItemData, 10);
         Add(a1.Data, 1);
+        PotionItem p1 = new PotionItem(potionItemData, 1);
+        Add(p1.Data, 99);
     }
 
     [SerializeField]
     private WeaponItemData weaponItemData;
     [SerializeField]
     private ArmorItemData armorItemData;
+    [SerializeField]
+    private PotionItemData potionItemData;
+
 
     private void Start()
     {
         UpdateAccessibleStatesAll();
-
-      
-
     }
 
     // 인덱스가 수용 범위 내인지 검사

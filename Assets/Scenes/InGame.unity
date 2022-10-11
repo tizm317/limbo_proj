@@ -120457,6 +120457,7 @@ GameObject:
   - component: {fileID: 919132148007775225}
   - component: {fileID: 919132148007775226}
   - component: {fileID: 919132148007775227}
+  - component: {fileID: 919132148007775228}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -120542,6 +120543,24 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Indicator: {fileID: 8851632919246254930}
+--- !u!114 &919132148007775228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148007775224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad872c546a719f4b9922f6e0b33b24f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialCapacity: 28
+  _maxCapacity: 42
+  _UI_inventory: {fileID: 286161426470419700, guid: dd2623a390bea594883253e50675ca1f,
+    type: 3}
+  weaponItemData: {fileID: 11400000, guid: 2bdc6847198575f4a9fc57c654d558e8, type: 2}
+  armorItemData: {fileID: 11400000, guid: bde564bd06ab6fd4ea6b706c56910326, type: 2}
 --- !u!1 &919132148970774875
 GameObject:
   m_ObjectHideFlags: 0

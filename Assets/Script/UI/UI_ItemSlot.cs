@@ -22,7 +22,9 @@ public class UI_ItemSlot : MonoBehaviour
     private RectTransform _slotRect;
     private RectTransform _iconRect;
 
+    [SerializeField]
     private GameObject _iconGo;
+    [SerializeField]
     private GameObject _textGo;
 
     private Image _slotImage;
@@ -59,7 +61,8 @@ public class UI_ItemSlot : MonoBehaviour
         _iconRect = _iconImage.rectTransform;
 
         _iconGo = _iconRect.gameObject;
-        _textGo = _amountText.gameObject;
+        //_textGo = _amountText.gameObject;
+        _textGo = transform.GetChild(1).gameObject;
 
         _slotImage = GetComponent<Image>();
     }
