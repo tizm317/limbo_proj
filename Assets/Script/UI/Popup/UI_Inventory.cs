@@ -113,6 +113,15 @@ public class UI_Inventory : UI_Popup
             }
             else _beginDragSlot = null;
         }
+        else if(Input.GetMouseButtonDown(1)) // right click
+        {
+            // 아이템 사용
+            UI_ItemSlot itemSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
+            if(itemSlot != null && itemSlot.HasItem && itemSlot.IsAccessible)
+            {
+                _inventory.Use(itemSlot.Index);
+            }
+        }
     }
 
     private void OnPointerDrag()

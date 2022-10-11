@@ -60,9 +60,9 @@ public class Inventory : MonoBehaviour
         ArmorItem a1 = new ArmorItem(armorItemData, 10);
         Add(a1.Data, 1);
         PotionItem p1 = new PotionItem(potionItemData, 1);
-        Add(p1.Data, 90);
+        Add(p1.Data, 99);
         PotionItem p2 = new PotionItem(potionItemData, 1);
-        Add(p2.Data, 10);
+        Add(p2.Data, 30);
     }
 
     [SerializeField]
