@@ -4,8 +4,11 @@ using UnityEngine;
 
 public abstract class EquipmentItem : Item
 {
+    /* 실제 장비 아이템 클래스 */
+
     public EquipmentItemData EquipmentData { get; private set; }
 
+    // 내구도
     public int Durability { get; protected set; }
     public int MaxDurability => EquipmentData.MaxDurability;
     public bool IsMax => Durability >= MaxDurability;
@@ -32,6 +35,7 @@ public abstract class EquipmentItem : Item
         return (nextAmount > MaxDurability) ? nextAmount - MaxDurability : 0;
     }
 
+    // 셀 수 있는 아이템 아님
     //// 개수 나누어 복제
     //public CountableItem SeperateAndClone(int amount)
     //{

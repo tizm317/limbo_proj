@@ -23,6 +23,14 @@ public class UI_Inventory : UI_Popup
     void Start()
     {
         Init();
+
+        _inventory.test();
+    }
+
+    public void Awake()
+    {
+        _inventory = GameObject.Find("Player").GetComponent<Inventory>();
+        SlotInit();
     }
 
     public override void Init()
@@ -46,6 +54,7 @@ public class UI_Inventory : UI_Popup
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
+
     }
 
     public void Quit_Inventory(PointerEventData data)
@@ -90,7 +99,8 @@ public class UI_Inventory : UI_Popup
         {
             _beginDragSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
 
-            if (_beginDragSlot && _beginDragSlot.HasItem)
+            // 아이템 갖고 있는 슬롯
+            if (_beginDragSlot != null && _beginDragSlot.HasItem)
             {
                 // 위치 기억
                 _beginDragIconTransform = _beginDragSlot.IconRect.transform;
@@ -121,13 +131,13 @@ public class UI_Inventory : UI_Popup
         {
             if(_beginDragSlot)
             {
-                // 위치 복원?
+                // 위치 복원
                 _beginDragIconTransform.position = _beginDragIconPoint;
                 
                 // UI 순서 복원
                 _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
 
-                // 드래그 완료 처리 ?
+                // 드래그 완료 처리
                 EndDrag();
 
                 // 참조 제거
@@ -141,7 +151,7 @@ public class UI_Inventory : UI_Popup
     {
         UI_ItemSlot endDragSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
 
-        if(endDragSlot && endDragSlot.IsAccessible)
+        if(endDragSlot != null && endDragSlot.IsAccessible)
         {
             TrySwapItems(_beginDragSlot, endDragSlot);
         }
@@ -150,35 +160,65 @@ public class UI_Inventory : UI_Popup
 
     Inventory _inventory;
 
+    public void OnEnable()
+    {
+        _inventory.SetInventoryUI(this);
+    }
+
+    // Inventory에서 호출
+    //public void SetInventory(Inventory inventory)
+    //{
+    //    _inventory = inventory;
+    //}
+
     private void TrySwapItems(UI_ItemSlot from, UI_ItemSlot to)
     {
         if (from == to) return;
+
+        // 슬롯 아이콘 이미지 교환
         from.SwapIcon(to);
+
+        // 실제 아이템 교환
         _inventory.Swap(from.Index, to.Index);
     }
 
+
+    List<UI_ItemSlot> _slotUIList;
+
+    public void SlotInit()
+    {
+        _slotUIList = new List<UI_ItemSlot>(GetComponentsInChildren<UI_ItemSlot>(true));
+        int index = 0;
+        foreach(UI_ItemSlot slot in _slotUIList)
+        {
+            slot.SetSlotIndex(index++);
+        }
+    }
+
+    // 접근 가능한 슬롯 범위 설정
     public void SetAccessibleSlotRange(int accessibleSlotCount)
     {
-        //TODO
+        for (int i = 0; i < _slotUIList.Count; i++)
+            _slotUIList[i].SetSlotAccessibleState(i < accessibleSlotCount);
     }
 
     public void SetItemIcon(int idx, Sprite iconSprite)
     {
-
+        _slotUIList[idx].SetItem(iconSprite);
     }
 
     public void SetItemAmountText(int idx, int amount)
     {
-
+        _slotUIList[idx].SetItemAmount(amount);
     }
 
     public void HideItemAmountText(int idx)
     {
-
+        _slotUIList[idx].SetItemAmount(0);
     }
     
     public void RemoveItem(int idx)
     {
-
+        _slotUIList[idx].RemoveItem();
     }
 }

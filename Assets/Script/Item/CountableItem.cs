@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class CountableItem : Item
 {
+    /* 실제 셀 수 있는 아이템 클래스 */
+
     public CountableItemData CountableData { get; private set; }
 
     public int Amount { get; protected set; }
@@ -36,11 +38,11 @@ public abstract class CountableItem : Item
     public CountableItem SeperateAndClone(int amount)
     {
         if (Amount <= 1) return null;   // 수량 1개 이하, 복제 불가
-        if (amount > Amount - 1)        // 복제 가능 최대치(Amount - 1)
+        if (amount > Amount - 1)        // 복제 가능 최대치(현재 수량 - 1)
             amount = Amount - 1;
 
-        Amount -= amount;
-        return Clone(amount);
+        Amount -= amount;               // 현재 수량에서 빼주고
+        return Clone(amount);           // 복사본 생성
     }
 
     protected abstract CountableItem Clone(int amount);

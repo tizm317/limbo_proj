@@ -5,16 +5,22 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    /* 인벤토리 클래스
+     * 아이템 배열로 관리
+     * 인벤토리 내부 동작
+     * InventoryUI와 상호작용
+     */
+
     // 아이템 수용 한도
     public int Capacity { get; private set; }
 
     // 초기 수용 한도
-    [SerializeField, Range(8, 64)]
-    private int _initialCapacity = 32;
+    [SerializeField, Range(7, 42)]
+    private int _initialCapacity = 28;
 
     // 최대 수용 한도 (아이템 배열 크기)
-    [SerializeField, Range(8, 64)]
-    private int _maxCapacity = 64;
+    [SerializeField, Range(7, 42)]
+    private int _maxCapacity = 42;
 
     // 연결된 인벤토리 UI
     [SerializeField]
@@ -24,16 +30,48 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private Item[] _items;
 
+
+
     /* Methods */
     private void Awake()
     {
         _items = new Item[_maxCapacity];
         Capacity = _initialCapacity;
+
+        //_UI_inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
+
+        // 인벤토리 UI랑 연결
+        //_UI_inventory.SetInventory(this);
     }
+
+    // 인벤토리UI에서 호출
+    public void SetInventoryUI(UI_Inventory inventoryUI)
+    {
+        _UI_inventory = inventoryUI;
+
+        
+    }
+
+    public void test()
+    {
+        // test
+        WeaponItem w1 = new WeaponItem(weaponItemData, 10);
+        Add(w1.Data, 1);
+        ArmorItem a1 = new ArmorItem(armorItemData, 10);
+        Add(a1.Data, 1);
+    }
+
+    [SerializeField]
+    private WeaponItemData weaponItemData;
+    [SerializeField]
+    private ArmorItemData armorItemData;
 
     private void Start()
     {
-        
+        UpdateAccessibleStatesAll();
+
+      
+
     }
 
     // 인덱스가 수용 범위 내인지 검사
@@ -42,7 +80,7 @@ public class Inventory : MonoBehaviour
         return idx >= 0 && idx < Capacity;
     }
 
-    // 빈 슬롯 인덱스 찾기 (없으면 -1)
+    // 빈 슬롯 중 가장 빠른 인덱스 찾기 (없으면 -1 리턴)
     private int FindEmptySlot(int startIdx = 0)
     {
         for(int i = startIdx; i < Capacity; i++)
@@ -56,7 +94,7 @@ public class Inventory : MonoBehaviour
     // 모든 슬롯 UI에 접근 가능 여부 업데이트
     public void UpdateAccessibleStatesAll()
     {
-        _UI_inventory.SetAccessibleSlotRange(Capacity); // -> TODO
+        _UI_inventory.SetAccessibleSlotRange(Capacity); 
     }
 
     // 해당 슬롯이 아이템을 갖고있는지 검사
@@ -72,6 +110,10 @@ public class Inventory : MonoBehaviour
     }
 
     // 해당 슬롯의 아이템 개수 리턴
+    // 유효하지 않은 인덱스     : -1
+    // 빈 슬롯                 : 0
+    // 셀 수 없는 아이템        : 1
+    // 셀 수 있는 아이템        : Amount
     public int GetCurrentAmount(int idx)
     {
         if (!IsValidIndex(idx)) return -1;      // 유효하지 않은 Index : -1
@@ -94,8 +136,8 @@ public class Inventory : MonoBehaviour
     // 해당 슬롯의 아이템 이름 리턴
     public string GetItemName(int idx)
     {
-        if (!IsValidIndex(idx)) return null;
-        if (_items[idx] == null) return null;
+        if (!IsValidIndex(idx)) return "";
+        if (_items[idx] == null) return "";
 
         return _items[idx].Data.Name;
     }
@@ -146,6 +188,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // 아이템 위치 교환
     public void Swap(int fromIdx, int toIdx)
     {
         if (!IsValidIndex(fromIdx)) return;
@@ -276,21 +319,45 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
-    private int FindEmptySlotIndex(int idx_in = 0)
+    // 앞에서부터 비어있는 슬롯 인덱스 탐색
+    private int FindEmptySlotIndex(int start_idx = 0)
     {
-        int idx = idx_in;
+        for (int i = start_idx; i < Capacity; i++)
+            if (_items[i] == null)
+                return i;
 
-        //TODO
-
-        return idx;
+        return -1;
     }
 
-    private int FIndCountableItemSlotIndex(CountableItemData ciData, int v)
+    // 앞에서부터 개수 여유 있는 셀 수 있는 아이템의 슬롯 인덱스 탐색
+    private int FIndCountableItemSlotIndex(CountableItemData target, int start_idx = 0)
     {
-        int idx = -1;
+        for(int i = start_idx; i < Capacity; i++)
+        {
+            var current = _items[i];
+            if (current == null) continue;
 
-        // TODO
+            // 아이템 종류 일치, 개수 여유 확인
+            if(current.Data == target && current is CountableItem ci)
+            {
+                if (!ci.IsMax) return i; 
+            }
+        }
+        
+        return -1;
+    }
 
-        return idx;
+    // 해당 슬롯의 아이템 사용
+    public void Use(int idx)
+    {
+        if (_items[idx] == null) return;
+
+        // 사용 가능한 아이템일 경우
+        if(_items[idx] is IUsableItem usableItem)
+        {
+            bool success = usableItem.Use();
+            if (success)
+                UpdateSlot(idx);
+        }
     }
 }

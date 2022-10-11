@@ -52,6 +52,9 @@ public class UI_ItemSlot : MonoBehaviour
     {
         _ui_inventory = GetComponentInParent<UI_Inventory>();
 
+        _iconImage = transform.GetChild(0).GetComponent<Image>();
+        _amountText = GetComponentInChildren<Text>(true);
+
         _slotRect = GetComponent<RectTransform>();
         _iconRect = _iconImage.rectTransform;
 
@@ -64,10 +67,13 @@ public class UI_ItemSlot : MonoBehaviour
     // 슬롯 활성화 여부 설정(?)
     public void SetSlotAccessibleState(bool value)
     {
+        // 중복 처리 방지
         if (_isAccessibleSlot == value) return;
+
+        // 활성화
         if (value)
             _slotImage.color = Color.black;
-        else
+        else // 비 활성화
         {
             _slotImage.color = InaccessibleSlotColor;
             HideIcon();
@@ -80,13 +86,14 @@ public class UI_ItemSlot : MonoBehaviour
     // 아이템 활성화 여부 설정
     public void SetItemAccessibleState(bool value)
     {
+        // 중복 처리 방지
         if (_isAccessibleItem == value) return;
-        if (value)
+        if (value) // 활성화
         {
             _iconImage.color = Color.white;
             _amountText.color = Color.white;
         }
-        else
+        else // 비활성화
         {
             _iconImage.color = InaccessibleIconColor;
             _amountText.color = InaccessibleIconColor;
@@ -98,23 +105,24 @@ public class UI_ItemSlot : MonoBehaviour
     // 다른 슬롯과 아이템 아이콘 교환
     public void SwapIcon(UI_ItemSlot otherSlot)
     {
-        if (!otherSlot) return;
-        if (this == otherSlot) return;
-        if (!this.IsAccessible) return;
-        if (!otherSlot.IsAccessible) return;
+        if (otherSlot == null) return;          // 없는 경우
+        if (this == otherSlot) return;          // 나 자신
+        if (!this.IsAccessible) return;         // 접근 불가
+        if (!otherSlot.IsAccessible) return;    // 접근 불가
 
         Sprite tempSprite = _iconImage.sprite;
 
+        // 대상에 아이템이 있으면 교환/ 없으면 이동
         if (otherSlot.HasItem) SetItem(otherSlot._iconImage.sprite); // 교환
         else RemoveItem(); // 이동
 
         otherSlot.SetItem(tempSprite);
     }
 
-    // 슬롯에 아이템 등록
+    // 슬롯에 아이템 아이콘 등록
     public void SetItem(Sprite tempSprite)
     {
-        if (!tempSprite) RemoveItem();
+        if (tempSprite == null) RemoveItem();
         else
         {
             _iconImage.sprite = tempSprite;
@@ -122,7 +130,7 @@ public class UI_ItemSlot : MonoBehaviour
         }
     }
 
-    // 슬롯에서 아이템 제거
+    // 슬롯에서 아이템 아이콘 제거
     public void RemoveItem()
     {
         _iconImage.sprite = null;
