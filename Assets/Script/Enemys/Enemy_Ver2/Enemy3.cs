@@ -9,7 +9,7 @@ public class Enemy3 : Enemy
     //원거리 공격 스킬 추가 구현 중
     Stat _stat;
 
-    [SerializeField] float _scanRange = 8;   //사정거리
+    [SerializeField] float _scanRange = 15;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
     
     public Transform[] points;  //waypoints 배열
@@ -20,9 +20,8 @@ public class Enemy3 : Enemy
     private Transform tr;  //enemy 위치
     private Transform playerTr; //player 위치
 
-    public GameObject firePosition; // 무기가 생성될 위치 지정
-    public GameObject bombFactory; // 무기 오브젝트(프리팹)
-    public float throwPower = 15.0f; //던지는 힘
+    public GameObject bomb; // 무기 오브젝트(프리팹)
+    public Transform bombPos; // 무기가 생성될 발사 위치 지정
 
     public override void Init()
     {
@@ -87,12 +86,8 @@ public class Enemy3 : Enemy
                 //nma.speed = _stat.MoveSpeed;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
 
-                int i = 0;
-                if (i == 0)  //test 용으로 한번만 발사되도록 함
-                {
-                    Skill(); //플레이어 방향으로 갈 때 원거리 공격 
-                    i++;
-                }
+                StartCoroutine(Skill());
+                
             }
         }
         else
@@ -210,14 +205,15 @@ public class Enemy3 : Enemy
 
         State = Define.State.Moving;
     }
-    void Skill()
+    IEnumerator Skill()
     {
-        GameObject bomb = Instantiate(bombFactory);
-        bomb.transform.position = firePosition.transform.position;
-        Rigidbody rb = bomb.GetComponent<Rigidbody>();
-        //플레이어 방향으로 무기에 물리적 힘을 가함
-        rb.AddForce(tr.forward * throwPower, ForceMode.Impulse);
-        
+        GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
+        Rigidbody bombRigid = instantBomb.GetComponent<Rigidbody>();
+        bombRigid.velocity = bombPos.forward * 15.0f; //속도 적용
+
+        yield return null;
+
+
     }
 
 

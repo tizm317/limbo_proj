@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6722511050877989588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7476063112323419294}
+  m_Layer: 0
+  m_Name: bombPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7476063112323419294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6722511050877989588}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
+  m_LocalPosition: {x: -0, y: 1.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7443160452381968987}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 90}
 --- !u!1 &7441866890145585877
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,8 +384,8 @@ GameObject:
   - component: {fileID: 7441866890815690392}
   - component: {fileID: 7441866890815690393}
   - component: {fileID: 7441866890815690394}
-  - component: {fileID: 7441866890815690469}
   - component: {fileID: 7441866890815690468}
+  - component: {fileID: 1205830656964535845}
   m_Layer: 9
   m_Name: Enemy_Wizard
   m_TagString: Enemy
@@ -411,7 +441,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7441866890815690395}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.5
   m_Height: 7.5264215
@@ -429,7 +459,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -475,24 +505,7 @@ MonoBehaviour:
   _moveSpeed: 0
   _turnSpeed: 0
   _attackSpeed: 0
---- !u!114 &7441866890815690469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7441866890815690395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd4e46066c0fa1442bc63fb89c2a4259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _destPos: {x: 0, y: 0, z: 0}
-  state: 1
-  lockTarget: {fileID: 0}
-  _scanRange: 8
-  _attachRange: 3
-  points: []
+  item: {fileID: 0}
 --- !u!114 &7441866890815690468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,6 +519,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsing: 0
+--- !u!114 &1205830656964535845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7441866890815690395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b3bbdb55fdf36499ff75231bc86049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destPos: {x: 0, y: 0, z: 0}
+  state: 1
+  lockTarget: {fileID: 0}
+  _scanRange: 8
+  _attachRange: 3
+  points: []
+  bomb: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5, type: 3}
+  bombPos: {fileID: 7476063112323419294}
 --- !u!1 &7441866890995941255
 GameObject:
   m_ObjectHideFlags: 0
@@ -15789,6 +15822,7 @@ Transform:
   m_LocalPosition: {x: -0.42113, y: -0.0004663654, z: 0.00000058467}
   m_LocalScale: {x: 1, y: 1, z: 0.99999994}
   m_Children:
+  - {fileID: 7476063112323419294}
   - {fileID: 7443160450191057857}
   m_Father: {fileID: 7443160448645607447}
   m_RootOrder: 0
@@ -21584,7 +21618,7 @@ Transform:
   m_Children:
   - {fileID: 7443160449431749939}
   m_Father: {fileID: 7443160452381968987}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7441866893764847423
 GameObject:
@@ -21868,7 +21902,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -21921,7 +21955,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -21974,7 +22008,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -22027,7 +22061,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
