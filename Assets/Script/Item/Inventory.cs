@@ -364,4 +364,12 @@ public class Inventory : MonoBehaviour
                 UpdateSlot(idx);
         }
     }
+
+    public void Remove(int idx)
+    {
+        if (!IsValidIndex(idx)) return;
+
+        _items[idx] = null;
+        UpdateSlot(idx);
+    }
 }

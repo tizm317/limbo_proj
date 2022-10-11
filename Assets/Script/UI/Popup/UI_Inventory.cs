@@ -164,6 +164,10 @@ public class UI_Inventory : UI_Popup
         {
             TrySwapItems(_beginDragSlot, endDragSlot);
         }
+        else if(endDragSlot == null) // 버리기
+        {
+            _inventory.Remove(_beginDragSlot.Index);
+        }
     }
 
 
