@@ -24,6 +24,8 @@ public class Managers : MonoBehaviour
     SoundManager _sound = new SoundManager();
     UIManager _ui = new UIManager();
 
+    NetworkManager _network = new NetworkManager();
+
     NpcManager _npc = new NpcManager();
 
     // 전역으로 사용
@@ -37,6 +39,7 @@ public class Managers : MonoBehaviour
     public static SoundManager Sound { get { return Instance._sound; } }
     public static UIManager UI { get { return Instance._ui; } }
     public static NpcManager NPC { get { return Instance._npc; } }
+    public static NetworkManager Network { get { return Instance._network; } }
 
     void Start()
     {
@@ -47,6 +50,8 @@ public class Managers : MonoBehaviour
     {
         // 입력 확인
         _input.OnUpdate();
+
+        _network.OnUpdate();
     }
 
     static void Init()
@@ -81,6 +86,9 @@ public class Managers : MonoBehaviour
 
             // NPC Manager init
             //s_instance._npc.Init();
+
+            // NetworkManager 초기화
+            s_instance._network.Init();
 
         }
 
