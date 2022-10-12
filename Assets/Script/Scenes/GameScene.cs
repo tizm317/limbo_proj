@@ -1,9 +1,12 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameScene : BaseScene
 {
+    // 
+
+
     // ���Ӿ�
     // ���Ӿ��� ������ ����
     // @Scene ������Ʈ : ������
@@ -71,6 +74,10 @@ public class GameScene : BaseScene
 
         // ��Ÿ�� ����
         SceneType = Define.Scene.InGame;
+
+        // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
+        Screen.SetResolution(640, 480, false);
+
 
         // �� UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
