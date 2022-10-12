@@ -103,7 +103,18 @@ public class GameScene : BaseScene
         GameObject go = new GameObject { name = "SpawningPool" };
         SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
         pool.SetKeepMonsterCount(2);
-        
+
+        /*
+        void OnCollisionEnter(Collision collision)
+        {
+            if(collision.gameObject.name == "Stage1")
+            {
+                GameObject _go = new GameObject { name = "SpawningPool" };
+                SpawningPool _pool = go.GetOrAddComponent<SpawningPool>();
+                pool.SetKeepMonsterCount(2);
+            }
+        }
+        */
 
         // �ٽ� �ֱ�
         //foreach (GameObject obj in list)

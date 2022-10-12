@@ -41,7 +41,10 @@ public class Stat : MonoBehaviour
     {
         enemy = gameObject.GetComponent<Enemy>();
     }
-
+    public void Start()
+    {
+        Init();
+    }
     public virtual void OnAttacked(Stat attacker)
     {
        
