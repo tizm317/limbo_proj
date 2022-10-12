@@ -34,6 +34,7 @@ public class Test : MonoBehaviour
     {
         GameObject temp = Instantiate(arrow);
         temp.transform.position = start.transform.position;
+         
         float time = 0;
         bool touched = true;
         while(touched)
@@ -41,6 +42,7 @@ public class Test : MonoBehaviour
             yield return new WaitForEndOfFrame();
             Vector3 dir = (end.transform.position - temp.transform.position).normalized;
             temp.transform.position += dir*Time.deltaTime*speed;
+            temp.transform.up = dir.normalized;
             time += Time.deltaTime;
             if(Vector3.Distance(temp.transform.position, end.transform.position) < 0.5 || time > 15f)
             {
