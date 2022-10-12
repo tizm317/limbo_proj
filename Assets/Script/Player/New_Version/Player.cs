@@ -1,12 +1,68 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-public class Player_State : MonoBehaviour
+using UnityEngine.UI;
+public abstract class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
-    public string job;
+    protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
+    
+    #region 애니메이션
+    private Animator ani;
+    public State Ani_State
+    {
+        get { return  curState;}
+        set{
+            curState = value;
+
+            switch(curState)
+            {
+                case State.STATE_IDLE :
+                    ani.CrossFade("Idle", 0.2f);
+                    break;
+                case State.STATE_MOVE :
+                    ani.CrossFade("Move", 0.2f);
+                    break;
+                case State.STATE_ATTACK :
+                    ani.CrossFade(job + "_Attack", 0.2f);
+                    break;
+                case State.STATE_DIE :
+                    ani.CrossFade("Die", 0.2f);
+                    break;
+                case State.STATE_SKILL :
+                    switch(skill)
+                    {
+                        case HotKey.Q :
+                            ani.CrossFade(job + "_Q", 0.2f);
+                            break;
+                        case HotKey.W :
+                            ani.CrossFade(job + "_W", 0.2f);
+                            break;
+                        case HotKey.E :
+                            ani.CrossFade(job + "_E", 0.2f);
+                            break;
+                        case HotKey.R :
+                            ani.CrossFade(job + "_R", 0.2f);
+                            break;
+                    }
+                    break;
+            }
+        
+        }
+    }
+
+    public void Ani_State_Change()
+    {
+        Ani_State = curState;
+    }
+
+    #endregion
+
+    #region 플레이어 관련
+
+    protected PlayerStat my_stat;
+    GameObject player;
+    protected string job;
+
     public enum State
     {
         STATE_IDLE,
@@ -16,6 +72,21 @@ public class Player_State : MonoBehaviour
         STATE_DIE,
     }
     public State curState { get; set; }
+    [SerializeField]
+    private float speed { get { return my_stat.MoveSpeed; } set { speed = value; } }
+    private float arrivalRange = 0.4f;
+    protected float attackRange = 3f;
+
+    #endregion
+
+    #region 외부입력
+
+    InputManager input;
+    PathFinding pathfinding;
+
+    #endregion
+
+    #region 스킬 및 공격 관련
 
     public enum HotKey
     {
@@ -24,79 +95,33 @@ public class Player_State : MonoBehaviour
         E,
         R,
     }
-
-    public State Ani_State
-    {
-        get { return  curState;}
-        set{
-            curState = value;
-            Animator anim = gameObject.GetComponent<Animator>();
-
-            switch(curState)
-            {
-                case State.STATE_IDLE :
-                    anim.CrossFade("Idle", 0.2f);
-                    break;
-                case State.STATE_MOVE :
-                    anim.CrossFade("Move", 0.2f);
-                    break;
-                case State.STATE_ATTACK :
-                    anim.CrossFade(job + "_Attack", 0.2f);
-                    break;
-                case State.STATE_DIE :
-                    anim.CrossFade("Die", 0.2f);
-                    break;
-                case State.STATE_SKILL :
-                    switch(skill)
-                    {
-                        case HotKey.Q :
-                            anim.CrossFade(job + "_Q", 0.2f);
-                            break;
-                        case HotKey.W :
-                            anim.CrossFade(job + "_W", 0.2f);
-                            break;
-                        case HotKey.E :
-                            anim.CrossFade(job + "_E", 0.2f);
-                            break;
-                        case HotKey.R :
-                            anim.CrossFade(job + "_R", 0.2f);
-                            break;
-                    }
-                    break;
-            }
-        
-        }
-    }
-
-    public PlayerStat my_stat;
-    public HotKey skill;
-    // Start is called before the first frame update
+    protected HotKey skill;
     [SerializeField]
-    InputManager input;
-    
-    [SerializeField]
-    PathFinding pathfinding;
-    [SerializeField]
-    private Camera cam;
-    public List<GameObject> enemies = new List<GameObject>();
-    [SerializeField]
-    public List<Stat> stat = new List<Stat>();
-    public GameObject my_enemy;
-    public Stat my_enemy_stat;
-    public List<GameObject> my_enemy_for_skill = new List<GameObject>();
-    public List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
-    private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
-    [SerializeField]
-    private float speed { get { return my_stat.MoveSpeed; } set { speed = value; } }
-    private float arrivalRange = 0.4f;
-    private float attackRange = 3f;
-    private Vector3 dir;//이동방향을 위한 변수
-    [SerializeField]
+    protected float[] cool = new float[4];
+    protected float[] cool_max = new float[4];
+    public Image[] Skill_img = new Image[4];
+    protected List<GameObject> enemies = new List<GameObject>();
+    private List<Stat> stat = new List<Stat>();
+    private GameObject my_enemy;
+    private Stat my_enemy_stat;
+    private List<GameObject> my_enemy_for_skill = new List<GameObject>();
     public bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     private bool isAttack = false;
-    private Animator ani;
-    public GameObject potal;
-    private Skill SKILL;
+
+    #endregion  
+    
+    protected Camera cam;
+    
+    #region 이동관련
+
+    private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
+    private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
+    private Vector3 dir;//이동방향을 위한 변수
+    
+    #endregion
+
+    #region NPC관련
+
     // go to NPC
     private float audibleDistance = 3.0f; // NPC 대화 가능 거리 (HY)
     private bool toNpc = false;
@@ -115,13 +140,20 @@ public class Player_State : MonoBehaviour
     // NPC하고 상호작용중인지 확인용
     public bool IsInteractWithNPC { get; private set; }
 
+    #endregion
+
+    #region 미니맵 관련
+
     // 미니맵 경로 그리기
     UI_MiniMap ui_MiniMap;
 
+    #endregion
 
     void Start()
     {
         Init();
+        abstract_Init();
+        Passive();
     }
 
     void Update()
@@ -149,28 +181,29 @@ public class Player_State : MonoBehaviour
 
     void Init()
     {
-        job = "Warrior";
         curState = State.STATE_IDLE;
-        my_stat = gameObject.GetComponent<PlayerStat>();
-        SKILL = gameObject.GetComponent<Skill>();
+        player = GameObject.Find("Player");
+        ani = player.GetComponent<Animator>();
+        my_stat = player.GetComponent<PlayerStat>();
+    
         Enemy_Update();
+
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
 
         Managers.Input.KeyAction -= OnKeyClicked;
         Managers.Input.KeyAction += OnKeyClicked;
 
-
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        cam = Camera.main;
         
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
         enumerator = turnToNPC(); // 코루틴
 
         // 미니맵
-        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>();
-        
+        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>(); 
     }
-    
+
+    public abstract void abstract_Init();//여기서 직업 정보, 스킬 쿨, 사거리등을 지정해줌
     void Idle()
     {
         Get_Enemy();
@@ -178,43 +211,45 @@ public class Player_State : MonoBehaviour
             curState = State.STATE_ATTACK;
     }
 
+    #region 이동
+
     void Move()
     {
         if(my_enemy != null)
         {
-            if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) < attackRange)
+            if(Vector3.Distance(player.transform.position, my_enemy.transform.position) < attackRange)
             {
                 destination.Clear();
             }
         }
         if(destination.Count > 0)
         {
-            dir = new Vector3(destination[0].x - gameObject.GetComponent<Transform>().position.x, 0f,destination[0].z - gameObject.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
+            dir = new Vector3(destination[0].x - player.GetComponent<Transform>().position.x, 0f,destination[0].z - player.GetComponent<Transform>().position.z);//플레이어가 이동하는 방향을 설정
             if(isMove)//움직여도 되는가?
             {
                 if(!isObstacle)//장애물이 없다면
                 {
-                    if(Vector3.Distance(gameObject.GetComponent<Transform>().position,destination[0])<= arrivalRange)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<= arrivalRange)//너무 가깝게 찍으면 움직일 필요 없음
                     {
                         destination.RemoveAt(0);
                         return;
                     }
                     else
                     {
-                        gameObject.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
-                        gameObject.GetComponent<Transform>().forward = dir;
+                        player.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
+                        player.GetComponent<Transform>().forward = dir;
                     }
                 }
                 else
                 {
-                    if(Vector3.Distance(gameObject.GetComponent<Transform>().position,destination[0])<= arrivalRange && destination.Count != 0)//너무 가깝게 찍으면 움직일 필요 없음
+                    if(Vector3.Distance(player.GetComponent<Transform>().position,destination[0])<= arrivalRange && destination.Count != 0)//너무 가깝게 찍으면 움직일 필요 없음
                     {
                         destination.RemoveAt(0);    
                     }
                     else
                     {
-                        gameObject.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
-                        gameObject.GetComponent<Transform>().forward = dir;
+                        player.GetComponent<Transform>().position += dir.normalized * Time.deltaTime * speed;//시간동안에 걸쳐서 속도만큼의 빠르기로 이동
+                        player.GetComponent<Transform>().forward = dir;
                     }
                 }
             }
@@ -233,11 +268,38 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    void Attack()//공격 함수 조건부
+    private void Set_Destination(Vector3 dest)
     {
-        if(Vector3.Distance(gameObject.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
+        destination.Clear();//리스트를 비워주고
+        Vector3 pos = player.GetComponent<Transform>().position;
+        isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),pathfinding.grid.unwalkableMask);
+        if(isObstacle)
         {
-            Vector3 dir = (gameObject.transform.position - my_enemy.transform.position).normalized * attackRange;
+            pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
+            destination = pathfinding.Return_Path(player.GetComponent<Transform>());
+            destination.Add(new Vector3(dest.x,pos.y,dest.z));
+            
+        }
+        else
+        {
+            destination.Add(dest);//새 목적지를 첫번째로
+        }
+        isMove = true;//움직여도 되는지판별
+        curState = State.STATE_MOVE;
+        Ani_State_Change();
+
+        // 미니맵
+        ui_MiniMap.drawLine();
+    }
+
+    #endregion
+
+    #region 공격
+    public virtual void Attack()//공격 함수 조건부
+    {
+        if(Vector3.Distance(player.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
+        {
+            Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
             Set_Destination(my_enemy.transform.position - dir);
             curState = State.STATE_MOVE;
             Ani_State_Change();
@@ -261,7 +323,7 @@ public class Player_State : MonoBehaviour
             curState = State.STATE_ATTACK;
             Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
-            gameObject.transform.LookAt(my_enemy.transform);
+            player.transform.LookAt(my_enemy.transform);
             yield return new WaitForSeconds(0.867f);//공격 애니메이션 시간
             //my_enemy_stat.Hp -= damage;
             my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
@@ -277,21 +339,70 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    void Die()//사망 처리
+    private void Lock_On(GameObject enemy)
     {
-        StartCoroutine(Die(start_pos));
+        my_enemy = enemy;
+        my_enemy_stat = enemy.GetComponent<Stat>();
     }
-    IEnumerator Die(Vector3 pos)//사망 처리 구현부
+
+    private void Enemy_Update()
     {
-        curState = State.STATE_DIE;
-        Ani_State_Change();
-        yield return new WaitForSeconds(3.9f);//사망 애니메이션 시간
-        curState = State.STATE_IDLE;
-        Ani_State_Change();
-        my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
-        gameObject.transform.position = pos;//초기 위치로 이동시켜줌
+        enemies.Clear();
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach(GameObject i in temp)
+                if(!enemies.Contains(i))
+                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
     }
-    
+
+    void Get_Enemy()
+    {
+        if(!on_skill)
+        {
+            Enemy_Update();
+            if(enemies.Count > 0 && my_enemy == null)//적이 다 죽은거 아니면
+            {
+                foreach(GameObject i in enemies)
+                {
+                    if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                    {
+                        Lock_On(i);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+    #endregion
+
+    #region 스킬
+
+    public virtual void Q()
+    {
+
+    }
+
+    public virtual void W()
+    {
+
+    }
+
+    public virtual void E()
+    {
+
+    }
+
+    public virtual void R()
+    {
+
+    }
+
+    public virtual void Passive()
+    {
+
+    }
+
     void Run_Skill()//스킬 사용 함수
     {
         if(!on_skill)//스킬 사용 조건부, 만약 스킬을 쓰고 있는 중이 아니라면 idle한 상태로 변환
@@ -301,38 +412,74 @@ public class Player_State : MonoBehaviour
         }
     }
 
+    void Cool()
+    {
+        for(int i = 0; i < cool.Length; i++)
+        {
+            if(cool[i] > 0)
+                cool[i] -= Time.deltaTime;
+            else if(cool[i] < 0)
+                cool[i] = 0;
+            //Skill_img[i].fillAmount = cool_max[i] - cool[i]/cool_max[i];
+        }
+    }
+
+    #endregion
+
+    #region 사망
+
+    void Die()//사망 처리
+    {
+        StartCoroutine(Die(start_pos));
+    }
+
+    IEnumerator Die(Vector3 pos)//사망 처리 구현부
+    {
+        curState = State.STATE_DIE;
+        Ani_State_Change();
+        yield return new WaitForSeconds(3.9f);//사망 애니메이션 시간
+        curState = State.STATE_IDLE;
+        Ani_State_Change();
+        my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
+        player.transform.position = pos;//초기 위치로 이동시켜줌
+    }
+    
+    #endregion
+
+    #region 입력
+
     void OnKeyClicked()
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            if(!on_skill&&SKILL.cool[0] == 0)
+            if(!on_skill&&cool[0] == 0)
             {
                 on_skill = true;
-                SKILL.Q();
+                Q();
             }
         }
         if(Input.GetKeyDown(KeyCode.W))
         {
-            if(!on_skill&&SKILL.cool[1] == 0)
+            if(!on_skill&&cool[1] == 0)
             {
                 on_skill = true;
-                SKILL.W();
+                W();
             }
         }
         if(Input.GetKeyDown(KeyCode.E))
         {
-            if(!on_skill&&SKILL.cool[2] == 0)
+            if(!on_skill&&cool[2] == 0)
             {
                 on_skill = true;
-                SKILL.E();
+                E();
             }
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
-            if(!on_skill&&SKILL.cool[3] == 0)
+            if(!on_skill&&cool[3] == 0)
             {
                 on_skill = true;
-                SKILL.R();
+                R();
             }
         }
     }
@@ -369,7 +516,7 @@ public class Player_State : MonoBehaviour
 
                     npc = hit.collider.GetComponent<Npc>();
 
-                    float dist = Vector3.Distance(gameObject.transform.position, hit.collider.transform.position);
+                    float dist = Vector3.Distance(player.transform.position, hit.collider.transform.position);
                     if(dist > audibleDistance)
                     {
                         // 대화 가능 범위보다 멀리 있는 경우
@@ -384,7 +531,7 @@ public class Player_State : MonoBehaviour
                         npcPos = hit.collider.transform.position;
                         toNpc = false;
 
-                        npc.getPlayer(gameObject); // npc한테 플레이어 넘겨줌
+                        npc.getPlayer(player); // npc한테 플레이어 넘겨줌
                         npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }
                 }
@@ -394,68 +541,7 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    private void Lock_On(GameObject enemy)
-    {
-        my_enemy = enemy;
-        my_enemy_stat = enemy.GetComponent<Stat>();
-    }
-
-    public void Set_Destination(Vector3 dest)
-    {
-        destination.Clear();//리스트를 비워주고
-        Vector3 pos = gameObject.GetComponent<Transform>().position;
-        isObstacle = Physics.Raycast(pos,new Vector3(dest.x - pos.x, 0, dest.z - pos.z),Vector3.Distance(pos,new Vector3(dest.x,pos.y,dest.z)),pathfinding.grid.unwalkableMask);
-        if(isObstacle)
-        {
-            pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
-            destination = pathfinding.Return_Path(gameObject.GetComponent<Transform>());
-            destination.Add(new Vector3(dest.x,pos.y,dest.z));
-            
-        }
-        else
-        {
-            destination.Add(dest);//새 목적지를 첫번째로
-        }
-        isMove = true;//움직여도 되는지판별
-        curState = State.STATE_MOVE;
-        Ani_State_Change();
-
-        // 미니맵
-        ui_MiniMap.drawLine();
-    }
-
-    private void Enemy_Update()
-    {
-        enemies.Clear();
-        GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");
-            foreach(GameObject i in temp)
-                if(!enemies.Contains(i))
-                    enemies.Add(i);//나중에 다시 소환 될때를 대비해서 만듬
-    }
-
-    void Get_Enemy()
-    {
-        if(!on_skill)
-        {
-            Enemy_Update();
-            if(enemies.Count > 0 && my_enemy == null)//적이 다 죽은거 아니면
-            {
-                foreach(GameObject i in enemies)
-                {
-                    if(Vector3.Distance(i.GetComponent<Transform>().position,gameObject.GetComponent<Transform>().position) < 5)
-                    {
-                        Lock_On(i);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    public void Ani_State_Change()
-    {
-        Ani_State = curState;
-    }
+    #endregion
 
     #region 호영이형
     public float magicNumber = 100.0f;
@@ -495,8 +581,8 @@ public class Player_State : MonoBehaviour
         turnTimeCount = 0.0f;
         while (turnTimeCount < 1.0f)
         {
-            Quaternion lookOnlook = Quaternion.LookRotation(npcPos - gameObject.transform.position);
-            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookOnlook, Time.deltaTime * turnSpeed);
+            Quaternion lookOnlook = Quaternion.LookRotation(npcPos - player.transform.position);
+            player.transform.rotation = Quaternion.Slerp(player.transform.rotation, lookOnlook, Time.deltaTime * turnSpeed);
             turnTimeCount = Time.deltaTime * turnSpeed;
             yield return null;
         }
@@ -509,7 +595,7 @@ public class Player_State : MonoBehaviour
         // move npc 한테 가는 버전
         // 도착 범위 다름
 
-        float dist = Vector3.Distance(gameObject.transform.position, destination[0]);
+        float dist = Vector3.Distance(player.transform.position, destination[0]);
         if (dist < arrivalRange)
         {
             // 도착
@@ -517,7 +603,7 @@ public class Player_State : MonoBehaviour
             toNpc = false;
             destination.Clear();
 
-            npc.getPlayer(gameObject); 
+            npc.getPlayer(player); 
             npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
         }
         else
