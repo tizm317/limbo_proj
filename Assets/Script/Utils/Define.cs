@@ -115,4 +115,11 @@ public class Define
         EVENT_REJECT_QUEST,
         //EVENT_QUIT_QUEST,
     }
+
+    public enum Job
+    {
+        WARRIOR,
+        ARCHER,
+        SORCERER,
+    }
 }

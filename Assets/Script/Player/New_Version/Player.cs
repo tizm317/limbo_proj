@@ -88,7 +88,8 @@ public abstract class Player : MonoBehaviour
 
     #region 스킬 및 공격 관련
 
-    public enum HotKey
+    protected GameObject Indicator;//인디케이터 오브젝트
+    protected enum HotKey
     {
         Q,
         W,
@@ -182,7 +183,7 @@ public abstract class Player : MonoBehaviour
     void Init()
     {
         curState = State.STATE_IDLE;
-        player = GameObject.Find("Player");
+        Indicator = Resources.Load<GameObject>("Prefabs/CircleIndicator_modified");
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
     
@@ -201,6 +202,16 @@ public abstract class Player : MonoBehaviour
 
         // 미니맵
         ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>(); 
+    }
+
+    public void SetPlayer(GameObject g)
+    {
+        player = g;
+    }
+
+    public GameObject GetPlayer()
+    {
+        return player;
     }
 
     public abstract void abstract_Init();//여기서 직업 정보, 스킬 쿨, 사거리등을 지정해줌
@@ -268,7 +279,7 @@ public abstract class Player : MonoBehaviour
         }
     }
 
-    private void Set_Destination(Vector3 dest)
+    public void Set_Destination(Vector3 dest)
     {
         destination.Clear();//리스트를 비워주고
         Vector3 pos = player.GetComponent<Transform>().position;

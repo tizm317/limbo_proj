@@ -57,7 +57,8 @@ public class UI_MiniMap : UI_Popup
 
     [SerializeField] Transform player;
     //Player_Controller player_Controller;
-    Player_State player_State;
+    //Player_State player_State;
+    Player player_State;
     private GameObject Scene;
     private RectTransform playerImage;
     private RectTransform destinationImage;
@@ -140,10 +141,11 @@ public class UI_MiniMap : UI_Popup
         GetButton((int)Buttons.ZoomInButton).gameObject.BindEvent(OnZoomInButtonClicked);
         GetButton((int)Buttons.ZoomOutButton).gameObject.BindEvent(OnZoomOutButtonClicked);
 
-        player = GameObject.Find("Player").transform;
         Scene = GameObject.Find("@Scene");
+        player_State = Scene.GetComponent<Player>();
+        player = player_State.GetPlayer().transform;
         //player_Controller = Scene.GetComponent<Player_Controller>();
-        player_State = player.GetComponent<Player_State>();
+        //player_State = player.GetComponent<Player_State>();
 
         // path 받아오려고
         pathFinding = GameObject.Find("A*").GetComponent<PathFinding>();

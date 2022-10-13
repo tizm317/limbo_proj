@@ -26,9 +26,12 @@ public class Camera_Controller : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.Find("Player");
         SetQuarterView(_delta);
         //minimapCam = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
+    }
+    public void SetTarget(GameObject target)
+    {
+        _player = target;
     }
 
     void LateUpdate()

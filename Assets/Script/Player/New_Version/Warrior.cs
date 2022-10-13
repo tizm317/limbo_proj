@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Warrior : Player
 {
-    public GameObject Indicator;//인디케이터 오브젝트
     bool canceled = false;
     bool pos_selected = false;
     public override void abstract_Init()

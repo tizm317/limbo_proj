@@ -45,7 +45,8 @@ public class UI_InGame : UI_Scene
     #endregion
 
     //Player_Controller player;
-    Player_State player;
+    //Player_State player;
+    Player player;
 
     enum Buttons
     {
@@ -76,7 +77,8 @@ public class UI_InGame : UI_Scene
         Managers.Input.KeyAction += ControlPopUpUI;
 
         //player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
-        player = GameObject.Find("Player").GetComponent<Player_State>();
+        //player = GameObject.Find("Player").GetComponent<Player_State>();
+        player = GameObject.Find("@Scene").GetComponent<Player>();
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu

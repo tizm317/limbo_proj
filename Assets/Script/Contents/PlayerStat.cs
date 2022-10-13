@@ -42,7 +42,8 @@ public class PlayerStat : Stat
 
     void Update()
     {
-        HP_Update();
+        if(HP_bar != null)
+            HP_Update();
         Level_Update();
     }
 

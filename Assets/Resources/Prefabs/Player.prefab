@@ -1949,7 +1949,6 @@ GameObject:
   - component: {fileID: 4779014881688888109}
   - component: {fileID: 4779014881688888110}
   - component: {fileID: 4779014881688888111}
-  - component: {fileID: 5661888291623764382}
   - component: {fileID: 5661888291623764381}
   - component: {fileID: 5661888291623764380}
   m_Layer: 0
@@ -2066,33 +2065,6 @@ MonoBehaviour:
   Item_Attack_percent: 0
   Item_Mana_percent: 0
   Item_Mana_Regeneration_percent: 0
---- !u!114 &5661888291623764382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5661888291623764383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: defd8981ae136b945b586c685b0fe710, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grand_parent: {fileID: 0}
-  parent: {fileID: 0}
-  obj:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &5661888291623764381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,7 +2082,7 @@ MonoBehaviour:
   my_stat: {fileID: 0}
   skill: 0
   pathfinding: {fileID: 0}
-  effect: {fileID: 0}
+  cam: {fileID: 0}
   enemies: []
   stat: []
   my_enemy: {fileID: 0}
@@ -2142,6 +2114,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  Indicator: {fileID: 0}
 --- !u!1 &5686782524913251217
 GameObject:
   m_ObjectHideFlags: 0
