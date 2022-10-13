@@ -7,7 +7,7 @@ public abstract class Player : MonoBehaviour
     protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
     
     #region 애니메이션
-    private Animator ani;
+    protected Animator ani;
     public State Ani_State
     {
         get { return  curState;}
@@ -60,7 +60,7 @@ public abstract class Player : MonoBehaviour
     #region 플레이어 관련
 
     protected PlayerStat my_stat;
-    GameObject player;
+    protected GameObject player;
     protected string job;
 
     public enum State
@@ -89,6 +89,8 @@ public abstract class Player : MonoBehaviour
     #region 스킬 및 공격 관련
 
     protected GameObject Indicator;//인디케이터 오브젝트
+    protected bool canceled = false;
+    protected bool pos_selected = false;
     protected enum HotKey
     {
         Q,
@@ -102,12 +104,12 @@ public abstract class Player : MonoBehaviour
     protected float[] cool_max = new float[4];
     public Image[] Skill_img = new Image[4];
     protected List<GameObject> enemies = new List<GameObject>();
-    private List<Stat> stat = new List<Stat>();
-    private GameObject my_enemy;
-    private Stat my_enemy_stat;
+    protected List<Stat> stat = new List<Stat>();
+    protected GameObject my_enemy;
+    protected Stat my_enemy_stat;
     private List<GameObject> my_enemy_for_skill = new List<GameObject>();
     public bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
-    private bool isAttack = false;
+    protected bool isAttack = false;
 
     #endregion  
     
@@ -116,7 +118,7 @@ public abstract class Player : MonoBehaviour
     #region 이동관련
 
     private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
-    private bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
+    protected bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private Vector3 dir;//이동방향을 위한 변수
     
     #endregion
@@ -159,6 +161,7 @@ public abstract class Player : MonoBehaviour
 
     void Update()
     {
+        Cool();
         switch(curState)
         {
             case State.STATE_IDLE :
@@ -183,7 +186,10 @@ public abstract class Player : MonoBehaviour
     void Init()
     {
         curState = State.STATE_IDLE;
-        Indicator = Resources.Load<GameObject>("Prefabs/CircleIndicator_modified");
+        if(GameObject.Find("Indicator") == null)
+            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CircleIndicator_modified"));
+        Indicator.name = "Indicator";
+        Indicator.SetActive(false);
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
     

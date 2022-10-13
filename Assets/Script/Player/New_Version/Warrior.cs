@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Warrior : Player
 {
-    bool canceled = false;
-    bool pos_selected = false;
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
@@ -65,7 +63,7 @@ public class Warrior : Player
                     else
                     {              
                         pos = hit.point;
-                        gameObject.transform.forward = new Vector3(pos.x - gameObject.transform.position.x, 0, pos.z - gameObject.transform.position.z).normalized;
+                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
                         pos_selected = true;
                     }
                 }
@@ -86,13 +84,13 @@ public class Warrior : Player
 
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    Vector3 targetDir = (enemies[i].transform.position - gameObject.transform.position).normalized;//방향 계산
+                    Vector3 targetDir = (enemies[i].transform.position - player.transform.position).normalized;//방향 계산
 
-                    float dot = Vector3.Dot(gameObject.transform.forward, targetDir);//내적 계산
+                    float dot = Vector3.Dot(player.transform.forward, targetDir);//내적 계산
 
                     float theta = Mathf.Acos(dot) * Mathf.Rad2Deg;//내적과 acos을 이용하여 사이각 계산
 
-                    float far = Vector3.Distance(gameObject.transform.position, enemies[i].transform.position);
+                    float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                     if(theta <= SightAngle && far < distance)
                         enemies[i].GetComponent<Stat>().Hp -= damage;
@@ -123,10 +121,10 @@ public class Warrior : Player
         //도발에 대한 내용이 있어야함 - 희진누나랑 상담해볼 부분
         for(int i = 0; i < enemies.Count; i++)
                 {
-                    float far = Vector3.Distance(gameObject.transform.position, enemies[i].transform.position);
+                    float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                     if(far < range)
-                        enemies[i].GetComponent<Enemy>().set_target(gameObject);
+                        enemies[i].GetComponent<Enemy>().set_target(player);
                 }
 
         yield return new WaitForSeconds(time);
@@ -148,7 +146,7 @@ public class Warrior : Player
         List<Stat> temp = new List<Stat>();
         for(int i = 0; i < enemies.Count; i++)
         {
-            float far = Vector3.Distance(gameObject.transform.position, enemies[i].transform.position);
+            float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
             if(far < range)
             {
@@ -187,7 +185,7 @@ public class Warrior : Player
                     {              
                         pos = hit.point;
                         Debug.Log(pos);
-                        gameObject.transform.forward = new Vector3(pos.x - gameObject.transform.position.x, 0, pos.z - gameObject.transform.position.z).normalized;
+                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
                         pos_selected = true;
                     }
                 }
@@ -209,7 +207,7 @@ public class Warrior : Player
                 yield return new WaitForSeconds(0.4f);
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    float far = Vector3.Distance(gameObject.transform.position, enemies[i].transform.position);
+                    float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                     if(far < range)
                         enemies[i].GetComponent<Stat>().Hp -= damage;
@@ -255,7 +253,7 @@ public class Warrior : Player
             {
                 RaycastHit hit;
                 bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
-                Indicator.transform.position = new Vector3(this.transform.position.x,1.1f,this.transform.position.z);
+                Indicator.transform.position = new Vector3(player.transform.position.x,1.1f,player.transform.position.z);
                 if(raycastHit)
                     Indicator.transform.rotation = Quaternion.Euler(new Vector3(90f, -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
                 //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
