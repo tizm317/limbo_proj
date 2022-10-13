@@ -323,6 +323,26 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
+    // 셀 수 있는 아이템 수량 나누기
+    internal void SplitItems(int indexFrom, int indexTo, int amount)
+    {
+        if (!IsValidIndex(indexFrom)) return;
+        if (!IsValidIndex(indexTo)) return;
+
+        Item _itemFrom = _items[indexFrom];
+        Item _itemTo = _items[indexTo];
+
+        CountableItem _ciFrom = _itemFrom as CountableItem;
+        // CountableItem To Empty Slot
+        if(_ciFrom != null && _itemTo == null)
+        {
+            _items[indexTo] = _ciFrom.SeperateAndClone(amount);
+
+            UpdateSlot(indexFrom);
+            UpdateSlot(indexTo);
+        }
+    }
+
     // 앞에서부터 비어있는 슬롯 인덱스 탐색
     private int FindEmptySlotIndex(int start_idx = 0)
     {
