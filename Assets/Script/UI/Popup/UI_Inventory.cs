@@ -18,6 +18,7 @@ public class UI_Inventory : UI_Popup
     enum Buttons
     {
         ButtonClose,
+        ButtonTrim,
     }
 
     void Start()
@@ -47,14 +48,23 @@ public class UI_Inventory : UI_Popup
 
         Bind<Button>(typeof(Buttons));
         Button buttonClose = GetButton((int)Buttons.ButtonClose);
-        GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(Quit_Inventory);
+        buttonClose.gameObject.BindEvent(Quit_Inventory);
+        //GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(Quit_Inventory);
 
+        Button buttonTrim = GetButton((int)Buttons.ButtonTrim);
+        buttonTrim.gameObject.BindEvent(Trim_Items);
 
         /**/
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
 
+    }
+
+    private void Trim_Items(PointerEventData obj)
+    {
+        // 인벤토리 내 아이템 사이 빈칸 없이 앞에서부터 채우기
+        _inventory.trimItems();
     }
 
     public void Quit_Inventory(PointerEventData data)
