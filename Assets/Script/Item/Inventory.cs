@@ -15,11 +15,11 @@ public class Inventory : MonoBehaviour
     public int Capacity { get; private set; }
 
     // 초기 수용 한도
-    [SerializeField, Range(7, 42)]
-    private int _initialCapacity = 28;
+    [SerializeField, Range(6, 42)]
+    private int _initialCapacity = 42;
 
     // 최대 수용 한도 (아이템 배열 크기)
-    [SerializeField, Range(7, 42)]
+    [SerializeField, Range(6, 42)]
     private int _maxCapacity = 42;
 
     // 연결된 인벤토리 UI
@@ -76,6 +76,20 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         UpdateAccessibleStatesAll();
+        Debug.Log(Capacity);
+    }
+
+    internal void trimItems()
+    {
+        // 인벤토리 내 아이템 사이 빈칸 없이 앞에서부터 채우기
+        for(int targetItemIdx = 0; targetItemIdx < Capacity; targetItemIdx++)
+        {
+            // 아이템 있는 슬롯 찾기
+            if (_items[targetItemIdx] == null) continue; 
+
+            // 내 앞 슬롯 중에서 가장 빠른 인덱스 찾기
+            Swap(targetItemIdx, FindEmptySlot(endIdx:targetItemIdx));
+        }
     }
 
     // 인덱스가 수용 범위 내인지 검사
@@ -85,9 +99,11 @@ public class Inventory : MonoBehaviour
     }
 
     // 빈 슬롯 중 가장 빠른 인덱스 찾기 (없으면 -1 리턴)
-    private int FindEmptySlot(int startIdx = 0)
+    private int FindEmptySlot(int startIdx = 0, int endIdx = -1)
     {
-        for(int i = startIdx; i < Capacity; i++)
+        if(endIdx == -1) endIdx = Capacity; // 입력 없을 시 Capcity로 설정하기 위함
+
+        for(int i = startIdx; i < endIdx; i++)
         {
             if (_items[i] == null)
                 return i;
@@ -321,6 +337,26 @@ public class Inventory : MonoBehaviour
 
         // 넣는 데 실패한 잉여 아이템 개수 리턴
         return amount;
+    }
+
+    // 셀 수 있는 아이템 수량 나누기
+    internal void SplitItems(int indexFrom, int indexTo, int amount)
+    {
+        if (!IsValidIndex(indexFrom)) return;
+        if (!IsValidIndex(indexTo)) return;
+
+        Item _itemFrom = _items[indexFrom];
+        Item _itemTo = _items[indexTo];
+
+        CountableItem _ciFrom = _itemFrom as CountableItem;
+        // CountableItem To Empty Slot
+        if(_ciFrom != null && _itemTo == null)
+        {
+            _items[indexTo] = _ciFrom.SeperateAndClone(amount);
+
+            UpdateSlot(indexFrom);
+            UpdateSlot(indexTo);
+        }
     }
 
     // 앞에서부터 비어있는 슬롯 인덱스 탐색

@@ -18,7 +18,8 @@ public class UI_ItemDescription : UI_Popup
         NameText,
         TypeText,
         GradeText,
-        CountText,
+        //CountText,
+        TooltipText,
         RemoveText,
         UseText,
     }
@@ -52,10 +53,15 @@ public class UI_ItemDescription : UI_Popup
 
     private void Reset()
     {
-        GetText((int)Texts.NameText).text = "아이템 : ";
-        GetText((int)Texts.TypeText).text = "종류 : ";
-        GetText((int)Texts.GradeText).text = "등급 : ";
-        GetText((int)Texts.CountText).text = "개수 : ";
+        GetText((int)Texts.NameText).text = "";
+        GetText((int)Texts.TypeText).text = "";
+        GetText((int)Texts.GradeText).text = "";
+        GetText((int)Texts.TooltipText).text = "";
+
+        //GetText((int)Texts.NameText).text = "아이템 : ";
+        //GetText((int)Texts.TypeText).text = "종류 : ";
+        //GetText((int)Texts.GradeText).text = "등급 : ";
+        //GetText((int)Texts.TooltipText).text = "설명 : ";
     }
 
 
@@ -63,7 +69,14 @@ public class UI_ItemDescription : UI_Popup
     {
 
         Reset();
-        GetText((int)Texts.NameText).text += data.Name;
+        GetText((int)Texts.NameText).text += ("<color=#ff8000ff>" + data.Name + "</color>");
+
+        string itemType = data.GetType().ToString().Replace("ItemData", string.Empty);
+        GetText((int)Texts.TypeText).text += itemType;
+
+        GetText((int)Texts.GradeText).text += ("<color=#539047FF>" + data.Grade + "</color>");
+        GetText((int)Texts.TooltipText).text += data.Tooltip;
+        
 
         float panelWidth = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.width;
         float panelHeight = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.height;
@@ -88,10 +101,10 @@ public class UI_ItemDescription : UI_Popup
     public void setDescription(string name, string type, string grade, int count, Vector3 mousePointerPos, bool tooltip = true)
     {
         Reset();
-        GetText((int)Texts.NameText).text += name;
+        GetText((int)Texts.NameText).text += ("<color=#ff8000ff>" + name + "</color>");
         GetText((int)Texts.TypeText).text += type;
         GetText((int)Texts.GradeText).text += grade;
-        GetText((int)Texts.CountText).text += $"{count}";
+        //GetText((int)Texts.CountText).text += $"{count}";
 
         GetObject((int)GameObjects.RemoveButton).SetActive(false);
         GetObject((int)GameObjects.UseButton).SetActive(false);

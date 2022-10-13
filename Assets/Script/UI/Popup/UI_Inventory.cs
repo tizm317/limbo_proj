@@ -18,6 +18,7 @@ public class UI_Inventory : UI_Popup
     enum Buttons
     {
         ButtonClose,
+        ButtonTrim,
     }
 
     void Start()
@@ -47,14 +48,23 @@ public class UI_Inventory : UI_Popup
 
         Bind<Button>(typeof(Buttons));
         Button buttonClose = GetButton((int)Buttons.ButtonClose);
-        GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(Quit_Inventory);
+        buttonClose.gameObject.BindEvent(Quit_Inventory);
+        //GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(Quit_Inventory);
 
+        Button buttonTrim = GetButton((int)Buttons.ButtonTrim);
+        buttonTrim.gameObject.BindEvent(Trim_Items);
 
         /**/
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
 
+    }
+
+    private void Trim_Items(PointerEventData obj)
+    {
+        // 인벤토리 내 아이템 사이 빈칸 없이 앞에서부터 채우기
+        _inventory.trimItems();
     }
 
     public void Quit_Inventory(PointerEventData data)
@@ -68,8 +78,10 @@ public class UI_Inventory : UI_Popup
     private PointerEventData _ped;
     private List<RaycastResult> _rrList;
 
+    [SerializeField]
     private UI_ItemSlot _beginDragSlot;         // 현재 드래그 시작한 슬롯
     private Transform _beginDragIconTransform;  // 해당 슬롯의 아이콘 트랜스폼
+    private UI_ItemSlot _removeTargetSlot;      // 버리기 대상 슬롯
 
     private Vector3 _beginDragIconPoint;        // 드래그 시작시 슬롯 위치
     private Vector3 _beginDragCursorPoint;      // 드래그 시작시 커서 위치
@@ -149,7 +161,7 @@ public class UI_Inventory : UI_Popup
             }
             else _beginDragSlot = null;
         }
-        else if(Input.GetMouseButtonDown(1)) // right click
+        else if(Input.GetMouseButtonDown(1)) // left click
         {
             // 아이템 사용
             UI_ItemSlot itemSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
@@ -192,20 +204,105 @@ public class UI_Inventory : UI_Popup
         }
     }
 
+    UI_Item_Remove_Caution uI_Item_Remove_Caution;
+
     private void EndDrag()
     {
         UI_ItemSlot endDragSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
 
-        if(endDragSlot != null && endDragSlot.IsAccessible)
+        if (endDragSlot != null && endDragSlot.IsAccessible && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+        {
+            // 빈 슬롯이 아닐 경우 그냥 Swap
+            if (endDragSlot.HasItem) 
+                TrySwapItems(_beginDragSlot, endDragSlot);
+            else
+                TrySplitItems(_beginDragSlot, endDragSlot);
+        }
+        else if (endDragSlot != null && endDragSlot.IsAccessible)
         {
             TrySwapItems(_beginDragSlot, endDragSlot);
         }
         else if(endDragSlot == null) // 버리기
         {
-            _inventory.Remove(_beginDragSlot.Index);
+            _removeTargetSlot = _beginDragSlot; // null 오류 해결
+
+            // 경고문 팝업
+            uI_Item_Remove_Caution = Managers.UI.ShowPopupUI<UI_Item_Remove_Caution>();
+            // 경고문 확인 버튼 클릭 event 연결
+            uI_Item_Remove_Caution.buttonClicked -= ConfirmButtonClicked;
+            uI_Item_Remove_Caution.buttonClicked += ConfirmButtonClicked;
         }
     }
 
+    UI_Item_Split uI_Item_Split;
+    UI_ItemSlot _splitTargetSlotA;
+    UI_ItemSlot _splitTargetSlotB;
+    private void TrySplitItems(UI_ItemSlot beginDragSlot, UI_ItemSlot endDragSlot)
+    {
+        if (beginDragSlot == endDragSlot) return;
+
+        int currentAmount = 0;
+        currentAmount = _inventory.GetCurrentAmount(_beginDragSlot.Index);
+        if(currentAmount > 1)
+        {
+            _splitTargetSlotA = beginDragSlot;
+            _splitTargetSlotB = endDragSlot;
+
+            // UI 팝업
+            uI_Item_Split = Managers.UI.ShowPopupUI<UI_Item_Split>();
+            // 경고문 확인 버튼 클릭 event 연결
+            uI_Item_Split.buttonClicked -= SplitConfirmButtonClicked;
+            uI_Item_Split.buttonClicked += SplitConfirmButtonClicked;
+        }
+        else
+        {
+            TrySwapItems(_beginDragSlot, endDragSlot);
+        }
+    }
+
+    public void SplitConfirmButtonClicked()
+    {
+        if(uI_Item_Split.SplitItems() > 0)
+        {
+            _inventory.SplitItems(_splitTargetSlotA.Index, _splitTargetSlotB.Index, uI_Item_Split.SplitItems());
+        }
+
+        // 참조 제거
+        _splitTargetSlotA = null;
+        _splitTargetSlotB = null;
+
+        uI_Item_Split.ClosePopupUI();
+    }
+
+
+    public void ConfirmButtonClicked()
+    {
+        // UI_Item_Remove_Caution 경고창 UI 확인(Yes/No) 버튼 클릭 시 호출
+        if (uI_Item_Remove_Caution.RemoveItem())
+        {
+            // count 갯수 줄이기
+            _inventory.Remove(_removeTargetSlot.Index); // 왜 null 이지? -> _removeTargetSlot (다른변수에 저장) 해결
+
+            //if (_count > 1)
+            //{
+            //    _count--;
+            //    changeCount(_id);
+            //    //invenDict[_id].count = _count;
+            //}
+            //else
+            //{
+            //    _count--;
+            //    changeCount(_id);
+            //    //invenDict[_id].count = _count;
+            //    Managers.Resource.Destroy(gameObject); // pool로 반환
+            //}
+        }
+
+        // 참조 제거
+        _removeTargetSlot = null;
+
+        uI_Item_Remove_Caution.ClosePopupUI();
+    }
 
     Inventory _inventory;
 
