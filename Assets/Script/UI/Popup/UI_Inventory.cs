@@ -19,6 +19,7 @@ public class UI_Inventory : UI_Popup
     {
         ButtonClose,
         ButtonTrim,
+        ButtonSort,
     }
 
     void Start()
@@ -61,11 +62,19 @@ public class UI_Inventory : UI_Popup
         Button buttonTrim = GetButton((int)Buttons.ButtonTrim);
         buttonTrim.gameObject.BindEvent(Trim_Items);
 
+        Button buttonSort = GetButton((int)Buttons.ButtonSort);
+        buttonSort.gameObject.BindEvent(SortItems);
+
         /**/
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
 
+    }
+
+    private void SortItems(PointerEventData obj)
+    {
+        _inventory.SortAll();
     }
 
     private void Trim_Items(PointerEventData obj)
