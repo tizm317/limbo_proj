@@ -63,7 +63,7 @@ public class Archer : Player
                 temp.transform.position += dir * Time.deltaTime * flight_speed;
                 temp.transform.forward = dir;
                 time+=Time.deltaTime;
-                if(Vector3.Distance(temp.transform.position,my_enemy.transform.position) < 0.5f)
+                if(Vector3.Distance(temp.transform.position,my_enemy.transform.position) < 0.5f || my_enemy == null)
                 {
                     Destroy(temp);
                     my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
