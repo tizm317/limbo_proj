@@ -50,36 +50,21 @@ public class Archer : Player
             //Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
             player.transform.right = -(my_enemy.transform.position - player.transform.position).normalized;
-            yield return new WaitForSeconds((5f - 0.6f)/attack_speed);//공격 애니메이션 시간
             ani.SetFloat("AttackSpeed",attack_speed);
-            GameObject temp = GameObject.Instantiate<GameObject>(Arrow);
-            temp.transform.position = pos;
-            bool hit = false;
-            float time = 0;
-            while(!hit)
+            yield return new WaitForSeconds((5f - 0.6f)/attack_speed);//공격 애니메이션 시간
+            
+            if(my_enemy != null)
             {
-                yield return new WaitForEndOfFrame();                
-                Vector3 dir = (my_enemy.transform.position - temp.transform.position).normalized;
-                temp.transform.position += dir * Time.deltaTime * flight_speed;
-                temp.transform.forward = dir;
-                time+=Time.deltaTime;
-                if(Vector3.Distance(temp.transform.position,my_enemy.transform.position) < 0.5f || my_enemy == null)
-                {
-                    Destroy(temp);
-                    my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
-                    if (my_enemy_stat.Hp <= 0)//적 체력이 0보다 작거나 같다면
-                    {
-                        my_enemy = null;
-                    }
-                    hit = true;
-                }
-                else if(time > 5f)
-                    hit = true;
+                GameObject temp = GameObject.Instantiate<GameObject>(Arrow);
+                temp.transform.position = pos;
+                    
+                temp.GetComponent<Arrow>().Arrow_(my_enemy,15f,this);
             }
+            
             curState = State.STATE_IDLE;
             Ani_State_Change();
             yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
-            isAttack = false;
+            isAttack = false;     
         }
     }
 

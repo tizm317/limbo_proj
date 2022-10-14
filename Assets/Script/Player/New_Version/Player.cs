@@ -59,7 +59,7 @@ public abstract class Player : MonoBehaviour
 
     #region 플레이어 관련
 
-    protected PlayerStat my_stat;
+    public PlayerStat my_stat;
     protected GameObject player;
     protected string job;
 
@@ -105,7 +105,7 @@ public abstract class Player : MonoBehaviour
     public Image[] Skill_img = new Image[4];
     protected List<GameObject> enemies = new List<GameObject>();
     protected List<Stat> stat = new List<Stat>();
-    protected GameObject my_enemy;
+    public GameObject my_enemy;
     protected Stat my_enemy_stat;
     private List<GameObject> my_enemy_for_skill = new List<GameObject>();
     public bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수

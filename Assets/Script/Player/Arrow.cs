@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Arrow_(GameObject _target, float _speed, Player _player)
     {
-        
+        StartCoroutine(_Arrow(_target,_speed,_player));
     }
-    float check;
-    bool op;
-
-    public float speed = 5;
-    // Update is called once per frame
-    void Update()
+    IEnumerator _Arrow(GameObject _target, float _speed, Player _player)
     {
-        check += Time.deltaTime;
-        if(check > 5)
+        bool hit = false;
+        float time = 0;
+        Vector3 target_pos = _target.transform.position;
+        while(!hit)
         {
-            op = !op;
-            check = 0;
+            yield return new WaitForEndOfFrame();
+            if(_target != null)
+                target_pos = _target.transform.position;
+            Vector3 dir = (target_pos - gameObject.transform.position).normalized;
+            gameObject.transform.position += dir * Time.deltaTime * _speed;
+            gameObject.transform.forward = dir;
+            time += Time.deltaTime;
+
+            if(Vector3.Distance(gameObject.transform.position, target_pos) < 0.5f)
+            {
+                Stat target_stat = _target.GetComponent<Stat>();
+                target_stat.OnAttacked(_player.my_stat);
+                if(target_stat.Hp <= 0)
+                {
+                    _player.my_enemy = null;
+                }
+                hit = true;
+            }
+            else if(time > 5f)
+                hit = true;
         }
-        if(op)
-        {
-            gameObject.transform.position += (new Vector3(Time.deltaTime, 0 ,0) * speed);
-        }
-        else
-        {
-            gameObject.transform.position -= (new Vector3(Time.deltaTime, 0 ,0) * speed);
-        }
+        Destroy(gameObject);
     }
 }
