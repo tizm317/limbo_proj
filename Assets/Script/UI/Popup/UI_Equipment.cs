@@ -12,6 +12,10 @@ public class UI_Equipment : UI_Popup
     float z_cam;
     float r;
 
+    Player player_State;
+    private GameObject Scene;
+
+
     enum GameObjects
     {
         Slider,
@@ -29,8 +33,10 @@ public class UI_Equipment : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         GetObject((int)GameObjects.Slider).BindEvent(onSliderDrag, Define.UIEvent.Drag);
 
-
-        player = GameObject.Find("Player").transform;
+        Scene = GameObject.Find("@Scene");
+        player_State = Scene.GetComponent<Player>();
+        player = player_State.GetPlayer().transform;
+        //player = GameObject.Find("Player").transform;
         selfCam = player.Find("SelfCam").GetComponent<Camera>();
         selfCam.gameObject.SetActive(true);
 

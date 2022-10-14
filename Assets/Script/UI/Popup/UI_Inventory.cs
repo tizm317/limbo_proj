@@ -28,9 +28,16 @@ public class UI_Inventory : UI_Popup
         _inventory.test();
     }
 
+    Player player_State;
+    private GameObject Scene;
+
     public void Awake()
     {
-        _inventory = GameObject.Find("Player").GetComponent<Inventory>();
+        //Scene = GameObject.Find("@Scene");
+        //player_State = Scene.GetComponent<Player>();
+        //_inventory = player_State.GetPlayer().GetComponent<Inventory>();
+
+        _inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
         SlotInit();
     }
 

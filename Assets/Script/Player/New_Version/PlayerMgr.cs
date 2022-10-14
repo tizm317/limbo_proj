@@ -30,7 +30,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         character = Resources.LoadAll<GameObject>("Prefabs/Character");
         if(job == null)
             job = Define.Job.WARRIOR;
-        my_name = "하이염~";
+        my_name = "Player";
         if(pos == null || pos ==Vector3.zero)
             pos = start_pos;
     }
