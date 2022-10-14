@@ -76,7 +76,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         UpdateAccessibleStatesAll();
-        Debug.Log(Capacity);
+        //Debug.Log(Capacity);
     }
 
     internal void trimItems()
@@ -407,5 +407,44 @@ public class Inventory : MonoBehaviour
 
         _items[idx] = null;
         UpdateSlot(idx);
+    }
+
+    // 아이템 가중치 딕셔너리
+    // 아이템 타입에 따라 가중치
+    private readonly static Dictionary<Type, int> _sortWeightDict = new Dictionary<Type, int>
+    {
+        {typeof(PotionItemData), 10000 },
+        {typeof(WeaponItemData), 20000 },
+        {typeof(ArmorItemData), 30000 },
+    };
+
+    private class ItemComparer : IComparer<Item>
+    {
+        // 아이템 우선순위 : 음,0,양수 리턴
+        // 음수 : x 가 y 보다 앞
+        public int Compare(Item x, Item y)
+        {
+            return (x.Data.ID + _sortWeightDict[x.Data.GetType()]) - (y.Data.ID + _sortWeightDict[y.Data.GetType()]);
+        }
+    }
+    private static readonly ItemComparer _itemComparer = new ItemComparer();
+
+    // 아이템 정렬
+    public void SortAll()
+    {
+        // 1. Trim
+        trimItems();
+
+        // 2. Sort
+        Array.Sort(_items, 0, FindEmptySlotIndex(), _itemComparer); // FindEmptySlotIndex 로 아이템 있는 슬롯 개수 구하기
+
+        // 3. Update
+        UpdateAllSlot();
+    }
+
+    private void UpdateAllSlot()
+    {
+        for(int i = 0; i < 42; i++)
+            UpdateSlot(i);
     }
 }
