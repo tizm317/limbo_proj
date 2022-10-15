@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package Protocol;
+//import "google/protobuf/timestamp.proto";
+option csharp_namespace = "Google.Protobuf.Protocol";
+
+enum MsgId {
+  S_ENTER_GAME = 0;
+  S_LEAVE_GAME2 = 1;
+  S_SPAWN2 = 2;
+  S_DESPAWN2 = 3;
+  C_MOVE2 = 4;
+  S_MOVE2 = 5;
+}
+
+message S_EnterGame {
+  PlayerInfo player = 1;
+}
+
+message S_LEAVE_GAME {
+}
+
+message S_SPAWN {
+  repeated PlayerInfo players = 1;
+}
+
+message S_DESPAWN {
+  repeated int32 playerIds = 1;
+}
+
+message C_MOVE {
+  int32 posX = 1;
+  int32 posY = 2;
+}
+
+message S_MOVE {
+  int32 playId = 1;
+  int32 posX = 2;
+  int32 posY = 3;
+}
+
+message PlayerInfo {
+  int32 playerId = 1;
+  string name = 2;
+  int32 posX = 3;
+  int32 posY = 4;
+}
