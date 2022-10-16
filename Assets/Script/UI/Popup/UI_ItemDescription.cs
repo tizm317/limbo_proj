@@ -9,8 +9,8 @@ public class UI_ItemDescription : UI_Popup
     enum GameObjects
     {
         DescriptionPanel,
-        RemoveButton,
-        UseButton,
+       // RemoveButton,
+       // UseButton,
     }
     
     enum Texts
@@ -18,10 +18,10 @@ public class UI_ItemDescription : UI_Popup
         NameText,
         TypeText,
         GradeText,
-        //CountText,
+        PriceText,
         TooltipText,
-        RemoveText,
-        UseText,
+        //RemoveText,
+        //UseText,
     }
 
     private void Awake()
@@ -36,17 +36,17 @@ public class UI_ItemDescription : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         Bind<Text>(typeof(Texts));
 
-        GetObject((int)GameObjects.UseButton).BindEvent((PointerEventData) =>
-        {
-            //TODO:
-            ClosePopupUI();
-        });
+        //GetObject((int)GameObjects.UseButton).BindEvent((PointerEventData) =>
+        //{
+        //    //TODO:
+        //    ClosePopupUI();
+        //});
 
-        GetObject((int)GameObjects.RemoveButton).BindEvent((PointerEventData) =>
-        {
-            //TODO:
-            ClosePopupUI();
-        });
+        //GetObject((int)GameObjects.RemoveButton).BindEvent((PointerEventData) =>
+        //{
+        //    //TODO:
+        //    ClosePopupUI();
+        //});
 
         Reset();
     }
@@ -57,6 +57,7 @@ public class UI_ItemDescription : UI_Popup
         GetText((int)Texts.TypeText).text = "";
         GetText((int)Texts.GradeText).text = "";
         GetText((int)Texts.TooltipText).text = "";
+        GetText((int)Texts.PriceText).text = "";
 
         //GetText((int)Texts.NameText).text = "아이템 : ";
         //GetText((int)Texts.TypeText).text = "종류 : ";
@@ -76,7 +77,10 @@ public class UI_ItemDescription : UI_Popup
 
         GetText((int)Texts.GradeText).text += ("<color=#539047FF>" + data.Grade + "</color>");
         GetText((int)Texts.TooltipText).text += data.Tooltip;
-        
+
+        GetText((int)Texts.PriceText).text = ("<color=Red>" + data.Price + " G"+ "</color>");
+
+
 
         float panelWidth = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.width;
         float panelHeight = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.height;
@@ -106,8 +110,8 @@ public class UI_ItemDescription : UI_Popup
         GetText((int)Texts.GradeText).text += grade;
         //GetText((int)Texts.CountText).text += $"{count}";
 
-        GetObject((int)GameObjects.RemoveButton).SetActive(false);
-        GetObject((int)GameObjects.UseButton).SetActive(false);
+        //GetObject((int)GameObjects.RemoveButton).SetActive(false);
+        //GetObject((int)GameObjects.UseButton).SetActive(false);
         if (!tooltip)
         {
             switch (type)
@@ -121,10 +125,10 @@ public class UI_ItemDescription : UI_Popup
                     _useText = "사용";
                     break;
             }
-            GetText((int)Texts.UseText).text = _useText;
+            //GetText((int)Texts.UseText).text = _useText;
 
-            GetObject((int)GameObjects.RemoveButton).SetActive(true);
-            GetObject((int)GameObjects.UseButton).SetActive(true);
+            //GetObject((int)GameObjects.RemoveButton).SetActive(true);
+            //GetObject((int)GameObjects.UseButton).SetActive(true);
         }
 
         // Panel's width , weight 이용해서 위치 조정하기 위한 값
