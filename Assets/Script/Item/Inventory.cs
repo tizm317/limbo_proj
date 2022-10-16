@@ -408,7 +408,7 @@ public class Inventory : MonoBehaviour
         _items[idx] = null;
         UpdateSlot(idx);
     }
-
+    #region ItemSort
     // 아이템 가중치 딕셔너리
     // 아이템 타입에 따라 가중치
     private readonly static Dictionary<Type, int> _sortWeightDict = new Dictionary<Type, int>
@@ -447,4 +447,5 @@ public class Inventory : MonoBehaviour
         for(int i = 0; i < 42; i++)
             UpdateSlot(i);
     }
+    #endregion
 }
