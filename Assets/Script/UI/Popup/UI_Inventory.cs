@@ -242,52 +242,119 @@ public class UI_Inventory : UI_Popup
         {
             _removeTargetSlot = _beginDragSlot; // null 오류 해결
 
-            // 경고문 팝업
-            uI_Item_Remove_Caution = Managers.UI.ShowPopupUI<UI_Item_Remove_Caution>();
-            // 경고문 확인 버튼 클릭 event 연결
-            uI_Item_Remove_Caution.buttonClicked -= ConfirmButtonClicked;
-            uI_Item_Remove_Caution.buttonClicked += ConfirmButtonClicked;
+            // 분할 버리기
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) 
+            {
+                trySplitRemove = true;
+                TrySplitItems(_beginDragSlot, endDragSlot, trySplitRemove);
+            }
+            else
+            {
+                // 경고문 팝업
+                uI_Item_Remove_Caution = Managers.UI.ShowPopupUI<UI_Item_Remove_Caution>();
+                // 경고문 확인 버튼 클릭 event 연결
+                uI_Item_Remove_Caution.buttonClicked -= ConfirmButtonClicked;
+                uI_Item_Remove_Caution.buttonClicked += ConfirmButtonClicked;
+            }
+            
         }
     }
 
     UI_Item_Split uI_Item_Split;
     UI_ItemSlot _splitTargetSlotA;
     UI_ItemSlot _splitTargetSlotB;
-    private void TrySplitItems(UI_ItemSlot beginDragSlot, UI_ItemSlot endDragSlot)
+    bool trySplitRemove = false;
+    private void TrySplitItems(UI_ItemSlot beginDragSlot, UI_ItemSlot endDragSlot, bool tryRemove = false)
     {
-        if (beginDragSlot == endDragSlot) return;
-
-        int currentAmount = 0;
-        currentAmount = _inventory.GetCurrentAmount(_beginDragSlot.Index);
-        if(currentAmount > 1)
+        if(tryRemove == false)
         {
-            _splitTargetSlotA = beginDragSlot;
-            _splitTargetSlotB = endDragSlot;
+            trySplitRemove = false;
 
-            // UI 팝업
-            uI_Item_Split = Managers.UI.ShowPopupUI<UI_Item_Split>();
-            // 경고문 확인 버튼 클릭 event 연결
-            uI_Item_Split.buttonClicked -= SplitConfirmButtonClicked;
-            uI_Item_Split.buttonClicked += SplitConfirmButtonClicked;
+            if (beginDragSlot == endDragSlot) return;
+
+            int currentAmount = 0;
+            currentAmount = _inventory.GetCurrentAmount(_beginDragSlot.Index);
+            if (currentAmount > 1)
+            {
+                _splitTargetSlotA = beginDragSlot;
+                _splitTargetSlotB = endDragSlot;
+
+                // UI 팝업
+                uI_Item_Split = Managers.UI.ShowPopupUI<UI_Item_Split>();
+                // 경고문 확인 버튼 클릭 event 연결
+                uI_Item_Split.buttonClicked -= SplitConfirmButtonClicked;
+                uI_Item_Split.buttonClicked += SplitConfirmButtonClicked;
+            }
+            else
+            {
+                TrySwapItems(_beginDragSlot, endDragSlot);
+            }
         }
-        else
+        else // 분할 버리기
         {
-            TrySwapItems(_beginDragSlot, endDragSlot);
+            trySplitRemove = true;
+
+            if (beginDragSlot == endDragSlot) return;
+            int currentAmount = 0;
+            currentAmount = _inventory.GetCurrentAmount(_beginDragSlot.Index);
+            if (currentAmount > 1)
+            {
+                _splitTargetSlotA = beginDragSlot;
+                //_splitTargetSlotB = endDragSlot; // null
+
+                // UI 팝업
+                uI_Item_Split = Managers.UI.ShowPopupUI<UI_Item_Split>();
+                // 경고문 확인 버튼 클릭 event 연결
+                uI_Item_Split.buttonClicked -= SplitConfirmButtonClicked;
+                uI_Item_Split.buttonClicked += SplitConfirmButtonClicked;
+            }
+            else
+            {
+                //TrySwapItems(_beginDragSlot, endDragSlot);
+                if(currentAmount == 1) // 하나면 그냥 버림
+                {
+                    // 경고문 팝업
+                    uI_Item_Remove_Caution = Managers.UI.ShowPopupUI<UI_Item_Remove_Caution>();
+                    // 경고문 확인 버튼 클릭 event 연결
+                    uI_Item_Remove_Caution.buttonClicked -= ConfirmButtonClicked;
+                    uI_Item_Remove_Caution.buttonClicked += ConfirmButtonClicked;
+                }
+            }
         }
     }
 
     public void SplitConfirmButtonClicked()
     {
-        if(uI_Item_Split.SplitItems() > 0)
+        if(trySplitRemove == false)
         {
-            _inventory.SplitItems(_splitTargetSlotA.Index, _splitTargetSlotB.Index, uI_Item_Split.SplitItems());
+            if (uI_Item_Split.SplitItems() > 0)
+            {
+                _inventory.SplitItems(_splitTargetSlotA.Index, _splitTargetSlotB.Index, uI_Item_Split.SplitItems());
+            }
+
+            // 참조 제거
+            _splitTargetSlotA = null;
+            _splitTargetSlotB = null;
+
+            uI_Item_Split.ClosePopupUI();
+        }
+        else
+        {
+            if (uI_Item_Split.SplitItems() > 0)
+            {
+                //_splitTargetSlotB 가 null 이라서
+                //_splitTargetSlotB.Index 대신 -1 넣음(어차피 안 씀) 
+                _inventory.SplitItems(_splitTargetSlotA.Index, -1, uI_Item_Split.SplitItems(), trySplitRemove);
+            }
+
+            // 참조 제거
+            _splitTargetSlotA = null;
+            _splitTargetSlotB = null;
+
+            uI_Item_Split.ClosePopupUI();
         }
 
-        // 참조 제거
-        _splitTargetSlotA = null;
-        _splitTargetSlotB = null;
-
-        uI_Item_Split.ClosePopupUI();
+        trySplitRemove = false;
     }
 
 

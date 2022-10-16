@@ -65,8 +65,9 @@ public class Inventory : MonoBehaviour
         //Add(p2.Data, 30);
         foreach(ItemData data in itemDatas)
         {
-            if(data is CountableItemData)
-                Add(data, 99);
+            CountableItemData cid = data as CountableItemData;
+            if (cid != null)
+                Add(cid, cid.MaxAmount);
             else
                 Add(data, 1);
         }
@@ -349,23 +350,40 @@ public class Inventory : MonoBehaviour
     }
 
     // 셀 수 있는 아이템 수량 나누기
-    internal void SplitItems(int indexFrom, int indexTo, int amount)
+    internal void SplitItems(int indexFrom, int indexTo, int amount, bool tryRemove =false)
     {
-        if (!IsValidIndex(indexFrom)) return;
-        if (!IsValidIndex(indexTo)) return;
-
-        Item _itemFrom = _items[indexFrom];
-        Item _itemTo = _items[indexTo];
-
-        CountableItem _ciFrom = _itemFrom as CountableItem;
-        // CountableItem To Empty Slot
-        if(_ciFrom != null && _itemTo == null)
+        if(tryRemove == false)
         {
-            _items[indexTo] = _ciFrom.SeperateAndClone(amount);
+            if (!IsValidIndex(indexFrom)) return;
+            if (!IsValidIndex(indexTo)) return;
 
-            UpdateSlot(indexFrom);
-            UpdateSlot(indexTo);
+            Item _itemFrom = _items[indexFrom];
+            Item _itemTo = _items[indexTo];
+
+            CountableItem _ciFrom = _itemFrom as CountableItem;
+            // CountableItem To Empty Slot
+            if (_ciFrom != null && _itemTo == null)
+            {
+                _items[indexTo] = _ciFrom.SeperateAndClone(amount);
+
+                UpdateSlot(indexFrom);
+                UpdateSlot(indexTo);
+            }
         }
+        else // 분할 버리기
+        {
+            if (!IsValidIndex(indexFrom)) return;
+            Item _itemFrom = _items[indexFrom];
+            CountableItem _ciFrom = _itemFrom as CountableItem;
+            // CountableItem To Empty Slot
+            if (_ciFrom != null)
+            {
+                _ciFrom.SeperateAndClone(amount);
+
+                UpdateSlot(indexFrom);
+            }
+        }
+
     }
 
     // 앞에서부터 비어있는 슬롯 인덱스 탐색
@@ -417,6 +435,8 @@ public class Inventory : MonoBehaviour
         _items[idx] = null;
         UpdateSlot(idx);
     }
+
+
     #region ItemSort
     // 아이템 가중치 딕셔너리
     // 아이템 타입에 따라 가중치
