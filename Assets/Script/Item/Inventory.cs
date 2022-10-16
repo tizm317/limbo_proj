@@ -30,6 +30,15 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private Item[] _items;
 
+    public bool Empty()
+    {
+        foreach(Item it in _items)
+        {
+            if (it != null) return false;
+        }
+        return true;
+    }
+
 
 
     /* Methods */
@@ -48,8 +57,6 @@ public class Inventory : MonoBehaviour
     public void SetInventoryUI(UI_Inventory inventoryUI)
     {
         _UI_inventory = inventoryUI;
-
-        
     }
 
     public void test()

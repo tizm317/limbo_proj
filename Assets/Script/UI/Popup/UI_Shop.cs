@@ -8,16 +8,16 @@ public class UI_Shop : UI_Popup
 {
     enum GameObjects
     {
-        BG,
+        //BG,
     }
 
     enum Buttons
     {
-        EndButton,
+        ButtonClose,
     }
     enum Texts
     {
-        EndText,
+        //EndText,
     }
 
     Npc npc;
@@ -30,11 +30,11 @@ public class UI_Shop : UI_Popup
     public override void Init()
     {
         base.Init();
-        Bind<GameObject>(typeof(GameObjects));
+        //Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
-        Bind<Text>(typeof(Texts));
+        //Bind<Text>(typeof(Texts));
 
-        GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
+        GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(endButtonClicked);
     }
 
     public void endButtonClicked(PointerEventData data)

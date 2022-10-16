@@ -9,7 +9,7 @@ public class UI_InGame : UI_Scene
     // 수정(추가)해야 함
 
     // 연관된 팝업 UI 목록
-    UI_Inven ui_Inven;
+    //UI_Inven ui_Inven;
     UI_Inventory uI_Inventory;
     UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
@@ -119,7 +119,7 @@ public class UI_InGame : UI_Scene
         {
             // 인벤토리 UI
 
-            if(!ui_Inven)
+            if(!uI_Inventory)
             {
                 ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
                 //ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();

@@ -26,6 +26,7 @@ public class UI_Inventory : UI_Popup
     {
         Init();
 
+        // 테스트용 임시
         _inventory.test();
     }
 
@@ -40,6 +41,8 @@ public class UI_Inventory : UI_Popup
 
         _inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
         SlotInit();
+
+        
     }
 
     public override void Init()
