@@ -27,7 +27,7 @@ public class PoolManager
         // 스택
         Stack<Poolable> _poolStack = new Stack<Poolable>();
 
-        public void Init(GameObject original, int count = 5)
+        public void Init(GameObject original, int count = 2)
         {
             // 초기화
 
@@ -62,7 +62,7 @@ public class PoolManager
             //poolable.transform.parent = Root;
             poolable.transform.SetParent(Root);
             poolable.gameObject.SetActive(false);
-            poolable.IsUsing = false;
+            poolable.IsUsing = false;   
 
             _poolStack.Push(poolable);
         }
@@ -100,6 +100,7 @@ public class PoolManager
     }
     #endregion
 
+    
 
     // 풀매니저 : 딕셔너리로 Pool 관리 (string을 통해 이름 구별)
     Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();  // 여러개의 pool 관리하는 딕셔너리
@@ -118,7 +119,7 @@ public class PoolManager
         }
     }
 
-    public void CreatePool(GameObject original, int count = 5)
+    public void CreatePool(GameObject original, int count = 2)
     {
         // 풀매니저에 풀 처음 만드는 함수 (딕셔너리에 넣는 함수)
 
@@ -193,4 +194,5 @@ public class PoolManager
         // 풀 매니저도 초기화
         _pool.Clear();
     }
+    
 }

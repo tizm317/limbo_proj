@@ -80,7 +80,6 @@ public class Enemy_Skeleton : Enemy
     }
     protected override void UpdateHit()
     {
-        Debug.Log("enemy UpdateHit(damage)");
         State = Define.State.Hit; 
 
     }
@@ -97,8 +96,7 @@ public class Enemy_Skeleton : Enemy
         if (lockTarget != null)
         {
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
-            float damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage; //플레이어 데미지
+            targetStat.OnAttacked(_stat);
 
             //죽었는지 여부 체크 
             if (targetStat.Hp > 0)

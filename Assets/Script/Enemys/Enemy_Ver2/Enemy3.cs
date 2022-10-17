@@ -6,10 +6,10 @@ using UnityEngine.AI;
 public class Enemy3 : Enemy
 {
 
-    //원거리 공격 스킬 추가 구현 중
+    //원거리 공격 스킬 추가 구현
     Stat _stat;
 
-    [SerializeField] float _scanRange = 15;   //사정거리
+    [SerializeField] float _scanRange = 10;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
     
     public Transform[] points;  //waypoints 배열
@@ -23,6 +23,9 @@ public class Enemy3 : Enemy
     public GameObject bomb; // 무기 오브젝트(프리팹)
     public Transform bombPos; // 무기가 생성될 발사 위치 지정
 
+    private float TimeLeft = 5.0f;
+    private float nextTime = 0.0f;
+
     public override void Init()
     {
         WorldObjectType = Define.WorldObject.Monster;
@@ -34,13 +37,11 @@ public class Enemy3 : Enemy
         State = Define.State.Moving;
 
         // HPBar
-        /*
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
-        */
 
         // WayPoint
-        points = GameObject.Find("WayPointGroup1").GetComponentsInChildren<Transform>();
+        points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();
         nextIdx = Random.Range(1, points.Length);
 
         //enemy & player 위치
@@ -136,7 +137,7 @@ public class Enemy3 : Enemy
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
         nma.SetDestination(tr.position);
 
-        if (coll.tag == "WAY_POINT1")
+        if (coll.tag == "WAY_POINT")
         {
             theNextIdx = Random.Range(1, points.Length);
 
@@ -181,6 +182,7 @@ public class Enemy3 : Enemy
                 if (dist <= _attachRange)
                 {
                     State = Define.State.Skill;
+                    StartCoroutine(Attack());
                 }
                 else
                 {
@@ -197,23 +199,34 @@ public class Enemy3 : Enemy
             State = Define.State.Moving;
         }
     }
+    IEnumerator Attack()
+    {
+        State = Define.State.Idle;
+
+        yield return new WaitForSeconds(1.0f);
+
+        State = Define.State.Skill;
+    }
     IEnumerator Idle()
     {
         State = Define.State.Idle;
 
         yield return new WaitForSeconds(2.0f);
-
+            
         State = Define.State.Moving;
     }
     IEnumerator Skill()
     {
-        GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
-        Rigidbody bombRigid = instantBomb.GetComponent<Rigidbody>();
-        bombRigid.velocity = bombPos.forward * 15.0f; //속도 적용
+        if (Time.time > nextTime)
+        {
+            nextTime = Time.time + TimeLeft;
 
-        yield return null;
+            GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
+            Rigidbody bombRigid = instantBomb.GetComponent<Rigidbody>();
+            bombRigid.velocity = bombPos.forward * 15.0f; //속도 적용
 
-
+            yield return new WaitForSeconds(2.0f);
+        }
     }
 
 

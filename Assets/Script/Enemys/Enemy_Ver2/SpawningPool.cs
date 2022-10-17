@@ -42,8 +42,12 @@ public class SpawningPool : MonoBehaviour
     {
         _reserveCount++;
         yield return new WaitForSeconds(Random.Range(0, _spawnTime));
-        GameObject obj = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
-        NavMeshAgent nma = obj.GetComponent<NavMeshAgent>();
+
+        GameObject obj1 = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+        NavMeshAgent nma1 = obj1.GetComponent<NavMeshAgent>();
+        GameObject obj2 = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
+        NavMeshAgent nma2 = obj2.GetComponent<NavMeshAgent>();
+
 
         Vector3 randPos;
 
@@ -54,14 +58,22 @@ public class SpawningPool : MonoBehaviour
             randPos = _spawnPos + randDir;
 
             NavMeshPath path = new NavMeshPath();
-            yield return new WaitForEndOfFrame();
-            if(nma.CalculatePath(randPos, path))
+            //yield return new WaitForEndOfFrame();
+            if (nma1.CalculatePath(randPos, path))
             {
                 break;
             }
+            if (nma2.CalculatePath(randPos, path))
+            {
+                break;
+            }
+
+            yield return new WaitForEndOfFrame();
         }
 
-        obj.transform.position = randPos;
+        obj1.transform.position = randPos;
+        obj2.transform.position = randPos;
+
         _reserveCount--;
     }
 }

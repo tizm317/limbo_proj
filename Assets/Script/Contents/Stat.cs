@@ -53,7 +53,7 @@ public class Stat : MonoBehaviour
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
-            enemy.State = Define.State.Hit;
+            //enemy.State = Define.State.Hit;
             OnDead(attacker);
         }
     }
@@ -66,6 +66,7 @@ public class Stat : MonoBehaviour
             playerStat.Exp += 10;
         }
         */
+        enemy.State = Define.State.Idle;
         StartCoroutine(Die());
 
     }

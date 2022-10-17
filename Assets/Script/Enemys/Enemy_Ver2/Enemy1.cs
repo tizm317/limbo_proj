@@ -35,7 +35,7 @@ public class Enemy1 : Enemy
         */
 
         // WayPoint
-        points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();
+        points = GameObject.Find("WayPointGroup1").GetComponentsInChildren<Transform>();
         nextIdx = Random.Range(1, points.Length);
 
         //enemy & player 위치
@@ -128,7 +128,7 @@ public class Enemy1 : Enemy
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
         nma.SetDestination(tr.position);
 
-        if (coll.tag == "WAY_POINT")
+        if (coll.tag == "WAY_POINT1")
         {
             theNextIdx = Random.Range(1, points.Length);
 
@@ -171,7 +171,10 @@ public class Enemy1 : Enemy
             {
                 float dist = (lockTarget.transform.position - tr.position).magnitude;
                 if (dist <= _attachRange)
+                {
                     State = Define.State.Skill;
+                    StartCoroutine(Attack());
+                }
                 else
                     State = Define.State.Moving;
             }
@@ -184,6 +187,14 @@ public class Enemy1 : Enemy
         {
             State = Define.State.Moving;
         }
+    }
+    IEnumerator Attack()
+    {
+        State = Define.State.Idle;
+
+        yield return new WaitForSeconds(1.0f);
+
+        State = Define.State.Skill;
     }
     IEnumerator Idle()
     {

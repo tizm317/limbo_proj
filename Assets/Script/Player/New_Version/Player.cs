@@ -114,7 +114,15 @@ public abstract class Player : MonoBehaviour
     #endregion  
     
     protected Camera cam;
-    
+
+    #region 던전관련~~~~~~~~~~
+
+    private DungeonTest dungeonTest;
+
+    // 던전 게임스타터와 상호작용중인지 확인용
+    public bool IsInteractWithDungeon { get; private set; }  
+    #endregion
+
     #region 이동관련
 
     private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
@@ -506,7 +514,7 @@ public abstract class Player : MonoBehaviour
         // NPC와 상호작용 중
         if (npc && npc.ui_dialogue_ison)
             return;
-
+        
         if(!on_skill)
         {
             if (evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
@@ -551,6 +559,11 @@ public abstract class Player : MonoBehaviour
                         npc.getPlayer(player); // npc한테 플레이어 넘겨줌
                         npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }
+                }
+                else if (hit.collider.tag == "GameStarter")
+                {   
+                    
+
                 }
                 else
                     return;

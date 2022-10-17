@@ -36,6 +36,6 @@ public class Arrow : MonoBehaviour
             else if(time > 5f)
                 hit = true;
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

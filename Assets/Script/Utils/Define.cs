@@ -40,6 +40,8 @@ public class Define
         Lobby,
         InGame,
         Village,
+        Dungeon,
+        InGame_Boss,
     }
 
     public enum Sound
