@@ -7,12 +7,16 @@ public class Warrior : Player
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
+        if(GameObject.Find("Indicator") == null)
+            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CircleIndicator_modified"));
+        Indicator.name = "Indicator";
+        Indicator.SetActive(false);
         job = "Warrior";
         attackRange = 3f;
-        cool_max[0] = 5f;
-        cool_max[1] = 4f;
-        cool_max[2] = 3f;
-        cool_max[3] = 15f;
+        cool_max[0] = 1f;
+        cool_max[1] = 1f;
+        cool_max[2] = 1f;
+        cool_max[3] = 1f;
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
@@ -49,7 +53,7 @@ public class Warrior : Player
         pos_selected = false;
         canceled = false;
         Vector3 pos;
-        StartCoroutine(Show_Indicator(true,SightAngle,distance));
+        StartCoroutine(Show_CircleIndicator(true,SightAngle,distance));
         while(!canceled)
         {
             while(!pos_selected)
@@ -170,7 +174,7 @@ public class Warrior : Player
         canceled = false;
         pos_selected = false;
         Vector3 pos;
-        StartCoroutine(Show_Indicator(false,360,range));
+        StartCoroutine(Show_CircleIndicator(false,360,range));
         while(!canceled)
         {
             while(!pos_selected)
@@ -238,43 +242,6 @@ public class Warrior : Player
                 break;
         }
     }
-
-#region 인디케이터 표시
-
-    IEnumerator Show_Indicator(bool body, float rad, float range)
-    {
-        Indicator.SetActive(true);
-        Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
-        float _range = range * 2;
-        Indicator.transform.localScale = new Vector3(_range,_range,_range);
-        if(body)
-        {
-            while(!pos_selected && !canceled)
-            {
-                RaycastHit hit;
-                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
-                Indicator.transform.position = new Vector3(player.transform.position.x,1.1f,player.transform.position.z);
-                if(raycastHit)
-                    Indicator.transform.rotation = Quaternion.Euler(new Vector3(90f, -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
-                //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
-                yield return new WaitForEndOfFrame();
-            }   
-        }
-        else
-        {
-            while(!pos_selected && !canceled)
-            {
-                RaycastHit hit;
-                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
-                if(raycastHit)
-                    Indicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
-                yield return new WaitForEndOfFrame();
-            }  
-        }
-        Indicator.SetActive(false);
-    }
-
-#endregion
 
 #region 카메라 쉐이크
 

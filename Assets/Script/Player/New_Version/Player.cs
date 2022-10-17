@@ -75,6 +75,7 @@ public abstract class Player : MonoBehaviour
     [SerializeField]
     private float speed { get { return my_stat.MoveSpeed; } set { speed = value; } }
     private float arrivalRange = 0.4f;
+    [SerializeField]
     protected float attackRange = 3f;
 
     #endregion
@@ -91,6 +92,7 @@ public abstract class Player : MonoBehaviour
     protected GameObject Indicator;//인디케이터 오브젝트
     protected bool canceled = false;
     protected bool pos_selected = false;
+    protected bool attackable = true;
     protected enum HotKey
     {
         Q,
@@ -194,10 +196,6 @@ public abstract class Player : MonoBehaviour
     void Init()
     {
         curState = State.STATE_IDLE;
-        if(GameObject.Find("Indicator") == null)
-            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CircleIndicator_modified"));
-        Indicator.name = "Indicator";
-        Indicator.SetActive(false);
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
     
@@ -405,7 +403,7 @@ public abstract class Player : MonoBehaviour
 
     public virtual void Q()
     {
-
+        
     }
 
     public virtual void W()
@@ -449,6 +447,85 @@ public abstract class Player : MonoBehaviour
         }
     }
 
+    #region 인디케이터 표시
+
+    protected IEnumerator Show_CircleIndicator(bool body, float rad, float range)
+    {
+        Indicator.SetActive(true);
+        Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
+        float _range = range * 2;
+        Indicator.transform.localScale = new Vector3(_range,_range,_range);
+        if(body)
+        {
+            while(!pos_selected && !canceled)
+            {
+                RaycastHit hit;
+                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                Indicator.transform.position = new Vector3(player.transform.position.x,1.1f,player.transform.position.z);
+                if(raycastHit)
+                    Indicator.transform.rotation = Quaternion.Euler(new Vector3(90f, -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
+                //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
+                yield return new WaitForEndOfFrame();
+            }   
+        }
+        else
+        {
+            while(!pos_selected && !canceled)
+            {
+                RaycastHit hit;
+                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                if(raycastHit)
+                    Indicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
+                yield return new WaitForEndOfFrame();
+            }  
+        }
+        Indicator.SetActive(false);
+    }
+
+    protected IEnumerator Show_ArrowIndicator(bool single, float range)
+    {
+        Indicator.SetActive(true);
+        Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetTextureOffset("_MainTex",new Vector2(0,-range));
+        if(single)
+        {
+            GameObject temp = new GameObject();
+            temp.name = "Body";
+            Indicator.transform.SetParent(temp.transform);
+            Indicator.transform.localPosition = new Vector3(0,1,0);
+            Indicator.transform.localRotation = Quaternion.Euler(new Vector3(0,0,0));
+            while(!pos_selected && !canceled)
+            {
+                RaycastHit hit;
+                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                
+                temp.transform.position = new Vector3(player.transform.position.x,1.1f,player.transform.position.z);
+        
+                if(raycastHit)
+                {
+                    temp.transform.rotation = Quaternion.Euler(new Vector3(90f, -90f -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
+                }
+                //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
+                yield return new WaitForEndOfFrame();
+            }
+            temp.transform.DetachChildren();
+            Destroy(temp);
+        }
+        else
+        {
+            while(!pos_selected && !canceled)
+            {
+                RaycastHit hit;
+                bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                if(raycastHit)
+                    Indicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
+                yield return new WaitForEndOfFrame();
+            }  
+        }
+        Indicator.SetActive(false);
+    }
+
+#endregion
+
     #endregion
 
     #region 사망
@@ -467,6 +544,12 @@ public abstract class Player : MonoBehaviour
         Ani_State_Change();
         my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
         player.transform.position = pos;//초기 위치로 이동시켜줌
+    }
+
+    public void GetDamage(float Damage)
+    {
+        if(attackable)
+            my_stat.Hp -= (Damage - my_stat.Defense);
     }
     
     #endregion

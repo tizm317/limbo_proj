@@ -9,11 +9,15 @@ public class Archer : Player
     {
         job = "Archer";
         Arrow = Resources.Load<GameObject>("Prefabs/Arrow");
+        if(GameObject.Find("Indicator") == null)
+            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
+        Indicator.name = "Indicator";
+        Indicator.SetActive(false);
         attackRange = 15f;
-        cool_max[0] = 5f;
-        cool_max[1] = 4f;
-        cool_max[2] = 3f;
-        cool_max[3] = 15f;
+        cool_max[0] = 1f;
+        cool_max[1] = 1f;
+        cool_max[2] = 1f;
+        cool_max[3] = 1f;
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
@@ -70,12 +74,12 @@ public class Archer : Player
 
     public override void Q()
     {
-        
+        StartCoroutine(Archer_Q());
     }
 
     public override void W()
     {
-        
+        StartCoroutine(Archer_W(0.5f,5f,4f));
     }
 
     public override void E()
@@ -85,11 +89,128 @@ public class Archer : Player
 
     public override void R()
     {
-        
+        StartCoroutine(Archer_R());
     }
 
     public override void Passive()
     {
         
+    }
+
+    IEnumerator Archer_Q()
+    {
+        pos_selected = false;
+        canceled = false;
+        Vector3 pos;
+        StartCoroutine(Show_ArrowIndicator(true,5));//range값은 5넘어가면 안됨
+        while(!canceled)
+        {
+            while(!pos_selected)
+            {
+                if(Input.GetMouseButton(0))
+                {
+                    RaycastHit hit;
+                    bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                    if (!raycastHit)
+                        canceled = true;
+                    else
+                    {              
+                        pos = hit.point;
+                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
+                        pos_selected = true;
+                    }
+                }
+                else if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.R))
+                {
+                    canceled = true;
+                    on_skill = false;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            if(pos_selected)
+            {
+                curState = State.STATE_SKILL;
+                skill = HotKey.Q;
+                Ani_State_Change();
+                attackable = false;
+                yield return new WaitForSeconds(1.633f);
+                attackable = true;
+                
+                cool[0] = cool_max[0];
+                on_skill = false;
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        pos_selected = false;
+        canceled = false;
+    }
+
+    IEnumerator Archer_W(float speed, float range, float time)
+    {
+        attackRange += range;
+        my_stat.AttackSpeed += speed;
+        on_skill = false;
+        cool[0] = cool_max[0];//시전시간이 없어서 일단은 바로 쿨 돌리기
+        yield return new WaitForSeconds(time);//지속시간
+        attackRange -= range;
+        my_stat.AttackSpeed -= speed;
+    }
+
+    IEnumerator Archer_E()
+    {
+        yield return new WaitForEndOfFrame();
+    }
+
+    IEnumerator Archer_R()
+    {
+        pos_selected = false;
+        canceled = false;
+        Vector3 pos;
+        StartCoroutine(Show_ArrowIndicator(true,5));//range값은 5넘어가면 안됨
+        while(!canceled)
+        {
+            while(!pos_selected)
+            {
+                if(Input.GetMouseButton(0))
+                {
+                    RaycastHit hit;
+                    bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                    if (!raycastHit)
+                        canceled = true;
+                    else
+                    {              
+                        pos = hit.point;
+                        player.transform.right = -(new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized);
+                        pos_selected = true;
+                    }
+                }
+                else if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.Q))
+                {
+                    canceled = true;
+                    on_skill = false;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            if(pos_selected)
+            {
+                curState = State.STATE_SKILL;
+                skill = HotKey.R;
+                Ani_State_Change();
+                yield return new WaitForSeconds(4.4f);
+                GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
+                temp.transform.position = player.transform.position;
+                Vector3 dir = -player.transform.right;
+                temp.GetComponent<FireArrow>().Run(my_stat,100,dir);
+                cool[0] = cool_max[0];
+                on_skill = false;
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        pos_selected = false;
+        canceled = false;
     }
 }
