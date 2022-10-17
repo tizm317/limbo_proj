@@ -60,6 +60,7 @@ public class Warrior : Player
             {
                 if(Input.GetMouseButton(0))
                 {
+                    destination.Clear();
                     RaycastHit hit;
                     bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
                     if (!raycastHit)
@@ -181,6 +182,7 @@ public class Warrior : Player
             {
                 if(Input.GetMouseButton(0))
                 {
+                    destination.Clear();
                     RaycastHit hit;
                     bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
                     if (!raycastHit)
@@ -188,7 +190,6 @@ public class Warrior : Player
                     else
                     {              
                         pos = hit.point;
-                        Debug.Log(pos);
                         player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
                         pos_selected = true;
                     }

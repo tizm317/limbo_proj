@@ -29,7 +29,7 @@ public class FireArrow : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter(Collider col)
     {
         Debug.Log("collider");
         if(col.transform.tag == "Enemy")

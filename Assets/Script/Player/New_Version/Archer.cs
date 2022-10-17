@@ -109,6 +109,7 @@ public class Archer : Player
             {
                 if(Input.GetMouseButton(0))
                 {
+                    destination.Clear();
                     RaycastHit hit;
                     bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
                     if (!raycastHit)
@@ -117,6 +118,8 @@ public class Archer : Player
                     {              
                         pos = hit.point;
                         player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
+                        Debug.Log(player.transform.forward);
+                        Debug.Log(new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized);
                         pos_selected = true;
                     }
                 }
@@ -128,6 +131,7 @@ public class Archer : Player
                 }
                 yield return new WaitForEndOfFrame();
             }
+            yield return new WaitForEndOfFrame();
             if(pos_selected)
             {
                 curState = State.STATE_SKILL;
@@ -175,6 +179,7 @@ public class Archer : Player
             {
                 if(Input.GetMouseButton(0))
                 {
+                    destination.Clear();
                     RaycastHit hit;
                     bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
                     if (!raycastHit)
