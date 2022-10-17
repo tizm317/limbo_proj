@@ -127,7 +127,7 @@ public abstract class Player : MonoBehaviour
 
     #region 이동관련
 
-    private List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
+    protected List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     protected bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private Vector3 dir;//이동방향을 위한 변수
     
