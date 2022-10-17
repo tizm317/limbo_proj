@@ -89,7 +89,7 @@ public class Archer : Player
 
     public override void R()
     {
-        
+        StartCoroutine(Archer_R());
     }
 
     public override void Passive()
@@ -161,5 +161,56 @@ public class Archer : Player
     IEnumerator Archer_E()
     {
         yield return new WaitForEndOfFrame();
+    }
+
+    IEnumerator Archer_R()
+    {
+        pos_selected = false;
+        canceled = false;
+        Vector3 pos;
+        StartCoroutine(Show_ArrowIndicator(true,5));//range값은 5넘어가면 안됨
+        while(!canceled)
+        {
+            while(!pos_selected)
+            {
+                if(Input.GetMouseButton(0))
+                {
+                    RaycastHit hit;
+                    bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                    if (!raycastHit)
+                        canceled = true;
+                    else
+                    {              
+                        pos = hit.point;
+                        player.transform.right = -(new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized);
+                        pos_selected = true;
+                    }
+                }
+                else if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.Q))
+                {
+                    canceled = true;
+                    on_skill = false;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            if(pos_selected)
+            {
+                curState = State.STATE_SKILL;
+                skill = HotKey.R;
+                Ani_State_Change();
+                yield return new WaitForSeconds(4.4f);
+                GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
+                temp.transform.position = player.transform.position;
+                Vector3 dir = -player.transform.right;
+                temp.GetComponent<FireArrow>().Run(my_stat,100,dir);
+                cool[0] = cool_max[0];
+                on_skill = false;
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        pos_selected = false;
+        canceled = false;
     }
 }
