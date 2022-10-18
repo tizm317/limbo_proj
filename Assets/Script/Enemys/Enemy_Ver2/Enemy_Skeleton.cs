@@ -9,11 +9,20 @@ public class Enemy_Skeleton : Enemy
     [SerializeField] float _scanRange = 10;  //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
+    private void Start()
+    {
+        Init();
+    }
+
+    private void OnEnable()
+    {
+        Init();
+    }
     protected override void Init()
     {
         // HPBar
-        if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
-            Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+        //if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
+        //    Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
     }
 
     protected override void UpdateIdle()
@@ -30,6 +39,7 @@ public class Enemy_Skeleton : Enemy
         {
             lockTarget = player;
             State = Define.State.Moving;
+            return;
         }
 
     }
@@ -58,10 +68,9 @@ public class Enemy_Skeleton : Enemy
         }
         else
         {
+            _destPos = lockTarget.transform.position;
             NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
             nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
-            nma.speed = _stat.MoveSpeed;
-
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
         }
 
@@ -92,6 +101,7 @@ public class Enemy_Skeleton : Enemy
         //체력
         if (lockTarget != null)
         {
+            if (State == Define.State.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
