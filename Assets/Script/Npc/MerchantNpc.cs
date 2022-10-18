@@ -12,14 +12,60 @@ public class MerchantNpc : Npc
     // 판매 아이템 목록
     [SerializeField]
     public ItemData[] itemDatas = new ItemData[12];
-    Inventory inventory;
+    //Inventory inventory;
 
+    public List<Item> itemList = new List<Item>();
 
     public override void Awake()
     {
         Init();
+        itemListInit();
     }
 
+    public void Start()
+    {
+        //inventory = this.gameObject.GetOrAddComponent<Inventory>();
+        ////inventory.SetInventoryUI(_UI_Shop);
+        //foreach (ItemData data in itemDatas)
+        //{
+        //    CountableItemData cid = data as CountableItemData;
+        //    if (cid != null)
+        //        inventory.Add(cid, cid.MaxAmount);
+        //    else
+        //        inventory.Add(data, 1);
+        //}
+
+        foreach(ItemData itemData in itemDatas)
+        {
+            itemList.Add(itemData.CreatItem());
+        }
+    }
+
+    private void itemListInit()
+    {
+        // 판매 아이템 목록
+
+        int count = 0;
+        string armor = "Prefabs/Item/Armor/Item_Armor_";
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(armor + "Armor");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(armor + "Helmet");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(armor + "Pants");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(armor + "Shoes");
+
+        string etc = "Prefabs/Item/ETC/Item_Etc_";
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(etc + "Arrow");
+
+        string potion = "Prefabs/Item/Potion/Item_Potion_";
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(potion + "Both");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(potion + "HP");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(potion + "MP");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(potion + "Speed");
+
+        string weapon = "Prefabs/Item/Weapon/Item_Weapon_";
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(weapon + "Axe");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(weapon + "Bow");
+        itemDatas[count++] = Managers.Resource.Load<ItemData>(weapon + "Wand");
+    }
 
     public override void Init()
     {

@@ -42,6 +42,12 @@ public class Inventory : MonoBehaviour
 
 
     /* Methods */
+    public void Init()
+    {
+        _items = new Item[_maxCapacity];
+        Capacity = _initialCapacity;
+    }
+
     private void Awake()
     {
         _items = new Item[_maxCapacity];
