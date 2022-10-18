@@ -6,14 +6,11 @@ using UnityEngine.AI;
 public class Enemy_Skeleton : Enemy
 {
     //enemyController1은 대기하다가 추적 사정거리 안에 player가 들어오면 무빙하여 attack
-    Stat _stat;
     [SerializeField] float _scanRange = 10;  //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
-    public override void Init()
+    protected override void Init()
     {
-        _stat = gameObject.GetComponent<Stat>();
-
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);

@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class Enemy2 : Enemy
 {
     //boss
-    Stat _stat;
     
     [SerializeField] float _scanRange = 50;   //사정거리
     [SerializeField] float _attachRange = 40;  //적 공격 사정거리
@@ -21,15 +20,15 @@ public class Enemy2 : Enemy
 
     Material mat;
     private int probability = 0;
-    
 
-    public override void Init()
+
+    protected override void Init()
     {
+        base.Init();
+
         WorldObjectType = Define.WorldObject.Monster;
 
         // 스탯
-        _stat = gameObject.GetComponent<Stat>();
-
         // 디폴트 애니메이션 
         State = Define.State.Idle;
         _stat.Hp = 300;
