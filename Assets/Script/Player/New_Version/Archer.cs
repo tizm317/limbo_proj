@@ -9,10 +9,7 @@ public class Archer : Player
     {
         job = "Archer";
         Arrow = Resources.Load<GameObject>("Prefabs/Arrow");
-        if(GameObject.Find("Indicator") == null)
-            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
-        Indicator.name = "Indicator";
-        Indicator.SetActive(false);
+        
         attackRange = 15f;
         cool_max[0] = 1f;
         cool_max[1] = 1f;

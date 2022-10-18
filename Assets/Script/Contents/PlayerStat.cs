@@ -11,6 +11,7 @@ public class PlayerStat : Stat
     [SerializeField] protected float _next_level_up;
     [SerializeField] protected float _regeneration;
     [SerializeField] protected float _mana;
+    [SerializeField] protected float _max_mana;
     [SerializeField] protected float _mana_regeneration;
     public int Exp { get { return _exp; } set { _exp = value; } }
     public int Gold { get { return _gold; } set { _gold = value; } }
@@ -19,11 +20,13 @@ public class PlayerStat : Stat
     public float next_level_up {get {return _next_level_up; } set { _next_level_up = value; }}
     public float Regeneration { get { return _regeneration; } set { _regeneration = value; }}
     public float Mana { get { return _mana; } set { _mana = value; }}
+    public float MaxMana{ get { return _max_mana; } set { _max_mana = value; } }
     public float Mana_Regeneration { get { return _mana_regeneration; } set { _mana_regeneration = value; }}
     public int STR,DEX,INT,LUC;
     public int Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
     float time;
+
     private void Start()
     {
         _level = 1;
@@ -38,15 +41,14 @@ public class PlayerStat : Stat
         HP_bar = GameObject.Find("Filler").GetComponent<Image>();
         Level_Update();
         time = 0;
+        STR = 5;
     }
 
     void Update()
     {
-        if(HP_bar != null)
-            HP_Update();
+        HP_Update();
         Level_Update();
     }
-
 
     void OnCollisionEnter(Collision collision)
     {
@@ -56,12 +58,11 @@ public class PlayerStat : Stat
 
     void HP_Update()
     {
-        HP_bar.fillAmount = _hp/MaxHp;
         time += Time.deltaTime;
         if(_hp < 0)
         {
-            Player_State ps = gameObject.GetComponent<Player_State>();
-            ps.curState = Player_State.State.STATE_DIE;
+            Player ps = GameObject.FindObjectOfType<Player>();
+            ps.curState = Player.State.STATE_DIE;
             ps.Ani_State_Change();
         }
         else if(_hp > MaxHp)
@@ -95,12 +96,14 @@ public class PlayerStat : Stat
 
     void Stat_Update()
     {
-        Hp  = (Level * STR + Item_Hp + 100) * (1 + Item_Hp_percent);
+        MaxHp  = (Level * STR + Item_Hp + 100) * (1 + Item_Hp_percent);
+        Hp = MaxHp;
         Regeneration = (Level * STR + Item_Regeneration + 1) * 0.01f;
         Attack = ((0.5f * Level * STR) + Item_Attack) * (1 + Item_Attack_percent)+20;
         MoveSpeed = 4 + (1 / 40) * (DEX -20) + Item_MoveSpeed;
         AttackSpeed = 2.6f - (1 / 50) * (DEX - 20) - Item_AttackSpeed;
-        Mana = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent);
+        MaxMana = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent);
+        Mana = MaxMana;
         Mana_Regeneration = 0.5f * ((Level * INT) * 0.1f + Item_Regeneration + 1) * (1 + Item_Mana_Regeneration_percent);
     }
 
