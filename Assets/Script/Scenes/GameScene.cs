@@ -69,10 +69,8 @@ public class GameScene : BaseScene
 
     protected override void Init()
     {
-        // �ʱ�ȭ
         base.Init();
 
-        // ��Ÿ�� ����
         SceneType = Define.Scene.InGame;
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
@@ -87,11 +85,7 @@ public class GameScene : BaseScene
         // InGame Scene BGM ����
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
-        // Ǯ�Ŵ��� �׽�Ʈ
-        List<GameObject> list = new List<GameObject>();
-
-        //for (int i = 0; i < 2; i++)
-        //    list.Add(Managers.Resource.Instantiate("Enemy_Skeleton"));
+        //List<GameObject> list = new List<GameObject>();
 
         //for (int i = 0; i < 5; i++)
         //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
@@ -99,11 +93,14 @@ public class GameScene : BaseScene
 
         //Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
 
-        
         GameObject go = new GameObject { name = "SpawningPool" };
         SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
         pool.SetKeepMonsterCount(2);
 
+        //List<GameObject> list = new List<GameObject>();
+        //for (int i = 0; i < 2; i++)
+        //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
+        
         /*
         void OnCollisionEnter(Collision collision)
         {

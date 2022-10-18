@@ -10,6 +10,8 @@ public class GameManagerEx
 
     public Action<int> OnSpawnEvent;
     public GameObject GetPlayer() { return _player; }
+
+    //몬스터 생성
     public GameObject Spawn(Define.WorldObject type, string path, Transform parent = null)
     {
         GameObject go = Managers.Resource.Instantiate(path, parent);
@@ -19,9 +21,7 @@ public class GameManagerEx
             case Define.WorldObject.Monster:
                 _monsters.Add(go);
                 if(OnSpawnEvent != null)
-                {
                     OnSpawnEvent.Invoke(1);
-                }
                 break;
         }
         return go;
@@ -38,6 +38,7 @@ public class GameManagerEx
         return enemy.WorldObjectType;
     }
 
+    //몬스터 삭제
     public void Despawn(GameObject go)
     {
         Define.WorldObject type = GetWorldObjectType(go);
@@ -50,9 +51,7 @@ public class GameManagerEx
                     {
                         _monsters.Remove(go);
                         if(OnSpawnEvent!=null)
-                        {
                             OnSpawnEvent.Invoke(-1);
-                        }
                     }
                     break;
                 }

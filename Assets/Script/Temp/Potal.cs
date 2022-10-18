@@ -8,6 +8,6 @@ public class Potal : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.name == "Player")
-            Managers.Scene.LoadScene(Define.Scene.Village);
+            Managers.Scene.LoadScene(Define.Scene.InGame_Boss);
     }
 }
