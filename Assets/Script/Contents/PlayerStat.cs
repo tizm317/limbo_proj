@@ -15,9 +15,9 @@ public class PlayerStat : Stat
     [SerializeField] protected float _mana_regeneration;
     public int Exp { get { return _exp; } set { _exp = value; } }
     public int Gold { get { return _gold; } set { _gold = value; } }
-    private Image HP_bar;
     private bool level_up = true;
     public float next_level_up {get {return _next_level_up; } set { _next_level_up = value; }}
+    public float current_exp;
     public float Regeneration { get { return _regeneration; } set { _regeneration = value; }}
     public float Mana { get { return _mana; } set { _mana = value; }}
     public float MaxMana{ get { return _max_mana; } set { _max_mana = value; } }
@@ -27,7 +27,7 @@ public class PlayerStat : Stat
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
     float time;
 
-    private void Start()
+    void Start()
     {
         _level = 1;
         _hp = 100;
@@ -38,7 +38,6 @@ public class PlayerStat : Stat
         _turnSpeed = 20.0f;
         _exp = 0;
         _gold = 0;
-        HP_bar = GameObject.Find("Filler").GetComponent<Image>();
         Level_Update();
         time = 0;
         STR = 5;
@@ -78,19 +77,20 @@ public class PlayerStat : Stat
 
     void Level_Update()
     {
+        if(level_up)
+        {
+            level_up = false;
+            current_exp = next_level_up;
+            if(Level < 17)
+                next_level_up = (Level) * (Level) + 6 *(Level);
+            else
+                next_level_up = (2.5f * (Level+1) * (Level+1)) - (40.5f * (Level+1)) + 360f;
+        }
         if(Exp >= next_level_up)
         {
             Level++;
             level_up = true;
             Stat_Update();
-        }
-        if(level_up)
-        {
-            level_up = false;
-            if(Level < 17)
-                next_level_up = (Level) * (Level) + 6 *(Level);
-            else
-                next_level_up = (2.5f * (Level+1) * (Level+1)) - (40.5f * (Level+1)) + 360f;
         }
     }
 

@@ -335,7 +335,12 @@ public abstract class Player : MonoBehaviour
     #region 공격
     public virtual void Attack()//공격 함수 조건부
     {
-        if (my_enemy == null) return;
+        if (my_enemy == null) 
+        {
+            curState = State.STATE_IDLE;
+            Ani_State_Change();
+            return;
+        }
         if(Vector3.Distance(player.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
