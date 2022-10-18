@@ -39,6 +39,7 @@ public class PlayerStat : Stat
         _exp = 0;
         _gold = 0;
         Level_Update();
+        Stat_Update();
         time = 0;
         STR = 5;
     }
