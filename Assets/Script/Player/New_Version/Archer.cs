@@ -52,7 +52,7 @@ public class Archer : Player
             Ani_State_Change();
             player.transform.right = -(my_enemy.transform.position - player.transform.position).normalized;
             ani.SetFloat("AttackSpeed",attack_speed);
-            yield return new WaitForSeconds((5f - 0.6f)/attack_speed);//공격 애니메이션 시간
+            yield return new WaitForSeconds(3.8f/attack_speed);//공격 애니메이션 시간
             
             if(my_enemy != null)
             {
@@ -284,7 +284,7 @@ public class Archer : Player
                 curState = State.STATE_SKILL;
                 skill = HotKey.R;
                 Ani_State_Change();
-                yield return new WaitForSeconds(4.4f);
+                yield return new WaitForSeconds(3.8f);
                 GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
                 temp.transform.position = player.transform.position;
                 Vector3 dir = -player.transform.right;
