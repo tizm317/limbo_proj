@@ -39,6 +39,20 @@ public class MerchantNpc : Npc
         {
             itemList.Add(itemData.CreatItem());
         }
+
+        //UpdateAccessibleStatesAll();
+    }
+
+    // ShopUI에서 호출
+    public void SetInventoryUI(UI_Shop shopUI)
+    {
+        _UI_Shop = shopUI;
+    }
+
+    // 모든 슬롯 UI에 접근 가능 여부 업데이트
+    public void UpdateAccessibleStatesAll()
+    {
+        _UI_Shop.SetAccessibleSlotRange(14);
     }
 
     private void itemListInit()
@@ -65,6 +79,63 @@ public class MerchantNpc : Npc
         itemDatas[count++] = Managers.Resource.Load<ItemData>(weapon + "Axe");
         itemDatas[count++] = Managers.Resource.Load<ItemData>(weapon + "Bow");
         itemDatas[count++] = Managers.Resource.Load<ItemData>(weapon + "Wand");
+    }
+
+    public void UpdateAllSlots()
+    {
+        for (int i = 0; i < itemList.Count; i++)
+            UpdateSlot(i);
+    }
+
+    // 해당하는 인덱스의 슬롯 상태 및 UI 업데이트
+    public void UpdateSlot(int idx)
+    {
+        //if (!IsValidIndex(idx)) return;
+
+        //Item item = _items[idx];
+        Item item = itemList[idx];
+
+        // 1. 아이템이 슬롯에 존재하는 경우
+        if (item != null)
+        {
+            // 아이콘 등록
+            //_UI_inventory.SetItemIcon(idx, item.Data.IconSprite);
+            _UI_Shop.SetItemIcon(idx, item.Data.IconSprite);
+
+            _UI_Shop.SetItemName(idx, item.Data.Name);
+            _UI_Shop.SetItemPrice(idx, item.Data.Price);
+
+            // 1.1 셀 수 있는 아이템
+            if (item is CountableItem ci)
+            {
+                // 1.1.1 수량이 0인 경우, 아이템 제거
+                if (ci.IsEmpty)
+                {
+                    itemList[idx] = null;
+                    RemoveIcon();
+                    return;
+                }
+                else // 1.1.2 수량 텍스트 표시
+                {
+                    _UI_Shop.SetItemAmountText(idx, ci.Amount);
+                }
+            }
+            else // 1.2 셀 수 없는 아이템, 수량 텍스트 제거
+            {
+                _UI_Shop.HideItemAmountText(idx);
+            }
+        }
+        else // 2. 빈 슬롯, 아이템 제거
+        {
+            RemoveIcon();
+        }
+
+        // local : 아이템 제거
+        void RemoveIcon()
+        {
+            _UI_Shop.RemoveItem(idx);
+            _UI_Shop.HideItemAmountText(idx);
+        }
     }
 
     public override void Init()
@@ -96,6 +167,8 @@ public class MerchantNpc : Npc
         // Shop UI
         _UI_Shop = Managers.UI.ShowPopupUI<UI_Shop>();
         _UI_Shop.getNpcInfo(this);
+
+        UpdateAllSlots();
 
         // Inventory UI
         _UI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
