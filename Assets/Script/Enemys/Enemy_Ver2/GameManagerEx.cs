@@ -15,8 +15,7 @@ public class GameManagerEx
     public GameObject Spawn(Define.WorldObject type, string path, Transform parent = null)
     {
         GameObject go = Managers.Resource.Instantiate(path, parent);
-
-        switch(type)
+        switch (type)
         {
             case Define.WorldObject.Monster:
                 _monsters.Add(go);
@@ -43,15 +42,15 @@ public class GameManagerEx
     {
         Define.WorldObject type = GetWorldObjectType(go);
 
-        switch(type)
+        switch (type)
         {
             case Define.WorldObject.Monster:
                 {
-                    if(_monsters.Contains(go))
+                    if (_monsters.Contains(go))
                     {
-                        _monsters.Remove(go);
-                        if(OnSpawnEvent!=null)
+                        if (OnSpawnEvent != null)
                             OnSpawnEvent.Invoke(-1);
+                        _monsters.Remove(go);
                     }
                     break;
                 }

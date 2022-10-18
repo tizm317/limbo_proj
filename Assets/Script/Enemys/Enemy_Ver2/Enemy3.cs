@@ -7,7 +7,7 @@ public class Enemy3 : Enemy
 {
 
     //원거리 공격 스킬 추가 구현
-    Stat _stat;
+    
 
     [SerializeField] float _scanRange = 10;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
@@ -26,12 +26,14 @@ public class Enemy3 : Enemy
     private float TimeLeft = 5.0f;
     private float nextTime = 0.0f;
 
-    public override void Init()
+    protected override void Init()
     {
+        base.Init();
+
         WorldObjectType = Define.WorldObject.Monster;
 
         // 스탯
-        _stat = gameObject.GetComponent<Stat>();
+        
 
         // 디폴트 애니메이션 
         State = Define.State.Moving;
@@ -66,6 +68,7 @@ public class Enemy3 : Enemy
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+
         _stat.MoveSpeed = 1.5f;
         nma.speed = _stat.MoveSpeed;
 

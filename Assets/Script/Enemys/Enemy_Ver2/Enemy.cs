@@ -7,6 +7,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Vector3 _destPos;  //타켓 위치
     [SerializeField] protected Define.State state = Define.State.Moving;  //상태 초기값 
     [SerializeField] protected GameObject lockTarget;  //타켓
+    protected Stat _stat;
 
     public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown; 
     public virtual Define.State State
@@ -41,7 +42,7 @@ public abstract class Enemy : MonoBehaviour
 
     void Start()
     {
-        Init();
+        //Init();
 
     }
 
@@ -69,7 +70,11 @@ public abstract class Enemy : MonoBehaviour
                 break;
         }
     }
-    public abstract void Init();
+    protected virtual void Init()
+    {
+        _stat = gameObject.GetComponent<Stat>();
+        _stat.Hp = 100;
+    }
 
     protected virtual void UpdateIdle()
     {
