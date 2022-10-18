@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Enemy1 : Enemy
 {
-    Stat _stat;
 
     [SerializeField] float _scanRange = 8;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
@@ -18,12 +17,23 @@ public class Enemy1 : Enemy
     private Transform tr;  //enemy 위치
     private Transform playerTr; //player 위치
 
-    public override void Init()
+    private void Start()
     {
+        Init();
+    }
+
+    private void OnEnable()
+    {
+        Init();
+    }
+
+    protected override void Init()
+    {
+        base.Init();
+
         WorldObjectType = Define.WorldObject.Monster;
 
         // 스탯
-        _stat = gameObject.GetComponent<Stat>();
             
         // 디폴트 애니메이션 
         State = Define.State.Moving;
@@ -153,7 +163,7 @@ public class Enemy1 : Enemy
     {
         if (lockTarget != null)
         {
-            
+            if (State == Define.State.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
             /*
@@ -190,6 +200,7 @@ public class Enemy1 : Enemy
     }
     IEnumerator Attack()
     {
+
         State = Define.State.Idle;
 
         yield return new WaitForSeconds(1.0f);
