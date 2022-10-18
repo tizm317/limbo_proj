@@ -119,7 +119,7 @@ public class UI_InGame : UI_Scene
         Hp = temp.transform.GetChild(0).transform.Find("Fill").gameObject;
         Hp_text = temp.transform.GetChild(0).transform.Find("Text Group").gameObject.transform.GetChild(1).GetComponent<Text>();
         Mp = temp.transform.GetChild(1).transform.Find("Fill").gameObject;
-        Hp_text = temp.transform.GetChild(1).transform.Find("Text Group").gameObject.transform.GetChild(1).GetComponent<Text>();
+        Mp_text = temp.transform.GetChild(1).transform.Find("Text Group").gameObject.transform.GetChild(1).GetComponent<Text>();
         //아바타 이미지 넣을거면 여기다 추가!
         Level = temp.transform.GetChild(3).transform.Find("Text").gameObject;
         Role = temp.transform.GetChild(4).gameObject;
