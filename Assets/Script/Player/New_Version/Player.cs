@@ -335,6 +335,7 @@ public abstract class Player : MonoBehaviour
     #region 공격
     public virtual void Attack()//공격 함수 조건부
     {
+        if (my_enemy == null) return;
         if(Vector3.Distance(player.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
@@ -364,12 +365,16 @@ public abstract class Player : MonoBehaviour
             player.transform.LookAt(my_enemy.transform);
             yield return new WaitForSeconds(0.867f);//공격 애니메이션 시간
             //my_enemy_stat.Hp -= damage;
-            my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
-            if (my_enemy_stat.Hp <= 0)//적 체력이 0보다 작거나 같다면
+            if(my_enemy != null)
             {
-                my_enemy = null;
-                //Managers.Resource.Destroy(my_enemy);
+                my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
+                if (my_enemy_stat.Hp <= 0)//적 체력이 0보다 작거나 같다면
+                {
+                    my_enemy = null;
+                    //Managers.Resource.Destroy(my_enemy);
+                }
             }
+
             curState = State.STATE_IDLE;
             Ani_State_Change();
             yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
