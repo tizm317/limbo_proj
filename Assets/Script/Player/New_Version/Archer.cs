@@ -81,7 +81,7 @@ public class Archer : Player
 
     public override void E()
     {
-        
+        StartCoroutine(Archer_E());
     }
 
     public override void R()
@@ -91,7 +91,7 @@ public class Archer : Player
 
     public override void Passive()
     {
-        
+        StartCoroutine(Passive());
     }
 
     IEnumerator Archer_Q()
@@ -214,5 +214,14 @@ public class Archer : Player
         }
         pos_selected = false;
         canceled = false;
+    }
+
+    IEnumerator Passive()
+    {
+        if(my_stat.level_up)
+        {
+            attackRange = 15 + my_stat.Level * 0.75f;
+        }
+        yield return new WaitForEndOfFrame();
     }
 }

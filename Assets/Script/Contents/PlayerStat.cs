@@ -15,7 +15,7 @@ public class PlayerStat : Stat
     [SerializeField] protected float _mana_regeneration;
     public int Exp { get { return _exp; } set { _exp = value; } }
     public int Gold { get { return _gold; } set { _gold = value; } }
-    private bool level_up = true;
+    public bool level_up = true;
     public float next_level_up {get {return _next_level_up; } set { _next_level_up = value; }}
     public float current_exp;
     public float Regeneration { get { return _regeneration; } set { _regeneration = value; }}
@@ -38,10 +38,6 @@ public class PlayerStat : Stat
         _turnSpeed = 20.0f;
         _exp = 0;
         _gold = 0;
-<<<<<<< HEAD
-=======
-        HP_bar = GameObject.Find("Fill").GetComponent<Image>();
->>>>>>> 7aaf810b61289cdbc68ec6f4f6c223690e4fd660
         Level_Update();
         time = 0;
         STR = 5;
