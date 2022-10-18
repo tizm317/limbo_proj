@@ -47,7 +47,13 @@ public class UI_InGame : UI_Scene
     //Player_Controller player;
     //Player_State player;
     Player player;
+    PlayerStat ps;
 
+    #region UI업데이트
+    GameObject Role;
+    Image Hp, Mp,Exp_Left, Exp_Right;
+    Text Level, Hp_text, Mp_text;
+    #endregion
     enum Buttons
     {
     }
@@ -66,6 +72,11 @@ public class UI_InGame : UI_Scene
     private void Start()
     {
         Init();
+    }
+
+    private void Update()
+    {
+        UI_Update();
     }
 
     public override void Init()
@@ -99,7 +110,65 @@ public class UI_InGame : UI_Scene
         #endregion
 
         emoticon = GameObject.Find("@UI_Root").GetComponentInChildren<UI_Emoticon>();
+        UI_Init();
+    }
 
+    void UI_Init()//UI적용에 사용할 오브젝트 찾기용
+    {
+        ps = player.GetPlayer().GetComponent<PlayerStat>();
+        GameObject temp = gameObject.transform.GetChild(0).gameObject;
+        
+        Hp = temp.transform.GetChild(0).transform.Find("Fill").gameObject.GetComponent<Image>();
+        Hp_text = temp.transform.GetChild(0).transform.Find("Text Group").gameObject.transform.GetChild(0).GetComponent<Text>();
+        Mp = temp.transform.GetChild(1).transform.Find("Fill").gameObject.GetComponent<Image>();
+        Mp_text = temp.transform.GetChild(1).transform.Find("Text Group").gameObject.transform.GetChild(0).GetComponent<Text>();
+      
+        //아바타 이미지 넣을거면 여기다 추가!
+        Level = temp.transform.GetChild(3).transform.Find("Text").gameObject.GetComponent<Text>();
+        Role = temp.transform.GetChild(4).gameObject;
+        int Case = (int)GameObject.Find("@Scene").GetComponent<PlayerMgr>().job;
+        switch(Case)
+        {
+            case 0:
+                Role.transform.GetChild(0).gameObject.SetActive(false);
+                Role.transform.GetChild(1).gameObject.SetActive(false);
+                Role.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            case 1:
+                Role.transform.GetChild(0).gameObject.SetActive(false);
+                Role.transform.GetChild(1).gameObject.SetActive(true);
+                Role.transform.GetChild(2).gameObject.SetActive(false);
+                break;
+            case 2:
+                Role.transform.GetChild(0).gameObject.SetActive(true);
+                Role.transform.GetChild(1).gameObject.SetActive(false);
+                Role.transform.GetChild(2).gameObject.SetActive(false);
+                break;
+        }
+        temp = gameObject.transform.GetChild(1).gameObject;
+        Exp_Left = temp.transform.Find("XP Bar").gameObject.transform.GetChild(0).gameObject.GetComponent<Image>();
+        Exp_Right = temp.transform.Find("XP Bar").gameObject.transform.GetChild(1).gameObject.GetComponent<Image>();
+        //여기에 경험치 채우는 거 구현(근데 왜 2개로 나눠져있지??)
+    }
+
+    void UI_Update()
+    {
+        Hp.fillAmount = Mathf.Lerp(Hp.fillAmount, ps.Hp/ps.MaxHp, 0.1f);
+        Hp_text.text = ((int)(ps.Hp/ps.MaxHp) * 100).ToString();
+        Mp.fillAmount = Mathf.Lerp(Mp.fillAmount, ps.Mana/ps.MaxMana, 0.1f);
+        Mp_text.text = ((int)(ps.Mana/ps.MaxMana) * 100).ToString();
+        Level.text = ps.Level.ToString();
+        float rate = (ps.Exp - ps.current_exp)/(ps.next_level_up - ps.current_exp);
+        if(rate <= 0.5)
+        {
+            Exp_Left.fillAmount = Mathf.Lerp(Exp_Left.fillAmount,rate * 2f ,0.1f);
+            Exp_Right.fillAmount = 0;
+        }
+        else
+        {
+            Exp_Left.fillAmount = 1;
+            Exp_Right.fillAmount = Mathf.Lerp(Exp_Right.fillAmount,(rate - 0.5f) * 2f, 0.1f);
+        }
     }
 
     private void OnApplicationQuit()

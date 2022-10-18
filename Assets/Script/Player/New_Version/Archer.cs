@@ -9,10 +9,7 @@ public class Archer : Player
     {
         job = "Archer";
         Arrow = Resources.Load<GameObject>("Prefabs/Arrow");
-        if(GameObject.Find("Indicator") == null)
-            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
-        Indicator.name = "Indicator";
-        Indicator.SetActive(false);
+        
         attackRange = 15f;
         cool_max[0] = 1f;
         cool_max[1] = 1f;
@@ -84,7 +81,7 @@ public class Archer : Player
 
     public override void E()
     {
-        
+        StartCoroutine(Archer_E());
     }
 
     public override void R()
@@ -94,7 +91,7 @@ public class Archer : Player
 
     public override void Passive()
     {
-        
+        StartCoroutine(Passive());
     }
 
     IEnumerator Archer_Q()
@@ -217,5 +214,14 @@ public class Archer : Player
         }
         pos_selected = false;
         canceled = false;
+    }
+
+    IEnumerator Passive()
+    {
+        if(my_stat.level_up)
+        {
+            attackRange = 15 + my_stat.Level * 0.75f;
+        }
+        yield return new WaitForEndOfFrame();
     }
 }

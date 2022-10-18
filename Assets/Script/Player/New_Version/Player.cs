@@ -89,7 +89,8 @@ public abstract class Player : MonoBehaviour
 
     #region 스킬 및 공격 관련
 
-    protected GameObject Indicator;//인디케이터 오브젝트
+    protected GameObject ArrowIndicator;//인디케이터 오브젝트
+    protected GameObject CircleIndicator;
     protected bool canceled = false;
     protected bool pos_selected = false;
     protected bool attackable = true;
@@ -200,6 +201,7 @@ public abstract class Player : MonoBehaviour
         my_stat = player.GetComponent<PlayerStat>();
     
         Enemy_Update();
+        GetIndicator();
 
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
@@ -214,6 +216,19 @@ public abstract class Player : MonoBehaviour
 
         // 미니맵
         ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>(); 
+    }
+
+    void GetIndicator()
+    {
+        if(GameObject.Find("ArrowIndicator") == null)
+            ArrowIndicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
+        ArrowIndicator.name = "ArrowIndicator";
+        ArrowIndicator.SetActive(false);
+
+        if(GameObject.Find("CircleIndicator") == null)
+            CircleIndicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CircleIndicator_modified"));
+        CircleIndicator.name = "CircleIndicator";
+        CircleIndicator.SetActive(false);
     }
 
     public void SetPlayer(GameObject g)
@@ -320,8 +335,12 @@ public abstract class Player : MonoBehaviour
     #region 공격
     public virtual void Attack()//공격 함수 조건부
     {
-        if (my_enemy == null) return;
-
+        if (my_enemy == null) 
+        {
+            curState = State.STATE_IDLE;
+            Ani_State_Change();
+            return;
+        }
         if(Vector3.Distance(player.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
@@ -351,7 +370,7 @@ public abstract class Player : MonoBehaviour
             player.transform.LookAt(my_enemy.transform);
             yield return new WaitForSeconds(0.867f);//공격 애니메이션 시간
             //my_enemy_stat.Hp -= damage;
-            if (my_enemy != null)
+            if(my_enemy != null)
             {
                 my_enemy_stat.OnAttacked(my_stat);  //stat 스크립트에 hp 함수 만듬
                 if (my_enemy_stat.Hp <= 0)//적 체력이 0보다 작거나 같다면
@@ -360,7 +379,7 @@ public abstract class Player : MonoBehaviour
                     //Managers.Resource.Destroy(my_enemy);
                 }
             }
-            
+
             curState = State.STATE_IDLE;
             Ani_State_Change();
             yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
@@ -457,19 +476,19 @@ public abstract class Player : MonoBehaviour
 
     protected IEnumerator Show_CircleIndicator(bool body, float rad, float range)
     {
-        Indicator.SetActive(true);
-        Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
+        CircleIndicator.SetActive(true);
+        CircleIndicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
         float _range = range * 2;
-        Indicator.transform.localScale = new Vector3(_range,_range,_range);
+        CircleIndicator.transform.localScale = new Vector3(_range,_range,_range);
         if(body)
         {
             while(!pos_selected && !canceled)
             {
                 RaycastHit hit;
                 bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
-                Indicator.transform.position = new Vector3(player.transform.position.x,1.1f,player.transform.position.z);
+                CircleIndicator.transform.position = new Vector3(player.transform.position.x,1.1f,player.transform.position.z);
                 if(raycastHit)
-                    Indicator.transform.rotation = Quaternion.Euler(new Vector3(90f, -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
+                    CircleIndicator.transform.rotation = Quaternion.Euler(new Vector3(90f, -Mathf.Atan2(hit.point.z - CircleIndicator.transform.position.z, hit.point.x - CircleIndicator.transform.position.x) * Mathf.Rad2Deg, 180f));
                 //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
                 yield return new WaitForEndOfFrame();
             }   
@@ -481,24 +500,24 @@ public abstract class Player : MonoBehaviour
                 RaycastHit hit;
                 bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
                 if(raycastHit)
-                    Indicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
+                    CircleIndicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
                 yield return new WaitForEndOfFrame();
             }  
         }
-        Indicator.SetActive(false);
+        CircleIndicator.SetActive(false);
     }
 
     protected IEnumerator Show_ArrowIndicator(bool single, float range)
     {
-        Indicator.SetActive(true);
-        Indicator.GetComponent<MeshRenderer>().sharedMaterial.SetTextureOffset("_MainTex",new Vector2(0,-range));
+        ArrowIndicator.SetActive(true);
+        ArrowIndicator.GetComponent<MeshRenderer>().sharedMaterial.SetTextureOffset("_MainTex",new Vector2(0,-range));
         if(single)
         {
             GameObject temp = new GameObject();
             temp.name = "Body";
-            Indicator.transform.SetParent(temp.transform);
-            Indicator.transform.localPosition = new Vector3(0,1,0);
-            Indicator.transform.localRotation = Quaternion.Euler(new Vector3(0,0,0));
+            ArrowIndicator.transform.SetParent(temp.transform);
+            ArrowIndicator.transform.localPosition = new Vector3(0,1,0);
+            ArrowIndicator.transform.localRotation = Quaternion.Euler(new Vector3(0,0,0));
             while(!pos_selected && !canceled)
             {
                 RaycastHit hit;
@@ -508,7 +527,7 @@ public abstract class Player : MonoBehaviour
         
                 if(raycastHit)
                 {
-                    temp.transform.rotation = Quaternion.Euler(new Vector3(90f, -90f -Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x) * Mathf.Rad2Deg, 180f));
+                    temp.transform.rotation = Quaternion.Euler(new Vector3(90f, -90f -Mathf.Atan2(hit.point.z - ArrowIndicator.transform.position.z, hit.point.x - ArrowIndicator.transform.position.x) * Mathf.Rad2Deg, 180f));
                 }
                 //Debug.LogFormat("Indicator위치 = {0}, hit 위치 = {1}, 두 사이 각도 = {2}",Indicator.transform.position, hit.point, Mathf.Atan2(hit.point.z - Indicator.transform.position.z, hit.point.x - Indicator.transform.position.x)*Mathf.Rad2Deg);
                 yield return new WaitForEndOfFrame();
@@ -523,11 +542,11 @@ public abstract class Player : MonoBehaviour
                 RaycastHit hit;
                 bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
                 if(raycastHit)
-                    Indicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
+                    ArrowIndicator.transform.position = new Vector3(hit.point.x, 1.1f, hit.point.z);
                 yield return new WaitForEndOfFrame();
             }  
         }
-        Indicator.SetActive(false);
+        ArrowIndicator.SetActive(false);
     }
 
 #endregion

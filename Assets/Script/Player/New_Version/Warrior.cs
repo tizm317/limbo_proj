@@ -7,10 +7,6 @@ public class Warrior : Player
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
-        if(GameObject.Find("Indicator") == null)
-            Indicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CircleIndicator_modified"));
-        Indicator.name = "Indicator";
-        Indicator.SetActive(false);
         job = "Warrior";
         attackRange = 3f;
         cool_max[0] = 1f;
