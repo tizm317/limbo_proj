@@ -38,6 +38,10 @@ public class PlayerStat : Stat
         _turnSpeed = 20.0f;
         _exp = 0;
         _gold = 0;
+<<<<<<< HEAD
+=======
+        HP_bar = GameObject.Find("Fill").GetComponent<Image>();
+>>>>>>> 7aaf810b61289cdbc68ec6f4f6c223690e4fd660
         Level_Update();
         time = 0;
         STR = 5;

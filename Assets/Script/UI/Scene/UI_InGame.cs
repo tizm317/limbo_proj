@@ -117,10 +117,17 @@ public class UI_InGame : UI_Scene
     {
         ps = player.GetPlayer().GetComponent<PlayerStat>();
         GameObject temp = gameObject.transform.GetChild(0).gameObject;
+<<<<<<< HEAD
         Hp = temp.transform.GetChild(0).transform.Find("Fill").gameObject.GetComponent<Image>();
         Hp_text = temp.transform.GetChild(0).transform.Find("Text Group").gameObject.transform.GetChild(0).GetComponent<Text>();
         Mp = temp.transform.GetChild(1).transform.Find("Fill").gameObject.GetComponent<Image>();
         Mp_text = temp.transform.GetChild(1).transform.Find("Text Group").gameObject.transform.GetChild(0).GetComponent<Text>();
+=======
+        Hp = temp.transform.GetChild(0).transform.Find("Fill").gameObject;
+        Hp_text = temp.transform.GetChild(0).transform.Find("Text Group").gameObject.transform.GetChild(1).GetComponent<Text>();
+        Mp = temp.transform.GetChild(1).transform.Find("Fill").gameObject;
+        Mp_text = temp.transform.GetChild(1).transform.Find("Text Group").gameObject.transform.GetChild(1).GetComponent<Text>();
+>>>>>>> 7aaf810b61289cdbc68ec6f4f6c223690e4fd660
         //아바타 이미지 넣을거면 여기다 추가!
         Level = temp.transform.GetChild(3).transform.Find("Text").gameObject.GetComponent<Text>();
         Role = temp.transform.GetChild(4).gameObject;
