@@ -91,7 +91,7 @@ public class Archer : Player
 
     public override void Passive()
     {
-        StartCoroutine(Passive());
+        //StartCoroutine(Passive());
     }
 
     IEnumerator Archer_Q()
@@ -216,12 +216,12 @@ public class Archer : Player
         canceled = false;
     }
 
-    IEnumerator Passive()
-    {
-        if(my_stat.level_up)
-        {
-            attackRange = 15 + my_stat.Level * 0.75f;
-        }
-        yield return new WaitForEndOfFrame();
-    }
+    //IEnumerator Passive()
+    //{
+    //    if(my_stat.level_up)
+    //    {
+    //        attackRange = 15 + my_stat.Level * 0.75f;
+    //    }
+    //    yield return new WaitForEndOfFrame();
+    //}
 }
