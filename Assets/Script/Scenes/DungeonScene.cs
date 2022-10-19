@@ -16,7 +16,6 @@ public class DungeonScene : BaseScene
 
     protected override void Init()
     {
-        // �ʱ�ȭ
         base.Init();
 
         SceneType = Define.Scene.Dungeon;
@@ -48,6 +47,7 @@ public class DungeonScene : BaseScene
         //
         Managers.NPC.Init();
     }
+
 
     void Update()
     {

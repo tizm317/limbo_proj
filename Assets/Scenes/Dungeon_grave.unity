@@ -613,9 +613,9 @@ GameObject:
   - component: {fileID: 124929397}
   - component: {fileID: 124929396}
   - component: {fileID: 124929395}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: A*
-  m_TagString: Untagged
+  m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4716,6 +4716,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Skeleton (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2443415099472430716, guid: 6449a3acb87c31f4ea555217877aed45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2892485228583897306, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_Enabled
@@ -4779,12 +4784,12 @@ PrefabInstance:
     - target: {fileID: 3867111383678343256, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 3867111383678343256, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6449a3acb87c31f4ea555217877aed45, type: 3}
@@ -5089,6 +5094,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Skeleton (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2443415099472430716, guid: 6449a3acb87c31f4ea555217877aed45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2892485228583897306, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_Enabled
@@ -5152,12 +5162,12 @@ PrefabInstance:
     - target: {fileID: 3867111383678343256, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 3867111383678343256, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6449a3acb87c31f4ea555217877aed45, type: 3}
@@ -8924,6 +8934,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 2443415099472430716, guid: 6449a3acb87c31f4ea555217877aed45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2892485228583897306, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_Enabled
@@ -8987,12 +9002,12 @@ PrefabInstance:
     - target: {fileID: 3867111383678343256, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 3867111383678343256, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6449a3acb87c31f4ea555217877aed45, type: 3}

@@ -31,11 +31,10 @@ public class Enemy2 : Enemy
         // 스탯은 상속받아서 사용 : _stat
         // 디폴트 애니메이션 
         State = Define.State.Idle;
-        _stat.Hp = 300;
 
         // HPBar
-        if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
-            Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+        //if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
+        //    Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
 
         //enemy & player 위치
         tr = GetComponent<Transform>();

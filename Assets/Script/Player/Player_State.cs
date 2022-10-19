@@ -370,12 +370,16 @@ public class Player_State : MonoBehaviour
                     npc = hit.collider.GetComponent<Npc>();
 
                     float dist = Vector3.Distance(gameObject.transform.position, hit.collider.transform.position);
-                    if(dist > audibleDistance)
+                    if (dist > audibleDistance)
                     {
                         // 대화 가능 범위보다 멀리 있는 경우
                         // NPC2Move 로 이동
                         Set_Destination(hit.collider.transform.position);
                         toNpc = true;
+                    }
+                    else if (hit.collider.tag == "GameStarter")
+                    {
+
                     }
                     else
                     {
