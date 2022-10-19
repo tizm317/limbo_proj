@@ -172,10 +172,16 @@ public class MerchantNpc : Npc
 
         // Inventory UI
         _UI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
+
+        // 인벤토리 UI를 거래용으로 씀
+        _UI_Inventory.Trading = true;
     }
 
     public void CloseTradeUI()
     {
+        // 거래용으로 쓰던 인벤토리 UI를 false
+        _UI_Inventory.Trading = false;
+
         // Inventory UI
         _UI_Inventory.ClosePopupUI();
         _UI_Inventory = null;
@@ -183,5 +189,14 @@ public class MerchantNpc : Npc
         // Shop UI
         _UI_Shop.ClosePopupUI();
         _UI_Shop = null;
+    }
+
+    // 해당 슬롯의 아이템 정보 리턴
+    public ItemData GetItemData(int idx)
+    {
+        //if (!IsValidIndex(idx)) return null;
+        if (itemList[idx] == null) return null;
+
+        return itemList[idx].Data;
     }
 }
