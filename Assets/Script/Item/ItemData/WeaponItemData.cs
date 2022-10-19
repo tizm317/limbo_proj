@@ -11,6 +11,10 @@ public class WeaponItemData : EquipmentItemData
     public float Damage => _damage;
     [SerializeField] private float _damage;
 
+    // 어떤 직업 전용인지
+    public string Class => _class;
+    [SerializeField] private string _class;
+
     public override Item CreatItem()
     {
         return new WeaponItem(this);

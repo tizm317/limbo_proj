@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,6 +22,18 @@ public class UI_Equipment : UI_Popup
         Slider,
     }
 
+    enum Buttons
+    {
+        Head,
+        Body,
+        Pants,
+        Shoes,
+        Weapon,
+        EnchantStone1,
+        EnchantStone2,
+        EnchantStone3,
+    }
+
     private void Start()
     {
         Init();
@@ -31,6 +44,7 @@ public class UI_Equipment : UI_Popup
     {
         base.Init();
         Bind<GameObject>(typeof(GameObjects));
+        Bind<Button>(typeof(Buttons));
         GetObject((int)GameObjects.Slider).BindEvent(onSliderDrag, Define.UIEvent.Drag);
 
         Scene = GameObject.Find("@Scene");
@@ -70,5 +84,44 @@ public class UI_Equipment : UI_Popup
     {
         if(selfCam)
             selfCam.gameObject.SetActive(false);
+    }
+
+    internal bool Equip(EquipmentItem equipmentItem)
+    {
+        // 무기
+        if(equipmentItem is WeaponItem weaponItem)
+        {
+            if (player_State.Job != weaponItem.Class)
+            {
+                // 다른 클래스 무기 착용 불가
+                Debug.Log($"You Can't Equip {weaponItem.Class}.");
+                return false;
+            }
+            GetButton((int)Buttons.Weapon).transform.GetChild(0).GetComponent<Image>().sprite = weaponItem.Data.IconSprite;
+        }
+        // 방어구
+        else if(equipmentItem is ArmorItem armorItem)
+        {
+            ArmorItem a =  (ArmorItem)armorItem;
+            int idx = 0;
+            switch(a.Part)
+            {
+                case "Head":
+                    idx = (int)Buttons.Head;
+                    break;
+                case "Body":
+                    idx = (int)Buttons.Body;
+                    break;
+                case "Pants":
+                    idx = (int)Buttons.Pants;
+                    break;
+                case "Shoes":
+                    idx = (int)Buttons.Shoes;
+                    break;
+            }
+            GetButton(idx).transform.GetChild(0).GetComponent<Image>().sprite = armorItem.Data.IconSprite;
+
+        }
+        return true;
     }
 }

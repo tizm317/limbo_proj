@@ -14,6 +14,7 @@ public abstract class EquipmentItem : Item
     public bool IsMax => Durability >= MaxDurability;
     public bool IsEmpty => Durability <= 0;
 
+
     public EquipmentItem(EquipmentItemData data, int durability = 10) : base(data)
     {
         EquipmentData = data;

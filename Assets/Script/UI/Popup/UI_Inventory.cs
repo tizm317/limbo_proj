@@ -33,6 +33,9 @@ public class UI_Inventory : UI_Popup
     Player player_State;
     private GameObject Scene;
 
+    public bool Trading { get { return _isTrading; } set { _isTrading = value; } }
+    bool _isTrading = false;
+
     public void Awake()
     {
         //Scene = GameObject.Find("@Scene");
@@ -85,6 +88,18 @@ public class UI_Inventory : UI_Popup
         // 인벤토리 내 아이템 사이 빈칸 없이 앞에서부터 채우기
         _inventory.trimItems();
     }
+
+    internal void SetMyGolds(uint myGolds)
+    {
+        HorizontalLayoutGroup CurrenciesGroup = transform.GetComponentInChildren<HorizontalLayoutGroup>();
+        Text[] curenciesTexts = CurrenciesGroup.GetComponentsInChildren<Text>();
+
+        // Gold, Silver, Copper Init
+        curenciesTexts[0].text = myGolds.ToString();
+        curenciesTexts[1].text = "0";
+        curenciesTexts[2].text = "0";
+    }
+
 
     public void Quit_Inventory(PointerEventData data)
     {
@@ -180,13 +195,19 @@ public class UI_Inventory : UI_Popup
             }
             else _beginDragSlot = null;
         }
-        else if(Input.GetMouseButtonDown(1)) // left click
+        else if(Input.GetMouseButtonDown(1)) // right click
         {
-            // 아이템 사용
             UI_ItemSlot itemSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
-            if(itemSlot != null && itemSlot.HasItem && itemSlot.IsAccessible)
+            // 판매
+            if (Trading == true)
             {
-                _inventory.Use(itemSlot.Index);
+                if (itemSlot != null && itemSlot.HasItem && itemSlot.IsAccessible)
+                    _inventory.Sell(itemSlot.Index);
+            }
+            else // 아이템 사용
+            {
+                if (itemSlot != null && itemSlot.HasItem && itemSlot.IsAccessible)
+                    _inventory.Use(itemSlot.Index);
             }
         }
     }
@@ -452,5 +473,12 @@ public class UI_Inventory : UI_Popup
     public void RemoveItem(int idx)
     {
         _slotUIList[idx].RemoveItem();
+    }
+
+    internal bool Equip(EquipmentItem equipmentItem)
+    {
+        UI_Equipment _UI_Equipment = transform.parent.GetComponentInChildren<UI_Equipment>();
+        bool success = _UI_Equipment.Equip(equipmentItem);
+        return success;
     }
 }

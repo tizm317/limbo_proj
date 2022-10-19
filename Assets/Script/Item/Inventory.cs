@@ -26,9 +26,21 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private UI_Inventory _UI_inventory;
 
+    public UI_Inventory UI_Inventory => _UI_inventory;
+
     // 아이템 목록
     [SerializeField]
     private Item[] _items;
+
+    // 소유 골드
+    [SerializeField]
+    private uint _MyGolds; // unsigned int
+
+    // 최대 소유 골드
+    [SerializeField, Range(0, uint.MaxValue)]
+    private uint _maxGolds = uint.MaxValue;
+
+    public uint Golds { get { return _MyGolds; }  set { _MyGolds = value; } }
 
     public bool Empty()
     {
@@ -76,6 +88,8 @@ public class Inventory : MonoBehaviour
         //Add(p1.Data, 99);
         //PotionItem p2 = new PotionItem(potionItemData, 1);
         //Add(p2.Data, 30);
+
+        // 아이템
         foreach(ItemData data in itemDatas)
         {
             CountableItemData cid = data as CountableItemData;
@@ -84,6 +98,10 @@ public class Inventory : MonoBehaviour
             else
                 Add(data, 1);
         }
+
+        // 골드
+        _MyGolds = int.MaxValue;
+        _UI_inventory.SetMyGolds(_MyGolds);
     }
 
     //[SerializeField]
@@ -100,6 +118,60 @@ public class Inventory : MonoBehaviour
     {
         UpdateAccessibleStatesAll();
         //Debug.Log(Capacity);
+    }
+
+    public void Buy(ItemData item)
+    {
+        // 소유 금액 -= 아이템 가격
+        if(Golds - item.Price <0)
+        {
+            Debug.Log($"{Golds} < {item.Price}");
+            return;
+        }
+
+        Golds -= item.Price;
+
+        // Golds 갱신
+        UpdateCurrency();
+    }
+
+
+    // 해당 슬롯의 아이템 판매
+    public void Sell(int idx)
+    {
+        if (_items[idx] == null) return;
+
+        // 판매 가능한 아이템일 경우
+        if (_items[idx] is ISellableItem sellableItem)
+        {
+            bool success = sellableItem.Sell();
+            if (success)
+            {
+                // 소유 금액 += 아이템 가격
+                if(Golds + (ulong)_items[idx].Data.Price > uint.MaxValue)
+                {
+                    // 오버 플로우 임시 방편
+                    Debug.Log("Int Overflow");
+                    Debug.Log("You Get Over Max Golds");
+                    Debug.Log("You Can't Get More Golds. Plz Use Golds.");
+                    Golds = uint.MaxValue;
+                }
+                else
+                    Golds += _items[idx].Data.Price;
+
+                // Golds 갱신
+                UpdateCurrency();
+
+                // Equipment Item -> Remove
+                if(sellableItem is EquipmentItem)
+                {
+                    Remove(idx);
+                }
+
+                UpdateSlot(idx);
+            }
+        }
+
     }
 
     internal void trimItems()
@@ -183,6 +255,23 @@ public class Inventory : MonoBehaviour
         if (_items[idx] == null) return "";
 
         return _items[idx].Data.Name;
+    }
+
+    public void UpdateCurrency()
+    {
+        if(Golds >= _maxGolds)
+        {
+            // Max Golds
+            Golds = _maxGolds;
+            Debug.Log("You Have Max Golds");
+            Debug.Log("You Can't Get More Golds. Plz Use Golds.");
+        }
+        else if(Golds < 0)
+        {
+            Golds = 0;
+        }
+
+        _UI_inventory.SetMyGolds(Golds);
     }
 
     // 해당하는 인덱스의 슬롯 상태 및 UI 업데이트
@@ -435,7 +524,30 @@ public class Inventory : MonoBehaviour
         // 사용 가능한 아이템일 경우
         if(_items[idx] is IUsableItem usableItem)
         {
+            // 소모템의 경우 여기서 수량 감소
             bool success = usableItem.Use();
+
+            // 장비 아이템은 착용해야 함
+            if(usableItem is EquipmentItem equipmentItem)
+            {
+                // 1. 장비창 UI로 이동
+                // TODO : 
+                Debug.Log($"{equipmentItem.Data.Name} 착용");
+                bool equipSuccess = _UI_inventory.Equip(equipmentItem);
+
+                // 2. 인벤토리에서 제거
+                if(equipSuccess == true)
+                    Remove(idx);
+            }
+            else // 소모 아이템
+            {
+                // 1. 효과 적용
+                // TODO :
+                Debug.Log($"{_items[idx].Data.Name} 사용");
+
+                // 수량은 위에서 감소 usableItem.Use();
+            }
+
             if (success)
                 UpdateSlot(idx);
         }

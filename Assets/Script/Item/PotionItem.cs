@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionItem : CountableItem, IUsableItem
+public class PotionItem : CountableItem, IUsableItem, ISellableItem
 {
     /* 실제 포션 아이템 클래스 */
-    
+    public PotionItemData potionData { get; private set; }
+
+    public float Value => potionData.Value;
     public PotionItem(PotionItemData data, int amount = 1) : base(data, amount) { }
-    
+
+    public bool Sell()
+    {
+        Amount--;
+
+        return true;
+    }
+
     public bool Use()
     {
         Amount--; // 임시 : 개수 하나 감소

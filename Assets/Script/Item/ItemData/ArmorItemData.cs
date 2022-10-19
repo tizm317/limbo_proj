@@ -11,6 +11,10 @@ public class ArmorItemData : EquipmentItemData
     public float Value => _value;
     [SerializeField] private float _value;
 
+    // 방어 부위
+    public string Part => _part;
+    [SerializeField] private string _part;
+
     public override Item CreatItem()
     {
         return new ArmorItem(this);

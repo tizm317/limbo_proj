@@ -62,6 +62,7 @@ public abstract class Player : MonoBehaviour
     public PlayerStat my_stat;
     protected GameObject player;
     protected string job;
+    public string Job => job;
 
     public enum State
     {
