@@ -597,7 +597,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6179087366025256096}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5570515388861016611
 SkinnedMeshRenderer:
@@ -1372,7 +1372,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6179087366025256096}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8149970991278992876
 SkinnedMeshRenderer:
@@ -1649,7 +1649,7 @@ Transform:
   m_Children:
   - {fileID: 231332936951961448}
   m_Father: {fileID: 6179087366025256096}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7007417046093360166
 SkinnedMeshRenderer:
@@ -1832,7 +1832,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6179087366025256096}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6041006783368228385
 SkinnedMeshRenderer:
@@ -2049,7 +2049,7 @@ Transform:
   - {fileID: 2528001714354113291}
   - {fileID: 2159524550198300583}
   m_Father: {fileID: 6179087366025256096}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6812635155480069658
 GameObject:
@@ -2083,12 +2083,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1842207492009131060}
   - {fileID: 8700100888642449608}
   - {fileID: 2872691219453757540}
   - {fileID: 179170616188375523}
   - {fileID: 5184707365644225795}
   - {fileID: 7629790359116825623}
-  - {fileID: 1842207492009131060}
   - {fileID: 7835435170477130267}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2137,7 +2137,10 @@ MonoBehaviour:
   _next_level_up: 0
   _regeneration: 0
   _mana: 0
+  _max_mana: 0
   _mana_regeneration: 0
+  level_up: 1
+  current_exp: 0
   STR: 0
   DEX: 0
   INT: 0
@@ -2169,9 +2172,25 @@ MonoBehaviour:
   _maxCapacity: 42
   _UI_inventory: {fileID: 286161426470419700, guid: dd2623a390bea594883253e50675ca1f,
     type: 3}
-  weaponItemData: {fileID: 11400000, guid: 2bdc6847198575f4a9fc57c654d558e8, type: 2}
-  armorItemData: {fileID: 11400000, guid: bde564bd06ab6fd4ea6b706c56910326, type: 2}
-  potionItemData: {fileID: 11400000, guid: 881994cd713bc8346951c557c79a2b0a, type: 2}
+  _MyGolds: 0
+  _maxGolds: 4294967295
+  itemDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!54 &6813560670729502522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2918,7 +2937,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6179087366025256096}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6516815066155176427
 SkinnedMeshRenderer:
