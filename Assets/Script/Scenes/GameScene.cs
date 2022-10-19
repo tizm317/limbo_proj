@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class GameScene : BaseScene
 {
-    // 
-
-
-    // ���Ӿ�
-    // ���Ӿ��� ������ ����
-    // @Scene ������Ʈ : ������
-
-    // �ڷ�ƾ ����
     /*
     //class Test
     //{
@@ -38,8 +30,6 @@ public class GameScene : BaseScene
     //            if (i % 10000 == 0)
     //                yield return null; // ����° ������ ��� ����
     //        }
-
-
     //    }
 
     //    void GenerateItem()
@@ -59,11 +49,8 @@ public class GameScene : BaseScene
     UI_Captcha uI_Captcha;
     Coroutine co;
     const float CaptchaDelaySeconds = 3600.0f; // 1hour
-
     void Awake()
     {
-        // cf) Awake : Start ���� ����, ������Ʈ �����־ ������Ʈ�� ��� ������ ����
-        // ���� : ������Ʈ�� ���������� �� ��.
         Init();
     }
 
@@ -85,54 +72,21 @@ public class GameScene : BaseScene
         // InGame Scene BGM ����
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
-        //List<GameObject> list = new List<GameObject>();
-
-        //for (int i = 0; i < 5; i++)
-        //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
-        //Managers.Resource.Instantiate("Enemy_Skeleton");
-
-        //Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
-
         GameObject go = new GameObject { name = "SpawningPool" };
         SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-        pool.SetKeepMonsterCount(2);
+        pool.SetKeepMonsterCount(4);
+
 
         //List<GameObject> list = new List<GameObject>();
-        //for (int i = 0; i < 2; i++)
-        //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
-        
-        /*
-        void OnCollisionEnter(Collision collision)
-        {
-            if(collision.gameObject.name == "Stage1")
-            {
-                GameObject _go = new GameObject { name = "SpawningPool" };
-                SpawningPool _pool = go.GetOrAddComponent<SpawningPool>();
-                pool.SetKeepMonsterCount(2);
-            }
-        }
-        */
-
-        // �ٽ� �ֱ�
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    list.Add(Managers.Resource.Instantiate("Enemy_Wizard"));
+        //}
+            
         //foreach (GameObject obj in list)
+        //{
         //    Managers.Resource.Destroy(obj);
-
-
-        /*
-         * �ڷ�ƾ ����
-           �ڷ�ƾ �׽�Ʈ
-        CoroutineTest test = new CoroutineTest();
-        foreach(System.Object t in test)
-        {
-            // ���⼭ �Ǵ�����
-            Test value = (Test)t;
-            Debug.Log(value.Id);
-        }
-
-        co = StartCoroutine(CoExplodeAfterSeconds(4.0f));
-        StartCoroutine("CoStopExplode", 2.0f);
-        */
-
+        //}
 
         // DataManager test - �ܺο��� ����� ��
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
@@ -140,9 +94,7 @@ public class GameScene : BaseScene
 
         // Ŀ����Ʈ�ѷ� @Scene
         gameObject.GetOrAddComponent<CursorController>();
-        // @Scene���� �ű�
-        //gameObject.GetOrAddComponent<UI_Setting>();
-        //gameObject.GetOrAddComponent<Player_Controller>();
+
 
         // CAPTCHA System
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
@@ -194,7 +146,6 @@ public class GameScene : BaseScene
 
     public override void Clear()
     {
-        // �� ���� ����� �� ������� �ϴ� �κ� �־���� ��
         Debug.Log("InGameScene Clear");
     }
 

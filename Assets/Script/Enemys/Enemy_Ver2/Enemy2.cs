@@ -28,7 +28,7 @@ public class Enemy2 : Enemy
 
         WorldObjectType = Define.WorldObject.Monster;
 
-        // 스탯
+        // 스탯은 상속받아서 사용 : _stat
         // 디폴트 애니메이션 
         State = Define.State.Idle;
         _stat.Hp = 300;

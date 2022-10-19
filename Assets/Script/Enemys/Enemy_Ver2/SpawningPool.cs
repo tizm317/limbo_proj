@@ -44,10 +44,11 @@ public class SpawningPool : MonoBehaviour
         _reserveCount++;
         yield return new WaitForSeconds(Random.Range(0, _spawnTime));
 
-        GameObject obj1 = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+        GameObject obj1 = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
         // _monsterCount를 이 함수에서 늘리지 않아도 GameManagerEx에서 Spawn함수가 실행될 때 Invoke로 _monsterCount를 늘려준다.
         NavMeshAgent nma1 = obj1.GetComponent<NavMeshAgent>();
-
+        GameObject obj2 = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+        NavMeshAgent nma2 = obj1.GetComponent<NavMeshAgent>();
         Vector3 randPos;
 
         //while(true)
@@ -65,6 +66,7 @@ public class SpawningPool : MonoBehaviour
         }
 
         obj1.transform.position = randPos;
+        obj2.transform.position = randPos;
         _reserveCount--;
     }
 }

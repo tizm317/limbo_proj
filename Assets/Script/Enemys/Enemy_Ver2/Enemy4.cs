@@ -15,7 +15,6 @@ public class Enemy4 : Enemy
 
     private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
-    private Transform playerTr; //player 위치
 
     private void Start()
     {
@@ -33,8 +32,8 @@ public class Enemy4 : Enemy
 
         WorldObjectType = Define.WorldObject.Monster;
 
-        // 스탯
-            
+        // 스탯은 상속받아서 사용 : _stat
+
         // 디폴트 애니메이션 
         State = Define.State.Moving;
 
@@ -50,8 +49,6 @@ public class Enemy4 : Enemy
 
         //enemy & player 위치
         tr = GetComponent<Transform>();  
-        playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-
 
     }
 
