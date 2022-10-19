@@ -524,7 +524,28 @@ public class Inventory : MonoBehaviour
         // 사용 가능한 아이템일 경우
         if(_items[idx] is IUsableItem usableItem)
         {
+            // 소모템의 경우 여기서 수량 감소
             bool success = usableItem.Use();
+
+            // 장비 아이템은 착용해야 함
+            if(usableItem is EquipmentItem equipmentItem)
+            {
+                // 1. 장비창 UI로 이동
+                // TODO : 
+                Debug.Log($"{equipmentItem.Data.Name} 착용");
+
+                // 2. 인벤토리에서 제거
+                Remove(idx);
+            }
+            else // 소모 아이템
+            {
+                // 1. 효과 적용
+                // TODO :
+                Debug.Log($"{_items[idx]} 사용");
+
+                // 수량은 위에서 감소 usableItem.Use();
+            }
+
             if (success)
                 UpdateSlot(idx);
         }
