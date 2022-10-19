@@ -4,56 +4,6 @@ using UnityEngine;
 
 public class GameScene1 : BaseScene
 {
-    // 
-
-
-    // ���Ӿ�
-    // ���Ӿ��� ������ ����
-    // @Scene ������Ʈ : ������
-
-    // �ڷ�ƾ ����
-    /*
-    //class Test
-    //{
-    //    public int Id = 0;
-    //}
-
-    //class CoroutineTest : IEnumerable
-    //{
-    //    public IEnumerator GetEnumerator()
-    //    {
-    //        //// return Ÿ�� : System.Object �̶� ���� ���� ����
-    //        //// yield return : �Ͻ�����
-    //        //yield return new Test() { Id = 1 }; 
-    //        ////yield return null; // null �̿��ؼ� ������ �ؿ��� null üũ������ϱ���
-    //        //yield break; // ��¥ �����ϴ¹�, �Ϲ� �Լ������� return;
-
-    //        //// Unreachable
-    //        //yield return new Test() { Id = 2 };
-    //        //yield return new Test() { Id = 3 };
-    //        //yield return new Test() { Id = 4 };
-
-    //        for(int i = 0; i < 1000000; i++)
-    //        {
-    //            if (i % 10000 == 0)
-    //                yield return null; // ����° ������ ��� ����
-    //        }
-
-
-    //    }
-
-    //    void GenerateItem()
-    //    {
-    //        // �������� ������ش�
-    //        // DB ����
-
-    //        // ����
-    //        // ����
-    //    }
-    //}
-
-    Coroutine co; // handle ����
-    */
 
     // CAPTCHA system
     UI_Captcha uI_Captcha;
@@ -97,7 +47,9 @@ public class GameScene1 : BaseScene
         //List<GameObject> list = new List<GameObject>();
         //for (int i = 0; i < 2; i++)
         //    list.Add(Managers.Resource.Instantiate("Enemy_Spider"));
-        
+        GameObject go = new GameObject { name = "SpawningPool" };
+        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+        pool.SetKeepMonsterCount(2);
         /*
         void OnCollisionEnter(Collision collision)
         {

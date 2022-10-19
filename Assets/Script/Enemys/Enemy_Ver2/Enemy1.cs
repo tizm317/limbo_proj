@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Enemy1 : Enemy
 {
 
-    [SerializeField] float _scanRange = 8;   //사정거리
+    [SerializeField] float _scanRange = 20;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
 
     public Transform[] points;  //waypoints 배열
@@ -15,7 +15,7 @@ public class Enemy1 : Enemy
 
     private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
-    private Transform playerTr; //player 위치
+    //private Transform playerTr; //player 위치
 
     private void Start()
     {
@@ -50,7 +50,7 @@ public class Enemy1 : Enemy
 
         //enemy & player 위치
         tr = GetComponent<Transform>();  
-        playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        //playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
 
     }

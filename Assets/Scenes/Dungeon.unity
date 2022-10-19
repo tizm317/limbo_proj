@@ -502,6 +502,8 @@ MonoBehaviour:
   _maxCapacity: 42
   _UI_inventory: {fileID: 286161426470419700, guid: dd2623a390bea594883253e50675ca1f,
     type: 3}
+  _MyGolds: 0
+  _maxGolds: 4294967295
   itemDatas:
   - {fileID: 11400000, guid: bde564bd06ab6fd4ea6b706c56910326, type: 2}
   - {fileID: 11400000, guid: b670ec2282450764fa74c8191dd81391, type: 2}
@@ -1921,6 +1923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 259793234}
+  - component: {fileID: 259793235}
   m_Layer: 8
   m_Name: Fence
   m_TagString: Untagged
@@ -2061,6 +2064,18 @@ Transform:
   m_Father: {fileID: 1771887201}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &259793235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259793233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ccb4d73b7a6ac48b0df9b960339c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &261081970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3636,9 +3651,9 @@ GameObject:
   - component: {fileID: 529164261}
   - component: {fileID: 529164263}
   - component: {fileID: 529164262}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -9883,7 +9898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: e80a90665c8b01142a7527f62c403773, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: e80a90665c8b01142a7527f62c403773, type: 3}
       propertyPath: m_TagString
