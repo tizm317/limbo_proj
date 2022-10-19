@@ -17,10 +17,10 @@ public class Enemy1 : Enemy
     private Transform tr;  //enemy 위치
     //private Transform playerTr; //player 위치
 
-    private void Start()
-    {
-        Init();
-    }
+    //private void Start()
+    //{
+    //    Init();
+    //}
 
     private void OnEnable()
     {

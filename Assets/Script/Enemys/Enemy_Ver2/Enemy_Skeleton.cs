@@ -9,10 +9,10 @@ public class Enemy_Skeleton : Enemy
     [SerializeField] float _scanRange = 10;  //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
-    private void Start()
-    {
-        Init();
-    }
+    //private void Start()
+    //{
+    //    Init();
+    //}
 
     private void OnEnable()
     {
@@ -20,6 +20,8 @@ public class Enemy_Skeleton : Enemy
     }
     protected override void Init()
     {
+        base.Init();
+
         // HPBar
         //if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
         //    Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);

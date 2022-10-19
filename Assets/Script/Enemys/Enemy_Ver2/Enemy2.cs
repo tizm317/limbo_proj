@@ -18,10 +18,11 @@ public class Enemy2 : Enemy
     private Transform tr;  //enemy 위치
     private Transform playerTr; //player 위치
 
-    Material mat;
-    private int probability = 0;
 
-
+    private void OnEnable()
+    {
+        Init();
+    }
     protected override void Init()
     {
         base.Init();

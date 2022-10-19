@@ -22,12 +22,6 @@ public class Enemy4 : Enemy
     private float TimeLeft = 4.0f;
     private float nextTime = 0.0f;
 
-
-    private void Start()
-    {
-        Init();
-    }
-
     private void OnEnable()
     {
         Init();

@@ -25,7 +25,10 @@ public class Enemy3 : Enemy
 
     private float TimeLeft = 5.0f;
     private float nextTime = 0.0f;
-
+    private void OnEnable()
+    {
+        Init();
+    }
     protected override void Init()
     {
         base.Init();
