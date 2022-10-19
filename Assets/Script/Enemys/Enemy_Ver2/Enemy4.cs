@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class Enemy4 : Enemy
 {
-
-    [SerializeField] float _scanRange = 8;   //사정거리
-    [SerializeField] float _attachRange = 3;  //적 공격 사정거리
+    
+    [SerializeField] float _scanRange = 8;   //플레이서 인식 사정거리
+    [SerializeField] float _attachRange = 3;  //적 근거리공격 사정거리
 
     public Transform[] points;  //waypoints 배열
     private int nextIdx = 1;     // waypoints 인덱스
@@ -15,6 +15,13 @@ public class Enemy4 : Enemy
 
     private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
+
+    public GameObject bomb; // 무기 오브젝트(프리팹)
+    public Transform bombPos; // 무기가 생성될 발사 위치 지정
+    public float throwPower = 15.0f; //던지는 힘
+    private float TimeLeft = 4.0f;
+    private float nextTime = 0.0f;
+
 
     private void Start()
     {
@@ -88,6 +95,8 @@ public class Enemy4 : Enemy
                 nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
                 //nma.speed = _stat.MoveSpeed;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+                StartCoroutine(Skill());
+
             }
         }
         else
@@ -193,6 +202,20 @@ public class Enemy4 : Enemy
         else
         {
             State = Define.State.Moving;
+        }
+    }
+
+    IEnumerator Skill()
+    {
+        if (Time.time > nextTime)
+        {
+            nextTime = Time.time + TimeLeft;
+
+            GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
+            Rigidbody bombRigid = instantBomb.GetComponent<Rigidbody>();
+            bombRigid.velocity = bombPos.forward * 15.0f; //속도 적용
+
+            yield return new WaitForSeconds(2.0f);           
         }
     }
     IEnumerator Attack()

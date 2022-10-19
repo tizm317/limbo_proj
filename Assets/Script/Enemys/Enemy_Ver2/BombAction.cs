@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BombAction : MonoBehaviour
 {
-
+    Stat _stat;
     public GameObject bombEffect;  //이펙트 변수 생성
 
     //충돌체 감지 및 처리 함수 구현
@@ -17,6 +17,21 @@ public class BombAction : MonoBehaviour
         //자기 오브젝트 제거
         Destroy(gameObject);
     }
+    void OnCollisionEnter(Collider collision)
+    {
+        Debug.Log("collider");
+        if(collision.CompareTag("Player") == true)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            PlayerStat targetStat = player.GetComponent<PlayerStat>();
+            _stat.Attack = 20;
+            Debug.Log("-20");
+            targetStat.OnAttacked(_stat);
+            
+
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

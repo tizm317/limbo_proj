@@ -121,7 +121,7 @@ public abstract class Player : MonoBehaviour
 
     #region 던전관련~~~~~~~~~~
 
-    private DungeonTest dungeonTest;
+    //private DungeonTest dungeonTest;
 
     // 던전 게임스타터와 상호작용중인지 확인용
     public bool IsInteractWithDungeon { get; private set; }  
