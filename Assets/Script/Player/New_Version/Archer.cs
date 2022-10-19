@@ -41,7 +41,7 @@ public class Archer : Player
 
     IEnumerator Attack(float attack_speed, float flight_speed)//공격 함수 구현부
     {
-        Vector3 pos = player.transform.GetChild(1).transform.GetChild(0).position;//화살이 활에서 나가도록 조정해주어야함
+        Vector3 pos = player.transform.GetChild(2).transform.GetChild(0).position;//화살이 활에서 나가도록 조정해주어야함
         if(!on_skill)//스킬을 사용중이라면 공격할 수 없음
         {
             isAttack = true;
@@ -194,7 +194,7 @@ public class Archer : Player
                 curState = State.STATE_SKILL;
                 skill = HotKey.E;
                 Ani_State_Change();
-                Vector3 pos_s = player.transform.GetChild(1).transform.GetChild(0).position;
+                Vector3 pos_s = player.transform.GetChild(2).transform.GetChild(0).position;
                 yield return new WaitForSeconds(1.9f);
                 List<GameObject> temp = new List<GameObject>();
                 int how_many = (int)(SightAngle/10f);
