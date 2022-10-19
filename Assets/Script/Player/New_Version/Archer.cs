@@ -23,7 +23,13 @@ public class Archer : Player
 
     public override void Attack()
     {
-         if(Vector3.Distance(player.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
+        if(my_enemy == null)
+        {
+            curState = State.STATE_IDLE;
+            Ani_State_Change();
+            return;
+        }
+        if(Vector3.Distance(player.transform.position, my_enemy.transform.position) > attackRange)//적이 사거리 이내에 있는지 확인 조건, 아니라면 적 방향으로 이동
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
             Set_Destination(my_enemy.transform.position - dir);
