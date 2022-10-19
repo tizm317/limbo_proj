@@ -15,6 +15,7 @@ public abstract class ItemData : ScriptableObject
 
     public uint Price => _price;
 
+
     [SerializeField] private int        _id;
     [SerializeField] private string     _name;
     [SerializeField] private string     _grade;

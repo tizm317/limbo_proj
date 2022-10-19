@@ -7,6 +7,9 @@ public class EtcItem : CountableItem, IUsableItem, ISellableItem
     /* 기타 아이템 */
     // 화살, 입장권, 강화석
 
+    public EtcItemData EtcData { get; private set; }
+    public float Value => EtcData.Value;
+
     public EtcItem(EtcItemData data, int amount = 1) : base(data, amount) { }
 
     public bool Sell()

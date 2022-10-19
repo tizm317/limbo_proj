@@ -474,4 +474,11 @@ public class UI_Inventory : UI_Popup
     {
         _slotUIList[idx].RemoveItem();
     }
+
+    internal bool Equip(EquipmentItem equipmentItem)
+    {
+        UI_Equipment _UI_Equipment = transform.parent.GetComponentInChildren<UI_Equipment>();
+        bool success = _UI_Equipment.Equip(equipmentItem);
+        return success;
+    }
 }

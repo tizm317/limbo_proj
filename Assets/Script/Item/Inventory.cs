@@ -533,15 +533,17 @@ public class Inventory : MonoBehaviour
                 // 1. 장비창 UI로 이동
                 // TODO : 
                 Debug.Log($"{equipmentItem.Data.Name} 착용");
+                bool equipSuccess = _UI_inventory.Equip(equipmentItem);
 
                 // 2. 인벤토리에서 제거
-                Remove(idx);
+                if(equipSuccess == true)
+                    Remove(idx);
             }
             else // 소모 아이템
             {
                 // 1. 효과 적용
                 // TODO :
-                Debug.Log($"{_items[idx]} 사용");
+                Debug.Log($"{_items[idx].Data.Name} 사용");
 
                 // 수량은 위에서 감소 usableItem.Use();
             }
