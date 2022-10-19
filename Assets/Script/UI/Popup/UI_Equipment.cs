@@ -16,6 +16,9 @@ public class UI_Equipment : UI_Popup
     Player player_State;
     private GameObject Scene;
 
+    // 착용한 아이템 리스트
+    // 여기서 직접 관리?
+    List<Item> _EquipItems = new List<Item>();
 
     enum GameObjects
     {
@@ -86,18 +89,42 @@ public class UI_Equipment : UI_Popup
             selfCam.gameObject.SetActive(false);
     }
 
-    internal bool Equip(EquipmentItem equipmentItem)
+    internal bool Equip(EquipmentItem equipmentItem, out EquipmentItem exchangedItem)
     {
+        // 교체된 아이템
+        exchangedItem = null;
+
         // 무기
         if(equipmentItem is WeaponItem weaponItem)
         {
             if (player_State.Job != weaponItem.Class)
             {
                 // 다른 클래스 무기 착용 불가
-                Debug.Log($"You Can't Equip {weaponItem.Class}.");
+                Debug.Log($"This Weapon Is For {weaponItem.Class}.");
                 return false;
             }
+            if(GetButton((int)Buttons.Weapon).transform.GetChild(0).GetComponent<Image>().sprite != null)
+            {
+                // 이미 착용중
+                // 교체
+                foreach(EquipmentItem e in _EquipItems)
+                {
+                    if(e is WeaponItem)
+                    {
+                        exchangedItem = e;
+
+                        _EquipItems.Remove(e);
+                        break;
+                    }
+                }
+            }
+
+            // 리스트에 추가
+            _EquipItems.Add(weaponItem);
+
+            // 아이콘 변경
             GetButton((int)Buttons.Weapon).transform.GetChild(0).GetComponent<Image>().sprite = weaponItem.Data.IconSprite;
+
         }
         // 방어구
         else if(equipmentItem is ArmorItem armorItem)
@@ -119,6 +146,30 @@ public class UI_Equipment : UI_Popup
                     idx = (int)Buttons.Shoes;
                     break;
             }
+            if(GetButton(idx).transform.GetChild(0).GetComponent<Image>().sprite != null)
+            {
+                // 이미 착용중
+                // 교체
+                foreach (EquipmentItem e in _EquipItems)
+                {
+                    if (e is ArmorItem)
+                    {
+                        ArmorItem a2 = (ArmorItem)e;
+
+                        // 방어구 부위가 다르면 continue
+                        if (a.Part != a2.Part) continue;
+
+                        exchangedItem = e;
+
+                        _EquipItems.Remove(e);
+                        break;
+                    }
+                }
+            }
+
+            // 리스트에 추가
+            _EquipItems.Add(a);
+            // 아이콘 변경
             GetButton(idx).transform.GetChild(0).GetComponent<Image>().sprite = armorItem.Data.IconSprite;
 
         }

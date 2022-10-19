@@ -531,13 +531,21 @@ public class Inventory : MonoBehaviour
             if(usableItem is EquipmentItem equipmentItem)
             {
                 // 1. 장비창 UI로 이동
-                // TODO : 
-                Debug.Log($"{equipmentItem.Data.Name} 착용");
-                bool equipSuccess = _UI_inventory.Equip(equipmentItem);
+                // TODO :
+                EquipmentItem exchangedItem = null;
+                bool equipSuccess = _UI_inventory.Equip(equipmentItem, out exchangedItem);
 
                 // 2. 인벤토리에서 제거
                 if(equipSuccess == true)
+                {
+                    Debug.Log($"{equipmentItem.Data.Name} 착용");
                     Remove(idx);
+                }
+
+                if(exchangedItem != null)
+                {
+                    Add(exchangedItem.Data);
+                }
             }
             else // 소모 아이템
             {

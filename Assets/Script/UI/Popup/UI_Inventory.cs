@@ -475,10 +475,13 @@ public class UI_Inventory : UI_Popup
         _slotUIList[idx].RemoveItem();
     }
 
-    internal bool Equip(EquipmentItem equipmentItem)
+    internal bool Equip(EquipmentItem equipmentItem, out EquipmentItem exchangedItem)
     {
+        // 교체된 아이템
+        exchangedItem = null;
+
         UI_Equipment _UI_Equipment = transform.parent.GetComponentInChildren<UI_Equipment>();
-        bool success = _UI_Equipment.Equip(equipmentItem);
+        bool success = _UI_Equipment.Equip(equipmentItem, out exchangedItem);
         return success;
     }
 }
