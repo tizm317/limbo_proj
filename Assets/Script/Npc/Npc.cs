@@ -272,6 +272,14 @@ public class Npc : MonoBehaviour
 
     protected void startPatrol()
     {
+        GameObject wayPointGroup = GameObject.Find("WayPointGroup1").gameObject;
+        SphereCollider[] wayPointColliders = wayPointGroup.GetComponentsInChildren<SphereCollider>();
+        wayPoints = new Transform[wayPointColliders.Length];
+        for(int i = 0; i < wayPointColliders.Length; i++)
+        {
+            wayPoints[i] = wayPointColliders[i].transform;
+        }
+
         if (isPatroling) return;
 
         agent = Util.GetOrAddComponent<NavMeshAgent>(this.gameObject);
