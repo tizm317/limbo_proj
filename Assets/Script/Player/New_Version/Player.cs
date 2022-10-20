@@ -119,14 +119,6 @@ public abstract class Player : MonoBehaviour
     
     protected Camera cam;
 
-    #region 던전관련~~~~~~~~~~
-
-    //private DungeonTest dungeonTest;
-
-    // 던전 게임스타터와 상호작용중인지 확인용
-    public bool IsInteractWithDungeon { get; private set; }  
-    #endregion
-
     #region 이동관련
 
     protected List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
