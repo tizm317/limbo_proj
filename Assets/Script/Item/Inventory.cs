@@ -93,14 +93,15 @@ public class Inventory : MonoBehaviour
         foreach(ItemData data in itemDatas)
         {
             CountableItemData cid = data as CountableItemData;
+            int tempIdx;
             if (cid != null)
-                Add(cid, cid.MaxAmount);
+                Add(cid, out tempIdx, cid.MaxAmount);
             else
-                Add(data, 1);
+                Add(data, out tempIdx, 1);
         }
 
         // 골드
-        _MyGolds = int.MaxValue;
+        _MyGolds = uint.MaxValue;
         _UI_inventory.SetMyGolds(_MyGolds);
     }
 
@@ -135,11 +136,19 @@ public class Inventory : MonoBehaviour
         UpdateCurrency();
     }
 
+    [SerializeField]
+    private EtcItemData _CoinData;
+    private EtcItem coins;
 
     // 해당 슬롯의 아이템 판매
     public void Sell(int idx)
     {
         if (_items[idx] == null) return;
+        if (_items[idx].Data.Name == "Coins")
+        {
+            Use(idx);
+            return;
+        }
 
         // 판매 가능한 아이템일 경우
         if (_items[idx] is ISellableItem sellableItem)
@@ -150,10 +159,37 @@ public class Inventory : MonoBehaviour
                 // 소유 금액 += 아이템 가격
                 if(Golds + (ulong)_items[idx].Data.Price > uint.MaxValue)
                 {
+                    // 오버 플로우 해결
+                    ulong overGolds = (Golds + (ulong)_items[idx].Data.Price) - (uint.MaxValue);
+
+                    // 인벤토리 내 코인이 이미 존재하는지 체크
+                    // 없을 시에만 새로 생성
+                    bool checkCoinIcon = false;
+                    foreach(Item item in _items)
+                    {
+                        if (item == null) continue;
+                        if (item.Data.Name == "Coins")
+                        {
+                            checkCoinIcon = true;
+                            break;
+                        }
+                    }
+
+                    if(checkCoinIcon == false)
+                    {
+                        int index = -1;
+                        Add(_CoinData, idx: out index);
+                        coins = (EtcItem)_items[index];
+                    }
+
+                    coins.SaveGoldsToString(overGolds);
+                    //_CoinData.SaveGoldsToString(overGolds);
+
+
                     // 오버 플로우 임시 방편
-                    Debug.Log("Int Overflow");
-                    Debug.Log("You Get Over Max Golds");
-                    Debug.Log("You Can't Get More Golds. Plz Use Golds.");
+                    //Debug.Log("Int Overflow");
+                    //Debug.Log("You Get Over Max Golds");
+                    //Debug.Log("You Can't Get More Golds. Plz Use Golds.");
                     Golds = uint.MaxValue;
                 }
                 else
@@ -361,9 +397,9 @@ public class Inventory : MonoBehaviour
     // 인벤토리에 아이템 추가
     // 넣는 데 실패한 잉여 아이템 개수 리턴
     // 리턴 값 0이면 모두 성공
-    public int Add(ItemData itemData, int amount = 1)
+    public int Add(ItemData itemData, out int idx, int amount = 1)
     {
-        int idx;
+        //int idx;
 
         // 1. 수량이 있는 아이템
         if(itemData is CountableItemData ciData)
@@ -524,6 +560,49 @@ public class Inventory : MonoBehaviour
         // 사용 가능한 아이템일 경우
         if(_items[idx] is IUsableItem usableItem)
         {
+            if(_items[idx].Data.Name == "Coins")
+            {
+                // Item To Gold 변환
+                // 소유 금액 += 저장된 골드
+                EtcItem savedGoldItem = (EtcItem)_items[idx];
+
+                ulong savedGolds = savedGoldItem.SavedGoldsToUlong();
+                if (Golds + savedGolds > uint.MaxValue)
+                {
+                    // 오버 플로우 해결
+                    ulong overGolds = Golds + savedGolds - uint.MaxValue;
+
+                    // 인벤토리 내 코인이 이미 존재하는지 체크
+                    // 없을 시에만 새로 생성
+                    //bool checkCoinIcon = false;
+                    //foreach (Item item in _items)
+                    //{
+                    //    if (item == null) continue;
+                    //    if (item.Data.Name == "Coins")
+                    //    {
+                    //        checkCoinIcon = true;
+                    //        break;
+                    //    }
+                    //}
+
+                    // 어차피 Use 하면서 코인 아이템 사라짐
+                    // 0이 아닌 이상 다시 생성
+                    if (overGolds != 0)
+                    {
+                        int index = -1;
+                        Add(_CoinData, idx: out index);
+                        coins = (EtcItem)_items[index];
+                    }
+
+                    coins.SaveGoldsToString(overGolds);
+                    //_CoinData.SaveGoldsToString(overGolds);
+
+
+                    Golds = uint.MaxValue;
+                }
+
+            }
+
             // 소모템의 경우 여기서 수량 감소
             bool success = usableItem.Use();
 
@@ -544,7 +623,8 @@ public class Inventory : MonoBehaviour
 
                 if(exchangedItem != null)
                 {
-                    Add(exchangedItem.Data);
+                    int tempIdx;
+                    Add(exchangedItem.Data, idx: out tempIdx);
                 }
             }
             else // 소모 아이템

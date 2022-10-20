@@ -222,7 +222,8 @@ public class UI_Shop : UI_Popup
             inventory.Buy(item);
 
             // 인벤토리에 아이템 추가 / 아이템 수량++
-            inventory.Add(item);
+            int tempIdx;
+            inventory.Add(item, idx: out tempIdx);
 
             Debug.Log($"Buy {item.Name}");
         }

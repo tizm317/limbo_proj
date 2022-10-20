@@ -10,7 +10,7 @@ public abstract class ItemData : ScriptableObject
     public string Name => _name;
 
     public string Grade => _grade;
-    public string Tooltip => _tooltip;
+    public string Tooltip { get { return _tooltip; } set { _tooltip = value; } }
     public Sprite IconSprite => _iconSprite;
 
     public uint Price => _price;

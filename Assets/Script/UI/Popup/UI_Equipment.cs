@@ -23,10 +23,6 @@ public class UI_Equipment : UI_Popup
     enum GameObjects
     {
         Slider,
-    }
-
-    enum Buttons
-    {
         Head,
         Body,
         Pants,
@@ -47,7 +43,6 @@ public class UI_Equipment : UI_Popup
     {
         base.Init();
         Bind<GameObject>(typeof(GameObjects));
-        Bind<Button>(typeof(Buttons));
         GetObject((int)GameObjects.Slider).BindEvent(onSliderDrag, Define.UIEvent.Drag);
 
         Scene = GameObject.Find("@Scene");
@@ -103,7 +98,7 @@ public class UI_Equipment : UI_Popup
                 Debug.Log($"This Weapon Is For {weaponItem.Class}.");
                 return false;
             }
-            if(GetButton((int)Buttons.Weapon).transform.GetChild(0).GetComponent<Image>().sprite != null)
+            if(GetObject((int)GameObjects.Weapon).transform.GetChild(0).GetComponent<Image>().sprite != null)
             {
                 // 이미 착용중
                 // 교체
@@ -123,7 +118,7 @@ public class UI_Equipment : UI_Popup
             _EquipItems.Add(weaponItem);
 
             // 아이콘 변경
-            GetButton((int)Buttons.Weapon).transform.GetChild(0).GetComponent<Image>().sprite = weaponItem.Data.IconSprite;
+            GetObject((int)GameObjects.Weapon).transform.GetChild(0).GetComponent<Image>().sprite = weaponItem.Data.IconSprite;
 
         }
         // 방어구
@@ -134,19 +129,19 @@ public class UI_Equipment : UI_Popup
             switch(a.Part)
             {
                 case "Head":
-                    idx = (int)Buttons.Head;
+                    idx = (int)GameObjects.Head;
                     break;
                 case "Body":
-                    idx = (int)Buttons.Body;
+                    idx = (int)GameObjects.Body;
                     break;
                 case "Pants":
-                    idx = (int)Buttons.Pants;
+                    idx = (int)GameObjects.Pants;
                     break;
                 case "Shoes":
-                    idx = (int)Buttons.Shoes;
+                    idx = (int)GameObjects.Shoes;
                     break;
             }
-            if(GetButton(idx).transform.GetChild(0).GetComponent<Image>().sprite != null)
+            if(GetObject(idx).transform.GetChild(0).GetComponent<Image>().sprite != null)
             {
                 // 이미 착용중
                 // 교체
@@ -170,7 +165,7 @@ public class UI_Equipment : UI_Popup
             // 리스트에 추가
             _EquipItems.Add(a);
             // 아이콘 변경
-            GetButton(idx).transform.GetChild(0).GetComponent<Image>().sprite = armorItem.Data.IconSprite;
+            GetObject(idx).transform.GetChild(0).GetComponent<Image>().sprite = armorItem.Data.IconSprite;
 
         }
         return true;
