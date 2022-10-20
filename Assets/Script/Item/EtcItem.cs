@@ -41,22 +41,7 @@ public class EtcItem : CountableItem, IUsableItem, ISellableItem
     public void SaveGoldsToString(ulong AddingGolds)
     {
         ulong currentSavedGolds = 0;
-
-        if (EtcData.Tooltip.Length >= 35)
-        {
-            // 컬러 제거
-            EtcData.Tooltip = EtcData.Tooltip.Remove(0, 11);
-            EtcData.Tooltip = EtcData.Tooltip.Remove(EtcData.Tooltip.Length - 8, 8);
-
-            // Saved Golds : 제거
-            EtcData.Tooltip = EtcData.Tooltip.Remove(0, 14);
-
-            // G 단위 제거
-            EtcData.Tooltip = EtcData.Tooltip.Remove(EtcData.Tooltip.Length - 2, 2);
-        }
-
-        ulong.TryParse(EtcData.Tooltip, out currentSavedGolds);
-
+        currentSavedGolds = SavedGoldsToUlong();
         currentSavedGolds += AddingGolds;
 
         EtcData.Tooltip = currentSavedGolds.ToString();
@@ -64,7 +49,7 @@ public class EtcItem : CountableItem, IUsableItem, ISellableItem
         // 단위 추가
         EtcData.Tooltip += " G";
 
-        // 컬러 추가
+        // 컬러 및 "Saved Golds : " 추가
         EtcData.Tooltip = $"<color=Red>Saved Golds : {EtcData.Tooltip}</color>";
     }
 
