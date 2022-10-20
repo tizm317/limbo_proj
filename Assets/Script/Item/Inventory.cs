@@ -144,6 +144,11 @@ public class Inventory : MonoBehaviour
     public void Sell(int idx)
     {
         if (_items[idx] == null) return;
+        if (_items[idx].Data.Name == "Coins")
+        {
+            Use(idx);
+            return;
+        }
 
         // 판매 가능한 아이템일 경우
         if (_items[idx] is ISellableItem sellableItem)
@@ -555,6 +560,49 @@ public class Inventory : MonoBehaviour
         // 사용 가능한 아이템일 경우
         if(_items[idx] is IUsableItem usableItem)
         {
+            if(_items[idx].Data.Name == "Coins")
+            {
+                // Item To Gold 변환
+                // 소유 금액 += 저장된 골드
+                EtcItem savedGoldItem = (EtcItem)_items[idx];
+
+                ulong savedGolds = savedGoldItem.SavedGoldsToUlong();
+                if (Golds + savedGolds > uint.MaxValue)
+                {
+                    // 오버 플로우 해결
+                    ulong overGolds = Golds + savedGolds - uint.MaxValue;
+
+                    // 인벤토리 내 코인이 이미 존재하는지 체크
+                    // 없을 시에만 새로 생성
+                    //bool checkCoinIcon = false;
+                    //foreach (Item item in _items)
+                    //{
+                    //    if (item == null) continue;
+                    //    if (item.Data.Name == "Coins")
+                    //    {
+                    //        checkCoinIcon = true;
+                    //        break;
+                    //    }
+                    //}
+
+                    // 어차피 Use 하면서 코인 아이템 사라짐
+                    // 0이 아닌 이상 다시 생성
+                    if (overGolds != 0)
+                    {
+                        int index = -1;
+                        Add(_CoinData, idx: out index);
+                        coins = (EtcItem)_items[index];
+                    }
+
+                    coins.SaveGoldsToString(overGolds);
+                    //_CoinData.SaveGoldsToString(overGolds);
+
+
+                    Golds = uint.MaxValue;
+                }
+
+            }
+
             // 소모템의 경우 여기서 수량 감소
             bool success = usableItem.Use();
 

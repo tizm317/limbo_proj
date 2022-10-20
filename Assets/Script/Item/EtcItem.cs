@@ -42,7 +42,7 @@ public class EtcItem : CountableItem, IUsableItem, ISellableItem
     {
         ulong currentSavedGolds = 0;
 
-        if (EtcData.Tooltip.Length >= 2)
+        if (EtcData.Tooltip.Length >= 35)
         {
             // 컬러 제거
             EtcData.Tooltip = EtcData.Tooltip.Remove(0, 11);
@@ -66,5 +66,27 @@ public class EtcItem : CountableItem, IUsableItem, ISellableItem
 
         // 컬러 추가
         EtcData.Tooltip = $"<color=Red>Saved Golds : {EtcData.Tooltip}</color>";
+    }
+
+    public ulong SavedGoldsToUlong()
+    {
+        ulong currentSavedGolds = 0;
+
+        if (EtcData.Tooltip.Length >= 2)
+        {
+            // 컬러 제거
+            EtcData.Tooltip = EtcData.Tooltip.Remove(0, 11);
+            EtcData.Tooltip = EtcData.Tooltip.Remove(EtcData.Tooltip.Length - 8, 8);
+
+            // Saved Golds : 제거
+            EtcData.Tooltip = EtcData.Tooltip.Remove(0, 14);
+
+            // G 단위 제거
+            EtcData.Tooltip = EtcData.Tooltip.Remove(EtcData.Tooltip.Length - 2, 2);
+        }
+
+        ulong.TryParse(EtcData.Tooltip, out currentSavedGolds);
+
+        return currentSavedGolds;
     }
 }
