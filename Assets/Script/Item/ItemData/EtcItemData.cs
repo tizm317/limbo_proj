@@ -11,9 +11,13 @@ public class EtcItemData : CountableItemData
     public float Value => _value;
     [SerializeField] private float _value;
 
+    public bool IsCoin { get { return _IsCoin; } set { _IsCoin = value; } }
+    [SerializeField] private bool _IsCoin;
 
     public override Item CreatItem()
     {
         return new EtcItem(this);
     }
+
+    
 }
