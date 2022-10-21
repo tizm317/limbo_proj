@@ -52,8 +52,10 @@ public class PlayerStat : Stat
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Potal")
+        if (collision.gameObject.name == "VillagePotal")
             Managers.Scene.LoadScene(Define.Scene.Village);
+        else if (collision.gameObject.name == "BossPotal")
+            Managers.Scene.LoadScene(Define.Scene.InGame_Boss);
     }
 
     void HP_Update()
