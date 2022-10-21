@@ -58,4 +58,10 @@ class PacketHandler
 		S_Login loginPacket = (S_Login)packet;
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 	}
+
+	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+		S_CreatePlayer createPlayerPacket = (S_CreatePlayer)packet;
+		ServerSession serverSession = (ServerSession)session;
+	}
 }

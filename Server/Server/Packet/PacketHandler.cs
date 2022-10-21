@@ -22,34 +22,18 @@ class PacketHandler
 		C_Login loginPacket = packet as C_Login;
 		ClientSession clientSession = session as ClientSession;
 
-        Console.WriteLine($"UniqueId({loginPacket.UniqueId})");
-
-		// TODO : 이런 저런 보안 체크
-
-		// TODO : 문제가 있긴 있다
-		// 해당하는 Account 있는지 체크
-		using(AppDbContext db = new AppDbContext())
-        {
-			// 계정db에 있는지 찾아보고,
-			AccountDb findAccount = db.Accounts
-				.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();
-
-			if(findAccount != null)
-            {
-				// 있으면 OK 패킷 보냄
-				S_Login loginOk = new S_Login() { LoginOk = 1 };
-				clientSession.Send(loginOk);
-			}
-			else
-            {
-				// 없으면 db에 저장
-				AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
-				db.Accounts.Add(newAccount);
-				db.SaveChanges();
-
-				S_Login loginOk = new S_Login() { LoginOk = 1 };
-				clientSession.Send(loginOk);
-			}
-        }
+		clientSession.HandleLogin(loginPacket);
 	}
+
+	public static void C_EnterGameHandler(PacketSession session, IMessage packet)
+    {
+		C_EnterGame enterGamePacket = (C_EnterGame)packet;
+		ClientSession clientSession = (ClientSession)session;
+    }
+
+	public static void C_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+		C_CreatePlayer createPlayerPacket = (C_CreatePlayer)packet;
+		ClientSession clientSession = (ClientSession)session;
+    }
 }
