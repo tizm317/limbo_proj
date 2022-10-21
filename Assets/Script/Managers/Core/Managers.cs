@@ -15,6 +15,7 @@ public class Managers : MonoBehaviour
 
     // 각 매니저 연결
     GameManagerEx _game = new GameManagerEx();
+    StageManager _stage = new StageManager();
 
     DataManager _data = new DataManager();
     InputManager _input = new InputManager();
@@ -31,6 +32,7 @@ public class Managers : MonoBehaviour
 
     // 전역으로 사용
     public static GameManagerEx Game { get { return Instance._game; } }
+    public static StageManager Stage { get { return Instance._stage; } }
     public static DataManager Data { get { return Instance._data; } }
     public static InputManager Input { get { return Instance._input; } }
     public static PoolManager Pool { get { return Instance._pool; } }
