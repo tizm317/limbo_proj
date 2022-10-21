@@ -18,16 +18,13 @@ public class StageManager : MonoBehaviour
     // 몇 스테이지인지 저장
     public int stageIndex = 0;
     // 적 배열
-    public Transform[] enemys;
+    //public Transform[] enemys;
     // 해당 스테이지의 적의 수를 알 수 있도 몬스터의 수가 0일 떄 스테이지 종료
-    public int enemyNumber = 0;
+    //public int enemyNumber = 0;
 
     //UI
     public Text UIStage;
 
-    public GameObject m_PrntGo;
-
-    [SerializeField] private GameObject[] m_ChildrenGos;
 
     void Init()
     {
@@ -37,7 +34,6 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         playerReposition();
-        m_ChildrenGos = GetChildren(m_PrntGo);
     }
 
     // Update is called once per frame
@@ -45,19 +41,6 @@ public class StageManager : MonoBehaviour
     {
 
     }
-
-    public GameObject[] GetChildren(GameObject parent)
-    {
-        GameObject[] children = new GameObject[parent.transform.childCount];
-
-        for (int i = 0; i < parent.transform.childCount; i++)
-        {
-            children[i] = parent.transform.GetChild(i).gameObject;
-        }
-
-        return children;
-    }
-
 
     //setActive로 스테이지 변경 함수
     // stageIndex에 따라 스테이지 활성화 비활성화
@@ -72,13 +55,13 @@ public class StageManager : MonoBehaviour
             Stages[stageIndex].SetActive(true);
             playerReposition();
 
-            UIStage.text = "STAGE " + (stageIndex +1);
+            //UIStage.text = "STAGE " + (stageIndex +1);
         }
         else
         {
-            //게임이 끝난 상황 game clear
+            //모든 stage의 게임이 끝난 상황 game clear
             //Time.timeScale = 0; //시간을 멈춰둠
-            Debug.Log("게임 클리어");
+            Debug.Log("all stage 클리어");
             //로딩 후 village 씬 or 경매 씬으로 활성화시켜야함
         }
 
