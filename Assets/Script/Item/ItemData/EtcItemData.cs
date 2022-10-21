@@ -7,17 +7,17 @@ public class EtcItemData : CountableItemData
 {
     /* 기타 아이템의 공통 데이터 */
 
-    //
+    #region Attributes
     public float Value => _value;
+
+    [Tooltip("기타 아이템의 효과량?")]
     [SerializeField] private float _value;
+    #endregion
 
-    public bool IsCoin { get { return _IsCoin; } set { _IsCoin = value; } }
-    [SerializeField] private bool _IsCoin;
-
+    #region Methods
     public override Item CreatItem()
     {
         return new EtcItem(this);
     }
-
-    
+    #endregion
 }

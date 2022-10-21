@@ -6,14 +6,14 @@ using UnityEngine;
 public class ArmorItemData : EquipmentItemData
 {
     /* 방어구 아이템의 공통 데이터 */
-
-    // 방어량?
     public float Value => _value;
-    [SerializeField] private float _value;
-
-    // 방어 부위
     public string Part => _part;
+
+    [Tooltip("방어량")]
+    [SerializeField] private float _value;
+    [Tooltip("착용 부위")]
     [SerializeField] private string _part;
+
 
     public override Item CreatItem()
     {
