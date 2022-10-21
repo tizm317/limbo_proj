@@ -8,13 +8,15 @@ public class StageManager : MonoBehaviour
 {
     //역할 : 스테이지 관리
     //Hieralrchy 창에선 첫 스테이지만 활성화 하기 
+    //clear 관련 조건 스트립트는 다른 스크립트를 생성해서 만들어야 하나?
+
     
     GameObject tempObj = null;
 
     // 스테이지 배열
     public GameObject[] Stages;
     // 몇 스테이지인지 저장
-    public int stageIndex;
+    public int stageIndex = 0;
     // 적 배열
     public Transform[] enemys;
     // 해당 스테이지의 적의 수를 알 수 있도 몬스터의 수가 0일 떄 스테이지 종료
