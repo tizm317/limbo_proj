@@ -136,9 +136,13 @@ public class Inventory : MonoBehaviour
         UpdateCurrency();
     }
 
+    //[SerializeField]
+    //private EtcItemData _CoinData;
+    //private EtcItem coins;
+
     [SerializeField]
-    private EtcItemData _CoinData;
-    private EtcItem coins;
+    private CoinItemData _CoinData;
+    private CoinItem coins;
 
     // 해당 슬롯의 아이템 판매
     public void Sell(int idx)
@@ -179,7 +183,7 @@ public class Inventory : MonoBehaviour
                     {
                         int index = -1;
                         Add(_CoinData, idx: out index);
-                        coins = (EtcItem)_items[index];
+                        coins = (CoinItem)_items[index];
                     }
 
                     coins.SaveGoldsToString(overGolds);
@@ -564,7 +568,7 @@ public class Inventory : MonoBehaviour
             {
                 // Item To Gold 변환
                 // 소유 금액 += 저장된 골드
-                EtcItem savedGoldItem = (EtcItem)_items[idx];
+                CoinItem savedGoldItem = (CoinItem)_items[idx];
 
                 ulong savedGolds = savedGoldItem.SavedGoldsToUlong();
                 if (Golds + savedGolds > uint.MaxValue)
@@ -591,7 +595,7 @@ public class Inventory : MonoBehaviour
                     {
                         int index = -1;
                         Add(_CoinData, idx: out index);
-                        coins = (EtcItem)_items[index];
+                        coins = (CoinItem)_items[index];
                     }
 
                     coins.SaveGoldsToString(overGolds);
@@ -660,6 +664,7 @@ public class Inventory : MonoBehaviour
         {typeof(ArmorItemData), 30000 },
         {typeof(EtcItemData), 40000},
         {typeof(QuestItemData), 50000},
+        {typeof(CoinItemData), 60000},
     };
 
     private class ItemComparer : IComparer<Item>

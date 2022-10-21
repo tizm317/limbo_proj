@@ -6,14 +6,30 @@ public abstract class CountableItem : Item
 {
     /* 실제 셀 수 있는 아이템 클래스 */
 
+    #region Attributes
+
+    // - 공통 데이터 -
     public CountableItemData CountableData { get; private set; }
-
-    public int Amount { get; protected set; }
+    // 아이템 최대 수량
     public int MaxAmount => CountableData.MaxAmount;
-    public bool IsMax => Amount >= MaxAmount;
-    public bool IsEmpty => Amount <= 0;
 
-    public CountableItem(CountableItemData data, int amount = 1) : base(data)
+    // - 개별 데이터 -
+    
+    // 현재 아이템 수량
+    public int Amount { get; protected set; }
+
+    // 현재 수량이 최대 수량인지 여부
+    public bool IsMax => Amount >= MaxAmount;
+
+    // 수량 없는지 여부
+    public bool IsEmpty => Amount <= 0;
+    #endregion
+
+    #region Methods
+
+    // 생성자
+    public CountableItem(CountableItemData data, int amount = 1) 
+        : base(data)
     {
         CountableData = data;
         SetAmount(amount);
@@ -22,7 +38,8 @@ public abstract class CountableItem : Item
     // 개수 지정(범위 제한)
     public void SetAmount(int amount)
     {
-        Amount = Mathf.Clamp(amount, 0, MaxAmount); // 0~MaxAmount
+        // 0 ~ MaxAmount
+        Amount = Mathf.Clamp(amount, 0, MaxAmount); 
     }
 
     // 개수 추가 및 초과량 반환
@@ -46,4 +63,6 @@ public abstract class CountableItem : Item
     }
 
     protected abstract CountableItem Clone(int amount);
+
+    #endregion
 }

@@ -7,13 +7,14 @@ public class WeaponItemData : EquipmentItemData
 {
     /* 무기 아이템의 공통 데이터 */
 
-    // 데미지
+    public string Class => _class;
     public float Damage => _damage;
+
+    [Tooltip("착용 가능 직업")]
+    [SerializeField] private string _class;
+    [Tooltip("무기 아이템의 데미지 수치")]
     [SerializeField] private float _damage;
 
-    // 어떤 직업 전용인지
-    public string Class => _class;
-    [SerializeField] private string _class;
 
     public override Item CreatItem()
     {

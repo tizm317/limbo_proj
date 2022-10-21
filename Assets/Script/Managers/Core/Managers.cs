@@ -28,6 +28,7 @@ public class Managers : MonoBehaviour
     NetworkManager _network = new NetworkManager();
 
     NpcManager _npc = new NpcManager();
+    //ObjectManager _object = new ObjectManager();
 
     // 전역으로 사용
     public static GameManagerEx Game { get { return Instance._game; } }
@@ -42,6 +43,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
     public static NpcManager NPC { get { return Instance._npc; } }
     public static NetworkManager Network { get { return Instance._network; } }
+    //public static ObjectManager Object { get { return Instance._object; } }
 
     void Start()
     {

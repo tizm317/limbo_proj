@@ -8,8 +8,9 @@ public class QuestItemData : CountableItemData
     /* 퀘스트 아이템의 공통 데이터 */
 
     public float Value => _value;
-    [SerializeField] private float _value;
 
+    [Tooltip("퀘스트 아이템 효과???")]
+    [SerializeField] private float _value;
 
     public override Item CreatItem()
     {
