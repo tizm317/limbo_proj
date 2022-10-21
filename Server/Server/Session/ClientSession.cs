@@ -34,6 +34,13 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
+			// 연결됨을 알림.
+            {
+				S_Connected connectedPacket = new S_Connected();
+				Send(connectedPacket);
+            }
+
+			// TODO : 로비에서 캐릭터 선택
 			// PROTO Test
 			MyPlayer = PlayerManager.Instance.Add();
             {   // 정보 셋팅
@@ -43,7 +50,10 @@ namespace Server
 				MyPlayer.Session = this;
             }
 
+			// TODO : 입장 요청 들어오면
 			RoomManager.Instance.Find(1).EnterGame(MyPlayer);
+
+
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)

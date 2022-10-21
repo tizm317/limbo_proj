@@ -19,10 +19,14 @@ class PacketManager
 	Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>> _onRecv = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>>();
 	Dictionary<ushort, Action<PacketSession, IMessage>> _handler = new Dictionary<ushort, Action<PacketSession, IMessage>>();
 		
+	public Action<PacketSession, IMessage, ushort> CustomHandler { get; set; }
+
 	public void Register()
 	{		
 		_onRecv.Add((ushort)MsgId.CMOVE, MakePacket<C_MOVE>);
-		_handler.Add((ushort)MsgId.CMOVE, PacketHandler.C_MoveHandler);
+		_handler.Add((ushort)MsgId.CMOVE, PacketHandler.C_MoveHandler);		
+		_onRecv.Add((ushort)MsgId.CLogin, MakePacket<C_Login>);
+		_handler.Add((ushort)MsgId.CLogin, PacketHandler.C_LoginHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
@@ -43,9 +47,18 @@ class PacketManager
 	{
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
-		Action<PacketSession, IMessage> action = null;
-		if (_handler.TryGetValue(id, out action))
-			action.Invoke(session, pkt);
+
+		// Client : 큐에 넣음
+		if (CustomHandler != null)
+		{
+			CustomHandler.Invoke(session, pkt, id);
+		}
+		else // Server : 바로 호출
+		{
+			Action<PacketSession, IMessage> action = null;
+			if (_handler.TryGetValue(id, out action))
+				action.Invoke(session, pkt);
+		}
 	}
 
 	public Action<PacketSession, IMessage> GetPacketHandler(ushort id)

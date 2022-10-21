@@ -11,6 +11,9 @@ enum MsgId {
   S_DESPAWN2 = 3;
   C_MOVE2 = 4;
   S_MOVE2 = 5;
+  S_CONNECTED = 10;
+  C_LOGIN = 11;
+  S_LOGIN = 12;
 }
 
 message S_EnterGame {
@@ -37,6 +40,17 @@ message S_MOVE {
   int32 playId = 1;
   int32 posX = 2;
   int32 posY = 3;
+}
+
+message S_Connected {
+}
+
+message C_Login {
+  string uniqueId = 1;
+}
+
+message S_Login {
+  int32 loginOk = 1;
 }
 
 message PlayerInfo {
