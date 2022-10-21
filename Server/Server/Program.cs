@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
+using Server.Data;
+using Server.DB;
 using Server.Game;
 using ServerCore;
 
@@ -25,6 +27,19 @@ namespace Server
 
 		static void Main(string[] args)
 		{
+			ConfigManager.LoadConfig();
+			//
+
+			// DB Test // DB를 컨텐츠 코드에서 바로 접근하는 것도 문제(오래 걸리면 .. 다른 부분도 오래걸림)
+			using (AppDbContext db = new AppDbContext())
+            {
+				// Entity framework Core에서는 AppDbContext를 단기적으로 만들고 날려버리는 게 정석
+				// 필요할 때마다 함(비용도 별로 안 듦) (cf AppDbContext를 풀링 할 수도 있음)
+				// using 은 dispose 자동
+				db.Accounts.Add(new AccountDb() { AccountName = "TestAccount" });
+				db.SaveChanges(); // exception Handling 을 해야함
+            }
+
 			RoomManager.Instance.Add();
 
 			// DNS (Domain Name System)

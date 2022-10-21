@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\Server\\Server.csproj": {}
+    "D:\\Unity\\newLimbo\\Server\\Server\\Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\ServerCore\\ServerCore.csproj": {
+    "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\ServerCore\\ServerCore.csproj",
+        "projectUniqueName": "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj",
         "projectName": "ServerCore",
-        "projectPath": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\ServerCore\\ServerCore.csproj",
+        "projectPath": "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj",
         "packagesPath": "C:\\Users\\이호영\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\ServerCore\\obj\\",
+        "outputPath": "D:\\Unity\\newLimbo\\Server\\ServerCore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\이호영\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -58,14 +58,14 @@
         }
       }
     },
-    "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\Server\\Server.csproj": {
+    "D:\\Unity\\newLimbo\\Server\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\Server\\Server.csproj",
+        "projectUniqueName": "D:\\Unity\\newLimbo\\Server\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\Server\\Server.csproj",
+        "projectPath": "D:\\Unity\\newLimbo\\Server\\Server\\Server.csproj",
         "packagesPath": "C:\\Users\\이호영\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\Server\\obj\\",
+        "outputPath": "D:\\Unity\\newLimbo\\Server\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\이호영\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -82,8 +82,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\ServerCore\\ServerCore.csproj": {
-                "projectPath": "C:\\Users\\이호영\\Desktop\\Protobuf+이식_소스코드\\Server\\ServerCore\\ServerCore.csproj"
+              "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj": {
+                "projectPath": "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj"
               }
             }
           }
@@ -101,6 +101,20 @@
             "Google.Protobuf": {
               "target": "Package",
               "version": "[3.12.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[3.1.7, )"
             }
           },
           "imports": [

@@ -62,8 +62,9 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        _items = new Item[_maxCapacity];
-        Capacity = _initialCapacity;
+        Init();
+        //_items = new Item[_maxCapacity];
+        //Capacity = _initialCapacity;
 
         //_UI_inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
 
@@ -79,16 +80,6 @@ public class Inventory : MonoBehaviour
 
     public void test()
     {
-        // test
-        //WeaponItem w1 = new WeaponItem(axeItemData, 10);
-        //Add(w1.Data, 1);
-        //ArmorItem a1 = new ArmorItem(armorItemData, 10);
-        //Add(a1.Data, 1);
-        //PotionItem p1 = new PotionItem(potionItemData, 1);
-        //Add(p1.Data, 99);
-        //PotionItem p2 = new PotionItem(potionItemData, 1);
-        //Add(p2.Data, 30);
-
         // 아이템
         foreach(ItemData data in itemDatas)
         {
@@ -104,13 +95,6 @@ public class Inventory : MonoBehaviour
         _MyGolds = uint.MaxValue;
         _UI_inventory.SetMyGolds(_MyGolds);
     }
-
-    //[SerializeField]
-    //private WeaponItemData axeItemData;
-    //[SerializeField]
-    //private ArmorItemData armorItemData;
-    //[SerializeField]
-    //private PotionItemData potionItemData;
 
     public ItemData[] itemDatas = new ItemData[16];
 
