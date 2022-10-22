@@ -104,7 +104,7 @@ public class PlayerStat : Stat
         Regeneration = (Level * STR + Item_Regeneration + 1) * 0.01f;
         Attack = ((0.5f * Level * STR) + Item_Attack) * (1 + Item_Attack_percent)+20;
         MoveSpeed = 4 + (1 / 40) * (DEX -20) + Item_MoveSpeed;
-        AttackSpeed = 2.6f - (1 / 50) * (DEX - 20) - Item_AttackSpeed;
+        AttackSpeed = 1 + (1 / 50) * (DEX - 20) + Item_AttackSpeed;
         MaxMana = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent);
         Mana = MaxMana;
         Mana_Regeneration = 0.5f * ((Level * INT) * 0.1f + Item_Regeneration + 1) * (1 + Item_Mana_Regeneration_percent);

@@ -361,7 +361,8 @@ public abstract class Player : MonoBehaviour
             Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
             player.transform.LookAt(my_enemy.transform);
-            yield return new WaitForSeconds(0.867f);//공격 애니메이션 시간
+            ani.SetFloat("AttackSpeed",attack_speed);
+            yield return new WaitForSeconds(0.867f/attack_speed);//공격 애니메이션 시간
             //my_enemy_stat.Hp -= damage;
             if(my_enemy != null)
             {

@@ -28,8 +28,6 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     {
         //캐릭터 종류와 데이터를 받아오는 내용이 필요함
         character = Resources.LoadAll<GameObject>("Prefabs/Character");
-        if(job == null)
-            job = Define.Job.WARRIOR;
         my_name = "Player";
         if(pos == null || pos ==Vector3.zero)
             pos = start_pos;
@@ -49,7 +47,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 break;
 
             case Define.Job.SORCERER :
-
+                gameObject.AddComponent<Sorcerer>();
                 break;
 
             default :

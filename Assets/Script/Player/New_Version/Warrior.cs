@@ -208,10 +208,13 @@ public class Warrior : Player
                 yield return new WaitForSeconds(0.4f);
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
-                    if(far < range)
-                        enemies[i].GetComponent<Stat>().Hp -= damage;
+                        if(far < range)
+                            enemies[i].GetComponent<Stat>().Hp -= damage;
+                    }
                 }
                 cool[3] = cool_max[3];
                 on_skill = false;
