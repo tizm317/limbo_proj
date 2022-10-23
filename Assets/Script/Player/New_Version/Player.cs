@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public abstract class Player : MonoBehaviour
 {
     protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
-    
     #region 애니메이션
     protected Animator ani;
     public State Ani_State
@@ -26,7 +25,7 @@ public abstract class Player : MonoBehaviour
                     ani.CrossFade(job + "_Attack", 0.2f);
                     break;
                 case State.STATE_DIE :
-                    ani.CrossFade("Die", 0.2f);
+                    ani.CrossFade("Die", 0f);
                     break;
                 case State.STATE_SKILL :
                     switch(skill)
@@ -94,6 +93,7 @@ public abstract class Player : MonoBehaviour
     protected GameObject CircleIndicator;
     protected bool canceled = false;
     protected bool pos_selected = false;
+    [SerializeField]
     protected bool attackable = true;
     protected enum HotKey
     {
@@ -466,6 +466,35 @@ public abstract class Player : MonoBehaviour
         }
     }
 
+    #region 카메라 쉐이크
+
+    protected IEnumerator CameraShake(float duration)
+    {
+        Vector3 original_position = cam.transform.position;
+        cam.GetComponent<Camera_Controller>().camera_control = false;
+        float time = 0f;
+        float range = 0.1f;
+        while(time < duration)
+        {
+            Vector3 new_pos = original_position;
+            if(Camera.main.transform.position != original_position)
+                new_pos = original_position;
+            else
+                new_pos = original_position +new Vector3((Random.Range(-1f,1)>0)?range:-range,(Random.Range(-1f,1)>0)?range:-range,0);
+            Camera.main.transform.position = new_pos;
+            yield return new WaitForSeconds(0.1f);
+            time += 0.05f;           
+        }
+        
+        if(Camera.main.transform.position != original_position)
+        {
+            cam.transform.position = original_position;
+        }
+        cam.GetComponent<Camera_Controller>().camera_control = true;
+    }
+
+#endregion
+
     #region 인디케이터 표시
 
     protected IEnumerator Show_CircleIndicator(bool body, float rad, float range)
@@ -474,7 +503,7 @@ public abstract class Player : MonoBehaviour
         CircleIndicator.GetComponent<MeshRenderer>().sharedMaterial.SetFloat("_Angle",rad);
         float _range = range * 2;
         CircleIndicator.transform.localScale = new Vector3(_range,_range,_range);
-        if(body)
+        if(body)//body가 true면 몸에 붙어서 범위로 나옴(부채꼴형식)
         {
             while(!pos_selected && !canceled)
             {
@@ -551,11 +580,13 @@ public abstract class Player : MonoBehaviour
 
     void Die()//사망 처리
     {
-        StartCoroutine(Die(start_pos));
+        if(my_stat.isDead)
+            StartCoroutine(Die(start_pos));
     }
 
     IEnumerator Die(Vector3 pos)//사망 처리 구현부
     {
+        my_stat.isDead = false;
         curState = State.STATE_DIE;
         Ani_State_Change();
         yield return new WaitForSeconds(3.9f);//사망 애니메이션 시간

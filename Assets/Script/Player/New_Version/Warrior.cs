@@ -243,32 +243,5 @@ public class Warrior : Player
         }
     }
 
-#region 카메라 쉐이크
 
-    IEnumerator CameraShake(float duration)
-    {
-        Vector3 original_position = cam.transform.position;
-        cam.GetComponent<Camera_Controller>().camera_control = false;
-        float time = 0f;
-        float range = 0.1f;
-        while(time < duration)
-        {
-            Vector3 new_pos = original_position;
-            if(Camera.main.transform.position != original_position)
-                new_pos = original_position;
-            else
-                new_pos = original_position +new Vector3((Random.Range(-1f,1)>0)?range:-range,(Random.Range(-1f,1)>0)?range:-range,0);
-            Camera.main.transform.position = new_pos;
-            yield return new WaitForSeconds(0.1f);
-            time += 0.05f;           
-        }
-        
-        if(Camera.main.transform.position != original_position)
-        {
-            cam.transform.position = original_position;
-        }
-        cam.GetComponent<Camera_Controller>().camera_control = true;
-    }
-
-#endregion
 }

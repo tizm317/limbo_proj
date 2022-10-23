@@ -26,7 +26,7 @@ public class PlayerStat : Stat
     public int Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
     float time;
-
+    public bool isDead = false;
     void Start()
     {
         _level = 1;
@@ -46,7 +46,7 @@ public class PlayerStat : Stat
 
     void Update()
     {
-        HP_Update();
+        HPMP_Update();
         Level_Update();
     }
 
@@ -58,22 +58,34 @@ public class PlayerStat : Stat
             Managers.Scene.LoadScene(Define.Scene.InGame_Boss);
     }
 
-    void HP_Update()
+    void HPMP_Update()
     {
         time += Time.deltaTime;
         if(_hp < 0)
         {
-            Player ps = GameObject.FindObjectOfType<Player>();
+            isDead = true;
+            Player ps = GameObject.Find("@Scene").gameObject.GetComponent<Player>();
             ps.curState = Player.State.STATE_DIE;
             ps.Ani_State_Change();
         }
-        else if(_hp > MaxHp)
+        if(time >= 1)
         {
-            _hp = MaxHp;
-        }
-        else if(_hp < MaxHp && time >= 1)
-        {
-            _hp += Regeneration;
+            if(_hp < MaxHp)
+            {
+                _hp += Regeneration;
+            }
+            if(_hp > MaxHp)
+            {
+                _hp = MaxHp;
+            }
+            if(_mana < MaxMana)
+            {
+                _mana += Mana_Regeneration;
+            }
+            if(_mana > MaxMana)
+            {
+                _mana = MaxMana;
+            }
             time = 0;
         }
     }
