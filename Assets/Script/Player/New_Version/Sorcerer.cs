@@ -488,7 +488,7 @@ public class Sorcerer : Player
                 skill = HotKey.R;
                 Ani_State_Change();
                 yield return new WaitForSeconds(0.7f);
-                int how_many = (int)(width * (8f/5f));
+                int how_many = (int)(width * (16f/5f));
                 float rad = 360f/(how_many * 2);
                 List<GameObject> shields = new List<GameObject>();
                 for(int i = 0; i < how_many; i++)
@@ -514,6 +514,10 @@ public class Sorcerer : Player
                     if(Mathf.Abs(wanted_height-height) <= 0.01f)
                         break;
                     yield return new WaitForEndOfFrame();
+                }
+                foreach(GameObject i in shields)
+                {
+                    i.transform.GetChild(0).GetComponent<MeshCollider>().isTrigger = false;
                 }
                 cool[3] = cool_max[3];
                 on_skill = false;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1099,7 +1099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1109f9e33632c0c44ae2478450a17e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  job: 0
+  job: 2
   pos: {x: 0, y: 0, z: 0}
   character: []
 --- !u!114 &29188129
@@ -1139,6 +1139,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 32b88fbeb4b2f944ba817a186517dcb2, type: 2}
   - {fileID: 11400000, guid: 2bdc6847198575f4a9fc57c654d558e8, type: 2}
   _CoinData: {fileID: 11400000, guid: e1dcddb975adb5a468ab11ed4867bae9, type: 2}
+  IsUpdated: 0
 --- !u!1 &29556984
 GameObject:
   m_ObjectHideFlags: 0
@@ -16088,6 +16089,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Speed
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631024361485586432, guid: 6449a3acb87c31f4ea555217877aed45,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2443415099472430716, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}
@@ -53351,6 +53357,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Speed
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631024361485586432, guid: 6449a3acb87c31f4ea555217877aed45,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2443415099472430716, guid: 6449a3acb87c31f4ea555217877aed45,
         type: 3}

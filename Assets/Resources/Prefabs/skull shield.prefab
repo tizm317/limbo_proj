@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1103271309943236178}
-  - component: {fileID: -7925158779643660704}
   m_Layer: 0
   m_Name: skull shield
   m_TagString: Untagged
@@ -26,25 +25,13 @@ Transform:
   m_GameObject: {fileID: 1099479836125183318}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1103271304835471702}
   - {fileID: 2193914348966511428}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7925158779643660704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1099479836125183318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bcd47758a4b94a4b9bdb9dbbc70d611, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1099479836248732816
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +44,8 @@ GameObject:
   - component: {fileID: 1095663068222253580}
   - component: {fileID: 1085394959464707916}
   - component: {fileID: 8159300180537559330}
+  - component: {fileID: 1538699126446037334}
+  - component: {fileID: 4418693209410839766}
   m_Layer: 0
   m_Name: skull shield
   m_TagString: Untagged
@@ -133,12 +122,40 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1099479836248732816}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: d707a69cbd9eb254c83bb24f240ccaa6, type: 3}
+--- !u!114 &1538699126446037334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099479836248732816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bcd47758a4b94a4b9bdb9dbbc70d611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &4418693209410839766
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099479836248732816}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 1
 --- !u!1 &2193914348967010144
 GameObject:
   m_ObjectHideFlags: 0
