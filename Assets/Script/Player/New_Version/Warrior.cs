@@ -170,7 +170,7 @@ public class Warrior : Player
     {
         canceled = false;
         pos_selected = false;
-        Vector3 pos;
+        Vector3 pos = player.transform.position;
         StartCoroutine(Show_CircleIndicator(false,360,range));
         while(!canceled)
         {
@@ -200,6 +200,23 @@ public class Warrior : Player
             }
             if(pos_selected)
             {
+                if(Vector3.Distance(player.transform.position, pos) > 3.5f)
+                {
+                    curState = State.STATE_MOVE;
+                    Ani_State_Change();
+                    Set_Destination(pos);
+                    while(Vector3.Distance(player.transform.position, pos) > 3.5f)
+                    {
+                        if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.R))
+                        {
+                            canceled = true;
+                            on_skill = false;
+                            break;
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                    destination.Clear();
+                }
                 curState = State.STATE_SKILL;
                 skill = HotKey.R;
                 Ani_State_Change();
@@ -208,10 +225,13 @@ public class Warrior : Player
                 yield return new WaitForSeconds(0.4f);
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
-                    if(far < range)
-                        enemies[i].GetComponent<Stat>().Hp -= damage;
+                        if(far < range)
+                            enemies[i].GetComponent<Stat>().Hp -= damage;
+                    }
                 }
                 cool[3] = cool_max[3];
                 on_skill = false;
@@ -240,32 +260,5 @@ public class Warrior : Player
         }
     }
 
-#region 카메라 쉐이크
 
-    IEnumerator CameraShake(float duration)
-    {
-        Vector3 original_position = cam.transform.position;
-        cam.GetComponent<Camera_Controller>().camera_control = false;
-        float time = 0f;
-        float range = 0.1f;
-        while(time < duration)
-        {
-            Vector3 new_pos = original_position;
-            if(Camera.main.transform.position != original_position)
-                new_pos = original_position;
-            else
-                new_pos = original_position +new Vector3((Random.Range(-1f,1)>0)?range:-range,(Random.Range(-1f,1)>0)?range:-range,0);
-            Camera.main.transform.position = new_pos;
-            yield return new WaitForSeconds(0.1f);
-            time += 0.05f;           
-        }
-        
-        if(Camera.main.transform.position != original_position)
-        {
-            cam.transform.position = original_position;
-        }
-        cam.GetComponent<Camera_Controller>().camera_control = true;
-    }
-
-#endregion
 }

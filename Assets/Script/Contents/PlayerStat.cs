@@ -26,7 +26,7 @@ public class PlayerStat : Stat
     public int Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
     float time;
-
+    public bool isDead = false;
     void Start()
     {
         _level = 1;
@@ -46,32 +46,46 @@ public class PlayerStat : Stat
 
     void Update()
     {
-        HP_Update();
+        HPMP_Update();
         Level_Update();
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Potal")
+        if (collision.gameObject.name == "VillagePotal")
             Managers.Scene.LoadScene(Define.Scene.Village);
+        else if (collision.gameObject.name == "BossPotal")
+            Managers.Scene.LoadScene(Define.Scene.InGame_Boss);
     }
 
-    void HP_Update()
+    void HPMP_Update()
     {
         time += Time.deltaTime;
         if(_hp < 0)
         {
-            Player ps = GameObject.FindObjectOfType<Player>();
+            isDead = true;
+            Player ps = GameObject.Find("@Scene").gameObject.GetComponent<Player>();
             ps.curState = Player.State.STATE_DIE;
             ps.Ani_State_Change();
         }
-        else if(_hp > MaxHp)
+        if(time >= 1)
         {
-            _hp = MaxHp;
-        }
-        else if(_hp < MaxHp && time >= 1)
-        {
-            _hp += Regeneration;
+            if(_hp < MaxHp)
+            {
+                _hp += Regeneration;
+            }
+            if(_hp > MaxHp)
+            {
+                _hp = MaxHp;
+            }
+            if(_mana < MaxMana)
+            {
+                _mana += Mana_Regeneration;
+            }
+            if(_mana > MaxMana)
+            {
+                _mana = MaxMana;
+            }
             time = 0;
         }
     }
@@ -102,7 +116,7 @@ public class PlayerStat : Stat
         Regeneration = (Level * STR + Item_Regeneration + 1) * 0.01f;
         Attack = ((0.5f * Level * STR) + Item_Attack) * (1 + Item_Attack_percent)+20;
         MoveSpeed = 4 + (1 / 40) * (DEX -20) + Item_MoveSpeed;
-        AttackSpeed = 2.6f - (1 / 50) * (DEX - 20) - Item_AttackSpeed;
+        AttackSpeed = 1 + (1 / 50) * (DEX - 20) + Item_AttackSpeed;
         MaxMana = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent);
         Mana = MaxMana;
         Mana_Regeneration = 0.5f * ((Level * INT) * 0.1f + Item_Regeneration + 1) * (1 + Item_Mana_Regeneration_percent);

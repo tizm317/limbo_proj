@@ -8,9 +8,6 @@ public class StageManager : MonoBehaviour
 {
     //역할 : 스테이지 관리
     //Hieralrchy 창에선 첫 스테이지만 활성화 하기 
-    //clear 관련 조건 스트립트는 다른 스크립트를 생성해서 만들어야 하나?
-
-    
     GameObject tempObj = null;
 
     // 스테이지 배열
@@ -24,6 +21,9 @@ public class StageManager : MonoBehaviour
 
     //UI
     public Text UIStage;
+    public Image UIBackground;
+    public float time = 0f;
+    public float F_time = 1f;
 
 
     void Init()
@@ -34,6 +34,7 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         playerReposition();
+        StartCoroutine(FadeFlow());
     }
 
     // Update is called once per frame
@@ -48,25 +49,53 @@ public class StageManager : MonoBehaviour
     public void NextsStage()
     {
         //스테이지 갯수를 확인하여 다음 스테이지로 이동/종료
-        if(stageIndex < Stages.Length - 1)
+        if (stageIndex < Stages.Length - 1)
         {
+            StartCoroutine(FadeFlow());
             Stages[stageIndex].SetActive(false);
             stageIndex++;
             Stages[stageIndex].SetActive(true);
-            playerReposition();
-
-            //UIStage.text = "STAGE " + (stageIndex +1);
+            //playerReposition();
+            
+            UIStage.text = "STAGE " + (stageIndex +1);
         }
         else
         {
             //모든 stage의 게임이 끝난 상황 game clear
-            //Time.timeScale = 0; //시간을 멈춰둠
+            Time.timeScale = 0; //시간을 멈춰둠
             Debug.Log("all stage 클리어");
             //로딩 후 village 씬 or 경매 씬으로 활성화시켜야함
         }
 
         //만약 stageIndex가 null이라면 게임 클리어할 수 있도록 방어 코드 작성해야함
 
+    }
+    IEnumerator FadeFlow()
+    {
+        Color alpha = UIBackground.color;
+
+
+        time = 0;
+        while (alpha.a < 1f)
+        {
+            time += Time.deltaTime / F_time;
+            alpha.a = Mathf.Lerp(0f, 1f, time);
+            UIBackground.color = alpha;
+            
+            yield return null;
+        }
+        time = 0;
+        yield return new WaitForSeconds(2f);
+        while (alpha.a > 0)
+        {
+            time += Time.deltaTime / F_time;
+            alpha.a = Mathf.Lerp(1f, 0f, time);
+            UIBackground.color = alpha;
+            playerReposition();
+            yield return null;
+        }
+        playerReposition();
+        yield return null;
     }
 
     //플레이어의 위치 재배치 함수
@@ -75,7 +104,7 @@ public class StageManager : MonoBehaviour
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         //player reposition
-        player.transform.position = new Vector3(25.0f, 1f, 12.5f);
+        player.transform.position = new Vector3(25.0f, 1f, 8f);
     }
 
     public void gameOver()

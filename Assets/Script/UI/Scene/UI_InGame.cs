@@ -154,9 +154,9 @@ public class UI_InGame : UI_Scene
     void UI_Update()
     {
         Hp.fillAmount = Mathf.Lerp(Hp.fillAmount, ps.Hp/ps.MaxHp, 0.1f);
-        Hp_text.text = ((int)(ps.Hp/ps.MaxHp) * 100).ToString();
+        Hp_text.text = ((ps.Hp/ps.MaxHp) * 100).ToString();
         Mp.fillAmount = Mathf.Lerp(Mp.fillAmount, ps.Mana/ps.MaxMana, 0.1f);
-        Mp_text.text = ((int)(ps.Mana/ps.MaxMana) * 100).ToString();
+        Mp_text.text = ((ps.Mana/ps.MaxMana) * 100).ToString();
         Level.text = ps.Level.ToString();
         float rate = (ps.Exp - ps.current_exp)/(ps.next_level_up - ps.current_exp);
         if(rate <= 0.5)

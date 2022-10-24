@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 public class Archer : Player
 {
     GameObject Arrow;
@@ -47,7 +46,7 @@ public class Archer : Player
 
     IEnumerator Attack(float attack_speed, float flight_speed)//공격 함수 구현부
     {
-        Vector3 pos = player.transform.GetChild(2).transform.GetChild(0).position;//화살이 활에서 나가도록 조정해주어야함
+        Vector3 pos = player.transform.GetChild(2).position;//화살이 활에서 나가도록 조정해주어야함
         if(!on_skill)//스킬을 사용중이라면 공격할 수 없음
         {
             isAttack = true;
@@ -56,7 +55,7 @@ public class Archer : Player
             curState = State.STATE_ATTACK;
             //Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
-            player.transform.right = -(my_enemy.transform.position - player.transform.position).normalized;
+            player.transform.forward = (my_enemy.transform.position - player.transform.position).normalized;
             ani.SetFloat("AttackSpeed",attack_speed);
             yield return new WaitForSeconds(3.8f/attack_speed);//공격 애니메이션 시간
             
@@ -183,7 +182,7 @@ public class Archer : Player
                     else
                     {              
                         pos = hit.point;
-                        player.transform.right = -new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
+                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
                         pos_selected = true;
                     }
                 }
@@ -200,7 +199,7 @@ public class Archer : Player
                 curState = State.STATE_SKILL;
                 skill = HotKey.E;
                 Ani_State_Change();
-                Vector3 pos_s = player.transform.GetChild(2).transform.GetChild(0).position;
+                Vector3 pos_s = player.transform.GetChild(2).position;
                 yield return new WaitForSeconds(1.9f);
                 List<GameObject> temp = new List<GameObject>();
                 int how_many = (int)(SightAngle/10f);
@@ -210,7 +209,7 @@ public class Archer : Player
                 {
                     GameObject a = Instantiate(skill_arrow);
                     a.transform.position = pos_s;
-                    a.transform.forward = -player.transform.right;
+                    a.transform.forward = player.transform.forward;
                     a.transform.Rotate(0, 10f * (i - how_many/2f),0);
                     temp.Add(a);
                 }
@@ -273,7 +272,7 @@ public class Archer : Player
                     else
                     {              
                         pos = hit.point;
-                        player.transform.right = -(new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized);
+                        player.transform.forward = (new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized);
                         pos_selected = true;
                     }
                 }
@@ -293,7 +292,7 @@ public class Archer : Player
                 yield return new WaitForSeconds(3.8f);
                 GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
                 temp.transform.position = player.transform.position;
-                Vector3 dir = -player.transform.right;
+                Vector3 dir = player.transform.forward;
                 temp.GetComponent<FireArrow>().Run(my_stat,100,dir);
                 cool[0] = cool_max[0];
                 on_skill = false;
