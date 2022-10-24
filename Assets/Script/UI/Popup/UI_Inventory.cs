@@ -39,6 +39,14 @@ public class UI_Inventory : UI_Popup
             _inventory.UpdateCurrency();
         }
 
+        //
+        if(_inventory.IsUpdated)
+        {
+            _inventory.UpdateAllSlot();
+            _inventory.UpdateCurrency();
+            _inventory.IsUpdated = false;
+        }
+
     }
 
     Player player_State;

@@ -15,8 +15,7 @@ public class Stat : MonoBehaviour
     [SerializeField] protected float _moveSpeed;  //이동하는 속도
     [SerializeField] protected float _turnSpeed; // 턴하는 속도
     [SerializeField] protected float _attackSpeed; //공격속도
-    [SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
-    private int itemIndex = 0;
+    [SerializeField] protected ItemData _itemdata; //인벤토리에 넣을 아이템 
 
     Enemy enemy;
     Inventory inventory;
@@ -30,7 +29,7 @@ public class Stat : MonoBehaviour
     public float MoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
     public float TurnSpeed { get { return _turnSpeed; } set { _turnSpeed = value; } }
     public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
-    public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
+    public ItemData ItemData { get { return _itemdata; } set { _itemdata = value; } }
 
     private void Awake()
     {
@@ -90,9 +89,8 @@ public class Stat : MonoBehaviour
         StartCoroutine(Die());
 
         //아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
-        itemIndex = Random.Range(1, _itemdata.Length);
         int tempIdx;
-        inventory.Add(ItemData[itemIndex], idx: out tempIdx, 1);
+        inventory.Add_Without_UI_Update(ItemData, idx: out tempIdx, 1);
 
     }
     IEnumerator Die()
