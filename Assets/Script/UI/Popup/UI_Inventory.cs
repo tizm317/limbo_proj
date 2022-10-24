@@ -22,12 +22,23 @@ public class UI_Inventory : UI_Popup
         ButtonSort,
     }
 
+    
+
     void Start()
     {
         Init();
 
         // 테스트용 임시
-        _inventory.test();
+        //_inventory.test();
+
+        if (_inventory.LoadFinish == false)
+            _inventory.InvenLoad();
+        else
+        {
+            _inventory.UpdateAllSlot();
+            _inventory.UpdateCurrency();
+        }
+
     }
 
     Player player_State;

@@ -129,6 +129,7 @@ namespace Data
     #endregion
 
     // 여기부터 다시
+
     #region Inventory
     [Serializable] // 메모리에서 들고 있는걸 파일로 변환할수있다는 의미
     public class Item
@@ -141,7 +142,7 @@ namespace Data
     }
 
     [Serializable]
-    public class ItemData : ILoader<int, Item>
+    public class ItemData2 : ILoader<int, Item>
     {
         public List<Item> items = new List<Item>();
 
@@ -223,9 +224,7 @@ namespace Data
         // 일단은 아이템 클래스가 겹쳐서 Item2라고 네이밍해둠 (위에꺼는 인벤토리용이여서 전체적으로 수정필요)
         // item 효과 는 일단 빼둠
         public int itemId;
-        public string itemName;
-        public string itemType;
-        public string itemGrade;
+        public string itemData;
     }
 
     [Serializable]

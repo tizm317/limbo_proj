@@ -156,9 +156,9 @@ public class UI_Inven_Item : UI_Base
 
         // item 정보 저장
         _id = itemTable[itemID].itemId;
-        _name = itemTable[itemID].itemName;
-        _type = itemTable[itemID].itemType;
-        _grade = itemTable[itemID].itemGrade;
+        //_name = itemTable[itemID].itemName;
+        //_type = itemTable[itemID].itemType;
+        //_grade = itemTable[itemID].itemGrade;
         _count = itemCount;
     }
 

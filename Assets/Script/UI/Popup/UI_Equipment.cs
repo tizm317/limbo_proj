@@ -31,7 +31,6 @@ public class UI_Equipment : UI_Popup
         EnchantStone1,
         EnchantStone2,
         EnchantStone3,
-        size,
     }
 
     private void Start()
@@ -70,8 +69,8 @@ public class UI_Equipment : UI_Popup
         _rrList = new List<RaycastResult>(10);
 
         // 원래 스프라이트 저장
-        spArr = new Sprite[(int)GameObjects.size - 1];
-        for(int i = 1; i < (int)GameObjects.size; i++)
+        spArr = new Sprite[8];
+        for(int i = 1; i < 8; i++)
         {
             spArr[i-1] = GetObject(i).transform.GetChild(0).GetComponent<Image>().sprite;
         }

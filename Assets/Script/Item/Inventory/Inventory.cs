@@ -96,6 +96,44 @@ public class Inventory : MonoBehaviour
         _UI_inventory.SetMyGolds(_MyGolds);
     }
 
+    public bool LoadFinish { get { return _inventory_loaded; } set { _inventory_loaded = value; } }
+    private bool _inventory_loaded = false;
+
+    public void InvenLoad()
+    {
+        string name = "bmc4886";
+        List<Data.Inventory> inventory = Managers.Data.Inventories[name];
+
+        foreach(Data.Inventory i in inventory)
+        {
+            int icount = i.itemCount;
+
+            ItemData idata = null;
+            foreach (ItemData data in itemDatas)
+            {
+                if(data.ID == i.itemID)
+                {
+                    idata = data;
+                    break;
+                }
+            }
+
+            CountableItemData cid = idata as CountableItemData;
+            int tempIdx;
+            if (cid != null)
+                Add(cid, out tempIdx, icount);
+            else
+                Add(idata, out tempIdx, icount);
+        }
+
+        // 골드
+        _MyGolds = uint.MaxValue;
+        _UI_inventory.SetMyGolds(_MyGolds);
+
+        // 로드 완료
+        LoadFinish = true;
+    }
+
     public ItemData[] itemDatas = new ItemData[16];
 
 
@@ -675,7 +713,7 @@ public class Inventory : MonoBehaviour
         UpdateAllSlot();
     }
 
-    private void UpdateAllSlot()
+    public void UpdateAllSlot()
     {
         for(int i = 0; i < 42; i++)
             UpdateSlot(i);

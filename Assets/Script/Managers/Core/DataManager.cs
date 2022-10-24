@@ -53,7 +53,7 @@ public class DataManager
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
-        InvenDict = LoadJson<Data.ItemData, int, Data.Item>("InvenData").MakeDict();
+        InvenDict = LoadJson<Data.ItemData2, int, Data.Item>("InvenData").MakeDict();
         NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
 
         //Inventories = LoadJson<Data.InventoryData, Tuple<string, int>, Data.Inventory>("Inventories").MakeDict();
