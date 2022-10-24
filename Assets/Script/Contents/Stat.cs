@@ -90,7 +90,7 @@ public class Stat : MonoBehaviour
 
         //아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
         int tempIdx;
-        inventory.Add(ItemData, idx: out tempIdx, 1);
+        inventory.Add_Without_UI_Update(ItemData, idx: out tempIdx, 1);
 
     }
     IEnumerator Die()
