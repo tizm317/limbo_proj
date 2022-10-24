@@ -19,6 +19,8 @@ class PacketManager
 	Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>> _onRecv = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>>();
 	Dictionary<ushort, Action<PacketSession, IMessage>> _handler = new Dictionary<ushort, Action<PacketSession, IMessage>>();
 		
+	public Action<PacketSession, IMessage, ushort> CustomHandler { get; set; }	
+
 	public void Register()
 	{		
 		_onRecv.Add((ushort)MsgId.SEnterGame, MakePacket<S_EnterGame>);
@@ -30,7 +32,13 @@ class PacketManager
 		_onRecv.Add((ushort)MsgId.SDespawn2, MakePacket<S_Despawn2>);
 		_handler.Add((ushort)MsgId.SDespawn2, PacketHandler.S_Despawn2Handler);		
 		_onRecv.Add((ushort)MsgId.SMove2, MakePacket<S_Move2>);
-		_handler.Add((ushort)MsgId.SMove2, PacketHandler.S_Move2Handler);
+		_handler.Add((ushort)MsgId.SMove2, PacketHandler.S_Move2Handler);		
+		_onRecv.Add((ushort)MsgId.SConnected, MakePacket<S_Connected>);
+		_handler.Add((ushort)MsgId.SConnected, PacketHandler.S_ConnectedHandler);		
+		_onRecv.Add((ushort)MsgId.SLogin, MakePacket<S_Login>);
+		_handler.Add((ushort)MsgId.SLogin, PacketHandler.S_LoginHandler);		
+		_onRecv.Add((ushort)MsgId.SCreatePlayer, MakePacket<S_CreatePlayer>);
+		_handler.Add((ushort)MsgId.SCreatePlayer, PacketHandler.S_CreatePlayerHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
@@ -51,9 +59,17 @@ class PacketManager
 	{
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
-		Action<PacketSession, IMessage> action = null;
-		if (_handler.TryGetValue(id, out action))
-			action.Invoke(session, pkt);
+
+		if (CustomHandler != null)
+		{
+			CustomHandler.Invoke(session, pkt, id);
+		}
+		else
+		{
+			Action<PacketSession, IMessage> action = null;
+			if (_handler.TryGetValue(id, out action))
+				action.Invoke(session, pkt);
+		}
 	}
 
 	public Action<PacketSession, IMessage> GetPacketHandler(ushort id)

@@ -44,8 +44,6 @@ public class UI_Inventory : UI_Popup
 
         _inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
         SlotInit();
-
-        
     }
 
     public override void Init()

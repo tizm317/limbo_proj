@@ -10,9 +10,9 @@ public class NetworkManager
 {
 	ServerSession _session = new ServerSession();
 
-	public void Send(ArraySegment<byte> sendBuff)
+	public void Send(IMessage packet)
 	{
-		_session.Send(sendBuff);
+		_session.Send(packet);
 	}
 
 	public void Init()
@@ -35,6 +35,7 @@ public class NetworkManager
 
 	public void OnUpdate()
 	{
+		// 패킷 큐 처리
 		List<PacketMessage> list = PacketQueue.Instance.PopAll();
 		foreach (PacketMessage packet in list)
 		{

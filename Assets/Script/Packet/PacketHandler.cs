@@ -44,4 +44,24 @@ class PacketHandler
 
 		Debug.Log("S_MoveHandler");
 	}
+
+	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
+	{
+		Debug.Log("S_ConnectedHandler");
+		C_Login loginPacket = new C_Login();
+		loginPacket.UniqueId = SystemInfo.deviceUniqueIdentifier; // unique key
+		Managers.Network.Send(loginPacket);
+	}
+
+	public static void S_LoginHandler(PacketSession session, IMessage packet)
+	{
+		S_Login loginPacket = (S_Login)packet;
+		Debug.Log($"LoginOk({loginPacket.LoginOk})");
+	}
+
+	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+		S_CreatePlayer createPlayerPacket = (S_CreatePlayer)packet;
+		ServerSession serverSession = (ServerSession)session;
+	}
 }

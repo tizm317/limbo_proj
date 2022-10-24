@@ -12,12 +12,16 @@ using Server.Game;
 
 namespace Server
 {
-	public class ClientSession : PacketSession
+	public partial class ClientSession : PacketSession
 	{
+		public PlayerServerState ServerState { get; private set; } = PlayerServerState.ServerStateLogin;
+
 		public Player MyPlayer { get; set; }
 		public int SessionId { get; set; }
 
-		public void Send(IMessage packet)
+
+        #region Network
+        public void Send(IMessage packet)
         {
 			string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
 			MsgId msgId = (MsgId)Enum.Parse(typeof(MsgId), msgName);
@@ -34,6 +38,13 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
+			// 연결됨을 알림.
+            {
+				S_Connected connectedPacket = new S_Connected();
+				Send(connectedPacket);
+            }
+
+			// TODO : 로비에서 캐릭터 선택
 			// PROTO Test
 			MyPlayer = PlayerManager.Instance.Add();
             {   // 정보 셋팅
@@ -43,7 +54,10 @@ namespace Server
 				MyPlayer.Session = this;
             }
 
+			// TODO : 입장 요청 들어오면
 			RoomManager.Instance.Find(1).EnterGame(MyPlayer);
+
+
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -64,5 +78,7 @@ namespace Server
 		{
 			//Console.WriteLine($"Transferred bytes: {numOfBytes}");
 		}
+
+		#endregion
 	}
 }

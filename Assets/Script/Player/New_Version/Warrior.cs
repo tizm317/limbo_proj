@@ -170,7 +170,7 @@ public class Warrior : Player
     {
         canceled = false;
         pos_selected = false;
-        Vector3 pos;
+        Vector3 pos = player.transform.position;
         StartCoroutine(Show_CircleIndicator(false,360,range));
         while(!canceled)
         {
@@ -200,6 +200,23 @@ public class Warrior : Player
             }
             if(pos_selected)
             {
+                if(Vector3.Distance(player.transform.position, pos) > 3.5f)
+                {
+                    curState = State.STATE_MOVE;
+                    Ani_State_Change();
+                    Set_Destination(pos);
+                    while(Vector3.Distance(player.transform.position, pos) > 3.5f)
+                    {
+                        if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.R))
+                        {
+                            canceled = true;
+                            on_skill = false;
+                            break;
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                    destination.Clear();
+                }
                 curState = State.STATE_SKILL;
                 skill = HotKey.R;
                 Ani_State_Change();

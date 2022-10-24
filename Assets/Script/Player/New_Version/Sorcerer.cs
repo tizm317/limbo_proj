@@ -5,6 +5,7 @@ using UnityEngine;
 public class Sorcerer : Player
 {
     GameObject Magic_bolt;
+    GameObject Icy_Field;
     [SerializeField]
     float mana_for_attack = 5f;
 
@@ -20,7 +21,7 @@ public class Sorcerer : Player
     {
         job = "Sorcerer";
         Magic_bolt = Resources.Load<GameObject>("Prefabs/Magic_bolt");
-        
+        Icy_Field = Resources.Load<GameObject>("Prefabs/Icy_Field");
         attackRange = 10f;
         cool_max[0] = 1f;
         cool_max[1] = 1f;
@@ -102,7 +103,7 @@ public class Sorcerer : Player
 
     public override void E()
     {
-        
+        StartCoroutine(Sorcerer_E(10f,3f,30f,0.5f));
     }
 
     public override void R()
@@ -288,12 +289,20 @@ public class Sorcerer : Player
 #endregion
 
 #region E
-    IEnumerator Sorcerer_E(float range, float damage)
+    IEnumerator Sorcerer_E(float range, float width, float damage, float slow)
     {
         canceled = false;
         pos_selected = false;
-        Vector3 pos;
-        StartCoroutine(Show_CircleIndicator(false,360,range));
+        Vector3 pos = player.transform.position;
+        Vector3 wanted_size;
+        float wanted_height;
+        float generate_speed = 0.05f;
+        List<Stat> slowed_enemy = new List<Stat>();
+        GameObject temp = Instantiate(Icy_Field);
+        GameObject sword = temp.transform.GetChild(3).gameObject;
+        temp.SetActive(false);
+        temp.transform.localScale = Vector3.zero;
+        StartCoroutine(Show_CircleIndicator(false,360,width));
         while(!canceled)
         {
             while(!pos_selected)
@@ -322,20 +331,65 @@ public class Sorcerer : Player
             }
             if(pos_selected)
             {
+                if(Vector3.Distance(player.transform.position, pos) > range)
+                {
+                    curState = State.STATE_MOVE;
+                    Ani_State_Change();
+                    Set_Destination(pos);
+                    while(Vector3.Distance(player.transform.position, pos) > range)
+                    {
+                        if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.R))
+                        {
+                            canceled = true;
+                            on_skill = false;
+                            break;
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                    destination.Clear();
+                }
                 curState = State.STATE_SKILL;
                 skill = HotKey.E;
                 Ani_State_Change();
-                yield return new WaitForSeconds(1.8f);
-                StartCoroutine(CameraShake(0.5f));
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.7f);
+                temp.transform.position = pos;
+                temp.SetActive(true);
+                wanted_size = new Vector3(1f,1f,5/9f) * width;
+                
+                while(true)
+                {
+                    Vector3 temp_size = temp.transform.localScale;
+
+                    if(Mathf.Abs(wanted_size.x - temp_size.x) <= 0.01f)
+                        break;
+                    float x = Mathf.Lerp(temp_size.x,wanted_size.x,generate_speed);
+                    float y = Mathf.Lerp(temp_size.y,wanted_size.y,generate_speed);
+                    float z = Mathf.Lerp(temp_size.z,wanted_size.z,generate_speed);
+                    temp.transform.localScale = new Vector3(x,y,z);
+                    yield return new WaitForEndOfFrame();
+                }
+                wanted_height = 0.5f;
+                while(true)
+                {
+                    if(Mathf.Abs(wanted_height - sword.transform.localPosition.z) <= 0.1f)
+                        break;
+                    float height = Mathf.Lerp(sword.transform.localPosition.z,wanted_height,0.1f);
+                    Debug.Log(height);
+                    sword.transform.localPosition = new Vector3(0,0,height);
+                    yield return new WaitForEndOfFrame();
+                }
                 for(int i = 0; i < enemies.Count; i++)
                 {
                     if(enemies[i] != null)
                     {
-                        float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
+                        float far = Vector3.Distance(pos, enemies[i].transform.position);
 
-                        if(far < range)
-                            enemies[i].GetComponent<Stat>().Hp -= damage;
+                        if(far < width)
+                        {
+                            enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
+                            enemies[i].GetComponent<Stat>().MoveSpeed *= slow;
+                            slowed_enemy.Add(enemies[i].GetComponent<Stat>());
+                        } 
                     }
                 }
                 cool[3] = cool_max[3];
@@ -346,6 +400,32 @@ public class Sorcerer : Player
         }
         pos_selected = false;
         canceled = false;
+        yield return new WaitForSeconds(1f);//필드 사라지는 시간
+        wanted_size = new Vector3(0f,0f,0f);
+        wanted_height = -2.5f;
+        while(true)
+        {
+            if(Mathf.Abs(wanted_height - sword.transform.localPosition.z) <= 0.1f)
+                break;
+            float height = Mathf.Lerp(sword.transform.localPosition.z,wanted_height,0.1f);
+            sword.transform.localPosition = new Vector3(0,0,height);
+            yield return new WaitForEndOfFrame();
+        }
+        while(true)
+        {
+            Vector3 temp_size = temp.transform.localScale;
+            if(Mathf.Abs(wanted_size.x - temp_size.x) <= 0.01f)
+                break;
+            float x = Mathf.Lerp(temp_size.x,wanted_size.x,generate_speed);
+            float y = Mathf.Lerp(temp_size.y,wanted_size.y,generate_speed);
+            float z = Mathf.Lerp(temp_size.z,wanted_size.z,generate_speed);
+            temp.transform.localScale = new Vector3(x,y,z);
+            yield return new WaitForEndOfFrame();
+        }
+        Destroy(temp);//최초 1회만 생성하고 반복해서 사용하게 수정할 수 있음
+        yield return new WaitForSeconds(2f);//적들 이동속도 회복 시간
+        foreach(Stat i in slowed_enemy)
+            i.MoveSpeed /= slow;
     }
 #endregion
 }
