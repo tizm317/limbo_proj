@@ -18,6 +18,7 @@ public class Define
         Moving,
         Patroll,
         Skill,
+        JumpSkill,
         Hit,
         Die,
     }

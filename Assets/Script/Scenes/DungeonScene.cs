@@ -35,7 +35,7 @@ public class DungeonScene : BaseScene
 
         // DataManager test
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
-        Dictionary<int, Data.Map> dict_map = Managers.Data.MapDict;
+        //Dictionary<int, Data.Map> dict_map = Managers.Data.MapDict;
 
         // Ŀ����Ʈ�ѷ� @Scene
         gameObject.GetOrAddComponent<CursorController>();
