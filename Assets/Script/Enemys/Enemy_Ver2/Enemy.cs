@@ -30,6 +30,9 @@ public abstract class Enemy : MonoBehaviour
                 case Define.State.Skill:
                     anim.CrossFade("ATTACK", 0.2f, -1, 0);
                     break;
+                case Define.State.JumpSkill:
+                    anim.CrossFade("JUMPATTACK", 0.2f, -1, 0);
+                    break;
                 case Define.State.Hit:
                     anim.CrossFade("DAMAGE", 0.2f);
                     break;
@@ -62,6 +65,9 @@ public abstract class Enemy : MonoBehaviour
             case Define.State.Skill:
                 UpdateSkill();
                 break;
+            case Define.State.JumpSkill:
+                UpdateJumpSkill();
+                break;
             case Define.State.Hit:
                 UpdateHit();
                 break;
@@ -83,6 +89,9 @@ public abstract class Enemy : MonoBehaviour
     {
     }
     protected virtual void UpdateSkill()
+    {
+    }
+    protected virtual void UpdateJumpSkill()
     {
     }
     protected virtual void UpdateHit()
