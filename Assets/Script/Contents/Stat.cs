@@ -15,8 +15,10 @@ public class Stat : MonoBehaviour
     [SerializeField] protected float _moveSpeed;  //이동하는 속도
     [SerializeField] protected float _turnSpeed; // 턴하는 속도
     [SerializeField] protected float _attackSpeed; //공격속도
+    [SerializeField] protected ItemData _itemdata; //인벤토리에 넣을 아이템 
 
     Enemy enemy;
+    Inventory inventory;
 
     // 외부에서 사용할 때
     public int Level { get { return _level; } set { _level = value; } }
@@ -27,6 +29,8 @@ public class Stat : MonoBehaviour
     public float MoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
     public float TurnSpeed { get { return _turnSpeed; } set { _turnSpeed = value; } }
     public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
+    public ItemData ItemData { get { return _itemdata; } set { _itemdata = value; } }
+
     private void Awake()
     {
         _level = 1;
@@ -40,6 +44,7 @@ public class Stat : MonoBehaviour
     void Init()
     {
         enemy = gameObject.GetComponent<Enemy>();
+        inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
     }
     public void Start()
     {
@@ -79,16 +84,21 @@ public class Stat : MonoBehaviour
             playerStat.Exp += 10;
         }
         */
+        //int tempIdx;
+        //inventory.Add(_itemdata, idx: out tempIdx, 1);
         StartCoroutine(Die());
+
+        //아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
+        int tempIdx;
+        inventory.Add(ItemData, idx: out tempIdx, 1);
 
     }
     IEnumerator Die()
     {
         enemy.State = Define.State.Die;
 
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(7.0f);
 
         Managers.Game.Despawn(gameObject);
-
     }
 }

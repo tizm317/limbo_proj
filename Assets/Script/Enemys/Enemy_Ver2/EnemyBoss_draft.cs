@@ -24,7 +24,8 @@ public class EnemyBoss_draft : Enemy
         WorldObjectType = Define.WorldObject.Monster;
 
         // 스탯은 상속받아서 사용 : _stat
-        _stat.Hp = 500.0f;
+        _stat.Hp = 300.0f;
+        _stat.MaxHp = 300.0f;
         _stat.Attack = 10.0f;
         // 디폴트 애니메이션 
         State = Define.State.Idle;
