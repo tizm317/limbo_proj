@@ -156,7 +156,7 @@ public class Archer : Player
         attackRange += range;
         my_stat.AttackSpeed += speed;
         on_skill = false;
-        cool[0] = cool_max[0];//시전시간이 없어서 일단은 바로 쿨 돌리기
+        cool[1] = cool_max[1];//시전시간이 없어서 일단은 바로 쿨 돌리기
         yield return new WaitForSeconds(time);//지속시간
         attackRange -= range;
         my_stat.AttackSpeed -= speed;
@@ -242,7 +242,7 @@ public class Archer : Player
                 }
                 foreach(GameObject i in temp)
                     Destroy(i);
-                cool[0] = cool_max[0];
+                cool[2] = cool_max[2];
                 on_skill = false;
                 break;
             }
@@ -294,7 +294,7 @@ public class Archer : Player
                 temp.transform.position = player.transform.position;
                 Vector3 dir = player.transform.forward;
                 temp.GetComponent<FireArrow>().Run(my_stat,100,dir);
-                cool[0] = cool_max[0];
+                cool[3] = cool_max[3];
                 on_skill = false;
                 break;
             }
