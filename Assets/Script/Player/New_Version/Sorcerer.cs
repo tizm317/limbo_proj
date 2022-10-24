@@ -6,9 +6,11 @@ public class Sorcerer : Player
 {
     GameObject Magic_bolt;
     GameObject Icy_Field;
+    GameObject Shield;
     [SerializeField]
     float mana_for_attack = 5f;
-
+    [SerializeField]
+    float con = 5f;
     public enum BlendMode
     {
         Opaque = 0,
@@ -22,6 +24,7 @@ public class Sorcerer : Player
         job = "Sorcerer";
         Magic_bolt = Resources.Load<GameObject>("Prefabs/Magic_bolt");
         Icy_Field = Resources.Load<GameObject>("Prefabs/Icy_Field");
+        Shield = Resources.Load<GameObject>("Prefabs/skull shield");
         attackRange = 10f;
         cool_max[0] = 1f;
         cool_max[1] = 1f;
@@ -108,7 +111,7 @@ public class Sorcerer : Player
 
     public override void R()
     {
-        
+        StartCoroutine(Sorcerer_R(10f,con,con+3,15f));
     }
 
     public override void Passive()
@@ -276,7 +279,7 @@ public class Sorcerer : Player
                     target.GetComponent<PlayerStat>().Hp += heal;
                     if(target.GetComponent<PlayerStat>().Hp>target.GetComponent<PlayerStat>().MaxHp)
                         target.GetComponent<PlayerStat>().Hp = target.GetComponent<PlayerStat>().MaxHp;
-                    cool[0] = cool_max[0];
+                    cool[1] = cool_max[1];
                     on_skill = false;
                     break;
                 }    
@@ -392,7 +395,7 @@ public class Sorcerer : Player
                         } 
                     }
                 }
-                cool[3] = cool_max[3];
+                cool[2] = cool_max[2];
                 on_skill = false;
                 break;
             }
@@ -426,6 +429,183 @@ public class Sorcerer : Player
         yield return new WaitForSeconds(2f);//적들 이동속도 회복 시간
         foreach(Stat i in slowed_enemy)
             i.MoveSpeed /= slow;
+    }
+#endregion
+
+#region R
+    IEnumerator Sorcerer_R(float range, float width, float width2, float damage)
+    {
+        canceled = false;
+        pos_selected = false;
+        Vector3 pos = player.transform.position;
+        StartCoroutine(Show_CircleIndicator(false,360,width2));
+        while(!canceled)
+        {
+            while(!pos_selected)
+            {
+                if(Input.GetMouseButton(0))
+                {
+                    destination.Clear();
+                    RaycastHit hit;
+                    bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
+                    if (!raycastHit)
+                        canceled = true;
+                    else
+                    {              
+                        pos = hit.point;
+                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
+                        pos_selected = true;
+                    }
+                }
+                else if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.Q))
+                {
+                    canceled = true;
+                    on_skill = false;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            if(pos_selected)
+            {
+                if(Vector3.Distance(player.transform.position, pos) > range)
+                {
+                    curState = State.STATE_MOVE;
+                    Ani_State_Change();
+                    Set_Destination(pos);
+                    while(Vector3.Distance(player.transform.position, pos) > range)
+                    {
+                        if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E))
+                        {
+                            canceled = true;
+                            on_skill = false;
+                            break;
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                    destination.Clear();
+                }
+                curState = State.STATE_SKILL;
+                skill = HotKey.R;
+                Ani_State_Change();
+                yield return new WaitForSeconds(0.7f);
+                int how_many = (int)(width * (8f/5f));
+                float rad = 360f/(how_many * 2);
+                List<GameObject> shields = new List<GameObject>();
+                for(int i = 0; i < how_many; i++)
+                {
+                    GameObject a = Instantiate(Shield);
+                    a.transform.position = pos - new Vector3(0,3f,0);
+                    a.transform.Rotate(0, (rad * (i+1)),0);
+                    a.transform.Translate(a.transform.forward * width2);
+                    a.transform.LookAt(new Vector3(pos.x,a.transform.position.y,pos.z));
+                    shields.Add(a);
+                }
+
+                float wanted_height = 1f;
+                while(true)//위로 튀어나오는 부분
+                {
+                    float height = 0f;;
+                    foreach(GameObject i in shields)
+                    {
+                        height = Mathf.Lerp(i.transform.position.y, wanted_height,0.05f);
+                        i.transform.position = new Vector3(i.transform.position.x, height,i.transform.position.z);
+                    }
+                    
+                    if(Mathf.Abs(wanted_height-height) <= 0.01f)
+                        break;
+                    yield return new WaitForEndOfFrame();
+                }
+                cool[3] = cool_max[3];
+                on_skill = false;
+                float wanted_move = width2 - width;
+                float move = 0f, move_before = 0f;
+                while(true)//앞으로 이동
+                {
+                    move = Mathf.Lerp(move, wanted_move,0.02f);
+                    foreach(GameObject i in shields)
+                    {
+                        i.transform.localPosition += i.transform.forward * (move - move_before);
+                    }
+                    move_before = move;
+                    if(Mathf.Abs(wanted_move-move) <= 0.01f)
+                        break;
+                    yield return new WaitForEndOfFrame();
+                }
+                Vector3 wanted_size = new Vector3(2f,2f,3f);
+                float size = 0;
+                foreach(GameObject i in shields)//광선 on
+                {
+                    i.transform.GetChild(1).gameObject.SetActive(true);
+                }
+                while(true)//광선 발사
+                {
+                    size = Mathf.Lerp(size,1,0.01f);
+                    foreach(GameObject i in shields)
+                    {
+                        i.transform.GetChild(1).localScale = wanted_size * size;
+                    }
+                    
+                    if(1-size <= 0.01f)
+                        break;
+                    yield return new WaitForEndOfFrame();
+                }
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(pos, enemies[i].transform.position);
+
+                        if(far < width)
+                        {
+                            enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
+                        } 
+                    }
+                }
+                var ps = FindObjectsOfType<PlayerStat>();
+                foreach(PlayerStat i in ps)
+                {
+                    float far = Vector3.Distance(pos, i.transform.position);
+
+                    if(far < width2)
+                    {
+                        i.Hp += damage;
+                    }
+                }
+                size = 1;
+                while(true)//광선 사라져!
+                {
+                    size = Mathf.Lerp(size,0,0.01f);
+                    foreach(GameObject i in shields)
+                    {
+                        i.transform.GetChild(1).localScale = wanted_size * size;
+                    }
+                    
+                    if(size <= 0.01f)
+                        break;
+                    yield return new WaitForEndOfFrame();
+                }
+                wanted_height = -10f;
+                while(true)//방패 사라져!
+                {
+                    float height = 0f;
+                    foreach(GameObject i in shields)
+                    {
+                        height = Mathf.Lerp(i.transform.position.y, wanted_height,0.05f);
+                        i.transform.position = new Vector3(i.transform.position.x, height,i.transform.position.z);
+                    }
+                    
+                    if(Mathf.Abs(wanted_height-height) <= 0.01f)
+                        break;
+                    yield return new WaitForEndOfFrame();
+                }
+                foreach(GameObject i in shields)
+                    Destroy(i);
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        pos_selected = false;
+        canceled = false;
     }
 #endregion
 }
