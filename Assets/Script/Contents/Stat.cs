@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Stat : MonoBehaviour
 {
@@ -97,6 +98,8 @@ public class Stat : MonoBehaviour
     }
     IEnumerator Die()
     {
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
         enemy.State = Define.State.Die;
 
         yield return new WaitForSeconds(7.0f);
