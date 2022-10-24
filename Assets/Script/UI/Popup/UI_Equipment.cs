@@ -16,9 +16,9 @@ public class UI_Equipment : UI_Popup
     Player player_State;
     private GameObject Scene;
 
-    // 착용한 아이템 리스트
+    // 착용한 아이템 딕셔너리
     // 여기서 직접 관리?
-    List<Item> _EquipItems = new List<Item>();
+    Dictionary<string, Item> _EquipItemDict = new Dictionary<string, Item>();
 
     enum GameObjects
     {
@@ -31,6 +31,7 @@ public class UI_Equipment : UI_Popup
         EnchantStone1,
         EnchantStone2,
         EnchantStone3,
+        size,
     }
 
     private void Start()
@@ -38,6 +39,8 @@ public class UI_Equipment : UI_Popup
         Init();
     }
 
+    // 원래 스프라이트
+    Sprite[] spArr;
 
     public override void Init()
     {
@@ -60,6 +63,86 @@ public class UI_Equipment : UI_Popup
         x_cam = selfCam.transform.position.x;
         z_cam = selfCam.transform.position.z;
         r = Vector2.Distance(new Vector2(x_cam, z_cam), new Vector2(player.position.x, player.position.z));
+
+        //
+        _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
+        _ped = new PointerEventData(EventSystem.current);
+        _rrList = new List<RaycastResult>(10);
+
+        // 원래 스프라이트 저장
+        spArr = new Sprite[(int)GameObjects.size - 1];
+        for(int i = 1; i < (int)GameObjects.size; i++)
+        {
+            spArr[i-1] = GetObject(i).transform.GetChild(0).GetComponent<Image>().sprite;
+        }
+    }
+
+    private void Update()
+    {
+        _ped.position = Input.mousePosition;
+        OnPointerUp();
+    }
+
+    private void OnPointerUp()
+    {
+        if (Input.GetMouseButtonUp(1))
+        {
+            UI_EquipSlot slot = RaycastAndGetFirstComponent<UI_EquipSlot>();
+            if (slot != null)
+                TakeOff(slot.gameObject);
+        }
+    }
+
+    private GraphicRaycaster _gr;
+    private PointerEventData _ped;
+    private List<RaycastResult> _rrList;
+
+    private T RaycastAndGetFirstComponent<T>() where T : Component
+    {
+        _rrList.Clear();
+        _gr.Raycast(_ped, _rrList);
+        if (_rrList.Count == 0) return null;
+        return _rrList[0].gameObject.GetComponent<T>();
+    }
+
+    private void TakeOff(GameObject slot)
+    {
+        if (_EquipItemDict.ContainsKey(slot.name) == false) return;
+
+        Item takeOff_Item = _EquipItemDict[slot.name];
+        
+        // 딕셔너리에서 제거
+        _EquipItemDict.Remove(slot.name);
+
+        // 인벤토리에 추가
+        Inventory inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
+        int tempIdx;
+        inventory.Add(takeOff_Item.Data, out tempIdx);
+
+        // 아이콘 제거
+        int idx = 0;
+        switch (slot.name)
+        {
+            case "Head":
+                idx = (int)GameObjects.Head;
+                break;
+            case "Body":
+                idx = (int)GameObjects.Body;
+                break;
+            case "Pants":
+                idx = (int)GameObjects.Pants;
+                break;
+            case "Shoes":
+                idx = (int)GameObjects.Shoes;
+                break;
+            case "Weapon":
+                idx = (int)GameObjects.Weapon;
+                break;
+            default:
+                idx = (int)GameObjects.EnchantStone1;
+                break;
+        }
+        slot.transform.GetChild(0).GetComponent<Image>().sprite = spArr[idx - 1];
     }
 
     public void onSliderDrag(PointerEventData data)
@@ -98,24 +181,17 @@ public class UI_Equipment : UI_Popup
                 Debug.Log($"This Weapon Is For {weaponItem.Class}.");
                 return false;
             }
-            if(GetObject((int)GameObjects.Weapon).transform.GetChild(0).GetComponent<Image>().sprite != null)
+
+            // 이미 착용중이면 교체
+            if (_EquipItemDict.ContainsKey("Weapon"))
             {
-                // 이미 착용중
-                // 교체
-                foreach(EquipmentItem e in _EquipItems)
-                {
-                    if(e is WeaponItem)
-                    {
-                        exchangedItem = e;
-
-                        _EquipItems.Remove(e);
-                        break;
-                    }
-                }
+                exchangedItem = (EquipmentItem)_EquipItemDict["Weapon"];
+                _EquipItemDict["Weapon"] = weaponItem;
             }
-
-            // 리스트에 추가
-            _EquipItems.Add(weaponItem);
+            else // 없으면 추가
+            {
+                _EquipItemDict["Weapon"] = weaponItem;
+            }
 
             // 아이콘 변경
             GetObject((int)GameObjects.Weapon).transform.GetChild(0).GetComponent<Image>().sprite = weaponItem.Data.IconSprite;
@@ -125,8 +201,20 @@ public class UI_Equipment : UI_Popup
         else if(equipmentItem is ArmorItem armorItem)
         {
             ArmorItem a =  (ArmorItem)armorItem;
+            // 이미 있으면 교체
+            if (_EquipItemDict.ContainsKey(a.Part))
+            {
+                exchangedItem = (EquipmentItem)_EquipItemDict[a.Part];
+                _EquipItemDict[a.Part] = a;
+            }
+            else // 없으면 착용
+            {
+                _EquipItemDict[a.Part] = a;
+            }
+
+            // 아이콘 변경
             int idx = 0;
-            switch(a.Part)
+            switch (a.Part)
             {
                 case "Head":
                     idx = (int)GameObjects.Head;
@@ -141,33 +229,9 @@ public class UI_Equipment : UI_Popup
                     idx = (int)GameObjects.Shoes;
                     break;
             }
-            if(GetObject(idx).transform.GetChild(0).GetComponent<Image>().sprite != null)
-            {
-                // 이미 착용중
-                // 교체
-                foreach (EquipmentItem e in _EquipItems)
-                {
-                    if (e is ArmorItem)
-                    {
-                        ArmorItem a2 = (ArmorItem)e;
-
-                        // 방어구 부위가 다르면 continue
-                        if (a.Part != a2.Part) continue;
-
-                        exchangedItem = e;
-
-                        _EquipItems.Remove(e);
-                        break;
-                    }
-                }
-            }
-
-            // 리스트에 추가
-            _EquipItems.Add(a);
-            // 아이콘 변경
             GetObject(idx).transform.GetChild(0).GetComponent<Image>().sprite = armorItem.Data.IconSprite;
-
         }
         return true;
     }
+
 }
