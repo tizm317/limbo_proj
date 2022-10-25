@@ -93,8 +93,7 @@ public abstract class Player : MonoBehaviour
     protected GameObject CircleIndicator;
     protected bool canceled = false;
     protected bool pos_selected = false;
-    [SerializeField]
-    protected bool attackable = true;
+    public bool attackable = true;
     protected enum HotKey
     {
         Q,
@@ -104,6 +103,7 @@ public abstract class Player : MonoBehaviour
     }
     protected HotKey skill;
     [SerializeField]
+    protected int[] skill_level = new int[4];
     protected float[] cool = new float[4];
     protected float[] cool_max = new float[4];
     public Image[] Skill_img = new Image[4];
@@ -161,6 +161,13 @@ public abstract class Player : MonoBehaviour
         Init();
         abstract_Init();
         Passive();
+    }
+    void Skill_level()
+    {
+        skill_level[0] = 0;
+        skill_level[1] = 0;
+        skill_level[2] = 0;
+        skill_level[3] = 0;
     }
 
     void Update()
@@ -444,6 +451,8 @@ public abstract class Player : MonoBehaviour
     {
 
     }
+
+    public abstract void Cool_Update();
 
     void Run_Skill()//스킬 사용 함수
     {
