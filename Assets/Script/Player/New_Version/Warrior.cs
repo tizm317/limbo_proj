@@ -19,33 +19,49 @@ public class Warrior : Player
         }
     }
 
+    public override void Cool_Update()//스킬 레벨업 할때 한번씩 돌아가면됨
+    {
+       cool_max[0] = 10f - (2f * skill_level[0] -1);
+       cool_max[1] = 10f - (skill_level[1] - 1);
+       cool_max[2] = 20f - (2f * skill_level[2] -1);
+       cool_max[3] = 30 - 4f * skill_level[3];
+    }
+
     public override void Q()
     {
-        StartCoroutine(Warrior_Q(45f,5f,15f));
+        if(skill_level[0] != 0)
+            StartCoroutine(Warrior_Q());
     }
 
     public override void W()
     {
-        StartCoroutine(Warrior_W(2f,5f,5f));  
+        if(skill_level[1] != 0)
+            StartCoroutine(Warrior_W());  
     }
 
     public override void E()
     {
-        StartCoroutine(Warrior_E(5f, 50));
+        if(skill_level[2] != 0)
+            StartCoroutine(Warrior_E());
     }
 
     public override void R()
     {
-        StartCoroutine(Warrior_R(2f,5f));
+        if(skill_level[3] != 0)
+            StartCoroutine(Warrior_R());
     }
 
     public override void Passive()
     {
-        StartCoroutine(Warrior_Passive(1f));
+        StartCoroutine(Warrior_Passive());
     }
 
-    IEnumerator Warrior_Q(float SightAngle, float distance,float damage)
+    IEnumerator Warrior_Q()
     {
+        float SightAngle = 45f;
+        float distance = attackRange * 1.5f;
+        float damage = my_stat.Attack * (1 + skill_level[0] * 0.25f);
+
         pos_selected = false;
         canceled = false;
         Vector3 pos;
@@ -106,10 +122,13 @@ public class Warrior : Player
         canceled = false;
     }
 
-    IEnumerator Warrior_W(float mul, float time, float range)
+    IEnumerator Warrior_W()
     {
         //mul = 체젠 배율
         //time = 얼마나 오랫동안?
+        float mul = 1 + skill_level[1];
+        float time = 5f;
+        float range = attackRange * (2 + skill_level[1]);
         curState = State.STATE_SKILL;
         skill = HotKey.W;
         Ani_State_Change();
@@ -133,8 +152,10 @@ public class Warrior : Player
         
         
     }
-    IEnumerator Warrior_E(float range, float percent)
+    IEnumerator Warrior_E()
     {
+        float range = attackRange * (2 + skill_level[2]);
+        float percent = 5f * (1 + skill_level[2]);
         curState = State.STATE_SKILL;
         skill = HotKey.E;
         Ani_State_Change();
@@ -166,8 +187,10 @@ public class Warrior : Player
         }//원상복귀
     }
 
-    IEnumerator Warrior_R(float range, float damage)
+    IEnumerator Warrior_R()
     {
+        float range = 1 + skill_level[3];
+        float damage = my_stat.Attack * (skill_level[3] * 0.5f + 1f);
         canceled = false;
         pos_selected = false;
         Vector3 pos = player.transform.position;
@@ -242,10 +265,11 @@ public class Warrior : Player
         pos_selected = false;
         canceled = false;
     }
-    IEnumerator Warrior_Passive(float percent)
+    IEnumerator Warrior_Passive()
     {
         //percent는 잃은 체력의 몇 퍼센트 인지를 나타냄
         //이 함수는 초기에 한번만 돌려주면 됨
+        float percent = 1f;
         while(true)
         {
             yield return new WaitForSeconds(1f);//1초마다 반복해서 수행
