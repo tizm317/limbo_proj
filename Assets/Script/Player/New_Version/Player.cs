@@ -160,6 +160,7 @@ public abstract class Player : MonoBehaviour
     {
         Init();
         abstract_Init();
+        Skill_level();
         Passive();
     }
     void Skill_level()
@@ -167,7 +168,7 @@ public abstract class Player : MonoBehaviour
         skill_level[0] = 0;
         skill_level[1] = 0;
         skill_level[2] = 0;
-        skill_level[3] = 0;
+        skill_level[3] = 4;
     }
 
     void Update()
