@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SpawningPool1 : MonoBehaviour
+public class SpawningPool_Boss : MonoBehaviour
 {
     [SerializeField] int _monsterCount = 0;
     int _reserveCount = 0; // 코루틴을 생성할 때 현재 예약된 코루틴이 몇개인지 판단
