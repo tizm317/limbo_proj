@@ -19,6 +19,12 @@ enum MsgId {
   S_CREATE_PLAYER = 15;
 }
 
+enum SkillType {
+  SKILL_NONE = 0;
+  SKILL_AUTO = 1;
+  SKILL_PROJECTILE = 2;
+}
+
 enum PlayerServerState {
   SERVER_STATE_LOGIN = 0;
   SERVER_STATE_LOBBY = 1;

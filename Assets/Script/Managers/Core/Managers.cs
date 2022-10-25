@@ -11,7 +11,7 @@ public class Managers : MonoBehaviour
 
     // 프로퍼티로 개선
     static Managers s_instance;
-    static Managers Instance { get { Init(); return s_instance; } }
+    public static Managers Instance { get { Init(); return s_instance; } }
 
     // 각 매니저 연결
     GameManagerEx _game = new GameManagerEx();
@@ -26,6 +26,7 @@ public class Managers : MonoBehaviour
     UIManager _ui = new UIManager();
 
     NetworkManager _network = new NetworkManager();
+    WebManager _web = new WebManager();
 
     NpcManager _npc = new NpcManager();
     //ObjectManager _object = new ObjectManager();
@@ -43,6 +44,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
     public static NpcManager NPC { get { return Instance._npc; } }
     public static NetworkManager Network { get { return Instance._network; } }
+    public static WebManager Web { get { return Instance._web; } }
     //public static ObjectManager Object { get { return Instance._object; } }
 
     void Start()

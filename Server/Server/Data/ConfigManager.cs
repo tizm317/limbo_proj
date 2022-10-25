@@ -12,6 +12,7 @@ namespace Server.Data
         public string connectionString;
     }
 
+    // 설정 파일 관리
     public class ConfigManager
     {
         public static ServerConfig Config { get; private set; }

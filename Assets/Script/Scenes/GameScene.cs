@@ -60,6 +60,11 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.InGame;
 
+        // TODO ; 잠시 기생중
+        Managers.Web.BaseUrl = "https://localhost:5001/api";
+        WebPacket.SendCreateAccount("Rookiss", "1234");
+
+
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
         Screen.SetResolution(640, 480, false);
 
