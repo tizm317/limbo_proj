@@ -11,7 +11,6 @@ public class EnemyBoss_draft : Enemy
     [SerializeField] int skillIndex;
 
     // Start is called before the first frame update
-
     private void OnEnable()
     {
         Init();
@@ -30,7 +29,6 @@ public class EnemyBoss_draft : Enemy
         // 디폴트 애니메이션 
         State = Define.State.Idle;
         
-
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
@@ -39,7 +37,7 @@ public class EnemyBoss_draft : Enemy
     //Idle 상태
     protected override void UpdateIdle()
     {
-        //State = Define.State.Idle;
+        State = Define.State.Idle;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
             return;

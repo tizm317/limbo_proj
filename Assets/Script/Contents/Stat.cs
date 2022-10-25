@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Stat : MonoBehaviour
 {
@@ -15,10 +16,11 @@ public class Stat : MonoBehaviour
     [SerializeField] protected float _moveSpeed;  //이동하는 속도
     [SerializeField] protected float _turnSpeed; // 턴하는 속도
     [SerializeField] protected float _attackSpeed; //공격속도
-    [SerializeField] protected ItemData _itemdata; //인벤토리에 넣을 아이템 
-
+    [SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
+    [SerializeField] private int _itemIndex;
     Enemy enemy;
     Inventory inventory;
+
 
     // 외부에서 사용할 때
     public int Level { get { return _level; } set { _level = value; } }
@@ -29,7 +31,7 @@ public class Stat : MonoBehaviour
     public float MoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
     public float TurnSpeed { get { return _turnSpeed; } set { _turnSpeed = value; } }
     public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
-    public ItemData ItemData { get { return _itemdata; } set { _itemdata = value; } }
+    public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
 
     private void Awake()
     {
@@ -88,13 +90,16 @@ public class Stat : MonoBehaviour
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
         StartCoroutine(Die());
 
+        _itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
         //아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
         int tempIdx;
-        inventory.Add_Without_UI_Update(ItemData, idx: out tempIdx, 1);
+        inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
 
     }
     IEnumerator Die()
     {
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
         enemy.State = Define.State.Die;
 
         yield return new WaitForSeconds(7.0f);
