@@ -10609,13 +10609,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730009820948671607}
-  m_LocalRotation: {x: -0.03326829, y: -0.007266993, z: 0.003951883, w: 0.99941224}
-  m_LocalPosition: {x: 0, y: 2.098669, z: 1.69804}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.01, y: 3.98, z: 1.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1730009821565375824}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -3.8100002, y: -0.84900004, z: 0.48100004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730009820967966047
 GameObject:
   m_ObjectHideFlags: 0
@@ -16071,6 +16071,8 @@ MonoBehaviour:
   _moveSpeed: 0
   _turnSpeed: 0
   _attackSpeed: 0
+  _itemdata: []
+  _itemIndex: 0
 --- !u!114 &1730009821565375662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16099,12 +16101,13 @@ MonoBehaviour:
   _destPos: {x: 0, y: 0, z: 0}
   state: 1
   lockTarget: {fileID: 0}
-  _scanRange: 8
+  _scanRange: 15
   _attachRange: 3
   points: []
-  bomb: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5, type: 3}
   bombPos: {fileID: 1730009820948671604}
-  throwPower: 15
+  bomb: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5, type: 3}
+  idx: 0
+  cooldownTime: 5
 --- !u!1 &1730009821568943016
 GameObject:
   m_ObjectHideFlags: 0

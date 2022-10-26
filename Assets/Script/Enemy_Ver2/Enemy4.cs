@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Enemy4 : Enemy
 {
     
-    [SerializeField] float _scanRange = 8;   //플레이서 인식 사정거리
+    [SerializeField] float _scanRange = 12.0f;   //플레이서 인식 사정거리
     [SerializeField] float _attachRange = 3;  //적 근거리공격 사정거리
 
     public Transform[] points;  //waypoints 배열
@@ -16,11 +16,14 @@ public class Enemy4 : Enemy
     private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
 
-    public GameObject bomb; // 무기 오브젝트(프리팹)
     public Transform bombPos; // 무기가 생성될 발사 위치 지정
-    public float throwPower = 15.0f; //던지는 힘
-    private float TimeLeft = 4.0f;
-    private float nextTime = 0.0f;
+    public GameObject bomb; // 무기 오브젝트(프리팹)
+    public int idx;
+    //public float throwPower = 15.0f; //던지는 힘
+
+    public float cooldownTime = 5.0f;
+    private float nextFireTime = 0f;
+
 
     private void OnEnable()
     {
@@ -74,12 +77,17 @@ public class Enemy4 : Enemy
         if (dist <= _attachRange)
         {
             nma.SetDestination(tr.position);
-
             State = Define.State.Skill;
             return;
         }
         else if (dist <= _scanRange)
         {
+            idx = Random.Range(1, 11);
+            if (idx > 9)
+            {
+                shot();
+                return;
+            }
             if (dir.magnitude < 0.1f)
             {
                 State = Define.State.Moving;
@@ -87,10 +95,7 @@ public class Enemy4 : Enemy
             else
             {
                 nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
-                //nma.speed = _stat.MoveSpeed;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
-                StartCoroutine(Skill());
-
             }
         }
         else
@@ -100,9 +105,7 @@ public class Enemy4 : Enemy
                 nextIdx = 1;
             }
             movePos = points[nextIdx].position;  //다음 waypoint 위치
-//            Debug.Log(nextIdx);
             nma.SetDestination(movePos);
-            //nma.speed = _stat.MoveSpeed;
 
             Quaternion quat = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
@@ -121,6 +124,11 @@ public class Enemy4 : Enemy
             //tr.rotation = Quaternion.Lerp(tr.rotation, quat, 20 * Time.deltaTime);
             tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
         }
+    }
+
+    protected override void UpdateJumpSkill()
+    {
+
     }
 
     //Hit 상태
@@ -166,16 +174,7 @@ public class Enemy4 : Enemy
             if (State == Define.State.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
-            /*
-            float damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage; //플레이어 데미지
 
-            
-            if(targetStat.Hp <= 0)
-            {
-                Managers.Game.Despawn(targetStat.gameObject);
-            }
-            */
             //죽었는지 여부 체크 
             if (targetStat.Hp > 0)
             {
@@ -183,7 +182,6 @@ public class Enemy4 : Enemy
                 if (dist <= _attachRange)
                 {
                     State = Define.State.Skill;
-                    StartCoroutine(Attack());
                 }
                 else
                     State = Define.State.Moving;
@@ -199,28 +197,6 @@ public class Enemy4 : Enemy
         }
     }
 
-    IEnumerator Skill()
-    {
-        if (Time.time > nextTime)
-        {
-            nextTime = Time.time + TimeLeft;
-
-            GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
-            Rigidbody bombRigid = instantBomb.GetComponent<Rigidbody>();
-            bombRigid.velocity = bombPos.forward * 15.0f; //속도 적용
-
-            yield return new WaitForSeconds(2.0f);           
-        }
-    }
-    IEnumerator Attack()
-    {
-
-        State = Define.State.Idle;
-
-        yield return new WaitForSeconds(1.0f);
-
-        State = Define.State.Skill;
-    }
     IEnumerator Idle()
     {
         State = Define.State.Idle;
@@ -228,5 +204,47 @@ public class Enemy4 : Enemy
         yield return new WaitForSeconds(2.0f);
 
         State = Define.State.Moving;
+    }
+
+
+    public void shot()
+    {
+        if (Time.time > nextFireTime)
+        {
+            nextFireTime = Time.time + cooldownTime;
+
+            transform.forward = (lockTarget.transform.position - transform.position).normalized;
+
+            GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
+
+            StartCoroutine(shot_(instantBomb));
+
+        }
+    }
+    IEnumerator shot_(GameObject gameobject)
+    {
+
+        bool hit = false;
+        float time = 0;
+
+        Vector3 target_pos = lockTarget.transform.position;
+        while (!hit)
+        {
+            yield return new WaitForEndOfFrame();
+
+            if (lockTarget != null)
+                target_pos = lockTarget.transform.position;
+
+            time += Time.deltaTime;
+
+            if (Vector3.Distance(gameObject.transform.position, target_pos) < 0.5f)
+            {
+                hit = true;
+            }
+            else if (time > 5f)
+                hit = true;
+        }
+        Destroy(gameobject);
+
     }
 }
