@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyBoss : Enemy
 {
     [SerializeField] float _scanRange = 20;   //사정거리
-    [SerializeField] float _attachRange = 10;  //적 공격 사정거리
+    [SerializeField] float _attachRange = 5;  //적 공격 사정거리
 
     [SerializeField] int skillIndex;
 
