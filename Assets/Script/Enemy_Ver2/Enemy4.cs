@@ -86,6 +86,7 @@ public class Enemy4 : Enemy
             if (idx > 9)
             {
                 shot();
+                
                 return;
             }
             if (dir.magnitude < 0.1f)
@@ -240,6 +241,7 @@ public class Enemy4 : Enemy
             if (Vector3.Distance(gameObject.transform.position, target_pos) < 0.5f)
             {
                 hit = true;
+                OnHitEvent();
             }
             else if (time > 5f)
                 hit = true;
