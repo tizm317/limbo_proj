@@ -501,4 +501,9 @@ public class UI_Inventory : UI_Popup
         bool success = _UI_Equipment.Equip(equipmentItem, out exchangedItem);
         return success;
     }
+
+    public void Save()
+    {
+        _inventory.SaveInventoryToJson();
+    }
 }

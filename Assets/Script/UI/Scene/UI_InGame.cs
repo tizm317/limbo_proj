@@ -174,7 +174,9 @@ public class UI_InGame : UI_Scene
     private void OnApplicationQuit()
     {
         // 꺼질 때에도 저장해야 함
-        saveInven();
+        // 인벤토리 내용(변경사항) json 저장
+        
+        //uI_Inventory.Save();
     }
 
     void ControlPopUpUI()
@@ -196,11 +198,14 @@ public class UI_InGame : UI_Scene
             }
             else
             {
-                // 인벤토리 내용(변경사항) json 저장
                 //if (!ui_Inven.IsPeek())
                 //    return;
                 if (!uI_Inventory.IsPeek())
                     return;
+                
+                // 인벤토리 내용(변경사항) json 저장
+                uI_Inventory.Save();
+
                 //saveInven();
                 //Managers.UI.ClosePopupUI(ui_Inven);
                 Managers.UI.ClosePopupUI(uI_Inventory);
@@ -237,9 +242,10 @@ public class UI_InGame : UI_Scene
                 setting = Managers.UI.ShowPopupUI<UI_Setting>();
             else
             {
-                // 인벤토리 내용(변경사항) json 저장
+                // 인벤토리 내용(변경사항) json 저장(?)
                 if (!setting.IsPeek())
                     return;
+
                 Managers.UI.ClosePopupUI(setting);
             }
         }
