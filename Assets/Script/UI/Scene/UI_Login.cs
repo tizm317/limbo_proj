@@ -30,6 +30,13 @@ public class UI_Login : UI_Scene
         Init();
     }
 
+    private void Update()
+    {
+        if (inputFieldHelper.CheckFocus() == true)
+            OnClickLoginButton(null);
+    }
+
+    InputFieldHelper inputFieldHelper;
     public override void Init()
     {
         base.Init();
@@ -40,14 +47,10 @@ public class UI_Login : UI_Scene
         GetButton((int)Buttons.ButtonCreate).gameObject.BindEvent(OnClickCreateButton);
         GetButton((int)Buttons.ButtonLogin).gameObject.BindEvent(OnClickLoginButton);
 
-
-        //GetButton((int)Buttons.ButtonLogin).gameObject.BindEvent(StartButtonClicked);
-        //Bind<Text>(typeof(Texts));
-        //Bind<Image>(typeof(Images));
-
-        //GetButton((int)Buttons.StartButton).gameObject.BindEvent(StartButtonClicked);
-        //GetButton((int)Buttons.EndButton).gameObject.BindEvent(EndButtonClicked);
-
+        inputFieldHelper = new InputFieldHelper();
+        inputFieldHelper.Add(GetObject((int)GameObjects.AccountName).GetComponent<InputField>());
+        inputFieldHelper.Add(GetObject((int)GameObjects.Password).GetComponent<InputField>());
+        inputFieldHelper.SetFocus(0);
     }
 
     public void OnClickCreateButton(PointerEventData data)
@@ -96,7 +99,7 @@ public class UI_Login : UI_Scene
         });
     }
 
-
+    // Not Use
     //private void StartButtonClicked(PointerEventData data)
     //{
     //    string inputID = GetObject((int)GameObjects.InputFieldUsername).GetComponent<InputField>().text;
