@@ -92,10 +92,6 @@ public class Managers : MonoBehaviour
 
             // NPC Manager init
             //s_instance._npc.Init();
-
-            // NetworkManager 초기화
-            s_instance._network.Init();
-
         }
 
 

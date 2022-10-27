@@ -8,6 +8,9 @@ using Google.Protobuf;
 
 public class NetworkManager
 {
+	public int AccountId { get; set; } 
+	public int Token { get; set; } 
+
 	ServerSession _session = new ServerSession();
 
 	public void Send(IMessage packet)
@@ -15,16 +18,18 @@ public class NetworkManager
 		_session.Send(packet);
 	}
 
-	public void Init()
+	public void ConnectToGame(ServerInfo info)
 	{
         // DNS (Domain Name System)
-        string host = Dns.GetHostName();
+        //string host = Dns.GetHostName();
 		// Hoyoung's laptop host name = "DESKTOP-SD8FC1H"
 		// Hoyoung's Destop host name = "DESKTOP-MOAPUEA"
 		//string host = "DESKTOP-MOAPUEA";
-		IPHostEntry ipHost = Dns.GetHostEntry(host);
-		IPAddress ipAddr = ipHost.AddressList[0];
-		IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
+		//IPHostEntry ipHost = Dns.GetHostEntry(host);
+		//IPAddress ipAddr = ipHost.AddressList[1];
+
+		IPAddress ipAddr = IPAddress.Parse(info.IpAddress);
+		IPEndPoint endPoint = new IPEndPoint(ipAddr, info.Port);
 
 		Connector connector = new Connector();
 

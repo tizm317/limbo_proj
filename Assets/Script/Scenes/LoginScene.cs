@@ -7,6 +7,9 @@ public class LoginScene : BaseScene
 {
     // ·Î±×ÀÎ ¾À
     // @Scene
+
+    UI_Login _sceneUI;
+
     void Awake()
     {
         Init();
@@ -18,8 +21,12 @@ public class LoginScene : BaseScene
 
         SceneType = Define.Scene.Login;
 
+        Managers.Web.BaseUrl = "https://localhost:5001/api";
+
+        Screen.SetResolution(640, 480, false);
+
         // ¾À UI
-        Managers.UI.ShowSceneUI<UI_Login>("UI_Login");
+        _sceneUI = Managers.UI.ShowSceneUI<UI_Login>("UI_Login");
 
         // Login Scene BGM
         Managers.Sound.Play("Sound/BGM/BGM_Ambient_Version", Define.Sound.Bgm);

@@ -11,21 +11,13 @@ public class UI_Login : UI_Scene
     enum Buttons
     {
         ButtonLogin,
-        //StartButton,
-        //EndButton,
-    }
-
-    enum Texts
-    {
-        //TitleText,
-        //StartText,
-        //EndText,
+        ButtonCreate,
     }
 
     enum GameObjects
     {
-        InputFieldUsername,
-        InputFieldPassword,
+        AccountName,
+        Password,
     }
 
     enum Images
@@ -43,9 +35,13 @@ public class UI_Login : UI_Scene
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
-
         Bind<Button>(typeof(Buttons));
-        GetButton((int)Buttons.ButtonLogin).gameObject.BindEvent(StartButtonClicked);
+
+        GetButton((int)Buttons.ButtonCreate).gameObject.BindEvent(OnClickCreateButton);
+        GetButton((int)Buttons.ButtonLogin).gameObject.BindEvent(OnClickLoginButton);
+
+
+        //GetButton((int)Buttons.ButtonLogin).gameObject.BindEvent(StartButtonClicked);
         //Bind<Text>(typeof(Texts));
         //Bind<Image>(typeof(Images));
 
@@ -54,32 +50,78 @@ public class UI_Login : UI_Scene
 
     }
 
+    public void OnClickCreateButton(PointerEventData data)
+    {
+        string account = Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text;
+        string password = Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text;
 
-    private void StartButtonClicked(PointerEventData data)
-    {
-        string inputID = GetObject((int)GameObjects.InputFieldUsername).GetComponent<InputField>().text;
-        string inputPW = GetObject((int)GameObjects.InputFieldPassword).GetComponent<InputField>().text;
-        Debug.Log($"Input ID : {inputID} | PW : {inputPW}");
-        try
+        CreateAccountPacketReq packet = new CreateAccountPacketReq()
         {
-            if (Managers.Data.PlayerTable[inputID].PW == inputPW)
-            {
-                Debug.Log($"Login ID : {Managers.Data.PlayerTable[inputID].ID} | PW : {Managers.Data.PlayerTable[inputID].PW}");
-                Managers.Scene.LoadScene(Define.Scene.InGame);
-            }
-            else
-            {
-                //Debug.Log($"ID : {Managers.Data.PlayerTable[inputID].ID} | PW : {Managers.Data.PlayerTable[inputID].PW}");
-                Debug.Log("Wrong ID or PW");
-            }
-        }
-        catch(KeyNotFoundException)
+            AccountName = account,
+            Password = password
+        };
+
+        Managers.Web.SendPostRequest<CreateAccountPacketRes>("account/create", packet, (res) =>
         {
-            Debug.Log("Wrong ID or PW");
-        }
+            Debug.Log(res.CreateOk);
+
+            Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
+            Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
+        });  
     }
-    private void EndButtonClicked(PointerEventData data)
+    public void OnClickLoginButton(PointerEventData data)
     {
-        Util.Quit();
+        string account = Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text;
+        string password = Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text;
+
+        LoginAccountPacketReq packet = new LoginAccountPacketReq()
+        {
+            AccountName = account,
+            Password = password
+        };
+
+        Managers.Web.SendPostRequest<LoginAccountPacketRes>("account/login", packet, (res) =>
+        {
+            Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
+            Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
+
+            if (res.LoginOk)
+            {
+                Managers.Network.AccountId = res.AccountId;
+                Managers.Network.Token = res.Token;
+
+                UI_SelectServer popup = Managers.UI.ShowPopupUI<UI_SelectServer>();
+                popup.SetServers(res.ServerList);
+            }
+        });
     }
+
+
+    //private void StartButtonClicked(PointerEventData data)
+    //{
+    //    string inputID = GetObject((int)GameObjects.InputFieldUsername).GetComponent<InputField>().text;
+    //    string inputPW = GetObject((int)GameObjects.InputFieldPassword).GetComponent<InputField>().text;
+    //    Debug.Log($"Input ID : {inputID} | PW : {inputPW}");
+    //    try
+    //    {
+    //        if (Managers.Data.PlayerTable[inputID].PW == inputPW)
+    //        {
+    //            Debug.Log($"Login ID : {Managers.Data.PlayerTable[inputID].ID} | PW : {Managers.Data.PlayerTable[inputID].PW}");
+    //            Managers.Scene.LoadScene(Define.Scene.InGame);
+    //        }
+    //        else
+    //        {
+    //            //Debug.Log($"ID : {Managers.Data.PlayerTable[inputID].ID} | PW : {Managers.Data.PlayerTable[inputID].PW}");
+    //            Debug.Log("Wrong ID or PW");
+    //        }
+    //    }
+    //    catch(KeyNotFoundException)
+    //    {
+    //        Debug.Log("Wrong ID or PW");
+    //    }
+    //}
+    //private void EndButtonClicked(PointerEventData data)
+    //{
+    //    Util.Quit();
+    //}
 }
