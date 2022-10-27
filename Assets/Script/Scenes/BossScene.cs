@@ -73,7 +73,7 @@ public class BossScene : BaseScene
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
         GameObject go = new GameObject { name = "SpawningPool" };
-        SpawningPool1 pool = go.GetOrAddComponent<SpawningPool1>();
+        SpawningPool_Boss pool = go.GetOrAddComponent<SpawningPool_Boss>();
         pool.SetKeepMonsterCount(1);
 
         // DataManager test - �ܺο��� ����� ��

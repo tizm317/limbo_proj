@@ -27,6 +27,7 @@ public class PlayerStat : Stat
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
     float time;
     public bool isDead = false;
+    private Player ps;
     void Start()
     {
         _level = 1;
@@ -42,6 +43,7 @@ public class PlayerStat : Stat
         Stat_Update();
         time = 0;
         STR = 5;
+        ps = GameObject.Find("@Scene").gameObject.GetComponent<Player>();
     }
 
     void Update()
@@ -64,7 +66,7 @@ public class PlayerStat : Stat
         if(_hp < 0)
         {
             isDead = true;
-            Player ps = GameObject.Find("@Scene").gameObject.GetComponent<Player>();
+            
             ps.curState = Player.State.STATE_DIE;
             ps.Ani_State_Change();
         }
@@ -122,7 +124,21 @@ public class PlayerStat : Stat
         Mana_Regeneration = 0.5f * ((Level * INT) * 0.1f + Item_Regeneration + 1) * (1 + Item_Mana_Regeneration_percent);
     }
 
-    void Stat_Change(string name, int num)
+    public override void OnAttacked(Stat attacker)
+    {
+       
+        float damage = Mathf.Max(0, attacker.Attack - Defense);
+        if(ps.attackable == true)
+            Hp -= damage; //나의 hp에서 demage 만큼 깎는다
+        if (Hp <= 0)  //음수 경우 hp = 0;
+        {
+            Hp = 0;  //내가 죽었을 경우
+            //enemy.State = Define.State.Hit;
+            OnDead(attacker);
+        }
+    }
+
+    public void Stat_Change(string name, int num)
     {
         switch(name)
         {

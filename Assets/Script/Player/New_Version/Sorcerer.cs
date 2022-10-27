@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class Sorcerer : Player
 {
     GameObject Magic_bolt;
@@ -9,8 +9,6 @@ public class Sorcerer : Player
     GameObject Shield;
     [SerializeField]
     float mana_for_attack = 5f;
-    [SerializeField]
-    float con = 5f;
     public enum BlendMode
     {
         Opaque = 0,
@@ -34,6 +32,14 @@ public class Sorcerer : Player
         {
             cool[i] = 0;
         }
+    }
+
+    public override void Cool_Update()
+    {
+       cool_max[0] = 10f - (skill_level[0] -1);
+       cool_max[1] = 20f - (3f * skill_level[1] - 1);
+       cool_max[2] = 10f - (2f * skill_level[2] -1);
+       cool_max[3] = 30 - 4f * skill_level[3];
     }
 
     public override void Attack()
@@ -96,22 +102,22 @@ public class Sorcerer : Player
 
     public override void Q()
     {
-        StartCoroutine(Sorcerer_Q(5f));
+        StartCoroutine(Sorcerer_Q());
     }
 
     public override void W()
     {
-        StartCoroutine(Sorcerer_W(50f, 15f));
+        StartCoroutine(Sorcerer_W());
     }
 
     public override void E()
     {
-        StartCoroutine(Sorcerer_E(10f,3f,30f,0.5f));
+        StartCoroutine(Sorcerer_E());
     }
 
     public override void R()
     {
-        StartCoroutine(Sorcerer_R(10f,con,con+3,15f));
+        StartCoroutine(Sorcerer_R());
     }
 
     public override void Passive()
@@ -119,8 +125,9 @@ public class Sorcerer : Player
         
     }
 #region Q
-    IEnumerator Sorcerer_Q(float time)
+    IEnumerator Sorcerer_Q()
     {
+        float time = 4f + skill_level[0];
         curState = State.STATE_SKILL;
         skill = HotKey.Q;
         Ani_State_Change();
@@ -216,8 +223,10 @@ public class Sorcerer : Player
 #endregion
 
 #region W
-    IEnumerator Sorcerer_W(float heal, float range)
+    IEnumerator Sorcerer_W()
     {
+        float heal = my_stat.Attack;
+        float range = attackRange;
         pos_selected = false;
         canceled = false;
         Vector3 pos;
@@ -292,15 +301,20 @@ public class Sorcerer : Player
 #endregion
 
 #region E
-    IEnumerator Sorcerer_E(float range, float width, float damage, float slow)
+    IEnumerator Sorcerer_E()
     {
+        float range = attackRange;
+        float width = skill_level[2] + 1;
+        float damage = my_stat.Attack * (1 + skill_level[2] * 0.25f);
+        float slow = 20f + skill_level[2] * 5f;
+        float time = 5f;
         canceled = false;
         pos_selected = false;
         Vector3 pos = player.transform.position;
         Vector3 wanted_size;
         float wanted_height;
         float generate_speed = 0.05f;
-        List<Stat> slowed_enemy = new List<Stat>();
+        List<GameObject> slowed_enemy = new List<GameObject>();
         GameObject temp = Instantiate(Icy_Field);
         GameObject sword = temp.transform.GetChild(3).gameObject;
         temp.SetActive(false);
@@ -377,7 +391,6 @@ public class Sorcerer : Player
                     if(Mathf.Abs(wanted_height - sword.transform.localPosition.z) <= 0.1f)
                         break;
                     float height = Mathf.Lerp(sword.transform.localPosition.z,wanted_height,0.1f);
-                    Debug.Log(height);
                     sword.transform.localPosition = new Vector3(0,0,height);
                     yield return new WaitForEndOfFrame();
                 }
@@ -390,8 +403,8 @@ public class Sorcerer : Player
                         if(far < width)
                         {
                             enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
-                            enemies[i].GetComponent<Stat>().MoveSpeed *= slow;
-                            slowed_enemy.Add(enemies[i].GetComponent<Stat>());
+                            enemies[i].GetComponent<NavMeshAgent>().speed *= (slow / 100f);
+                            slowed_enemy.Add(enemies[i]);
                         } 
                     }
                 }
@@ -426,15 +439,19 @@ public class Sorcerer : Player
             yield return new WaitForEndOfFrame();
         }
         Destroy(temp);//최초 1회만 생성하고 반복해서 사용하게 수정할 수 있음
-        yield return new WaitForSeconds(2f);//적들 이동속도 회복 시간
-        foreach(Stat i in slowed_enemy)
-            i.MoveSpeed /= slow;
+        yield return new WaitForSeconds(time);//적들 이동속도 회복 시간
+        foreach(GameObject i in slowed_enemy)
+            i.GetComponent<NavMeshAgent>().speed = i.GetComponent<Stat>().MoveSpeed;
     }
 #endregion
 
 #region R
-    IEnumerator Sorcerer_R(float range, float width, float width2, float damage)
+    IEnumerator Sorcerer_R()
     {
+        float range = attackRange;
+        float width = 1 + skill_level[3];
+        float width2 = width + 3;
+        float damage = my_stat.Attack * (1f + skill_level[3] * 0.5f);
         canceled = false;
         pos_selected = false;
         Vector3 pos = player.transform.position;
@@ -507,7 +524,7 @@ public class Sorcerer : Player
                     float height = 0f;;
                     foreach(GameObject i in shields)
                     {
-                        height = Mathf.Lerp(i.transform.position.y, wanted_height,0.05f);
+                        height = Mathf.Lerp(i.transform.position.y, wanted_height, 2f * Time.deltaTime);
                         i.transform.position = new Vector3(i.transform.position.x, height,i.transform.position.z);
                     }
                     
@@ -525,7 +542,7 @@ public class Sorcerer : Player
                 float move = 0f, move_before = 0f;
                 while(true)//앞으로 이동
                 {
-                    move = Mathf.Lerp(move, wanted_move,0.02f);
+                    move = Mathf.Lerp(move, wanted_move, 2f * Time.deltaTime);
                     foreach(GameObject i in shields)
                     {
                         i.transform.localPosition += i.transform.forward * (move - move_before);
@@ -535,7 +552,7 @@ public class Sorcerer : Player
                         break;
                     yield return new WaitForEndOfFrame();
                 }
-                Vector3 wanted_size = new Vector3(2f,2f,3f);
+                Vector3 wanted_size = new Vector3(2f,2f,width);
                 float size = 0;
                 foreach(GameObject i in shields)//광선 on
                 {
@@ -543,7 +560,7 @@ public class Sorcerer : Player
                 }
                 while(true)//광선 발사
                 {
-                    size = Mathf.Lerp(size,1,0.01f);
+                    size = Mathf.Lerp(size,1,Time.deltaTime);
                     foreach(GameObject i in shields)
                     {
                         i.transform.GetChild(1).localScale = wanted_size * size;
@@ -578,7 +595,7 @@ public class Sorcerer : Player
                 size = 1;
                 while(true)//광선 사라져!
                 {
-                    size = Mathf.Lerp(size,0,0.01f);
+                    size = Mathf.Lerp(size,0, 2f * Time.deltaTime);
                     foreach(GameObject i in shields)
                     {
                         i.transform.GetChild(1).localScale = wanted_size * size;
@@ -594,7 +611,7 @@ public class Sorcerer : Player
                     float height = 0f;
                     foreach(GameObject i in shields)
                     {
-                        height = Mathf.Lerp(i.transform.position.y, wanted_height,0.05f);
+                        height = Mathf.Lerp(i.transform.position.y, wanted_height, 2f * Time.deltaTime);
                         i.transform.position = new Vector3(i.transform.position.x, height,i.transform.position.z);
                     }
                     

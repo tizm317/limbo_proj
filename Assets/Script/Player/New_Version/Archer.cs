@@ -20,6 +20,14 @@ public class Archer : Player
         }
     }
 
+    public override void Cool_Update()
+    {
+       cool_max[0] = 10f - (2f * skill_level[0] -1);
+       cool_max[1] = 20f - (2f * skill_level[1] - 1);
+       cool_max[2] = 10f - (2f * skill_level[2] -1);
+       cool_max[3] = 40 - 4f * skill_level[3];
+    }
+
     public override void Attack()
     {
         if(my_enemy == null)
@@ -63,7 +71,7 @@ public class Archer : Player
             {
                 GameObject temp = GameObject.Instantiate<GameObject>(Arrow);
                 temp.transform.position = pos;
-                    
+                //이곳에 화살을 소모하는 내용이 필요함 
                 temp.GetComponent<Arrow>().Arrow_(my_enemy,15f,this);
             }
             
@@ -81,12 +89,12 @@ public class Archer : Player
 
     public override void W()
     {
-        StartCoroutine(Archer_W(0.5f,5f,4f));
+        StartCoroutine(Archer_W());
     }
 
     public override void E()
     {
-        StartCoroutine(Archer_E(60f,attackRange,15f));
+        StartCoroutine(Archer_E());
     }
 
     public override void R()
@@ -151,19 +159,22 @@ public class Archer : Player
         canceled = false;
     }
 
-    IEnumerator Archer_W(float speed, float range, float time)
+    IEnumerator Archer_W()
     {
-        attackRange += range;
-        my_stat.AttackSpeed += speed;
+        float speed = 50f + skill_level[1] * 10f;
+        float time = 4f + skill_level[1];
+        my_stat.AttackSpeed *= (1f + speed/100f);
         on_skill = false;
         cool[1] = cool_max[1];//시전시간이 없어서 일단은 바로 쿨 돌리기
         yield return new WaitForSeconds(time);//지속시간
-        attackRange -= range;
-        my_stat.AttackSpeed -= speed;
+        my_stat.AttackSpeed /= (1f + speed/100f);;
     }
 
-    IEnumerator Archer_E(float SightAngle, float distance,float damage)
+    IEnumerator Archer_E()
     {
+        float SightAngle = 60f;
+        float distance = attackRange;
+        float damage = my_stat.Attack * (1f + skill_level[2] * 0.25f);
         pos_selected = false;
         canceled = false;
         Vector3 pos;
@@ -203,7 +214,7 @@ public class Archer : Player
                 yield return new WaitForSeconds(1.9f);
                 List<GameObject> temp = new List<GameObject>();
                 int how_many = (int)(SightAngle/10f);
-    
+                //이곳에 스킬 사용시 화살이 줄어드는 내용이 필요함
                 GameObject skill_arrow = Resources.Load<GameObject>("Prefabs/Skill_Arrow_small_size");
                 for(int i = 0; i < how_many; i++)
                 {
@@ -254,6 +265,7 @@ public class Archer : Player
 
     IEnumerator Archer_R()
     {
+        float damage = my_stat.Attack * 5f;
         pos_selected = false;
         canceled = false;
         Vector3 pos;
@@ -293,7 +305,7 @@ public class Archer : Player
                 GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
                 temp.transform.position = player.transform.position;
                 Vector3 dir = player.transform.forward;
-                temp.GetComponent<FireArrow>().Run(my_stat,100,dir);
+                temp.GetComponent<FireArrow>().Run(my_stat,damage,dir);
                 cool[3] = cool_max[3];
                 on_skill = false;
                 break;
@@ -310,7 +322,7 @@ public class Archer : Player
         {
             if(my_stat.level_up)
             {
-                attackRange = 15 + (my_stat.Level-1) * 0.25f;
+                attackRange = 15 + (my_stat.Level-1) * 0.1f;
                 yield return new WaitForEndOfFrame();
             }
             yield return new WaitForEndOfFrame();
