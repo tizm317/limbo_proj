@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacketGenerator", "PacketGe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8B491CF6-3083-47E7-B38D-2FC74C64238F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountServer", "AccountServer\AccountServer.csproj", "{D09E9EBF-952D-4C3A-82A9-BFC5A2E6C8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountServer", "AccountServer\AccountServer.csproj", "{D09E9EBF-952D-4C3A-82A9-BFC5A2E6C8AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedDB", "SharedDB\SharedDB.csproj", "{4F43BB3A-B7D4-4494-9BC0-4612FFBB2FFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{D09E9EBF-952D-4C3A-82A9-BFC5A2E6C8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D09E9EBF-952D-4C3A-82A9-BFC5A2E6C8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D09E9EBF-952D-4C3A-82A9-BFC5A2E6C8AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F43BB3A-B7D4-4494-9BC0-4612FFBB2FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F43BB3A-B7D4-4494-9BC0-4612FFBB2FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F43BB3A-B7D4-4494-9BC0-4612FFBB2FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F43BB3A-B7D4-4494-9BC0-4612FFBB2FFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

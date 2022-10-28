@@ -810,5 +810,11 @@ public class Inventory : MonoBehaviour
         for(int i = 0; i < 42; i++)
             UpdateSlot(i);
     }
+
+    public void SaveInventoryToJson()
+    {
+        //TODO
+    }
+
     #endregion
 }

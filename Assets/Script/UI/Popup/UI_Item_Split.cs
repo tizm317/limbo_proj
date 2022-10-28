@@ -36,7 +36,13 @@ public class UI_Item_Split : UI_Popup
         Init();
     }
 
+    private void Update()
+    {
+        if (inputFieldHelper.CheckFocus() == true)
+            YesButtonClick(null);
+    }
 
+    InputFieldHelper inputFieldHelper;
     public override void Init()
     {
         base.Init();
@@ -50,6 +56,10 @@ public class UI_Item_Split : UI_Popup
 
         //split = false;
         splitAmount = 0;
+
+        inputFieldHelper = new InputFieldHelper();
+        inputFieldHelper.Add(GetObject((int)GameObjects.InputField).GetComponent<InputField>());
+        inputFieldHelper.SetFocus(0);
     }
 
     private void YesButtonClick(PointerEventData data)
