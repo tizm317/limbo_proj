@@ -56,6 +56,13 @@ public class SpawningPool : MonoBehaviour
             NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
 
         }
+        else if (SceneManager.GetActiveScene().name == "InGameD")
+        {
+            enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_HorrorMutant");
+            NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
+            enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
+            NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
+        }
         else if (SceneManager.GetActiveScene().name == "InGame")
         {
             enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
@@ -63,6 +70,7 @@ public class SpawningPool : MonoBehaviour
             enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
             NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
         }
+
 
         Vector3 randPos;
 

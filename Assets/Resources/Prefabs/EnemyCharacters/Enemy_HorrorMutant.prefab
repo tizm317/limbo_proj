@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2456332748819610951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1352671375345314060}
+  m_Layer: 0
+  m_Name: BombPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1352671375345314060
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2456332748819610951}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.162, y: 0.176, z: 0.366}
+  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_Children: []
+  m_Father: {fileID: 9167353448890493475}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &9167353448890697499
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890422755}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigRArmDigit11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +71,7 @@ GameObject:
   - component: {fileID: 9167353448890423491}
   - component: {fileID: 9167353448891706791}
   - component: {fileID: 9167353448892719107}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Upper_teeth_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890409887}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigRArm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +179,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890433275}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigLArm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890450743}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigRArmPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890461133}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigHub001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +261,7 @@ Transform:
   m_Children:
   - {fileID: 9167353448890478555}
   m_Father: {fileID: 9167353448890493475}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9167353448890720015
 GameObject:
@@ -242,7 +272,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890427897}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +293,7 @@ Transform:
   - {fileID: 9167353448890409707}
   - {fileID: 9167353448890389579}
   m_Father: {fileID: 9167353448890493475}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9167353448890721003
 GameObject:
@@ -274,7 +304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890478555}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigHub001Bone001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890444079}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Character001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +355,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9167353448890493475}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9167353448890725155
 GameObject:
@@ -336,7 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890440247}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigSpine 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,13 +400,13 @@ GameObject:
   - component: {fileID: 9167353448881343525}
   - component: {fileID: 9167353448890879525}
   - component: {fileID: 9167353448890879522}
-  - component: {fileID: 9167353448890879513}
   - component: {fileID: 9167353448890879526}
   - component: {fileID: 9167353448890879527}
   - component: {fileID: 9167353448890879524}
-  m_Layer: 0
+  - component: {fileID: 5509065325541221381}
+  m_Layer: 9
   m_Name: Enemy_HorrorMutant
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -389,9 +419,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9167353448890725975}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.10629605, y: 0, z: 9.641902}
+  m_LocalPosition: {x: -0.574526, y: 0, z: 0.42585683}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
+  - {fileID: 1352671375345314060}
   - {fileID: 9167353448890461133}
   - {fileID: 9167353448890427897}
   - {fileID: 9167353448890444079}
@@ -442,29 +473,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9167353448890725975}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.94773823, y: 0.9296982, z: 0.9534613}
   m_Center: {x: 0.026130885, y: 0.38575947, z: 0.07726735}
---- !u!114 &9167353448890879513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9167353448890725975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: debd0ec0dce5cda4bb20b942aa243aba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _destPos: {x: 0, y: 0, z: 0}
-  state: 1
-  lockTarget: {fileID: 0}
-  _scanRange: 8
-  _attachRange: 3
-  points: []
 --- !u!114 &9167353448890879526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,6 +535,28 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5509065325541221381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9167353448890725975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cb775f1c46aaf45a243a0225bb7dfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destPos: {x: 0, y: 0, z: 0}
+  state: 1
+  lockTarget: {fileID: 0}
+  _scanRange: 12
+  _attachRange: 3
+  points: []
+  bombPos: {fileID: 1352671375345314060}
+  bomb: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5, type: 3}
+  idx: 0
+  cooldownTime: 5
 --- !u!1 &9167353448890729385
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890405447}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigHub003Bone001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -562,7 +597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890434193}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigRArm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,7 +628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890446095}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigRArmCollarbone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890434545}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigLArmCollarbone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -655,7 +690,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890447751}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigHub003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890473221}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Character002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -706,7 +741,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9167353448890493475}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9167353448890755497
 GameObject:
@@ -717,7 +752,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890437025}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigHub002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,7 +787,7 @@ GameObject:
   - component: {fileID: 9167353448890454403}
   - component: {fileID: 9167353448891759247}
   - component: {fileID: 9167353448892737017}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lower_teeth_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,7 +865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9167353448890409707}
   - component: {fileID: 9167353448885518845}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -929,7 +964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890468515}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigSpine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -961,7 +996,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9167353448890389579}
   - component: {fileID: 9167353448885567093}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Claws_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1048,7 +1083,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890416213}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigLArmPalm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,7 +1114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890423385}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigLArm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1110,7 +1145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167353448890410393}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CATRigLArmDigit11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
