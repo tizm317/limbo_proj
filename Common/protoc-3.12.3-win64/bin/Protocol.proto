@@ -6,17 +6,25 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 
 enum MsgId {
   S_ENTER_GAME = 0;
-  S_LEAVE_GAME2 = 1;
-  S_SPAWN2 = 2;
-  S_DESPAWN2 = 3;
-  C_MOVE2 = 4;
-  S_MOVE2 = 5;
+  S_LEAVE_GAME = 1;
+  S_SPAWN = 2;
+  S_DESPAWN = 3;
+  C_MOVE = 4;
+  S_MOVE = 5;
   S_CONNECTED = 10;
   C_LOGIN = 11;
   S_LOGIN = 12;
   C_ENTER_GAME = 13;
   C_CREATE_PLAYER = 14;
   S_CREATE_PLAYER = 15;
+}
+
+enum State {
+  STATE_IDLE = 0;
+  STATE_MOVE = 1;
+  STATE_ATTACK = 2;
+  STATE_SKILL = 3;
+  STATE_DIE = 4;
 }
 
 enum SkillType {
@@ -35,26 +43,34 @@ message S_EnterGame {
   PlayerInfo player = 1;
 }
 
-message S_LEAVE_GAME {
+message S_LeaveGame {
 }
 
-message S_SPAWN {
+message S_Spawn {
   repeated PlayerInfo players = 1;
 }
 
-message S_DESPAWN {
+message S_Despawn {
   repeated int32 playerIds = 1;
 }
 
-message C_MOVE {
-  int32 posX = 1;
-  int32 posY = 2;
+message C_Move {
+  PositionInfo posInfo = 1;
 }
 
-message S_MOVE {
-  int32 playId = 1;
-  int32 posX = 2;
-  int32 posY = 3;
+message S_Move {
+  int32 playerId = 1;
+  PositionInfo posInfo = 2;
+}
+
+message C_Chat {
+  int32 playerId = 1;
+  string chatMessage = 2;
+}
+
+message S_Chat {
+  int32 playerId = 1;
+  string chatMessage = 2;
 }
 
 message S_Connected {
@@ -89,8 +105,8 @@ message LobbyPlayerInfo {
 message PlayerInfo {
   int32 playerId = 1;
   string name = 2;
-  int32 posX = 3;
-  int32 posY = 4;
+  PositionInfo posInfo = 3;
+  repeated Position destinations = 4;
 }
 
 message StatInfo {
@@ -100,4 +116,17 @@ message StatInfo {
   int32 attack = 4;
   float speed = 5;
   int32 totalExp = 6;
+}
+
+message PositionInfo {
+  State state = 1;
+  float posX = 2;
+  float posY = 3;
+  float posZ = 4; 
+}
+
+message Position {
+  float posX = 1;
+  float posY = 2;
+  float posZ = 3; 
 }

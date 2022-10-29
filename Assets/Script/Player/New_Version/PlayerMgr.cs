@@ -14,8 +14,8 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     GameObject[] character;
     void Awake()
     {
-        GetInfo();
-        Init();
+        //GetInfo();
+        //Init();
     }
    
     // Update is called once per frame

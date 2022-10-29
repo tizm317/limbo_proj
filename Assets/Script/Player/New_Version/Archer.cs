@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Archer : Player
@@ -32,7 +33,7 @@ public class Archer : Player
     {
         if(my_enemy == null)
         {
-            curState = State.STATE_IDLE;
+            curState = State.Idle;
             Ani_State_Change();
             return;
         }
@@ -40,7 +41,7 @@ public class Archer : Player
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
             Set_Destination(my_enemy.transform.position - dir);
-            curState = State.STATE_MOVE;
+            curState = State.Move;
             Ani_State_Change();
         }
         else
@@ -60,7 +61,7 @@ public class Archer : Player
             isAttack = true;
             isMove = false;
 
-            curState = State.STATE_ATTACK;
+            curState = State.Attack;
             //Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
             player.transform.forward = (my_enemy.transform.position - player.transform.position).normalized;
@@ -75,7 +76,7 @@ public class Archer : Player
                 temp.GetComponent<Arrow>().Arrow_(my_enemy,15f,this);
             }
             
-            curState = State.STATE_IDLE;
+            curState = State.Idle;
             Ani_State_Change();
             yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
             isAttack = false;     
@@ -142,7 +143,7 @@ public class Archer : Player
             yield return new WaitForEndOfFrame();
             if(pos_selected)
             {
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.Q;
                 Ani_State_Change();
                 attackable = false;
@@ -207,7 +208,7 @@ public class Archer : Player
             }
             if(pos_selected)
             {
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.E;
                 Ani_State_Change();
                 Vector3 pos_s = player.transform.GetChild(2).position;
@@ -298,7 +299,7 @@ public class Archer : Player
             }
             if(pos_selected)
             {
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.R;
                 Ani_State_Change();
                 yield return new WaitForSeconds(3.8f);

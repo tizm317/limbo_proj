@@ -29,7 +29,7 @@ public class Managers : MonoBehaviour
     WebManager _web = new WebManager();
 
     NpcManager _npc = new NpcManager();
-    //ObjectManager _object = new ObjectManager();
+    ObjectManager _object = new ObjectManager();
 
     // 전역으로 사용
     public static GameManagerEx Game { get { return Instance._game; } }
@@ -45,7 +45,7 @@ public class Managers : MonoBehaviour
     public static NpcManager NPC { get { return Instance._npc; } }
     public static NetworkManager Network { get { return Instance._network; } }
     public static WebManager Web { get { return Instance._web; } }
-    //public static ObjectManager Object { get { return Instance._object; } }
+    public static ObjectManager Object { get { return Instance._object; } }
 
     void Start()
     {

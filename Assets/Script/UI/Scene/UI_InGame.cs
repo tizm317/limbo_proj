@@ -89,7 +89,8 @@ public class UI_InGame : UI_Scene
 
         //player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
         //player = GameObject.Find("Player").GetComponent<Player_State>();
-        player = GameObject.Find("@Scene").GetComponent<Player>();
+        //player = GameObject.Find("@Scene").GetComponent<Player>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<MyWarrior>();
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu
@@ -153,6 +154,8 @@ public class UI_InGame : UI_Scene
 
     void UI_Update()
     {
+        if (Hp == null || ps == null) return;
+
         Hp.fillAmount = Mathf.Lerp(Hp.fillAmount, ps.Hp/ps.MaxHp, 0.1f);
         Hp_text.text = ((ps.Hp/ps.MaxHp) * 100).ToString();
         Mp.fillAmount = Mathf.Lerp(Mp.fillAmount, ps.Mana/ps.MaxMana, 0.1f);

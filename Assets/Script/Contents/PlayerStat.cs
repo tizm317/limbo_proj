@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,7 +68,7 @@ public class PlayerStat : Stat
         {
             isDead = true;
             
-            ps.curState = Player.State.STATE_DIE;
+            ps.curState = State.Die;
             ps.Ani_State_Change();
         }
         if(time >= 1)

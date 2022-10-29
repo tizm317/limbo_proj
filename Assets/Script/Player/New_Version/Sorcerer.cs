@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -46,7 +47,7 @@ public class Sorcerer : Player
     {
         if(my_enemy == null)
         {
-            curState = State.STATE_IDLE;
+            curState = State.Idle;
             Ani_State_Change();
             return;
         }
@@ -54,7 +55,7 @@ public class Sorcerer : Player
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
             Set_Destination(my_enemy.transform.position - dir);
-            curState = State.STATE_MOVE;
+            curState = State.Move;
             Ani_State_Change();
         }
         else
@@ -76,7 +77,7 @@ public class Sorcerer : Player
                 isAttack = true;
                 isMove = false;
 
-                curState = State.STATE_ATTACK;
+                curState = State.Attack;
                 //Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
                 Ani_State_Change();
                 player.transform.forward = (my_enemy.transform.position - player.transform.position).normalized;
@@ -92,7 +93,7 @@ public class Sorcerer : Player
                     my_stat.Mana -= mana_for_attack;
                 }
                 
-                curState = State.STATE_IDLE;
+                curState = State.Idle;
                 Ani_State_Change();
                 yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
                 isAttack = false;     
@@ -128,7 +129,7 @@ public class Sorcerer : Player
     IEnumerator Sorcerer_Q()
     {
         float time = 4f + skill_level[0];
-        curState = State.STATE_SKILL;
+        curState = State.Skill;
         skill = HotKey.Q;
         Ani_State_Change();
         yield return new WaitForSeconds(3.250f);
@@ -267,7 +268,7 @@ public class Sorcerer : Player
                 {
                     while(Vector3.Distance(player.transform.position, target.transform.position) > range)
                     {
-                        curState = State.STATE_MOVE;
+                        curState = State.Move;
                         Ani_State_Change();
                         Set_Destination(target.transform.position);
                         if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.R))
@@ -281,7 +282,7 @@ public class Sorcerer : Player
                 }
                 if(Vector3.Distance(player.transform.position, target.transform.position) <= range)
                 {
-                    curState = State.STATE_SKILL;
+                    curState = State.Skill;
                     skill = HotKey.W;
                     Ani_State_Change();
                     yield return new WaitForSeconds(2.6f);
@@ -350,7 +351,7 @@ public class Sorcerer : Player
             {
                 if(Vector3.Distance(player.transform.position, pos) > range)
                 {
-                    curState = State.STATE_MOVE;
+                    curState = State.Move;
                     Ani_State_Change();
                     Set_Destination(pos);
                     while(Vector3.Distance(player.transform.position, pos) > range)
@@ -365,7 +366,7 @@ public class Sorcerer : Player
                     }
                     destination.Clear();
                 }
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.E;
                 Ani_State_Change();
                 yield return new WaitForSeconds(0.7f);
@@ -486,7 +487,7 @@ public class Sorcerer : Player
             {
                 if(Vector3.Distance(player.transform.position, pos) > range)
                 {
-                    curState = State.STATE_MOVE;
+                    curState = State.Move;
                     Ani_State_Change();
                     Set_Destination(pos);
                     while(Vector3.Distance(player.transform.position, pos) > range)
@@ -501,7 +502,7 @@ public class Sorcerer : Player
                     }
                     destination.Clear();
                 }
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.R;
                 Ani_State_Change();
                 yield return new WaitForSeconds(0.7f);

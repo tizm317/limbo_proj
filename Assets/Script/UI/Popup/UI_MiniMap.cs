@@ -141,8 +141,10 @@ public class UI_MiniMap : UI_Popup
         GetButton((int)Buttons.ZoomInButton).gameObject.BindEvent(OnZoomInButtonClicked);
         GetButton((int)Buttons.ZoomOutButton).gameObject.BindEvent(OnZoomOutButtonClicked);
 
-        Scene = GameObject.Find("@Scene");
-        player_State = Scene.GetComponent<Player>();
+        //Scene = GameObject.Find("@Scene");
+        //player_State = Scene.GetComponent<Player>();
+        player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<MyWarrior>();
+
         player = player_State.GetPlayer().transform;
         //player_Controller = Scene.GetComponent<Player_Controller>();
         //player_State = player.GetComponent<Player_State>();

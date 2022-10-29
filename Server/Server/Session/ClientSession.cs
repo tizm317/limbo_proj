@@ -44,21 +44,24 @@ namespace Server
 				Send(connectedPacket);
             }
 
-			//// TODO : 로비에서 캐릭터 선택
-			//// PROTO Test
-			//MyPlayer = PlayerManager.Instance.Add();
-   //         {   // 정보 셋팅
-			//	MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시
-			//	MyPlayer.Info.PosX = 0;
-			//	MyPlayer.Info.PosY = 0;
-			//	MyPlayer.Session = this;
-   //         }
+            // TODO : 로비에서 캐릭터 선택
+            // PROTO Test
+            MyPlayer = PlayerManager.Instance.Add();
+            {   // 정보 셋팅
+                MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시 (나중에는 DB에서)
+				MyPlayer.Info.PosInfo.State = State.Idle;
+				MyPlayer.Info.PosInfo.PosX = 1.2f;
+				MyPlayer.Info.PosInfo.PosY = 1; // 높이
+				MyPlayer.Info.PosInfo.PosZ = -62.6f;
+                MyPlayer.Session = this;
+				MyPlayer.Info.Destinations.Clear();
+            }
 
-			//// TODO : 입장 요청 들어오면
-			//RoomManager.Instance.Find(1).EnterGame(MyPlayer);
+            //// TODO : 입장 요청 들어오면
+            RoomManager.Instance.Find(1).EnterGame(MyPlayer);
 
 
-		}
+        }
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
 		{

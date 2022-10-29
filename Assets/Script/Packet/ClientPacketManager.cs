@@ -25,14 +25,14 @@ class PacketManager
 	{		
 		_onRecv.Add((ushort)MsgId.SEnterGame, MakePacket<S_EnterGame>);
 		_handler.Add((ushort)MsgId.SEnterGame, PacketHandler.S_EnterGameHandler);		
-		_onRecv.Add((ushort)MsgId.SLeaveGame2, MakePacket<S_LEAVE_GAME>);
-		_handler.Add((ushort)MsgId.SLeaveGame2, PacketHandler.S_LeaveGameHandler);		
-		_onRecv.Add((ushort)MsgId.SSpawn2, MakePacket<S_SPAWN>);
-		_handler.Add((ushort)MsgId.SSpawn2, PacketHandler.S_SpawnHandler);		
-		_onRecv.Add((ushort)MsgId.SDespawn2, MakePacket<S_DESPAWN>);
-		_handler.Add((ushort)MsgId.SDespawn2, PacketHandler.S_DespawnHandler);		
-		_onRecv.Add((ushort)MsgId.SMove2, MakePacket<S_MOVE>);
-		_handler.Add((ushort)MsgId.SMove2, PacketHandler.S_MoveHandler);		
+		_onRecv.Add((ushort)MsgId.SLeaveGame, MakePacket<S_LeaveGame>);
+		_handler.Add((ushort)MsgId.SLeaveGame, PacketHandler.S_LeaveGameHandler);		
+		_onRecv.Add((ushort)MsgId.SSpawn, MakePacket<S_Spawn>);
+		_handler.Add((ushort)MsgId.SSpawn, PacketHandler.S_SpawnHandler);		
+		_onRecv.Add((ushort)MsgId.SDespawn, MakePacket<S_Despawn>);
+		_handler.Add((ushort)MsgId.SDespawn, PacketHandler.S_DespawnHandler);		
+		_onRecv.Add((ushort)MsgId.SMove, MakePacket<S_Move>);
+		_handler.Add((ushort)MsgId.SMove, PacketHandler.S_MoveHandler);		
 		_onRecv.Add((ushort)MsgId.SConnected, MakePacket<S_Connected>);
 		_handler.Add((ushort)MsgId.SConnected, PacketHandler.S_ConnectedHandler);		
 		_onRecv.Add((ushort)MsgId.SLogin, MakePacket<S_Login>);

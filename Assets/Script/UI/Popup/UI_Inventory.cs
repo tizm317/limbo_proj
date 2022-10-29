@@ -468,6 +468,8 @@ public class UI_Inventory : UI_Popup
     // 접근 가능한 슬롯 범위 설정
     public void SetAccessibleSlotRange(int accessibleSlotCount)
     {
+        if (_slotUIList == null) return;
+
         for (int i = 0; i < _slotUIList.Count; i++)
             _slotUIList[i].SetSlotAccessibleState(i < accessibleSlotCount);
     }

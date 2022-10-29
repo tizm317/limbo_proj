@@ -32,7 +32,7 @@ public class NetworkManager
 		IPEndPoint endPoint = new IPEndPoint(ipAddr, info.Port);
 
 		Connector connector = new Connector();
-
+		
 		connector.Connect(endPoint,
 			() => { return _session; },
 			1);

@@ -67,7 +67,7 @@ public class GameScene : BaseScene
         Screen.SetResolution(640, 480, false);
 
         // �� UI
-        _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
+        //_sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
         //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
