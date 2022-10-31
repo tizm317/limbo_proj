@@ -7,7 +7,24 @@ public class Potal : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "Player")
-            Managers.Scene.LoadScene(Define.Scene.InGame_Boss);
+        if (SceneManager.GetActiveScene().name == "InGame")
+        {
+            if (collision.gameObject.name == "Player")
+                Managers.Scene.LoadScene(Define.Scene.InGameBoss);
+
+        }
+        else if (SceneManager.GetActiveScene().name == "InGameNature")
+        {
+            if (collision.gameObject.name == "Player")
+                Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
+
+
+        }
+        else if (SceneManager.GetActiveScene().name == "InGameDesert")
+        {
+            if (collision.gameObject.name == "Player")
+                Managers.Scene.LoadScene(Define.Scene.InGameDesertBoss);
+        }
+
     }
 }

@@ -425,15 +425,15 @@ GameObject:
   - component: {fileID: 2397426521362073245}
   - component: {fileID: 2397426521362073244}
   - component: {fileID: 2397426521362073243}
-  - component: {fileID: 2397426521362073242}
   - component: {fileID: 6772712334688447059}
+  - component: {fileID: 4197842749915188488}
   m_Layer: 9
   m_Name: Enemy_Bear
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2397426521362073184
 Transform:
   m_ObjectHideFlags: 0
@@ -542,24 +542,6 @@ MonoBehaviour:
   _attackSpeed: 0
   _itemdata: []
   _itemIndex: 0
---- !u!114 &2397426521362073242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2397426521362073241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a5dbb1587738f44ab4a0ea0bea787f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _destPos: {x: 0, y: 0, z: 0}
-  state: 1
-  lockTarget: {fileID: 0}
-  _scanRange: 20
-  _attachRange: 3
-  skillIndex: 0
 --- !u!114 &6772712334688447059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +555,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsing: 0
+--- !u!114 &4197842749915188488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397426521362073241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b3bbdb55fdf36499ff75231bc86049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destPos: {x: 0, y: 0, z: 0}
+  state: 1
+  lockTarget: {fileID: 0}
+  _scanRange: 20
+  _attachRange: 3
+  points: []
 --- !u!1 &2397426521367229789
 GameObject:
   m_ObjectHideFlags: 0

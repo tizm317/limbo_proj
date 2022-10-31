@@ -42,10 +42,9 @@ public class Enemy4 : Enemy
         State = Define.State.Moving;
 
         // HPBar
-        /*
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
-        */
+
 
         // WayPoint
         points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();

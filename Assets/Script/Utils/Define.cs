@@ -42,7 +42,9 @@ public class Define
         InGame,
         Village,
         Dungeon,
-        InGame_Boss,
+        InGameBoss,
+        InGameNatureBoss,
+        InGameDesertBoss,
     }
 
     public enum Sound
