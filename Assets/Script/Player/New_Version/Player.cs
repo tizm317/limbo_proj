@@ -106,7 +106,7 @@ public abstract class Player : MonoBehaviour
     protected int[] skill_level = new int[4];
     protected float[] cool = new float[4];
     protected float[] cool_max = new float[4];
-    public Image[] Skill_img = new Image[4];
+    public Image[] Skill_img = new Image[5];
     protected List<GameObject> enemies = new List<GameObject>();
     protected List<Stat> stat = new List<Stat>();
     public GameObject my_enemy;
@@ -472,7 +472,7 @@ public abstract class Player : MonoBehaviour
                 cool[i] -= Time.deltaTime;
             else if(cool[i] < 0)
                 cool[i] = 0;
-            //Skill_img[i].fillAmount = cool_max[i] - cool[i]/cool_max[i];
+            Skill_img[i+1].fillAmount = cool_max[i] - cool[i]/cool_max[i];
         }
     }
 
