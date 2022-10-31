@@ -6,9 +6,14 @@ using UnityEngine.AI;
 public class EnemyBoss : Enemy
 {
     [SerializeField] float _scanRange = 20;   //사정거리
-    [SerializeField] float _attachRange = 5;  //적 공격 사정거리
-
+    [SerializeField] float _attachRange = 6;  //적 공격 사정거리
     [SerializeField] int skillIndex;
+
+    public GameObject _effect; //이펙트 변수 생성
+    public Transform _effectTransfrom;
+    public float destroyTime = 1.5f; //효과 제거될 시간 변수
+    public float currentTime = 0; //경과 시간 측정 변수
+
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -23,8 +28,8 @@ public class EnemyBoss : Enemy
         WorldObjectType = Define.WorldObject.Monster;
 
         // 스탯은 상속받아서 사용 : _stat
-        _stat.Hp = 300.0f;
-        _stat.MaxHp = 300.0f;
+        _stat.Hp = 500.0f;
+        _stat.MaxHp = 500.0f;
         _stat.Attack = 10.0f;
         // 디폴트 애니메이션 
         State = Define.State.Idle;
@@ -32,6 +37,7 @@ public class EnemyBoss : Enemy
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+
     }
 
     //Idle 상태
@@ -65,7 +71,7 @@ public class EnemyBoss : Enemy
             if (distance <= _attachRange)
             {
                 nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
-                if (skillIndex >= 7)
+                if (skillIndex <= 9)
                 {
                     State = Define.State.Skill;
                     return;
@@ -90,7 +96,7 @@ public class EnemyBoss : Enemy
         else
         {
             _destPos = lockTarget.transform.position;
-            _stat.MoveSpeed = nma.speed = 0.5f;
+            _stat.MoveSpeed = nma.speed = 2.0f;
             //NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
             nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
@@ -105,6 +111,7 @@ public class EnemyBoss : Enemy
             Quaternion quat = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
         }
+        
     }
 
     protected override void UpdateJumpSkill()
@@ -169,5 +176,13 @@ public class EnemyBoss : Enemy
         yield return new WaitForSeconds(1.0f);
 
         State = Define.State.Moving;
+    }
+
+    IEnumerator Effect()
+    {
+        GameObject eff = Instantiate(_effect);
+        eff.transform.position = _effectTransfrom.position;
+        yield return new WaitForSeconds(1.0f);
+
     }
 }
