@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,10 +24,7 @@ public class Sorcerer : Player
         Icy_Field = Resources.Load<GameObject>("Prefabs/Icy_Field");
         Shield = Resources.Load<GameObject>("Prefabs/skull shield");
         attackRange = 10f;
-        cool_max[0] = 1f;
-        cool_max[1] = 1f;
-        cool_max[2] = 1f;
-        cool_max[3] = 1f;
+        
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
@@ -102,6 +99,7 @@ public class Sorcerer : Player
 
     public override void Q()
     {
+        
         StartCoroutine(Sorcerer_Q());
     }
 
@@ -403,6 +401,8 @@ public class Sorcerer : Player
                         if(far < width)
                         {
                             enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
+                            if(enemies[i].GetComponent<Stat>().Hp <= 0)
+                                break;
                             enemies[i].GetComponent<NavMeshAgent>().speed *= (slow / 100f);
                             slowed_enemy.Add(enemies[i]);
                         } 

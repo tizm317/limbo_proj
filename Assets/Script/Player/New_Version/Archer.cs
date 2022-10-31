@@ -1,23 +1,21 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Archer : Player
 {
     GameObject Arrow;
+    Buff _buff;
     public override void abstract_Init()
     {
         job = "Archer";
         Arrow = Resources.Load<GameObject>("Prefabs/Arrow");
         
         attackRange = 15f;
-        cool_max[0] = 1f;
-        cool_max[1] = 1f;
-        cool_max[2] = 1f;
-        cool_max[3] = 1f;
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
         }
+        _buff = gameObject.AddComponent<Buff>();
     }
 
     public override void Cool_Update()
@@ -164,6 +162,7 @@ public class Archer : Player
         float speed = 50f + skill_level[1] * 10f;
         float time = 4f + skill_level[1];
         my_stat.AttackSpeed *= (1f + speed/100f);
+        _buff.Show_buff(time,player,Skill_img[2].sprite);
         on_skill = false;
         cool[1] = cool_max[1];//시전시간이 없어서 일단은 바로 쿨 돌리기
         yield return new WaitForSeconds(time);//지속시간
@@ -211,7 +210,7 @@ public class Archer : Player
                 skill = HotKey.E;
                 Ani_State_Change();
                 Vector3 pos_s = player.transform.GetChild(2).position;
-                yield return new WaitForSeconds(1.9f);
+                yield return new WaitForSeconds(1.8f);
                 List<GameObject> temp = new List<GameObject>();
                 int how_many = (int)(SightAngle/10f);
                 //이곳에 스킬 사용시 화살이 줄어드는 내용이 필요함
@@ -249,7 +248,7 @@ public class Archer : Player
                     float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                     if(theta <= SightAngle && far < distance)
-                        enemies[i].GetComponent<Stat>().Hp -= damage;
+                        enemies[i].GetComponent<Stat>().OnAttacked(damage, my_stat);
                 }
                 foreach(GameObject i in temp)
                     Destroy(i);
@@ -301,7 +300,7 @@ public class Archer : Player
                 curState = State.STATE_SKILL;
                 skill = HotKey.R;
                 Ani_State_Change();
-                yield return new WaitForSeconds(3.8f);
+                yield return new WaitForSeconds(3.6f);
                 GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
                 temp.transform.position = player.transform.position;
                 Vector3 dir = player.transform.forward;

@@ -4,19 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Warrior : Player
 {
+    public Buff _buff;
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
         job = "Warrior";
         attackRange = 3f;
-        cool_max[0] = 1f;
-        cool_max[1] = 1f;
-        cool_max[2] = 1f;
-        cool_max[3] = 1f;
+        
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
         }
+        _buff = gameObject.AddComponent<Buff>();
     }
 
     public override void Cool_Update()//스킬 레벨업 할때 한번씩 돌아가면됨
@@ -29,26 +28,22 @@ public class Warrior : Player
 
     public override void Q()
     {
-        if(skill_level[0] != 0)
-            StartCoroutine(Warrior_Q());
+        StartCoroutine(Warrior_Q());
     }
 
     public override void W()
     {
-        if(skill_level[1] != 0)
-            StartCoroutine(Warrior_W());  
+        StartCoroutine(Warrior_W());  
     }
 
     public override void E()
     {
-        if(skill_level[2] != 0)
-            StartCoroutine(Warrior_E());
+        StartCoroutine(Warrior_E());
     }
 
     public override void R()
-    {
-        if(skill_level[3] != 0)
-            StartCoroutine(Warrior_R());
+    {        
+        StartCoroutine(Warrior_R());
     }
 
     public override void Passive()
@@ -110,7 +105,9 @@ public class Warrior : Player
                     float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                     if(theta <= SightAngle && far < distance)
-                        enemies[i].GetComponent<Stat>().Hp -= damage;
+                    {
+                        enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
+                    }
                 }
                 cool[0] = cool_max[0];
                 on_skill = false;
@@ -144,7 +141,10 @@ public class Warrior : Player
                     float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                     if(far < range)
+                    {
                         enemies[i].GetComponent<Enemy>().set_target(player);
+                        _buff.Show_buff(time,enemies[i],Skill_img[2].sprite);
+                    }
                 }
 
         yield return new WaitForSeconds(time);
@@ -156,6 +156,7 @@ public class Warrior : Player
     {
         float range = attackRange * (2 + skill_level[2]);
         float percent = 5f * (1 + skill_level[2]);
+        float time = 5f;
         curState = State.STATE_SKILL;
         skill = HotKey.E;
         Ani_State_Change();
@@ -174,6 +175,7 @@ public class Warrior : Player
             {
                 enemies[i].GetComponent<Stat>().Attack *= (percent / 100f);
                 enemies[i].GetComponent<Stat>().AttackSpeed *= (percent / 100f);
+                _buff.Show_buff(time,enemies[i],Skill_img[3].sprite);
                 temp.Add(enemies[i].GetComponent<Stat>());
             }
         }
@@ -230,7 +232,7 @@ public class Warrior : Player
                     Set_Destination(pos);
                     while(Vector3.Distance(player.transform.position, pos) > 3.5f)
                     {
-                        if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.R))
+                        if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.Q)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E))
                         {
                             canceled = true;
                             on_skill = false;
@@ -253,7 +255,7 @@ public class Warrior : Player
                         float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
 
                         if(far < range)
-                            enemies[i].GetComponent<Stat>().Hp -= damage;
+                            enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
                     }
                 }
                 cool[3] = cool_max[3];

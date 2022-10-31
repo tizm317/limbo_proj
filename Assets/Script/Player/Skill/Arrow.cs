@@ -33,6 +33,7 @@ public class Arrow : MonoBehaviour
                 if(target_stat.Hp <= 0)
                 {
                     _player.my_enemy = null;
+                    Destroy(gameObject);
                 }
                 hit = true;
             }

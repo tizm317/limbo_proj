@@ -160,14 +160,15 @@ public abstract class Player : MonoBehaviour
     {
         Init();
         abstract_Init();
+        Cool_Update();
         Skill_level();
         Passive();
     }
     void Skill_level()
     {
-        skill_level[0] = 0;
-        skill_level[1] = 0;
-        skill_level[2] = 0;
+        skill_level[0] = 4;
+        skill_level[1] = 4;
+        skill_level[2] = 4;
         skill_level[3] = 4;
     }
 
@@ -472,7 +473,7 @@ public abstract class Player : MonoBehaviour
                 cool[i] -= Time.deltaTime;
             else if(cool[i] < 0)
                 cool[i] = 0;
-            Skill_img[i+1].fillAmount = cool_max[i] - cool[i]/cool_max[i];
+            Skill_img[i+1].fillAmount = (cool_max[i] - cool[i])/cool_max[i];
         }
     }
 
@@ -620,7 +621,7 @@ public abstract class Player : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            if(!on_skill&&cool[0] == 0)
+            if(!on_skill && cool[0] == 0 && skill_level[0] != 0)
             {
                 on_skill = true;
                 Q();
@@ -628,7 +629,7 @@ public abstract class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.W))
         {
-            if(!on_skill&&cool[1] == 0)
+            if(!on_skill && cool[1] == 0 && skill_level[1] != 0)
             {
                 on_skill = true;
                 W();
@@ -636,7 +637,7 @@ public abstract class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.E))
         {
-            if(!on_skill&&cool[2] == 0)
+            if(!on_skill && cool[2] == 0 && skill_level[2] != 0)
             {
                 on_skill = true;
                 E();
@@ -644,7 +645,7 @@ public abstract class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.R))
         {
-            if(!on_skill&&cool[3] == 0)
+            if(!on_skill && cool[3] == 0 && skill_level[3] != 0)
             {
                 on_skill = true;
                 R();

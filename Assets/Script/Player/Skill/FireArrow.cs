@@ -31,7 +31,6 @@ public class FireArrow : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log("collider");
         if(col.transform.tag == "Enemy")
         {
             col.gameObject.GetComponent<Stat>().OnAttacked(damage,attacker);

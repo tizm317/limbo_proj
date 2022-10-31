@@ -61,8 +61,8 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         ps.SetPlayer(temp);
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
-        skill_img = Resources.LoadAll<Sprite>("Skill_Icon/" + job.ToString());
-        Debug.Log(job.ToString());
+        skill_img = Resources.LoadAll<Sprite>("Skill_Sprite/" + job.ToString());
+        
         for(int i = 0; i < ps.Skill_img.Length; i++)
         {
             ps.Skill_img[i] = skill_ui_root.transform.GetChild(i).transform.GetChild(1).GetComponent<Image>();
