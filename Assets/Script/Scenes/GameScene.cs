@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 public class GameScene : BaseScene
 {
     /*
@@ -51,6 +52,11 @@ public class GameScene : BaseScene
     UI_Captcha uI_Captcha;
     Coroutine co;
     const float CaptchaDelaySeconds = 3600.0f; // 1hour
+
+    //보스 30분마다 생성
+    GameObject Boss;
+    public float cooldownTime = 1800.0f;
+    private float nextFireTime = 0f;
     void Awake()
     {
         Init();
@@ -78,13 +84,13 @@ public class GameScene : BaseScene
         SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
         pool.SetKeepMonsterCount(3);
 
-
         //List<GameObject> list = new List<GameObject>();
         //for (int i = 0; i < 3; i++)
         //{
         //    list.Add(Managers.Resource.Instantiate("Enemy_Wizard"));
         //}
-            
+
+
         //foreach (GameObject obj in list)
         //{
         //    Managers.Resource.Destroy(obj);
@@ -104,7 +110,32 @@ public class GameScene : BaseScene
         //
         Managers.NPC.Init();
     }
+    private void Update()
+    {
+        if (Time.time > nextFireTime)
+        {
+            nextFireTime = Time.time + cooldownTime;
 
+
+            if (SceneManager.GetActiveScene().name == "InGame")
+            {
+
+                Boss = Managers.Resource.Instantiate("Warrok W Kurniawan");
+                NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
+            }
+            else if(SceneManager.GetActiveScene().name == "InGameNature")
+            {
+
+                Boss = Managers.Resource.Instantiate("Enemy_Rhino");
+                NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
+            }
+            else
+            {
+                Boss = Managers.Resource.Instantiate("Enemy_Rhino");
+                NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
+            }
+        }
+    }
     IEnumerator CoCaptcha(float seconds)
     {
         while(true)

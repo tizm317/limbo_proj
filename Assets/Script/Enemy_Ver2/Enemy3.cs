@@ -6,29 +6,27 @@ using UnityEngine.AI;
 public class Enemy3 : Enemy
 {
 
-    //원거리 공격 스킬 추가 구현
-    
-
-    [SerializeField] float _scanRange = 10;   //사정거리
+    [SerializeField] float _scanRange = 20;   //사정거리
     [SerializeField] float _attachRange = 3;  //적 공격 사정거리
-    
+
     public Transform[] points;  //waypoints 배열
     private int nextIdx = 1;     // waypoints 인덱스
     private int theNextIdx = 0;   // 다음 waypoint 확인용 인덱스
 
     private Vector3 movePos;  // enemy 위치 정보
     private Transform tr;  //enemy 위치
-    private Transform playerTr; //player 위치
+    //private Transform playerTr; //player 위치
 
-    public GameObject bomb; // 무기 오브젝트(프리팹)
-    public Transform bombPos; // 무기가 생성될 발사 위치 지정
+    //private void Start()
+    //{
+    //    Init();
+    //}
 
-    private float TimeLeft = 5.0f;
-    private float nextTime = 0.0f;
     private void OnEnable()
     {
         Init();
     }
+
     protected override void Init()
     {
         base.Init();
@@ -37,7 +35,6 @@ public class Enemy3 : Enemy
 
         // 스탯은 상속받아서 사용 : _stat
 
-
         // 디폴트 애니메이션 
         State = Define.State.Moving;
 
@@ -45,13 +42,15 @@ public class Enemy3 : Enemy
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
 
+
         // WayPoint
         points = GameObject.Find("WayPointGroup").GetComponentsInChildren<Transform>();
         nextIdx = Random.Range(1, points.Length);
 
         //enemy & player 위치
         tr = GetComponent<Transform>();
-        playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        //playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
 
     }
 
@@ -71,13 +70,12 @@ public class Enemy3 : Enemy
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-
-        _stat.MoveSpeed = 1.5f;
         nma.speed = _stat.MoveSpeed;
 
         if (dist <= _attachRange)
         {
             nma.SetDestination(tr.position);
+
             State = Define.State.Skill;
             return;
         }
@@ -92,9 +90,6 @@ public class Enemy3 : Enemy
                 nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
                 //nma.speed = _stat.MoveSpeed;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
-
-                StartCoroutine(Skill());
-                
             }
         }
         else
@@ -104,15 +99,15 @@ public class Enemy3 : Enemy
                 nextIdx = 1;
             }
             movePos = points[nextIdx].position;  //다음 waypoint 위치
-//            Debug.Log(nextIdx);
+                                                 //            Debug.Log(nextIdx);
             nma.SetDestination(movePos);
             //nma.speed = _stat.MoveSpeed;
 
             Quaternion quat = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
             tr.Translate(Vector3.forward * Time.deltaTime * _stat.MoveSpeed);  //앞으로 이동
-
         }
+
     }
 
     //skill 상태
@@ -137,11 +132,10 @@ public class Enemy3 : Enemy
     {
     }
 
-
     void OnTriggerEnter(Collider coll)
     {
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.SetDestination(tr.position);
+        nma.SetDestination(transform.position);
 
         if (coll.tag == "WAY_POINT")
         {
@@ -168,7 +162,7 @@ public class Enemy3 : Enemy
     {
         if (lockTarget != null)
         {
-
+            if (State == Define.State.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
             /*
@@ -191,9 +185,7 @@ public class Enemy3 : Enemy
                     StartCoroutine(Attack());
                 }
                 else
-                {
                     State = Define.State.Moving;
-                }
             }
             else
             {
@@ -207,6 +199,7 @@ public class Enemy3 : Enemy
     }
     IEnumerator Attack()
     {
+
         State = Define.State.Idle;
 
         yield return new WaitForSeconds(1.0f);
@@ -218,22 +211,7 @@ public class Enemy3 : Enemy
         State = Define.State.Idle;
 
         yield return new WaitForSeconds(2.0f);
-            
+
         State = Define.State.Moving;
     }
-    IEnumerator Skill()
-    {
-        if (Time.time > nextTime)
-        {
-            nextTime = Time.time + TimeLeft;
-
-            GameObject instantBomb = Instantiate(bomb, bombPos.transform.position, bombPos.transform.rotation);
-            Rigidbody bombRigid = instantBomb.GetComponent<Rigidbody>();
-            bombRigid.velocity = bombPos.forward * 15.0f; //속도 적용
-
-            yield return new WaitForSeconds(2.0f);
-        }
-    }
-
-
 }

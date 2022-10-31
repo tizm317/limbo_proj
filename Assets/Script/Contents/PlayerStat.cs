@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class PlayerStat : Stat
 {
 
@@ -57,7 +58,24 @@ public class PlayerStat : Stat
         if (collision.gameObject.name == "VillagePotal")
             Managers.Scene.LoadScene(Define.Scene.Village);
         else if (collision.gameObject.name == "BossPotal")
-            Managers.Scene.LoadScene(Define.Scene.InGame_Boss);
+        {
+            if (SceneManager.GetActiveScene().name == "InGame")
+            {
+                    Managers.Scene.LoadScene(Define.Scene.InGameBoss);
+
+            }
+            else if (SceneManager.GetActiveScene().name == "InGameNature")
+            {
+                    Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
+
+
+            }
+            else if (SceneManager.GetActiveScene().name == "InGameDesert")
+            {
+                    Managers.Scene.LoadScene(Define.Scene.InGameDesertBoss);
+            }
+        }
+            
     }
 
     void HPMP_Update()

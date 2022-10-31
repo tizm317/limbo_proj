@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class Enemy1 : Enemy
 {
 
-    [SerializeField] float _scanRange = 20;   //사정거리
-    [SerializeField] float _attachRange = 3;  //적 공격 사정거리
+    [SerializeField] float _scanRange = 15;   //사정거리
+    [SerializeField] float _attachRange = 2;  //적 공격 사정거리
 
     public Transform[] points;  //waypoints 배열
     private int nextIdx = 1;     // waypoints 인덱스
@@ -39,10 +39,9 @@ public class Enemy1 : Enemy
         State = Define.State.Moving;
 
         // HPBar
-        /*
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
-        */
+
 
         // WayPoint
         points = GameObject.Find("WayPointGroup1").GetComponentsInChildren<Transform>();
@@ -148,12 +147,13 @@ public class Enemy1 : Enemy
             }
             else if(nextIdx == theNextIdx)
             {
-                nextIdx += 1;
 
                 if (nextIdx >= points.Length)
                 {
                     nextIdx = 1;
                 }
+                nextIdx += 1;
+                return;
             }
             StartCoroutine("Idle");
         }

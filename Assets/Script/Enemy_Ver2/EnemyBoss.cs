@@ -96,7 +96,7 @@ public class EnemyBoss : Enemy
         else
         {
             _destPos = lockTarget.transform.position;
-            _stat.MoveSpeed = nma.speed = 2.0f;
+            _stat.MoveSpeed = nma.speed = 1.5f;
             //NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
             nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
