@@ -28,10 +28,16 @@ class PacketHandler
 		PlayerInfo info = clientSession.MyPlayer.Info;
 		info.PosInfo = movePacket.PosInfo;
 
+		info.Destinations.Clear();
+		info.Destinations.Add(movePacket.Destinations);
+
 		// 다른 플레이어한테도 알려준다
 		S_Move resMovePacket = new S_Move();
 		resMovePacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
 		resMovePacket.PosInfo = movePacket.PosInfo;
+
+		resMovePacket.Destinations.Clear();
+		resMovePacket.Destinations.Add(movePacket.Destinations);
 		
 		clientSession.MyPlayer.Room.Broadcast(resMovePacket);
 	}

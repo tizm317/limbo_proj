@@ -20,6 +20,8 @@ public class ObjectManager
             MyPlayer = go.GetComponent<MyWarrior>();
             MyPlayer.Id = info.PlayerId;
             MyPlayer.PosInfo = info.PosInfo;
+            //foreach(var v in info.Destinations)
+            //    MyPlayer.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }
         else
         {
@@ -30,6 +32,8 @@ public class ObjectManager
             Warrior p = go.GetComponent<Warrior>();
             p.Id = info.PlayerId;
             p.PosInfo = info.PosInfo;
+            //foreach (var v in info.Destinations)
+            //    p.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }
     }
 

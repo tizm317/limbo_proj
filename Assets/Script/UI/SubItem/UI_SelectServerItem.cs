@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,10 +42,7 @@ public class UI_SelectServerItem : UI_Base
     {
         Managers.Network.ConnectToGame(Info);
 
-        // Connect 실패할 때 load 하면 안되는데..? 
         Managers.Scene.LoadScene(Define.Scene.InGame);
-
         Managers.UI.ClosePopupUI();
     }
-
 }

@@ -33,6 +33,8 @@ class PacketManager
 		_handler.Add((ushort)MsgId.SDespawn, PacketHandler.S_DespawnHandler);		
 		_onRecv.Add((ushort)MsgId.SMove, MakePacket<S_Move>);
 		_handler.Add((ushort)MsgId.SMove, PacketHandler.S_MoveHandler);		
+		_onRecv.Add((ushort)MsgId.SChat, MakePacket<S_Chat>);
+		_handler.Add((ushort)MsgId.SChat, PacketHandler.S_ChatHandler);		
 		_onRecv.Add((ushort)MsgId.SConnected, MakePacket<S_Connected>);
 		_handler.Add((ushort)MsgId.SConnected, PacketHandler.S_ConnectedHandler);		
 		_onRecv.Add((ushort)MsgId.SLogin, MakePacket<S_Login>);

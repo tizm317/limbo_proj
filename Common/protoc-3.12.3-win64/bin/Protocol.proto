@@ -11,6 +11,8 @@ enum MsgId {
   S_DESPAWN = 3;
   C_MOVE = 4;
   S_MOVE = 5;
+  S_CHAT = 6;
+  C_CHAT = 7;
   S_CONNECTED = 10;
   C_LOGIN = 11;
   S_LOGIN = 12;
@@ -56,11 +58,13 @@ message S_Despawn {
 
 message C_Move {
   PositionInfo posInfo = 1;
+  repeated Position destinations = 2;
 }
 
 message S_Move {
   int32 playerId = 1;
   PositionInfo posInfo = 2;
+  repeated Position destinations = 3;
 }
 
 message C_Chat {

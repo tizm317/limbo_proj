@@ -28,6 +28,7 @@ public class MyWarrior : Warrior
     {
         State prevState = curState;
         Vector3 prevPos = Pos;
+        //List<Vector3> prevDest = Destination;
 
         base.Move();
 
@@ -36,6 +37,12 @@ public class MyWarrior : Warrior
         {
             C_Move movePacket = new C_Move();
             movePacket.PosInfo = PosInfo;
+
+            foreach (var v in dest)
+            {
+                movePacket.Destinations.Add(v);
+            }
+
             Managers.Network.Send(movePacket);
         }
     }

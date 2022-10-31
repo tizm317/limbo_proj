@@ -1,4 +1,5 @@
-﻿using Google.Protobuf;
+﻿using DuloGames.UI;
+using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections;
@@ -63,6 +64,7 @@ class PacketHandler
 		if (p == null) return;
 
 		p.PosInfo = movePacket.PosInfo;
+
 	}
 
 	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
@@ -83,5 +85,16 @@ class PacketHandler
 	{
 		S_CreatePlayer createPlayerPacket = (S_CreatePlayer)packet;
 		ServerSession serverSession = (ServerSession)session;
+	}
+
+	public static void S_ChatHandler(PacketSession session, IMessage packet)
+	{
+		S_Chat chatPacket = (S_Chat)packet;
+		Debug.Log($"{chatPacket.PlayerId} : {chatPacket.ChatMessage}");
+
+		Demo_Chat UI_Chat = GameObject.Find("UI_Chat").GetComponentInChildren<Demo_Chat>();
+		string text = $"PlayerId_{chatPacket.PlayerId} : {chatPacket.ChatMessage}";
+		UI_Chat.ReceiveChatMessage(chatPacket);
+		//UI_Chat.ReceiveChatMessage(1, text);
 	}
 }
