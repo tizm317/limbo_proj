@@ -42,6 +42,7 @@ namespace Server
 						serverDb.IpAddress = IpAddress;
 						serverDb.Port = Port;
 						serverDb.BusyScore = SessionManager.Instance.GetBusyScore();
+						serverDb.Open = Open;
 						shared.SaveChangesEx();
 					}
 					else
@@ -51,7 +52,8 @@ namespace Server
 							Name = Program.Name,
 							IpAddress = Program.IpAddress,
 							Port = Program.Port,
-							BusyScore = SessionManager.Instance.GetBusyScore()
+							BusyScore = SessionManager.Instance.GetBusyScore(),
+							Open = Program.Open,
 						};
 						shared.Servers.Add(serverDb);
 						shared.SaveChangesEx();
@@ -65,6 +67,7 @@ namespace Server
 		public static string Name { get; } = "Hongik";
 		public static int Port { get; } = 7777;
 		public static string IpAddress { get; set; }
+		public static int Open { get; } = 1;
 
 		static void Main(string[] args)
 		{

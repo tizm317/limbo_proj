@@ -26,6 +26,7 @@ public class ServerInfo
     public string IpAddress { get; set; }
     public int Port { get; set; }
     public int BusyScore { get; set; }
+    public int Open { get; set; }
 }
 
 public class LoginAccountPacketRes

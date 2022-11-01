@@ -26,6 +26,7 @@ public class ServerInfo
     public string IpAddress;
     public int Port;
     public int BusyScore;
+    public int Open;
 }
 
 public class LoginAccountPacketRes
@@ -34,4 +35,10 @@ public class LoginAccountPacketRes
     public int AccountId;
     public int Token;
     public List<ServerInfo> ServerList = new List<ServerInfo>();
+}
+
+public class MapInfo
+{
+    public string Name;
+    public Define.Scene scene;
 }

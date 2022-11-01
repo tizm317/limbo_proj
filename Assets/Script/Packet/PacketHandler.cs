@@ -92,7 +92,7 @@ class PacketHandler
 		S_Chat chatPacket = (S_Chat)packet;
 		Debug.Log($"{chatPacket.PlayerId} : {chatPacket.ChatMessage}");
 
-		Demo_Chat UI_Chat = GameObject.Find("UI_Chat").GetComponentInChildren<Demo_Chat>();
+		Demo_Chat UI_Chat = GameObject.Find("Chat").GetComponentInChildren<Demo_Chat>();
 		string text = $"PlayerId_{chatPacket.PlayerId} : {chatPacket.ChatMessage}";
 		UI_Chat.ReceiveChatMessage(chatPacket);
 		//UI_Chat.ReceiveChatMessage(1, text);

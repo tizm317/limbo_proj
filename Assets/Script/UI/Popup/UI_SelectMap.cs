@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_SelectServer : UI_Popup
+public class UI_SelectMap : UI_Popup
 {
-    public List<UI_SelectServerItem> Items { get; } = new List<UI_SelectServerItem>();
+    public List<UI_SelectMapItem> Items { get; } = new List<UI_SelectMapItem>();
 
     private void Start()
     {
-        Init();   
+        Init();
     }
 
     public override void Init()
@@ -18,7 +18,7 @@ public class UI_SelectServer : UI_Popup
     }
 
 
-    public void SetServers(List<ServerInfo> servers)
+    public void SetMaps(List<MapInfo> maps)
     {
         Items.Clear();
 
@@ -26,13 +26,13 @@ public class UI_SelectServer : UI_Popup
         foreach (Transform child in layout.transform)
             Destroy(child.gameObject);
 
-        for (int i = 0; i < servers.Count; i++)
+        for (int i = 0; i < maps.Count; i++)
         {
-            GameObject go = Managers.UI.MakeSubItem<UI_SelectServerItem>(parent: layout.transform).gameObject;
-            UI_SelectServerItem serverItem = go.GetOrAddComponent<UI_SelectServerItem>();
-            Items.Add(serverItem);
+            GameObject go = Managers.UI.MakeSubItem<UI_SelectMapItem>(parent: layout.transform).gameObject;
+            UI_SelectMapItem mapItem = go.GetOrAddComponent<UI_SelectMapItem>();
+            Items.Add(mapItem);
 
-            serverItem.Info = servers[i];
+            mapItem.Info = maps[i];
         }
 
         RefreshUI();
@@ -42,7 +42,7 @@ public class UI_SelectServer : UI_Popup
     {
         if (Items.Count == 0) return;
 
-        foreach(var item in Items)
+        foreach (var item in Items)
         {
             item.RefreshUI();
         }
