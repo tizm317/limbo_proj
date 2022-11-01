@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-8903551745906178534
+--- !u!1102 &-7588581300654728266
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: JUMPATTACK
+  m_Name: WALK
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,22 +20,22 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: b5e9dc95d8f162f49bbda7318017868e,
+  m_Motion: {fileID: -203655887218126122, guid: 5cea98c290560e14399f2710c4f0985d,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-8295463878860778451
+--- !u!1102 &-6503082691116132016
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WALK
-  m_Speed: 0.5
+  m_Name: DAMAGE
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -47,7 +47,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 3af8524db1b3d4948baa28bafdcb71d6,
+  m_Motion: {fileID: -203655887218126122, guid: 9ef0cf2a08310b440ba40ad3371cc31d,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -91,20 +91,23 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 8118719937420496756}
-    m_Position: {x: 360, y: 180, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -8903551745906178534}
-    m_Position: {x: 360, y: 270, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -1756865046354330654}
     m_Position: {x: 360, y: 340, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -8295463878860778451}
-    m_Position: {x: 350, y: 110, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -886403380835470051}
     m_Position: {x: 380, y: 20, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -6503082691116132016}
+    m_Position: {x: 390, y: 410, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 7785684723841509275}
+    m_Position: {x: 390, y: 180, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 2493849734282465579}
+    m_Position: {x: 400, y: 260, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -7588581300654728266}
+    m_Position: {x: 400, y: 110, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -164,7 +167,34 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &8118719937420496756
+--- !u!1102 &2493849734282465579
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: JUMPATTACK
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -203655887218126122, guid: f474900ba0beca4489f72ee3c30884e0,
+    type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &7785684723841509275
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
@@ -184,7 +214,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 55d17a4654d81ed4e996cb06ec8d5b95,
+  m_Motion: {fileID: -203655887218126122, guid: fe2c2db5cc042d74aa847b9a5f0bb4d5,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
