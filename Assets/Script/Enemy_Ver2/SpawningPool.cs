@@ -63,7 +63,7 @@ public class SpawningPool : MonoBehaviour
             enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
             NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
         }
-        else if (SceneManager.GetActiveScene().name == "InGame")
+        else if (SceneManager.GetActiveScene().name == "InGameCemetery")
         {
             enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();

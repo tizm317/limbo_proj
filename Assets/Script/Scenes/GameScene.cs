@@ -53,9 +53,9 @@ public class GameScene : BaseScene
     Coroutine co;
     const float CaptchaDelaySeconds = 3600.0f; // 1hour
 
-    //보스 30분마다 생성
+    //보스 1시간마다 생성
     GameObject Boss;
-    public float cooldownTime = 1800.0f;
+    public float cooldownTime = 3600.0f;
     private float nextFireTime = 0f;
     void Awake()
     {
@@ -135,17 +135,18 @@ public class GameScene : BaseScene
                 Boss = Managers.Resource.Instantiate("Warrok W Kurniawan");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else if(SceneManager.GetActiveScene().name == "InGameNature")
+            else if (SceneManager.GetActiveScene().name == "InGameNature")
             {
 
                 Boss = Managers.Resource.Instantiate("Enemy_Rhino");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else
+            else if (SceneManager.GetActiveScene().name == "InGameDesert")
             {
-                Boss = Managers.Resource.Instantiate("Enemy_Rhino");
+                Boss = Managers.Resource.Instantiate("Vanguard");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
+            else return;
         }
     }
     IEnumerator CoCaptcha(float seconds)
