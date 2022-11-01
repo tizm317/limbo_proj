@@ -66,6 +66,7 @@ public class Enemy1 : Enemy
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         //GameObject player = Managers.Game.GetPlayer();
         lockTarget = player;
+        if (lockTarget == null) return;
         _destPos = lockTarget.transform.position;
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
