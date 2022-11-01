@@ -55,12 +55,13 @@ public class MapNpc : QuestNpc
         new MapInfo
         {
             Name = "Village",
-            scene = Define.Scene.Village
+            scene = Define.Scene.InGameVillage
         },
     };
     public void ShowSelectMapUI()
     {
         _UI_SelectMap = Managers.UI.ShowPopupUI<UI_SelectMap>();
+        _UI_SelectMap.getNpcInfo(this);
         _UI_SelectMap.SetMaps(maps);
     }
 

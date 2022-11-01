@@ -73,7 +73,7 @@ public class DataManager
         //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // ∞Ê∑Œ ºˆ¡§ « ø‰
 
         // πÿø°¥¬ ¿Œ∞‘¿”æ¿ ∏ µ•¿Ã≈Õ
-        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.InGame)
+        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.InGameCemetery)
         {
             string path = "Data/MapData.json"; // InGame æ¿ ∏  µ•¿Ã≈Õ ¡§∫∏
 
@@ -134,7 +134,7 @@ public class DataManager
     public void MapTestSceneMapDataLoad()
     {
         ///// ...?
-        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.Village)
+        if (Managers.Scene.CurrentScene.SceneType == Define.Scene.InGameVillage)
         {
             string path = "Data/MapData2.json"; // InGame æ¿ ∏  µ•¿Ã≈Õ ¡§∫∏
 

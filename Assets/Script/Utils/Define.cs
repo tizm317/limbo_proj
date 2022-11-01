@@ -39,15 +39,16 @@ public class Define
         Unknown, // 디폴트
         Login,
         Lobby,
-        InGame,
-        Village,
+        //InGame,
         Dungeon,
         InGameBoss,
         InGameNatureBoss,
         InGameDesertBoss,
+
+        InGameVillage,
         InGameNature,
+        InGameDesert,
         InGameCemetery, // 공동묘지
-        InGameDesert, 
     }
 
     public enum Sound

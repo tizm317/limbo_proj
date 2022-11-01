@@ -66,7 +66,7 @@ public class GameScene : BaseScene
     {
         base.Init();
 
-        SceneType = Define.Scene.InGame;
+        SceneType = Define.Scene.InGameCemetery;
 
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
