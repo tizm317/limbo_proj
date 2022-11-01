@@ -16,7 +16,7 @@ public class VillageScene : BaseScene
         base.Init();
 
         // 씬타입 설정
-        SceneType = Define.Scene.Village;
+        SceneType = Define.Scene.InGameVillage;
 
         // 씬 UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
@@ -35,6 +35,8 @@ public class VillageScene : BaseScene
         //
         Managers.Data.MapDict.Clear();
         Managers.Data.MapTestSceneMapDataLoad();
+
+        Managers.NPC.Init(SceneType);
     }
     public override void Clear()
     {

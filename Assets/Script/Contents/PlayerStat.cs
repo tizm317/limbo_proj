@@ -56,7 +56,7 @@ public class PlayerStat : Stat
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "VillagePotal")
-            Managers.Scene.LoadScene(Define.Scene.Village);
+            Managers.Scene.LoadScene(Define.Scene.InGameVillage);
         else if (collision.gameObject.name == "BossPotal")
         {
             if (SceneManager.GetActiveScene().name == "InGame")

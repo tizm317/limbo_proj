@@ -40,7 +40,7 @@ public class UI_SelectServerItem : UI_Base
     void OnClickButton(PointerEventData data)
     {
         Managers.Network.ConnectToGame(Info);
-        Managers.Scene.LoadScene(Define.Scene.InGame);
+        Managers.Scene.LoadScene(Define.Scene.InGameVillage);
 
         Managers.UI.ClosePopupUI();
     }

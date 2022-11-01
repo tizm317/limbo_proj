@@ -134,6 +134,12 @@ public class Enemy4 : Enemy
     //Hit 상태
     protected override void UpdateHit()
     {
+        if (lockTarget != null)
+        {
+            Vector3 dir = lockTarget.transform.position - transform.position;
+            Quaternion quat = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
+        }
     }
 
     //Die 상태
@@ -188,7 +194,8 @@ public class Enemy4 : Enemy
             }
             else
             {
-                State = Define.State.Moving;
+                State = Define.State.Die;
+                targetStat.OnAttacked(_stat);
             }
         }
         else

@@ -58,7 +58,7 @@ public class BossScene : BaseScene
     {
         base.Init();
 
-        SceneType = Define.Scene.InGame;
+        SceneType = Define.Scene.InGameCemetery;
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
         Screen.SetResolution(640, 480, false);
@@ -88,7 +88,7 @@ public class BossScene : BaseScene
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
 
         //
-        Managers.NPC.Init();
+        //Managers.NPC.Init();
     }
 
     IEnumerator CoCaptcha(float seconds)

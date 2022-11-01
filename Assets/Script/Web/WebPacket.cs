@@ -35,3 +35,9 @@ public class LoginAccountPacketRes
     public int Token;
     public List<ServerInfo> ServerList = new List<ServerInfo>();
 }
+
+public class MapInfo
+{
+    public string Name;
+    public Define.Scene scene;
+}

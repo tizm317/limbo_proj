@@ -111,7 +111,7 @@ public class StageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-             Managers.Scene.LoadScene(Define.Scene.Village);
+             Managers.Scene.LoadScene(Define.Scene.InGameVillage);
         }
     }
 

@@ -8,7 +8,7 @@ public class Enemy_Skeleton : Enemy
     //enemyController1은 대기하다가 추적 사정거리 안에 player가 들어오면 무빙하여 attack
     [SerializeField] float _scanRange = 10;  //사정거리
     [SerializeField] float _attachRange = 2;  //적 공격 사정거리
-
+    GameObject player;
     //private void Start()
     //{
     //    Init();
@@ -22,9 +22,11 @@ public class Enemy_Skeleton : Enemy
     {
         base.Init();
 
+        player = GameObject.FindGameObjectWithTag("Player");
+
         // HPBar
-        //if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
-        //    Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
+        if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
+            Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
     }
 
     protected override void UpdateIdle()
@@ -88,22 +90,31 @@ public class Enemy_Skeleton : Enemy
     }
     protected override void UpdateHit()
     {
-        State = Define.State.Hit; 
+        _scanRange = 15;
+        if (lockTarget != null)
+        {
+            Vector3 dir = lockTarget.transform.position - transform.position;
+            Quaternion quat = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
+        }
 
     }
 
     protected override void UpdateDie()
     {
-        State = Define.State.Die;
-
     }
 
     void OnHitEvent()
     {
+        if (_stat.Hp <= 0)
+        {
+            return;
+        }
+
         //체력
         if (lockTarget != null)
         {
-            if (State == Define.State.Die) return;
+        
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
@@ -118,13 +129,15 @@ public class Enemy_Skeleton : Enemy
             }
             else
             {
-                State = Define.State.Idle;
+                State = Define.State.Die;
             }
         }
         else
         {
+
             State = Define.State.Idle;
         }
     }
+
 }
 

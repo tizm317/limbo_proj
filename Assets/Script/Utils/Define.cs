@@ -39,12 +39,16 @@ public class Define
         Unknown, // 디폴트
         Login,
         Lobby,
-        InGame,
-        Village,
+        //InGame,
         Dungeon,
         InGameBoss,
         InGameNatureBoss,
         InGameDesertBoss,
+
+        InGameVillage,
+        InGameNature,
+        InGameDesert,
+        InGameCemetery, // 공동묘지
     }
 
     public enum Sound
@@ -94,6 +98,7 @@ public class Define
         //STATE_STORAGE_UI_POPUP,
         //// 퀘스트
         STATE_QUEST_UI_POPUP,
+        STATE_MAP_UI_POPUP,
     }
 
     // Event
@@ -119,6 +124,8 @@ public class Define
         EVENT_ACCEPT_QUEST,
         EVENT_REJECT_QUEST,
         //EVENT_QUIT_QUEST,
+        EVENT_PUSH_MAP,
+        EVENT_QUIT_MAP,
     }
 
     public enum Job
