@@ -35,6 +35,8 @@ public class VillageScene : BaseScene
         //
         Managers.Data.MapDict.Clear();
         Managers.Data.MapTestSceneMapDataLoad();
+
+        Managers.NPC.Init(SceneType);
     }
     public override void Clear()
     {

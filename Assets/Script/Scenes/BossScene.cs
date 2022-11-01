@@ -88,7 +88,7 @@ public class BossScene : BaseScene
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
 
         //
-        Managers.NPC.Init();
+        //Managers.NPC.Init();
     }
 
     IEnumerator CoCaptcha(float seconds)

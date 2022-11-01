@@ -120,7 +120,7 @@ public class GameScene : BaseScene
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
 
         //
-        Managers.NPC.Init();
+        Managers.NPC.Init(SceneType);
     }
     private void Update()
     {

@@ -45,7 +45,7 @@ public class DungeonScene : BaseScene
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
 
         //
-        Managers.NPC.Init();
+        //Managers.NPC.Init();
     }
 
 
