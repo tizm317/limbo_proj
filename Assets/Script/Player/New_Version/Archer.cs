@@ -4,12 +4,14 @@ using UnityEngine;
 public class Archer : Player
 {
     GameObject Arrow;
+    GameObject R_Arrow, skill_Arrow;
     Buff _buff;
     public override void abstract_Init()
     {
         job = "Archer";
-        Arrow = Resources.Load<GameObject>("Prefabs/Arrow");
-        
+        Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Arrow");
+        R_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2");
+        skill_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2_Small");
         attackRange = 15f;
         for(int i = 0; i < cool.Length; i++)
         {
@@ -214,12 +216,11 @@ public class Archer : Player
                 List<GameObject> temp = new List<GameObject>();
                 int how_many = (int)(SightAngle/10f);
                 //이곳에 스킬 사용시 화살이 줄어드는 내용이 필요함
-                GameObject skill_arrow = Resources.Load<GameObject>("Prefabs/Skill_Arrow_small_size");
                 for(int i = 0; i < how_many; i++)
                 {
-                    GameObject a = Instantiate(skill_arrow);
+                    GameObject a = Instantiate(skill_Arrow);
                     a.transform.position = pos_s;
-                    a.transform.forward = player.transform.forward;
+                    a.transform.forward = -player.transform.forward;
                     a.transform.Rotate(0, 10f * (i - how_many/2f),0);
                     temp.Add(a);
                 }
@@ -231,7 +232,7 @@ public class Archer : Player
                     float move_distance = Time.deltaTime * speed;
                     foreach(GameObject i in temp)
                     {
-                        i.transform.position += (i.transform.forward * move_distance);
+                        i.transform.position += (-i.transform.forward * move_distance);
                     }
                     arrow_moved += move_distance;
                     time += Time.deltaTime;
@@ -301,10 +302,10 @@ public class Archer : Player
                 skill = HotKey.R;
                 Ani_State_Change();
                 yield return new WaitForSeconds(3.6f);
-                GameObject temp = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/Skill_Arrow"));
+                GameObject temp = Instantiate<GameObject>(R_Arrow);
                 temp.transform.position = player.transform.position;
                 Vector3 dir = player.transform.forward;
-                temp.GetComponent<FireArrow>().Run(my_stat,damage,dir);
+                temp.GetComponent<FireArrow>().Run(my_stat,damage, dir);
                 cool[3] = cool_max[3];
                 on_skill = false;
                 break;

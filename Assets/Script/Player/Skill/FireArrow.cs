@@ -7,8 +7,7 @@ public class FireArrow : MonoBehaviour
     // Start is called before the first frame update
     float damage;
     PlayerStat attacker;
-    [SerializeField]
-    float speed;
+    float speed = 15;
     public void Run(PlayerStat stat, float Damage, Vector3 dir)
     {
         damage = Damage;
@@ -21,7 +20,7 @@ public class FireArrow : MonoBehaviour
         float time = 0;
         while(time < 5f)
         {
-            gameObject.transform.forward = dir;
+            gameObject.transform.forward = -dir;
             gameObject.transform.position += dir * speed * Time.deltaTime;
             yield return new WaitForEndOfFrame();
             time += Time.deltaTime;

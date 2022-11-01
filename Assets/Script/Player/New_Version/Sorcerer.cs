@@ -5,8 +5,10 @@ using UnityEngine.AI;
 public class Sorcerer : Player
 {
     GameObject Magic_bolt;
-    GameObject Icy_Field;
+    GameObject Icy_Field,Icy_Smoke;
+    GameObject Smoke;
     GameObject Shield;
+    GameObject Heal_effect;
     [SerializeField]
     float mana_for_attack = 5f;
     public enum BlendMode
@@ -20,9 +22,12 @@ public class Sorcerer : Player
     public override void abstract_Init()
     {
         job = "Sorcerer";
-        Magic_bolt = Resources.Load<GameObject>("Prefabs/Magic_bolt");
-        Icy_Field = Resources.Load<GameObject>("Prefabs/Icy_Field");
-        Shield = Resources.Load<GameObject>("Prefabs/skull shield");
+        Magic_bolt = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/BlueBall");
+        Icy_Field = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Icy_Field");
+        Shield = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/skull shield");
+        Icy_Smoke = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/IceCloud");
+        Smoke = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Kunai5");
+        Heal_effect = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/SummonMagicCircle2");
         attackRange = 10f;
         
         for(int i = 0; i < cool.Length; i++)
@@ -133,6 +138,9 @@ public class Sorcerer : Player
         attackable = false;
         player.tag = "Untagged";
         changeRenderMode(player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial,BlendMode.Transparent);
+        GameObject temp = Instantiate<GameObject>(Smoke);
+        temp.transform.SetParent(player.transform);
+        temp.transform.localPosition = Vector3.zero;
         float wanted_alpha = 0.2f;
         float a = 0;
         while(true)
@@ -141,6 +149,7 @@ public class Sorcerer : Player
             Color body_Color = player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial.GetColor("_Color");
             float my_alpha = body_Color.a;
             my_alpha = Mathf.Lerp(my_alpha,wanted_alpha,0.1f);
+            temp.transform.localScale = new Vector3((1f-my_alpha)*0.1f,(1f-my_alpha)*0.1f,(1f-my_alpha)*0.1f);
             player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial.SetColor("_Color",new Color(1,1,1,my_alpha));
             if(Mathf.Abs(my_alpha - wanted_alpha) < 0.01)
                 break;
@@ -156,6 +165,7 @@ public class Sorcerer : Player
             Color body_Color = player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial.GetColor("_Color");
             float my_alpha = body_Color.a;
             my_alpha = Mathf.Lerp(my_alpha,wanted_alpha,0.1f);
+            temp.transform.localScale = new Vector3((1f-my_alpha)*0.1f,(1f-my_alpha)*0.1f,(1f-my_alpha)*0.1f);
             player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial.SetColor("_Color",new Color(1,1,1,my_alpha));
 
             if(Mathf.Abs(my_alpha - wanted_alpha) < 0.01)
@@ -223,6 +233,7 @@ public class Sorcerer : Player
 #region W
     IEnumerator Sorcerer_W()
     {
+        Debug.Log("@");
         float heal = my_stat.Attack;
         float range = attackRange;
         pos_selected = false;
@@ -283,11 +294,28 @@ public class Sorcerer : Player
                     skill = HotKey.W;
                     Ani_State_Change();
                     yield return new WaitForSeconds(2.6f);
-                    target.GetComponent<PlayerStat>().Hp += heal;
-                    if(target.GetComponent<PlayerStat>().Hp>target.GetComponent<PlayerStat>().MaxHp)
-                        target.GetComponent<PlayerStat>().Hp = target.GetComponent<PlayerStat>().MaxHp;
                     cool[1] = cool_max[1];
                     on_skill = false;
+                    target.GetComponent<PlayerStat>().Hp += heal;
+                    GameObject temp = Instantiate<GameObject>(Heal_effect);
+                    temp.transform.SetParent(target.transform);
+                    temp.transform.localPosition = Vector3.zero;
+                    float wanted_size = 0.1f;
+                    float effect_size = 0f;
+                    float speed = 3f;
+                    while(Mathf.Abs(wanted_size-effect_size) > 0.01f)
+                    {
+                        effect_size = Mathf.Lerp(effect_size,wanted_size,Time.deltaTime*speed);
+                        temp.transform.localScale = Vector3.one * effect_size;
+                    }
+                    if(target.GetComponent<PlayerStat>().Hp>target.GetComponent<PlayerStat>().MaxHp)
+                        target.GetComponent<PlayerStat>().Hp = target.GetComponent<PlayerStat>().MaxHp;
+                    wanted_size = 0f;
+                    while(Mathf.Abs(wanted_size-effect_size) > 0.01f)
+                    {
+                        effect_size = Mathf.Lerp(effect_size,wanted_size,Time.deltaTime*speed);
+                        temp.transform.localScale = Vector3.one * effect_size;
+                    }
                     break;
                 }    
             }
@@ -310,13 +338,17 @@ public class Sorcerer : Player
         pos_selected = false;
         Vector3 pos = player.transform.position;
         Vector3 wanted_size;
+        float size, wanted_size2;
         float wanted_height;
         float generate_speed = 0.05f;
         List<GameObject> slowed_enemy = new List<GameObject>();
-        GameObject temp = Instantiate(Icy_Field);
+        GameObject temp = Instantiate<GameObject>(Icy_Field);
+        GameObject temp2 = Instantiate<GameObject>(Icy_Smoke);
         GameObject sword = temp.transform.GetChild(3).gameObject;
         temp.SetActive(false);
         temp.transform.localScale = Vector3.zero;
+        temp2.SetActive(false);
+        temp2.transform.localScale = Vector3.zero;
         StartCoroutine(Show_CircleIndicator(false,360,width));
         while(!canceled)
         {
@@ -368,9 +400,12 @@ public class Sorcerer : Player
                 Ani_State_Change();
                 yield return new WaitForSeconds(0.7f);
                 temp.transform.position = pos;
+                temp2.transform.position = pos;
                 temp.SetActive(true);
+                temp2.SetActive(true);
                 wanted_size = new Vector3(1f,1f,5/9f) * width;
-                
+                wanted_size2 = 0.1f * width;
+                size = 0f;
                 while(true)
                 {
                     Vector3 temp_size = temp.transform.localScale;
@@ -380,7 +415,9 @@ public class Sorcerer : Player
                     float x = Mathf.Lerp(temp_size.x,wanted_size.x,generate_speed);
                     float y = Mathf.Lerp(temp_size.y,wanted_size.y,generate_speed);
                     float z = Mathf.Lerp(temp_size.z,wanted_size.z,generate_speed);
+                    size = Mathf.Lerp(size,wanted_size2,generate_speed);
                     temp.transform.localScale = new Vector3(x,y,z);
+                    temp2.transform.localScale = Vector3.one * size;
                     yield return new WaitForEndOfFrame();
                 }
                 wanted_height = 0.5f;
@@ -427,6 +464,8 @@ public class Sorcerer : Player
             sword.transform.localPosition = new Vector3(0,0,height);
             yield return new WaitForEndOfFrame();
         }
+        wanted_size2 = 0f;
+        size = temp2.transform.localScale.x;
         while(true)
         {
             Vector3 temp_size = temp.transform.localScale;
@@ -436,6 +475,9 @@ public class Sorcerer : Player
             float y = Mathf.Lerp(temp_size.y,wanted_size.y,generate_speed);
             float z = Mathf.Lerp(temp_size.z,wanted_size.z,generate_speed);
             temp.transform.localScale = new Vector3(x,y,z);
+            size = Mathf.Lerp(size,wanted_size2,generate_speed);
+            temp.transform.localScale = new Vector3(x,y,z);
+            temp2.transform.localScale = Vector3.one * size;
             yield return new WaitForEndOfFrame();
         }
         Destroy(temp);//최초 1회만 생성하고 반복해서 사용하게 수정할 수 있음

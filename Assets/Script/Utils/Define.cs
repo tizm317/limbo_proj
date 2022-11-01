@@ -127,4 +127,29 @@ public class Define
         ARCHER,
         SORCERER,
     }
+
+    public enum Stat
+    {
+        STR,
+        DEX,
+        INT,
+        LUK,
+    }
+
+    public enum Item_Stat
+    {
+        STR,
+        DEX,
+        INT,
+        LUK,
+        HP,
+        HP_PERCENT,
+        HP_REGEN,
+        ATTACK,
+        ATTACK_PERCENT,
+        ATTACK_SPEED,
+        MP,
+        MP_PERCENT,
+        MP_REGEN,
+    }
 }

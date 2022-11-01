@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,9 +23,9 @@ public class PlayerStat : Stat
     public float Mana { get { return _mana; } set { _mana = value; }}
     public float MaxMana{ get { return _max_mana; } set { _max_mana = value; } }
     public float Mana_Regeneration { get { return _mana_regeneration; } set { _mana_regeneration = value; }}
-    public int STR,DEX,INT,LUC;
-    public int Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
-    public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent, Item_Mana_Regeneration_percent;
+    public float STR,DEX,INT,LUC;
+    public float Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
+    public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent;
     float time;
     public bool isDead = false;
     private Player ps;
@@ -139,7 +139,7 @@ public class PlayerStat : Stat
         AttackSpeed = 1 + (1 / 50) * (DEX - 20) + Item_AttackSpeed;
         MaxMana = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent);
         Mana = MaxMana;
-        Mana_Regeneration = 0.5f * ((Level * INT) * 0.1f + Item_Regeneration + 1) * (1 + Item_Mana_Regeneration_percent);
+        Mana_Regeneration = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent) * (0.1f + Item_Mana_Regeneration);
     }
 
     public override void OnAttacked(Stat attacker)
@@ -156,20 +156,20 @@ public class PlayerStat : Stat
         }
     }
 
-    public void Stat_Change(string name, int num)
+    public void Stat_Change(Define.Stat stat, int num)
     {
-        switch(name)
+        switch(stat)
         {
-            case "STR" :
+            case Define.Stat.STR :
                 STR += num;
                 break;
-            case "DEX" :
+            case Define.Stat.DEX :
                 DEX += num;
                 break;
-            case "INT" :
+            case Define.Stat.INT :
                 INT += num;
                 break;
-            case "LUC" :
+            case Define.Stat.LUK :
                 LUC += num;
                 break;
             default:
