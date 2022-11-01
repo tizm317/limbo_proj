@@ -59,19 +59,24 @@ public class Stat : MonoBehaviour
        
         float damage = Mathf.Max(0, attacker.Attack - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
-        enemy.State = Define.State.Hit;
-        StartCoroutine(Hit());
+        //enemy.State = Define.State.Hit;
+        //StartCoroutine(Hit());
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
+            //enemy.State = Define.State.Die;
             OnDead(attacker);
         }
     }
 
     public virtual void OnAttacked(float Damage, Stat attacker)
     {
+        if (enemy.State == Define.State.Die)
+            return;
+
         float damage = Mathf.Max(0, Damage - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
+
         enemy.State = Define.State.Hit;
         if (Hp <= 0)  //음수 경우 hp = 0;
         {

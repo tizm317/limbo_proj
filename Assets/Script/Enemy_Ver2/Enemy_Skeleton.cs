@@ -102,16 +102,19 @@ public class Enemy_Skeleton : Enemy
 
     protected override void UpdateDie()
     {
-        State = Define.State.Die;
-
     }
 
     void OnHitEvent()
     {
+        if (_stat.Hp <= 0)
+        {
+            return;
+        }
+
         //체력
         if (lockTarget != null)
         {
-            if (State == Define.State.Die) return;
+        
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
@@ -127,12 +130,11 @@ public class Enemy_Skeleton : Enemy
             else
             {
                 State = Define.State.Die;
-                targetStat.OnAttacked(_stat);
-
             }
         }
         else
         {
+
             State = Define.State.Idle;
         }
     }
