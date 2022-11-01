@@ -17,7 +17,7 @@ public class Buff : MonoBehaviour
 
         debuff = new GameObject("Debuff");
         debuff.transform.SetParent(_target.transform);
-        debuff.transform.localPosition = new Vector3(0,_target.GetComponent<CapsuleCollider>().height + 0.2f,0);
+        debuff.transform.localPosition = new Vector3(0,_target.GetComponent<CapsuleCollider>().height + 0.5f,0);
         List<GameObject> v = new List<GameObject>();
         for(int i = 0; i < _target.transform.childCount; i++)
         {

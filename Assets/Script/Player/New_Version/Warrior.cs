@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Warrior : Player
 {
     public Buff _buff;
+    GameObject Debuff_Effect;
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
@@ -16,6 +17,7 @@ public class Warrior : Player
             cool[i] = 0;
         }
         _buff = gameObject.AddComponent<Buff>();
+        Debuff_Effect = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Swamp");
     }
 
     public override void Cool_Update()//스킬 레벨업 할때 한번씩 돌아가면됨
@@ -167,6 +169,8 @@ public class Warrior : Player
         cool[2] = cool_max[2];
         on_skill = false;
         List<Stat> temp = new List<Stat>();
+        List<GameObject> temp2 = new List<GameObject>();
+        
         for(int i = 0; i < enemies.Count; i++)
         {
             float far = Vector3.Distance(player.transform.position, enemies[i].transform.position);
@@ -177,8 +181,24 @@ public class Warrior : Player
                 enemies[i].GetComponent<Stat>().AttackSpeed *= (percent / 100f);
                 _buff.Show_buff(time,enemies[i],Skill_img[3].sprite);
                 temp.Add(enemies[i].GetComponent<Stat>());
+                GameObject eff = Instantiate<GameObject>(Debuff_Effect);
+                eff.transform.localScale = Vector3.zero;
+                eff.transform.SetParent(enemies[i].transform);
+                eff.transform.localPosition = Vector3.zero;
+                temp2.Add(eff);
             }
         }
+        float wanted_size = 0.1f;
+        float cur_size = 0f;
+        while(Mathf.Abs(wanted_size - cur_size) > 0.01f)
+        {
+            cur_size = Mathf.Lerp(cur_size,wanted_size,Time.deltaTime * 2f);
+            foreach(GameObject i in temp2)
+            {
+                i.transform.localScale = Vector3.one * cur_size;
+            }
+        }
+        
 
         yield return new WaitForSeconds(5f);//이 시간만큼 공속과 이속을 깍아준 뒤
 
@@ -187,8 +207,19 @@ public class Warrior : Player
             i.Attack /= (percent / 100f);
             i.AttackSpeed /= (percent / 100f);
         }//원상복귀
+        wanted_size = 0f;
+        cur_size = 0.1f;
+        while(Mathf.Abs(wanted_size - cur_size) > 0.01f)
+        {
+            cur_size = Mathf.Lerp(cur_size,wanted_size,Time.deltaTime * 2f);
+            foreach(GameObject i in temp2)
+            {
+                i.transform.localScale = Vector3.one * cur_size;
+            }
+        }
+        foreach(GameObject i in temp2)
+            Destroy(i);
     }
-
     IEnumerator Warrior_R()
     {
         float range = 1 + skill_level[3];

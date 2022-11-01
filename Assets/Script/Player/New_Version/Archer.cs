@@ -5,6 +5,7 @@ public class Archer : Player
 {
     GameObject Arrow;
     GameObject R_Arrow, skill_Arrow;
+    GameObject W_Effect;
     Buff _buff;
     public override void abstract_Init()
     {
@@ -12,6 +13,7 @@ public class Archer : Player
         Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Arrow");
         R_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2");
         skill_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2_Small");
+        W_Effect = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Archer_W");
         attackRange = 15f;
         for(int i = 0; i < cool.Length; i++)
         {
@@ -164,10 +166,15 @@ public class Archer : Player
         float speed = 50f + skill_level[1] * 10f;
         float time = 4f + skill_level[1];
         my_stat.AttackSpeed *= (1f + speed/100f);
+        GameObject temp = Instantiate<GameObject>(W_Effect);
+        temp.transform.SetParent(player.transform);
+        temp.transform.localPosition = Vector3.zero;
         _buff.Show_buff(time,player,Skill_img[2].sprite);
         on_skill = false;
+        
         cool[1] = cool_max[1];//시전시간이 없어서 일단은 바로 쿨 돌리기
         yield return new WaitForSeconds(time);//지속시간
+        Destroy(temp);
         my_stat.AttackSpeed /= (1f + speed/100f);;
     }
 
