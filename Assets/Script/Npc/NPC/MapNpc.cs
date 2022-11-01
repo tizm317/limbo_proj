@@ -40,17 +40,22 @@ public class MapNpc : QuestNpc
         new MapInfo
         {
             Name = "Nature",
-            scene = Define.Scene.Nature
+            scene = Define.Scene.InGameNature
         },
         new MapInfo
         {
             Name = "Desert",
-            scene = Define.Scene.Desert
+            scene = Define.Scene.InGameDesert
         },
         new MapInfo
         {
             Name = "Cemetery",
-            scene = Define.Scene.Cemetery
+            scene = Define.Scene.InGameCemetery
+        },
+        new MapInfo
+        {
+            Name = "Village",
+            scene = Define.Scene.Village
         },
     };
     public void ShowSelectMapUI()

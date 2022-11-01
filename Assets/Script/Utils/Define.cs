@@ -45,9 +45,9 @@ public class Define
         InGameBoss,
         InGameNatureBoss,
         InGameDesertBoss,
-        Nature,
-        Cemetery, // 공동묘지
-        Desert, 
+        InGameNature,
+        InGameCemetery, // 공동묘지
+        InGameDesert, 
     }
 
     public enum Sound
