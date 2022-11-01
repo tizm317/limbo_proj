@@ -56,6 +56,7 @@ public class UI_InGame : UI_Scene
     #endregion
     enum Buttons
     {
+        UI_SkillUpButton,
     }
     enum Texts
     {
@@ -116,9 +117,18 @@ public class UI_InGame : UI_Scene
         emoticon = GameObject.Find("@UI_Root").GetComponentInChildren<UI_Emoticon>();
         UI_Init();
 
+        Bind<Button>(typeof(Buttons));
+        GetButton((int)Buttons.UI_SkillUpButton).gameObject.BindEvent(skillUpButtonClicked);
+
+        //
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
+    }
+
+    private void skillUpButtonClicked(PointerEventData obj)
+    {
+        //TODO
     }
 
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용

@@ -14,6 +14,7 @@ public class PlayerStat : Stat
     [SerializeField] protected float _mana;
     [SerializeField] protected float _max_mana;
     [SerializeField] protected float _mana_regeneration;
+    [SerializeField] protected int _skill_point;
     public int Exp { get { return _exp; } set { _exp = value; } }
     public int Gold { get { return _gold; } set { _gold = value; } }
     public bool level_up = true;
@@ -23,6 +24,8 @@ public class PlayerStat : Stat
     public float Mana { get { return _mana; } set { _mana = value; }}
     public float MaxMana{ get { return _max_mana; } set { _max_mana = value; } }
     public float Mana_Regeneration { get { return _mana_regeneration; } set { _mana_regeneration = value; }}
+    public int Skill_Point { get { return _skill_point; }  set { _skill_point = value; } }
+    private int max_skill_point = 16; // 4(qwer) * 4렙
     public float STR,DEX,INT,LUC;
     public float Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent;
@@ -40,6 +43,7 @@ public class PlayerStat : Stat
         _turnSpeed = 20.0f;
         _exp = 0;
         _gold = 0;
+        _skill_point = 0;
         Level_Update();
         Stat_Update();
         time = 0;
@@ -124,10 +128,23 @@ public class PlayerStat : Stat
         if(Exp >= next_level_up)
         {
             Level++;
+            if(Skill_Point < max_skill_point)
+                Skill_Point++;
             level_up = true;
             Stat_Update();
+
+            // TODO : Skill Point UI
+            SkillUpUIPopUp();
         }
     }
+
+    void SkillUpUIPopUp()
+    {
+        Debug.Log("Lv Up => SP Up");
+        UI_InGame _UI_InGame = GameObject.Find("@Scene").GetComponent<GameScene>().UI_InGame;
+        //TODO
+    }
+
 
     void Stat_Update()
     {

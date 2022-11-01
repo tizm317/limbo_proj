@@ -46,6 +46,7 @@ public class GameScene : BaseScene
     Coroutine co; // handle ����
     */
 
+    public UI_InGame UI_InGame { get { return _sceneUI; } }
     UI_InGame _sceneUI;
 
     // CAPTCHA system
