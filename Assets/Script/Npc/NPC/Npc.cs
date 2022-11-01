@@ -24,13 +24,15 @@ public class Npc : MonoBehaviour
 
     public virtual void Awake()
     {
-        Init();
+        //Init();
     }
-    public virtual void Init()
+    public virtual void Init(int id)
     {
         #region Read NPC Info from Dictionary
+
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
-        _id = dict[num_npc].id;
+        //_id = dict[num_npc].id;
+        _id = id;
         _name = dict[_id].name;
         _job = dict[_id].job;
         _patrolable = dict[_id].patrol;

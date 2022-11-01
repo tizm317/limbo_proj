@@ -9,14 +9,14 @@ public class QuestNpc : Npc
 
     public override void Awake()
     {
-        Init();
+        //Init();
     }
 
 
-    public override void Init()
+    public override void Init(int id)
     {
         // NPC Default Setting
-        base.Init();
+        base.Init(id);
 
         // Plus Quest NPC Table Setting
         EventActionTable[] tempTable = new EventActionTable[8];

@@ -18,7 +18,7 @@ public class MerchantNpc : Npc
 
     public override void Awake()
     {
-        Init();
+        //Init();
         itemListInit();
     }
 
@@ -138,10 +138,10 @@ public class MerchantNpc : Npc
         }
     }
 
-    public override void Init()
+    public override void Init(int id)
     {
         // NPC Default Setting
-        base.Init();
+        base.Init(id);
 
         // Plus Merchant NPC Table Setting
         EventActionTable[] tempTable = new EventActionTable[7];
