@@ -169,7 +169,7 @@ public class Archer : Player
         GameObject temp = Instantiate<GameObject>(W_Effect);
         temp.transform.SetParent(player.transform);
         temp.transform.localPosition = Vector3.zero;
-        _buff.Show_buff(time,player,Skill_img[2].sprite);
+        
         on_skill = false;
         
         cool[1] = cool_max[1];//시전시간이 없어서 일단은 바로 쿨 돌리기

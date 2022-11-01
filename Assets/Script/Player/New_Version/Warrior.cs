@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Warrior : Player
 {
     public Buff _buff;
-    GameObject Debuff_Effect;
+    GameObject Debuff_Effect, Explosion;
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
@@ -18,6 +18,7 @@ public class Warrior : Player
         }
         _buff = gameObject.AddComponent<Buff>();
         Debuff_Effect = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Swamp");
+        Explosion = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Explode10");
     }
 
     public override void Cool_Update()//스킬 레벨업 할때 한번씩 돌아가면됨
@@ -145,7 +146,6 @@ public class Warrior : Player
                     if(far < range)
                     {
                         enemies[i].GetComponent<Enemy>().set_target(player);
-                        _buff.Show_buff(time,enemies[i],Skill_img[2].sprite);
                     }
                 }
 
@@ -179,7 +179,6 @@ public class Warrior : Player
             {
                 enemies[i].GetComponent<Stat>().Attack *= (percent / 100f);
                 enemies[i].GetComponent<Stat>().AttackSpeed *= (percent / 100f);
-                _buff.Show_buff(time,enemies[i],Skill_img[3].sprite);
                 temp.Add(enemies[i].GetComponent<Stat>());
                 GameObject eff = Instantiate<GameObject>(Debuff_Effect);
                 eff.transform.localScale = Vector3.zero;
@@ -200,7 +199,7 @@ public class Warrior : Player
         }
         
 
-        yield return new WaitForSeconds(5f);//이 시간만큼 공속과 이속을 깍아준 뒤
+        yield return new WaitForSeconds(time);//이 시간만큼 공속과 이속을 깍아준 뒤
 
         foreach(Stat i in temp)
         {
@@ -226,6 +225,8 @@ public class Warrior : Player
         float damage = my_stat.Attack * (skill_level[3] * 0.5f + 1f);
         canceled = false;
         pos_selected = false;
+        GameObject temp= Instantiate<GameObject>(Explosion);
+        temp.SetActive(false);
         Vector3 pos = player.transform.position;
         StartCoroutine(Show_CircleIndicator(false,360,range));
         while(!canceled)
@@ -278,6 +279,9 @@ public class Warrior : Player
                 Ani_State_Change();
                 yield return new WaitForSeconds(1.8f);
                 StartCoroutine(CameraShake(0.5f));
+                temp.SetActive(true);
+                temp.transform.position = player.transform.position;
+                temp.transform.localScale = Vector3.one * 0.1f * range;
                 yield return new WaitForSeconds(0.4f);
                 for(int i = 0; i < enemies.Count; i++)
                 {
@@ -289,6 +293,7 @@ public class Warrior : Player
                             enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
                     }
                 }
+                
                 cool[3] = cool_max[3];
                 on_skill = false;
                 break;
@@ -297,6 +302,8 @@ public class Warrior : Player
         }
         pos_selected = false;
         canceled = false;
+        yield return new WaitForSeconds(5f);
+        Destroy(temp);
     }
     IEnumerator Warrior_Passive()
     {
