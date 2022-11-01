@@ -59,7 +59,7 @@ public class PlayerStat : Stat
             Managers.Scene.LoadScene(Define.Scene.InGameVillage);
         else if (collision.gameObject.name == "BossPotal")
         {
-            if (SceneManager.GetActiveScene().name == "InGame")
+            if (SceneManager.GetActiveScene().name == "InGameCemetery")
             {
                     Managers.Scene.LoadScene(Define.Scene.InGameBoss);
 

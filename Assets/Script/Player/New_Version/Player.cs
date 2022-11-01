@@ -115,8 +115,10 @@ public abstract class Player : MonoBehaviour
     public bool on_skill = false;//스킬 사용중 이동을 막기 위한 bool변수
     protected bool isAttack = false;
 
-    #endregion  
-    
+    public SkillData[] skillDatas = new SkillData[5];
+
+    #endregion
+
     protected Camera cam;
 
     #region 이동관련
@@ -476,6 +478,8 @@ public abstract class Player : MonoBehaviour
             Skill_img[i+1].fillAmount = (cool_max[i] - cool[i])/cool_max[i];
         }
     }
+
+
 
     #region 카메라 쉐이크
 

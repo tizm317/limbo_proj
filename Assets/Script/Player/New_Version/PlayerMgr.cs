@@ -62,8 +62,17 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
         skill_img = Resources.LoadAll<Sprite>("Skill_Sprite/" + job.ToString());
-        
-        for(int i = 0; i < ps.Skill_img.Length; i++)
+
+        // Skill Data
+        SkillData[] skillDatas = new SkillData[5];
+        skillDatas[0] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_P");
+        skillDatas[1] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_Q");
+        skillDatas[2] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_W");
+        skillDatas[3] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_E");
+        skillDatas[4] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_R");
+        ps.skillDatas = skillDatas;
+
+        for (int i = 0; i < ps.Skill_img.Length; i++)
         {
             ps.Skill_img[i] = skill_ui_root.transform.GetChild(i).transform.GetChild(1).GetComponent<Image>();
             ps.Skill_img[i].gameObject.SetActive(true);

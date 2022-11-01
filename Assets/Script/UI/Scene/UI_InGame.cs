@@ -77,6 +77,10 @@ public class UI_InGame : UI_Scene
     private void Update()
     {
         UI_Update();
+
+        _ped.position = Input.mousePosition;
+        OnPointerEnter(_ped.position);
+        OnPointerExit(_ped.position);
     }
 
     public override void Init()
@@ -111,6 +115,10 @@ public class UI_InGame : UI_Scene
 
         emoticon = GameObject.Find("@UI_Root").GetComponentInChildren<UI_Emoticon>();
         UI_Init();
+
+        _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
+        _ped = new PointerEventData(EventSystem.current);
+        _rrList = new List<RaycastResult>(10);
     }
 
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
@@ -314,4 +322,50 @@ public class UI_InGame : UI_Scene
             yield return null;
         }
     }
+
+
+    // Skill Slot Tooltip
+
+    private GraphicRaycaster _gr;
+    private PointerEventData _ped;
+    private List<RaycastResult> _rrList;
+
+    private T RaycastAndGetFirstComponent<T>() where T : Component
+    {
+        _rrList.Clear();
+        _gr.Raycast(_ped, _rrList);
+        if (_rrList.Count == 0) return null;
+        return _rrList[0].gameObject.GetComponent<T>();
+    }
+
+    UI_ItemDescription ui_tooltip;
+    UI_ItemSlot itemSlot_tooltip;
+    private void OnPointerEnter(Vector2 pointer)
+    {
+        // 중복 수행 방지
+        if (itemSlot_tooltip == RaycastAndGetFirstComponent<UI_ItemSlot>())
+            return;
+
+        itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
+        if (itemSlot_tooltip == null) return;
+        Transform skillTr = itemSlot_tooltip.transform;
+        if (itemSlot_tooltip != null)
+        {
+            if (!ui_tooltip)
+            {
+                ui_tooltip = Managers.UI.ShowPopupUI<UI_ItemDescription>();
+            }
+
+            int idx = skillTr.GetSiblingIndex();
+            ui_tooltip.setSkillTooltip(player.skillDatas[idx], pointer);
+        }
+    }
+
+    private void OnPointerExit(Vector2 pointer)
+    {
+        UI_ItemSlot itemSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
+        if (itemSlot == null && ui_tooltip)
+            ui_tooltip.ClosePopupUI();
+    }
+
 }
