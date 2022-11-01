@@ -66,7 +66,19 @@ public class GameScene : BaseScene
     {
         base.Init();
 
-        SceneType = Define.Scene.InGame;
+        Scene scene = SceneManager.GetActiveScene();
+        switch (scene.name)
+        {
+            case "InGameNature":
+                SceneType = Define.Scene.InGameNature;
+                break;
+            case "InGameDesert":
+                SceneType = Define.Scene.InGameDesert;
+                break;
+            case "InGameCemetery":
+                SceneType = Define.Scene.InGameCemetery;
+                break;
+        }
 
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
@@ -117,7 +129,7 @@ public class GameScene : BaseScene
             nextFireTime = Time.time + cooldownTime;
 
 
-            if (SceneManager.GetActiveScene().name == "InGame")
+            if (SceneManager.GetActiveScene().name == "InGameCemetery")
             {
 
                 Boss = Managers.Resource.Instantiate("Warrok W Kurniawan");

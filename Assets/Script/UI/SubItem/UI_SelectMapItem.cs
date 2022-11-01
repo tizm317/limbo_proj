@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SelectServerItem : UI_Base
+public class UI_SelectMapItem : UI_Base
 {
-    public ServerInfo Info { get; set; }
+    public MapInfo Info { get; set; }
 
     enum Buttons
     {
-        ServerButton
+        MapButton
     }
 
     enum Texts
     {
-        ServerNameText
+        MapNameText
     }
 
     void Awake()
@@ -28,22 +28,22 @@ public class UI_SelectServerItem : UI_Base
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
 
-        GetButton((int)Buttons.ServerButton).gameObject.BindEvent(OnClickButton);
+        GetButton((int)Buttons.MapButton).gameObject.BindEvent(OnClickButton);
     }
 
     public void RefreshUI()
     {
         if (Info == null) return;
-        GetText((int)Texts.ServerNameText).text = Info.Name;
+        GetText((int)Texts.MapNameText).text = Info.Name;
     }
 
     void OnClickButton(PointerEventData data)
     {
-        Managers.Network.ConnectToGame(Info);
-        Managers.Scene.LoadScene(Define.Scene.InGameCemetery);
+        //Managers.Network.ConnectToGame(Info);
 
+        // 서버... 맵 이동....
+
+        Managers.Scene.LoadScene(Info.scene);
         Managers.UI.ClosePopupUI();
     }
-
-
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class QuestNpc : Npc
 {
     // UI_QUEST로 바꾸기(임시로)
-    UI_Shop _UI_Quest;
+    protected UI_Shop _UI_Quest;
 
     public override void Awake()
     {
@@ -40,7 +40,6 @@ public class QuestNpc : Npc
         table = new EventActionTable[8];
         table = (EventActionTable[])tempTable.Clone();
     }
-
 
     public void ShowQuestUI()
     {

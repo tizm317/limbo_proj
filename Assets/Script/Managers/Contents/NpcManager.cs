@@ -30,6 +30,9 @@ public class NpcManager
                 case "EnchantNpc":
                     Util.GetOrAddComponent<EnchantNpc>(npc);
                     break;
+                case "MapNpc":
+                    Util.GetOrAddComponent<MapNpc>(npc);
+                    break;
             }
         }
     }

@@ -16,6 +16,7 @@ public class UI_Dialogue : UI_Popup
         TradeButton,
         EndButton,
         QuestButton,
+        MapButton,
     }
 
     enum Texts
@@ -26,6 +27,7 @@ public class UI_Dialogue : UI_Popup
         ScriptText,
         SpeakerNameText,
         QuestText,
+        MapText,
     }
 
     enum GameObjects
@@ -61,7 +63,11 @@ public class UI_Dialogue : UI_Popup
         GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
         GetButton((int)Buttons.QuestButton).gameObject.BindEvent(startQuest);
 
-      
+        GetButton((int)Buttons.MapButton).gameObject.BindEvent(startMap);
+
+        if (npc._name != "경비 대장")
+            GetButton((int)Buttons.MapButton).gameObject.SetActive(false);
+
         // 대사 초기화
         GetText((int)Texts.ScriptText).text = "";
         GetText((int)Texts.SpeakerNameText).text = "";
@@ -95,6 +101,11 @@ public class UI_Dialogue : UI_Popup
     {
         Debug.Log("퀘스트");
         npc.stateMachine(Define.Event.EVENT_PUSH_QUEST);
+    }
+
+    public void startMap(PointerEventData data)
+    {
+        npc.stateMachine(Define.Event.EVENT_PUSH_MAP);
     }
 
     public void endButtonClicked(PointerEventData data)
