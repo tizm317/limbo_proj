@@ -128,13 +128,13 @@ public class PlayerStat : Stat
         if(Exp >= next_level_up)
         {
             Level++;
-            if(Skill_Point < max_skill_point)
+            if(Skill_Point < max_skill_point && Level % 2 == 0)
+            {
+                // 2레벨업 당 1 스킬 포인트
                 Skill_Point++;
+            }
             level_up = true;
             Stat_Update();
-
-            // TODO : Skill Point UI
-            SkillUpUIPopUp();
         }
     }
 
@@ -142,7 +142,6 @@ public class PlayerStat : Stat
     {
         Debug.Log("Lv Up => SP Up");
         UI_InGame _UI_InGame = GameObject.Find("@Scene").GetComponent<GameScene>().UI_InGame;
-        //TODO
     }
 
 

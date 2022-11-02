@@ -14,7 +14,7 @@ public class UI_InGame : UI_Scene
     UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
     UI_Setting setting;
-
+    PlayerMgr pm;
     #region RadialMenu
     private UI_RadialMenu radialMenu;
     private KeyCode key_emoticon = KeyCode.T;
@@ -56,7 +56,11 @@ public class UI_InGame : UI_Scene
     #endregion
     enum Buttons
     {
-        UI_SkillUpButton,
+        UI_SkillUpButton_P,
+        UI_SkillUpButton_Q,
+        UI_SkillUpButton_W,
+        UI_SkillUpButton_E,
+        UI_SkillUpButton_R,
     }
     enum Texts
     {
@@ -75,6 +79,8 @@ public class UI_InGame : UI_Scene
         Init();
     }
 
+    Coroutine coroutine;
+    bool isPopup = false;
     private void Update()
     {
         UI_Update();
@@ -82,12 +88,19 @@ public class UI_InGame : UI_Scene
         _ped.position = Input.mousePosition;
         OnPointerEnter(_ped.position);
         OnPointerExit(_ped.position);
+
+        if(ps.Skill_Point > 0 && isPopup == false)
+        {
+            if(coroutine == null)
+                coroutine = StartCoroutine(CoSkillPointUpUIPopup());
+        }
     }
 
+    List<GameObject> UI_SkillUpButtonList = new List<GameObject>();
     public override void Init()
     {
         base.Init();
-
+        pm = GameObject.Find("@Scene").GetComponent<PlayerMgr>();
         // 연결
         Managers.Input.KeyAction -= ControlPopUpUI;
         Managers.Input.KeyAction += ControlPopUpUI;
@@ -118,7 +131,15 @@ public class UI_InGame : UI_Scene
         UI_Init();
 
         Bind<Button>(typeof(Buttons));
-        GetButton((int)Buttons.UI_SkillUpButton).gameObject.BindEvent(skillUpButtonClicked);
+        //UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_P).gameObject);
+        UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_Q).gameObject);
+        UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_W).gameObject);
+        UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_E).gameObject);
+        UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_R).gameObject);
+        foreach(GameObject go in UI_SkillUpButtonList)
+        {
+            go.BindEvent(skillUpButtonClicked);
+        }
 
         //
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
@@ -126,9 +147,72 @@ public class UI_InGame : UI_Scene
         _rrList = new List<RaycastResult>(10);
     }
 
+    public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
+    {
+        isPopup = true;
+        float percent = 0;
+        float start = UI_SkillUpButtonList[0].transform.position.y;
+        float dest = 0;
+        if (goDown == true)
+            dest = start - 128;
+        else
+            dest = start + 128;
+        
+        while (percent < 1)
+        {
+            percent += Time.deltaTime;
+            float value =  Mathf.Lerp(start, dest, percent);
+
+            // Q, W, E
+            for (int i = 0; i < 3;i++)
+            {
+                if (player.skill_level[i] == 4) // 스킬 만렙
+                {
+                    UI_SkillUpButtonList[i].GetComponent<Button>().interactable = false;
+                    continue;
+                }
+                UI_SkillUpButtonList[i].transform.position = new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
+            }
+
+            // R(궁극기)            
+            if (player.skill_level[3] < ps.Level / 8) // 문제
+            {
+                UI_SkillUpButtonList[3].GetComponent<Button>().interactable = true;
+                UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
+            }
+            else
+            {
+                UI_SkillUpButtonList[3].GetComponent<Button>().interactable = false;
+            }
+
+            yield return null;
+        }
+        StopCoroutine(coroutine);
+        coroutine = null;
+        //yield break;
+    }
+
     private void skillUpButtonClicked(PointerEventData obj)
     {
-        //TODO
+        if (isPopup == false) return;
+        //if (obj.pointerEnter.GetComponent<Button>().interactable == false) return;
+
+        coroutine = StartCoroutine(CoSkillPointUpUIPopup(true));
+
+        int idx = 0;
+        foreach(GameObject go in UI_SkillUpButtonList)
+        {
+            if(go == obj.pointerPress.gameObject)
+                break;
+            idx++;
+        }
+        if (player.skill_level[idx] < 4)
+            player.skill_level[idx]++;
+        else
+            Debug.Log("MAX SKILL LEVEL");
+
+        isPopup = false;
+        ps.Skill_Point--;
     }
 
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
@@ -353,6 +437,7 @@ public class UI_InGame : UI_Scene
     private void OnPointerEnter(Vector2 pointer)
     {
         // 중복 수행 방지
+        pm.ToolTip();
         if (itemSlot_tooltip == RaycastAndGetFirstComponent<UI_ItemSlot>())
             return;
 

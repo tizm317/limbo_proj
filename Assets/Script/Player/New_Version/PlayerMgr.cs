@@ -6,6 +6,8 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 {
     // Start is called before the first frame update
     public Define.Job job;
+    SkillData[] skillDatas = new SkillData[5];
+    Player ps;
     string my_name;
     [SerializeField]
     Vector3 pos;
@@ -57,14 +59,14 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         GameObject temp = GameObject.Instantiate<GameObject>(character[(int)job]);
         temp.name = my_name;
         temp.transform.position = pos;
-        Player ps = gameObject.GetComponent<Player>();
+        ps = gameObject.GetComponent<Player>();
         ps.SetPlayer(temp);
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
         skill_img = Resources.LoadAll<Sprite>("Skill_Sprite/" + job.ToString());
 
         // Skill Data
-        SkillData[] skillDatas = new SkillData[5];
+        
         skillDatas[0] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_P");
         skillDatas[1] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_Q");
         skillDatas[2] = Resources.Load<SkillData>($"Prefabs/Skill/{job}/Skill_W");
@@ -74,10 +76,38 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
         for (int i = 0; i < ps.Skill_img.Length; i++)
         {
-            ps.Skill_img[i] = skill_ui_root.transform.GetChild(i).transform.GetChild(1).GetComponent<Image>();
+            ps.Skill_img[i] = skill_ui_root.transform.GetChild(i).transform.GetChild(2).GetComponent<Image>();
             ps.Skill_img[i].gameObject.SetActive(true);
             ps.Skill_img[i].sprite = skill_img[i];
         }
         Camera.main.GetComponent<Camera_Controller>().SetTarget(temp);
+    }
+
+    public void ToolTip()
+    {
+        switch (job)
+        {
+            case Define.Job.WARRIOR:
+                skillDatas[0].Tooltip = $"매초 잃은 체력의 1%를 회복한다";
+                skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 1.5f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 준다.";
+                skillDatas[2].Tooltip = $"{ps.attackRange * (2 + ps.skill_level[1])}거리 이내의 적들을 도발하고, 5초간 체력 재생력을 {1 + ps.skill_level[1]}배 만큼 증가시킨다.";
+                skillDatas[3].Tooltip = $"힘찬 함성으로 주위 적들을 꾸짖어 5초간 {ps.attackRange * (2 + ps.skill_level[2])}거리 이내의 적들의 공격력과 공격속도를 {5f * ps.skill_level[2]}%만큼 감소시킨다.";
+                skillDatas[4].Tooltip = $"도약한 뒤 지면을 내려쳐 {1 + ps.skill_level[3]}거리 이내의 적들에게 {ps.my_stat.Attack * (ps.skill_level[3] * 0.5f + 1f)}만큼의 데미지를 준다.";
+                break;
+            case Define.Job.ARCHER:
+                skillDatas[0].Tooltip = $"매초 잃은 체력의 1%를 회복한다";
+                skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 1.5f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 준다.";
+                skillDatas[2].Tooltip = $"";
+                skillDatas[3].Tooltip = $"";
+                skillDatas[4].Tooltip = $"";
+                break;
+            case Define.Job.SORCERER:
+                skillDatas[0].Tooltip = $"매초 잃은 체력의 1%를 회복한다";
+                skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 1.5f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 준다.";
+                skillDatas[2].Tooltip = $"";
+                skillDatas[3].Tooltip = $"";
+                skillDatas[4].Tooltip = $"";
+                break;
+        }
     }
 }

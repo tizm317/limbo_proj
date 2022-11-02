@@ -76,7 +76,7 @@ public abstract class Player : MonoBehaviour
     private float speed { get { return my_stat.MoveSpeed; } set { speed = value; } }
     private float arrivalRange = 0.4f;
     [SerializeField]
-    protected float attackRange = 3f;
+    public float attackRange = 3f;
 
     #endregion
 
@@ -103,7 +103,7 @@ public abstract class Player : MonoBehaviour
     }
     protected HotKey skill;
     [SerializeField]
-    protected int[] skill_level = new int[4];
+    public int[] skill_level = new int[4];
     protected float[] cool = new float[4];
     protected float[] cool_max = new float[4];
     public Image[] Skill_img = new Image[5];
@@ -168,10 +168,10 @@ public abstract class Player : MonoBehaviour
     }
     void Skill_level()
     {
-        skill_level[0] = 4;
-        skill_level[1] = 4;
-        skill_level[2] = 4;
-        skill_level[3] = 4;
+        skill_level[0] = 0;
+        skill_level[1] = 0;
+        skill_level[2] = 0;
+        skill_level[3] = 0;
     }
 
     void Update()
