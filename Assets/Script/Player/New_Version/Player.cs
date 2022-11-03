@@ -205,6 +205,7 @@ public abstract class Player : MonoBehaviour
         skill_level[3] = 0;
     }
 
+    int Action6_count = 0; // Rumba Dance 반복하기 위해서
     void Update()
     {
         Cool();
@@ -229,8 +230,18 @@ public abstract class Player : MonoBehaviour
                 if(ani.GetCurrentAnimatorStateInfo(0).IsTag("Action") && ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
                 {
                     // 모션 끝나면 IDLE로 바꿔줌
-                    curState = State.STATE_IDLE;
-                    Ani_State_Change();
+                    if (Action6_count < 2 && ani.GetCurrentAnimatorStateInfo(0).IsName("Action6")) // Rumba Dance(Action6) 는 2번 더
+                    {
+                        ani.Play("Action6", 0, 0.0f);
+                        Action6_count++;
+                    }
+                    else
+                    {
+                        Action6_count = 0;
+                        
+                        curState = State.STATE_IDLE;
+                        Ani_State_Change();
+                    }
                 }
                 break;
         }
