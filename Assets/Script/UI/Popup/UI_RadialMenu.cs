@@ -10,8 +10,8 @@ public class UI_RadialMenu : UI_Popup
     [SerializeField] public int _pieceCount = 8; // 조각 개수
 
     [Range(0.2f, 1f)]
-    [SerializeField] private float _appearanceDuration = .3f; // 등장에 걸리는 시간
-    [SerializeField] private float _pieceDist = 180f; // 중앙으로부터 각 조각까지의 거리
+    [SerializeField] private float _appearanceDuration = .25f; // 등장에 걸리는 시간
+    [SerializeField] private float _pieceDist = 400f; // 중앙으로부터 각 조각까지의 거리
 
     [Range(0.01f, 0.5f)]
     [SerializeField] private float _centerDistThreshold = 0.1f; // 중앙에서부터의 마우스 거리 기준

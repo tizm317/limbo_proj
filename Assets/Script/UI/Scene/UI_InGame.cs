@@ -471,7 +471,7 @@ public class UI_InGame : UI_Scene
             if (Input.GetKeyUp(key_action))
             {
                 int selected = radialMenu.Hide();
-                Debug.Log($"Selected : {selected}");
+                //Debug.Log($"Selected : {selected}");
 
                 // 감정표현
                 player.emotion(selected);
@@ -481,7 +481,7 @@ public class UI_InGame : UI_Scene
             if (Input.GetKeyUp(key_emoticon))
             {
                 int selected = radialMenu.Hide();
-                Debug.Log($"Selected : {selected}");
+                //Debug.Log($"Selected : {selected}");
 
                 // 이모티콘
                 emoticon.transform.GetChild(0).gameObject.SetActive(true);
