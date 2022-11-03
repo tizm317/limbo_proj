@@ -113,8 +113,8 @@ public class UI_Inventory : UI_Popup
 
         // Gold, Silver, Copper Init
         curenciesTexts[0].text = myGolds.ToString();
-        curenciesTexts[1].text = "0";
-        curenciesTexts[2].text = "0";
+        //curenciesTexts[1].text = "0";
+        //curenciesTexts[2].text = "0";
     }
 
 
