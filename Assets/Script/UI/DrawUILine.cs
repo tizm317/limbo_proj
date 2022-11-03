@@ -25,7 +25,7 @@ public class DrawUILine : MonoBehaviour
     void Init()
     {
         // 직선용 UIline
-        UIline = Managers.Resource.Instantiate("UI/Scene/UILine");
+        UIline = Managers.Resource.Instantiate("UI/SubItem/UILine");
         UIline.SetActive(false);
 
         UIline.transform.SetParent(transform);
