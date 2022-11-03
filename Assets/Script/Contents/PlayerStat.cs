@@ -138,11 +138,11 @@ public class PlayerStat : Stat
         }
     }
 
-    void SkillUpUIPopUp()
-    {
-        Debug.Log("Lv Up => SP Up");
-        UI_InGame _UI_InGame = GameObject.Find("@Scene").GetComponent<GameScene>().UI_InGame;
-    }
+    //void SkillUpUIPopUp()
+    //{
+    //    Debug.Log("Lv Up => SP Up");
+    //    UI_InGame _UI_InGame = GameObject.Find("@Scene").GetComponent<GameScene>().UI_InGame;
+    //}
 
 
     void Stat_Update()

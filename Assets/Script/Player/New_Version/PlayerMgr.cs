@@ -11,7 +11,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     string my_name;
     [SerializeField]
     Vector3 pos;
-    protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
+    protected Vector3 start_pos = new Vector3(1.2f, 1f, -62.6f);
     [SerializeField]
     GameObject[] character;
     void Awake()

@@ -49,10 +49,6 @@ public class DungeonScene : BaseScene
     }
 
 
-    void Update()
-    {
-
-    }
     IEnumerator CoCaptcha(float seconds)
     {
         while(true)
@@ -67,7 +63,5 @@ public class DungeonScene : BaseScene
     {
         Debug.Log("InGameScene Clear");
     }
-
-
 
 }
