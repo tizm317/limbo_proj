@@ -44,6 +44,36 @@ public abstract class Player : MonoBehaviour
                             break;
                     }
                     break;
+                case State.STATE_ACTION :
+                    switch(actionNum)
+                    {
+                        case 0:
+                            ani.CrossFade("Action1", 0.2f);
+                            break;
+                        case 1:
+                            ani.CrossFade("Action2", 0.2f);
+                            break;
+                        case 2:
+                            ani.CrossFade("Action3", 0.2f);
+                            break;
+                        case 3:
+                            ani.CrossFade("Action4", 0.2f);
+                            break;
+                        case 4:
+                            ani.CrossFade("Action5", 0.2f);
+                            break;
+                        case 5:
+                            ani.CrossFade("Action6", 0.2f);
+                            break;
+                        case 6:
+                            ani.CrossFade("Action7", 0.2f);
+                            break;
+                        case 7:
+                            ani.CrossFade("Action8", 0.2f);
+                            break;
+                    }
+                    break;
+
             }
         
         }
@@ -70,6 +100,7 @@ public abstract class Player : MonoBehaviour
         STATE_ATTACK,
         STATE_SKILL,
         STATE_DIE,
+        STATE_ACTION, // 춤 등
     }
     public State curState { get; set; }
     [SerializeField]
@@ -193,6 +224,14 @@ public abstract class Player : MonoBehaviour
                 break;
             case State.STATE_SKILL :
                 Run_Skill();
+                break;
+            case State.STATE_ACTION:
+                if(ani.GetCurrentAnimatorStateInfo(0).IsTag("Action") && ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+                {
+                    // 모션 끝나면 IDLE로 바꿔줌
+                    curState = State.STATE_IDLE;
+                    Ani_State_Change();
+                }
                 break;
         }
         
@@ -741,10 +780,15 @@ public abstract class Player : MonoBehaviour
         return isObstacle;
     }
 
+    protected int actionNum;
     public void emotion(int num)
     {
-        ani.SetInteger("Emotion", num);
-        ani.SetTrigger("EmotionTrigger");
+        actionNum = num;
+        //ani.SetTrigger("EmotionTrigger");
+        curState = State.STATE_ACTION;
+        Ani_State_Change();
+        
+        //ani.SetInteger("Emotion", num);
     }
 
     private void initEmotion()
