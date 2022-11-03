@@ -454,7 +454,7 @@ public class UI_InGame : UI_Scene
         return _rrList[0].gameObject.GetComponent<T>();
     }
 
-    UI_ItemDescription ui_tooltip;
+    UI_SkillDescription ui_tooltip;
     UI_ItemSlot itemSlot_tooltip;
     private void OnPointerEnter(Vector2 pointer)
     {
@@ -470,7 +470,7 @@ public class UI_InGame : UI_Scene
         {
             if (!ui_tooltip)
             {
-                ui_tooltip = Managers.UI.ShowPopupUI<UI_ItemDescription>();
+                ui_tooltip = Managers.UI.ShowPopupUI<UI_SkillDescription>();
             }
 
             int idx = skillTr.GetSiblingIndex();
