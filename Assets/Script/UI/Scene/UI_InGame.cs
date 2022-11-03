@@ -64,14 +64,10 @@ public class UI_InGame : UI_Scene
     }
     enum Texts
     {
-    }
-
-    enum GameObjects
-    {
-    }
-
-    enum Images
-    {
+        Q_LvText,
+        W_LvText,
+        E_LvText,
+        R_LvText,
     }
 
     private void Start()
@@ -147,6 +143,14 @@ public class UI_InGame : UI_Scene
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
+
+        // skill level texts
+        Bind<Text>(typeof(Texts));
+        // 초기화
+        for(int i = 0; i < 4;i++)
+        {
+            GetText(i).text = $"{player.skill_level[i]}";
+        }
     }
 
     public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
@@ -228,7 +232,10 @@ public class UI_InGame : UI_Scene
             idx++;
         }
         if (player.skill_level[idx] < 4)
+        {
             player.skill_level[idx]++;
+            GetText(idx).text = $"{player.skill_level[idx]}";
+        }
         else
             Debug.Log("MAX SKILL LEVEL");
 
