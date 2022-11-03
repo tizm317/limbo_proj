@@ -175,12 +175,8 @@ public class UI_Inventory : UI_Popup
             if (!ui_tooltip)
             {
                 ui_tooltip = Managers.UI.ShowPopupUI<UI_ItemDescription>();
-                ui_tooltip.setTooltip(itemData, pointer);
             }
-            else
-            {
-                ui_tooltip.setTooltip(itemData, pointer);
-            }
+            ui_tooltip.setTooltip(itemData, pointer);
         }
     }
 

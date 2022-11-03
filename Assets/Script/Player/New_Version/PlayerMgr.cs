@@ -76,7 +76,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
         for (int i = 0; i < ps.Skill_img.Length; i++)
         {
-            ps.Skill_img[i] = skill_ui_root.transform.GetChild(i).transform.GetChild(2).GetComponent<Image>();
+            ps.Skill_img[i] = skill_ui_root.transform.GetChild(i).transform.GetChild(3).GetComponent<Image>();
             ps.Skill_img[i].gameObject.SetActive(true);
             ps.Skill_img[i].sprite = skill_img[i];
         }

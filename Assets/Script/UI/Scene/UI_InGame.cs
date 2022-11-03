@@ -81,6 +81,8 @@ public class UI_InGame : UI_Scene
 
     Coroutine coroutine;
     bool isPopup = false;
+    bool isPopup_R = false; // R(궁극기)는 따로 움직여서 추가적으로 체크
+
     private void Update()
     {
         UI_Update();
@@ -149,47 +151,65 @@ public class UI_InGame : UI_Scene
 
     public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
     {
-        isPopup = true;
         float percent = 0;
-        float start = UI_SkillUpButtonList[0].transform.position.y;
+        float start= 0;
         float dest = 0;
         if (goDown == true)
+        {
+            start = 232;
             dest = start - 128;
+        }
         else
+        {
+            start = 104;
             dest = start + 128;
-        
+        }
+
         while (percent < 1)
         {
             percent += Time.deltaTime;
-            float value =  Mathf.Lerp(start, dest, percent);
+            float value = Mathf.Lerp(start, dest, percent);
 
             // Q, W, E
-            for (int i = 0; i < 3;i++)
+            for (int i = 0; i < 3; i++)
             {
-                if (player.skill_level[i] == 4) // 스킬 만렙
+                // 만렙이면 안 올라옴(내려가는 경우는 무조건 내려가야하므로 조건으로 추가)
+                if (goDown == false && player.skill_level[i] == 4)
                 {
-                    UI_SkillUpButtonList[i].GetComponent<Button>().interactable = false;
                     continue;
                 }
+
                 UI_SkillUpButtonList[i].transform.position = new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
             }
 
             // R(궁극기)            
-            if (player.skill_level[3] < ps.Level / 8) // 문제
+            // 특정 레벨 이후 혹은 내려가는 경우에만 움직임
+            if (isPopup_R == true || player.skill_level[3] < ps.Level / 8) // 문제
             {
-                UI_SkillUpButtonList[3].GetComponent<Button>().interactable = true;
                 UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
+                isPopup_R = true;
             }
-            else
-            {
-                UI_SkillUpButtonList[3].GetComponent<Button>().interactable = false;
-            }
-
             yield return null;
         }
+
+        // 이동 완료 후
+        // 내려간 경우는 isPopup : false , RaycastTarget : Off
+        // 올라간 경우는 isPopup : true , RaycastTarget : On
+        if (goDown)
+        {
+            isPopup = false;
+            isPopup_R = false;
+        }
+        else isPopup = true;
+        for (int i = 0; i < 4; i++)
+        {
+            if (i == 3 && player.skill_level[i] >= ps.Level / 8) continue;
+
+            UI_SkillUpButtonList[i].GetComponent<Image>().raycastTarget = isPopup;
+        }
+
         StopCoroutine(coroutine);
         coroutine = null;
-        //yield break;
     }
 
     private void skillUpButtonClicked(PointerEventData obj)
@@ -212,6 +232,7 @@ public class UI_InGame : UI_Scene
             Debug.Log("MAX SKILL LEVEL");
 
         isPopup = false;
+
         ps.Skill_Point--;
     }
 
