@@ -56,7 +56,7 @@ public class UI_InGame : UI_Scene
     #endregion
     enum Buttons
     {
-        UI_SkillUpButton_P,
+        //UI_SkillUpButton_P,
         UI_SkillUpButton_Q,
         UI_SkillUpButton_W,
         UI_SkillUpButton_E,
@@ -80,8 +80,8 @@ public class UI_InGame : UI_Scene
     }
 
     Coroutine coroutine;
-    bool isPopup = false;
-    bool isPopup_R = false; // R(궁극기)는 따로 움직여서 추가적으로 체크
+    bool isPopup = false;           // 전체 체크 
+    bool[] isPopups = new bool[4];  // 올라왔는지 따로 체크
 
     private void Update()
     {
@@ -174,7 +174,7 @@ public class UI_InGame : UI_Scene
             for (int i = 0; i < 3; i++)
             {
                 // 만렙이면 안 올라옴(내려가는 경우는 무조건 내려가야하므로 조건으로 추가)
-                if (goDown == false && player.skill_level[i] == 4)
+                if (isPopups[i] == false && player.skill_level[i] == 4)
                 {
                     continue;
                 }
@@ -184,10 +184,10 @@ public class UI_InGame : UI_Scene
 
             // R(궁극기)            
             // 특정 레벨 이후 혹은 내려가는 경우에만 움직임
-            if (isPopup_R == true || player.skill_level[3] < ps.Level / 8) // 문제
+            if (isPopups[3] == true || (player.skill_level[3] != 4 && player.skill_level[3] < ps.Level / 8))
             {
                 UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
-                isPopup_R = true;
+                //isPopup_R = true;
             }
             yield return null;
         }
@@ -195,17 +195,18 @@ public class UI_InGame : UI_Scene
         // 이동 완료 후
         // 내려간 경우는 isPopup : false , RaycastTarget : Off
         // 올라간 경우는 isPopup : true , RaycastTarget : On
-        if (goDown)
-        {
-            isPopup = false;
-            isPopup_R = false;
-        }
-        else isPopup = true;
+        if (goDown) isPopup = false;
+        else        isPopup = true;
         for (int i = 0; i < 4; i++)
         {
-            if (i == 3 && player.skill_level[i] >= ps.Level / 8) continue;
+            if (UI_SkillUpButtonList[i].transform.position.y > 150)
+                isPopups[i] = true;
+            else
+                isPopups[i] = false;
 
-            UI_SkillUpButtonList[i].GetComponent<Image>().raycastTarget = isPopup;
+            //if (i == 3 && player.skill_level[i] >= ps.Level / 8) continue;
+
+            UI_SkillUpButtonList[i].GetComponent<Image>().raycastTarget = isPopups[i];
         }
 
         StopCoroutine(coroutine);
