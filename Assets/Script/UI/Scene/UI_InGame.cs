@@ -244,6 +244,32 @@ public class UI_InGame : UI_Scene
         ps.Skill_Point--;
     }
 
+    private void skillUpButtonClicked(GameObject clickedGO)
+    {
+        if (isPopup == false) return;
+
+        coroutine = StartCoroutine(CoSkillPointUpUIPopup(true));
+
+        int idx = 0;
+        foreach (GameObject go in UI_SkillUpButtonList)
+        {
+            if (go == clickedGO)
+                break;
+            idx++;
+        }
+        if (player.skill_level[idx] < 4)
+        {
+            player.skill_level[idx]++;
+            GetText(idx).text = $"{player.skill_level[idx]}";
+        }
+        else
+            Debug.Log("MAX SKILL LEVEL");
+
+        isPopup = false;
+
+        ps.Skill_Point--;
+    }
+
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
     {
         ps = player.GetPlayer().GetComponent<PlayerStat>();
@@ -394,6 +420,27 @@ public class UI_InGame : UI_Scene
             radialMenu.Show();
             co = StartCoroutine(coKeyUpCheck());
         }
+
+        // 스킬 레벨업 단축키 (좌컨트롤 + QWER)
+        {
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Q))
+            {
+                skillUpButtonClicked(UI_SkillUpButtonList[0]);
+            }
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.W))
+            {
+                skillUpButtonClicked(UI_SkillUpButtonList[1]);
+            }
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.E))
+            {
+                skillUpButtonClicked(UI_SkillUpButtonList[2]);
+            }
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
+            {
+                skillUpButtonClicked(UI_SkillUpButtonList[3]);
+            }
+        }
+
     }
 
     public void saveInven()

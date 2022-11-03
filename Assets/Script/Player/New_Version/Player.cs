@@ -623,6 +623,9 @@ public abstract class Player : MonoBehaviour
 
     void OnKeyClicked()
     {
+        // 스킬 레벨업 단축키인 LeftCtrl + QWER 은 스킬 시전 X
+        if (Input.GetKey(KeyCode.LeftControl)) return;
+
         if(Input.GetKeyDown(KeyCode.Q))
         {
             if(!on_skill && cool[0] == 0 && skill_level[0] != 0)
