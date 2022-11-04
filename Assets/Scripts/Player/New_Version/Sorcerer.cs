@@ -233,7 +233,6 @@ public class Sorcerer : Player
 #region W
     IEnumerator Sorcerer_W()
     {
-        Debug.Log("@");
         float heal = my_stat.Attack;
         float range = attackRange;
         pos_selected = false;

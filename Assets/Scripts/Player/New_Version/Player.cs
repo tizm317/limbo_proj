@@ -253,7 +253,6 @@ public abstract class Player : MonoBehaviour
         curState = State.STATE_IDLE;
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
-    
         Enemy_Update();
         GetIndicator();
 
@@ -262,7 +261,6 @@ public abstract class Player : MonoBehaviour
 
         Managers.Input.KeyAction -= OnKeyClicked;
         Managers.Input.KeyAction += OnKeyClicked;
-
         cam = Camera.main;
         
         pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
