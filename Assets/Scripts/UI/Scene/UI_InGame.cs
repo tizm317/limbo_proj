@@ -88,12 +88,12 @@ public class UI_InGame : UI_Scene
 
     private void Update()
     {
-        // Canvas Render Camera Setting (어디서 바뀌어서 오는거지..?)
-        if (this.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
-        {
-            this.GetComponent<Canvas>().worldCamera = Camera.main;
-            this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        }
+        //// Canvas Render Camera Setting (어디서 바뀌어서 오는거지..?)
+        //if (this.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
+        //{
+        //    this.GetComponent<Canvas>().worldCamera = Camera.main;
+        //    this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        //}
 
         UI_Update();
 
@@ -169,9 +169,9 @@ public class UI_InGame : UI_Scene
         }
 
 
-        // Canvas Render Camera Setting
-        this.GetComponent<Canvas>().worldCamera = Camera.main;
-        this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        //// Canvas Render Camera Setting
+        //this.GetComponent<Canvas>().worldCamera = Camera.main;
+        //this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
 
         //
         Bind<GameObject>(typeof(GameObjects));
@@ -180,7 +180,9 @@ public class UI_InGame : UI_Scene
 
         // Level Up Popup Set Active False
         GetObject((int)GameObjects.NotificationLevel).SetActive(false);
+
     }
+
 
     public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
     {
@@ -357,7 +359,7 @@ public class UI_InGame : UI_Scene
         }
 
         // LEVEL UP Effect
-        if(ps.level_up == true)
+        if (ps.level_up == true)
         {
             StartCoroutine(CoLevelUpPopup());
         }
