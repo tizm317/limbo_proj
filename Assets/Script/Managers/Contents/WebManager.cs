@@ -36,6 +36,7 @@ public class WebManager
             if(uwr.isNetworkError || uwr.isHttpError)
             {
                 Debug.Log(uwr.error);
+                Managers.UI.ShowPopupUI<UI_ServerNoticeBox>(); // 서버 점검 공지
             }
             else
             {
