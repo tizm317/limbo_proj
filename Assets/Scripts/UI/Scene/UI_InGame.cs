@@ -28,11 +28,11 @@ public class UI_InGame : UI_Scene
 
     enum Action
     {
-        angry,
+        freeze,
         pray,
-        card_shuffle,
+        dance2,
         twerk,
-        air_guitar,
+        dance1,
         dance,
         hi,
         surprise,
