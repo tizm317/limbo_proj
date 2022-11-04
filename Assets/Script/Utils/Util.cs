@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Util
 {
@@ -82,7 +83,7 @@ public class Util
         return null;
     }
 
-    public static void Quit()
+    public static void Quit(PointerEventData data = null)
     {
         // UnityEditor 에서 Application.Quit() 안 먹혀서 편하게 Util.Quit() 쓰기 위함
 #if UNITY_EDITOR

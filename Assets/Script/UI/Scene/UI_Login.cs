@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,8 @@ public class UI_Login : UI_Scene
     {
         ButtonLogin,
         ButtonCreate,
+        ButtonCredit,
+        ButtonExit,
     }
 
     enum GameObjects
@@ -46,11 +49,19 @@ public class UI_Login : UI_Scene
 
         GetButton((int)Buttons.ButtonCreate).gameObject.BindEvent(OnClickCreateButton);
         GetButton((int)Buttons.ButtonLogin).gameObject.BindEvent(OnClickLoginButton);
+        GetButton((int)Buttons.ButtonExit).gameObject.BindEvent(Util.Quit);
+        GetButton((int)Buttons.ButtonCredit).gameObject.BindEvent(OnClickCreditButton);
+        
 
         inputFieldHelper = new InputFieldHelper();
         inputFieldHelper.Add(GetObject((int)GameObjects.AccountName).GetComponent<InputField>());
         inputFieldHelper.Add(GetObject((int)GameObjects.Password).GetComponent<InputField>());
         inputFieldHelper.SetFocus(0);
+    }
+
+    private void OnClickCreditButton(PointerEventData obj)
+    {
+        Managers.UI.ShowPopupUI<UI_Credit>();
     }
 
     public void OnClickCreateButton(PointerEventData data)
@@ -98,6 +109,8 @@ public class UI_Login : UI_Scene
             }
         });
     }
+
+
 
     // Not Use
     //private void StartButtonClicked(PointerEventData data)
