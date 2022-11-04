@@ -88,12 +88,12 @@ public class UI_InGame : UI_Scene
 
     private void Update()
     {
-        //// Canvas Render Camera Setting (어디서 바뀌어서 오는거지..?)
-        //if (this.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
-        //{
-        //    this.GetComponent<Canvas>().worldCamera = Camera.main;
-        //    this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        //}
+        // Canvas Render Camera Setting (어디서 바뀌어서 오는거지..?)
+        if (this.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
+        {
+            this.GetComponent<Canvas>().worldCamera = Camera.main;
+            this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        }
 
         UI_Update();
 
@@ -423,6 +423,8 @@ public class UI_InGame : UI_Scene
             // off -> 최소 -> 중간 -> 최대 -> off
             if (!miniMap)
                 miniMap = GetComponentInChildren<UI_MiniMap>();
+
+            if (!miniMap) return;
 
             if (miniMap.gameObject.activeInHierarchy == false)
                 miniMap.gameObject.SetActive(true);

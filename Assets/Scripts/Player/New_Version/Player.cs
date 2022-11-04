@@ -355,7 +355,8 @@ public abstract class Player : MonoBehaviour
             else
                 curState = State.STATE_IDLE;
             Ani_State_Change();
-            ui_MiniMap.clearLine(); // 미니맵 경로 지우기
+            if(ui_MiniMap)
+                ui_MiniMap.clearLine(); // 미니맵 경로 지우기
             return;
         }
     }
@@ -381,7 +382,8 @@ public abstract class Player : MonoBehaviour
         Ani_State_Change();
 
         // 미니맵
-        ui_MiniMap.drawLine();
+        if(ui_MiniMap)
+            ui_MiniMap.drawLine();
     }
 
     #endregion
