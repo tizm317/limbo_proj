@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_InGame : UI_Scene
@@ -69,17 +70,22 @@ public class UI_InGame : UI_Scene
         E_LvText,
         R_LvText,
         LevelText,
+        MapText,
     }
 
     enum GameObjects
     {
         NotificationLevel,
         LevelUpEffect,
+        MapNotification,
+        MapChangeEffect,
     }
 
     private void Start()
     {
         Init();
+
+        setMapText(Managers.Scene.CurrentScene.SceneType.ToString());
     }
 
     Coroutine coroutine;
@@ -107,6 +113,26 @@ public class UI_InGame : UI_Scene
                 coroutine = StartCoroutine(CoSkillPointUpUIPopup());
         }
     }
+
+    internal void setMapText(string SceneName)
+    {
+        if (SceneName.Contains("InGame"))
+            SceneName = SceneName.Substring(6);
+        GetText((int)Texts.MapText).text = SceneName;
+
+        StartCoroutine(CoMapNotificationPopup());
+    }
+
+    IEnumerator CoMapNotificationPopup()
+    {
+        GetObject((int)GameObjects.MapNotification).SetActive(true);
+        GetObject((int)GameObjects.MapChangeEffect).GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(10.0f);
+
+        GetObject((int)GameObjects.MapNotification).SetActive(false);
+        StopCoroutine(CoMapNotificationPopup());
+    }
+
 
     List<GameObject> UI_SkillUpButtonList = new List<GameObject>();
     public override void Init()
@@ -178,9 +204,10 @@ public class UI_InGame : UI_Scene
 
         UI_Init();
 
+        // Notification UI
         // Level Up Popup Set Active False
         GetObject((int)GameObjects.NotificationLevel).SetActive(false);
-
+        GetObject((int)GameObjects.MapNotification).SetActive(false);
     }
 
 

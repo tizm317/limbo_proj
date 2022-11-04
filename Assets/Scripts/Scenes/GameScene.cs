@@ -87,6 +87,7 @@ public class GameScene : BaseScene
 
         // �� UI
         _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
+
         //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();
 
@@ -130,21 +131,21 @@ public class GameScene : BaseScene
             nextFireTime = Time.time + cooldownTime;
 
 
-            if (SceneManager.GetActiveScene().name == "6.InGameCemetery")
+            if (SceneManager.GetActiveScene().name == "InGameCemetery")
             {
                 if (Boss != null)
                     return;
                 Boss = Managers.Resource.Instantiate("Warrok W Kurniawan");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else if (SceneManager.GetActiveScene().name == "4.InGameNature")
+            else if (SceneManager.GetActiveScene().name == "InGameNature")
             {
                 if (Boss != null)
                     return;
                 Boss = Managers.Resource.Instantiate("Enemy_Rhino");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else if (SceneManager.GetActiveScene().name == "5.InGameDesert")
+            else if (SceneManager.GetActiveScene().name == "InGameDesert")
             {
                 if (Boss != null)
                     return;
