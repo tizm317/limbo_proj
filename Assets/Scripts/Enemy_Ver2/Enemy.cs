@@ -79,7 +79,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Init()
     {
         _stat = gameObject.GetComponent<Stat>();
-        _stat.Hp = 100;
+        //_stat.Hp = 100;
     }
 
     protected virtual void UpdateIdle()
