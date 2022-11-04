@@ -96,7 +96,7 @@ public class Sorcerer : Player
                 
                 curState = State.STATE_IDLE;
                 Ani_State_Change();
-                yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
+                yield return new WaitForSeconds(2/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
                 isAttack = false;     
             }
         }

@@ -105,6 +105,7 @@ public class EnemyBoss : Enemy
     }
     protected override void UpdateSkill()
     {
+        
         if (lockTarget != null)
         {
             Vector3 dir = lockTarget.transform.position - transform.position;
@@ -147,7 +148,7 @@ public class EnemyBoss : Enemy
                 if (distance <= _attachRange)
                 {
                     skillIndex = Random.Range(1, 11);
-                    if(skillIndex >= 7)
+                    if(skillIndex >= 5)
                     {
                         State = Define.State.Skill;
                         
@@ -170,12 +171,6 @@ public class EnemyBoss : Enemy
         {
             State = Define.State.Idle;
         }
-    }
-    IEnumerator Idle()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        State = Define.State.Moving;
     }
 
     IEnumerator Effect()

@@ -130,24 +130,28 @@ public class GameScene : BaseScene
             nextFireTime = Time.time + cooldownTime;
 
 
-            if (SceneManager.GetActiveScene().name == "InGameCemetery")
+            if (SceneManager.GetActiveScene().name == "6.InGameCemetery")
             {
-
+                if (Boss != null)
+                    return;
                 Boss = Managers.Resource.Instantiate("Warrok W Kurniawan");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else if (SceneManager.GetActiveScene().name == "InGameNature")
+            else if (SceneManager.GetActiveScene().name == "4.InGameNature")
             {
-
+                if (Boss != null)
+                    return;
                 Boss = Managers.Resource.Instantiate("Enemy_Rhino");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else if (SceneManager.GetActiveScene().name == "InGameDesert")
+            else if (SceneManager.GetActiveScene().name == "5.InGameDesert")
             {
+                if (Boss != null)
+                    return;
                 Boss = Managers.Resource.Instantiate("Vanguard");
                 NavMeshAgent nma0 = Boss.GetComponent<NavMeshAgent>();
             }
-            else return;
+
         }
     }
     IEnumerator CoCaptcha(float seconds)

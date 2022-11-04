@@ -9,7 +9,7 @@ public class Stat : MonoBehaviour
     //tool에서 확인하기 위함
     // HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
     [SerializeField] protected int _level;  //레벨
-    [SerializeField] protected float _hp;  //hp
+    [SerializeField] protected float _hp;  //hp 
     [SerializeField] protected float _maxHp;  //최대 hp
     [SerializeField] protected float _attack;  //공격력
     [SerializeField] protected float _defense;  //방어력
@@ -41,23 +41,25 @@ public class Stat : MonoBehaviour
         _maxHp = 100;
         _attack = 6.0f;
         _defense = 0;
-        _moveSpeed = 0.5f;
+        _moveSpeed = 1.0f;
         _turnSpeed = 5.0f;
     }
     void Init()
     {
         enemy = gameObject.GetComponent<Enemy>();
         //inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
+
     }
     public void Start()
     {
         Init();
     }
-    //enemy onattack
+
     public virtual void OnAttacked(Stat attacker)
     {
         if (enemy.State == Define.State.Die)
             return;
+
         float damage = Mathf.Max(0, attacker.Attack - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
         enemy.State = Define.State.Hit;
@@ -89,12 +91,12 @@ public class Stat : MonoBehaviour
     protected virtual void OnDead(Stat attacker)
     {
         PlayerStat playerStat = attacker as PlayerStat;
-        /*
+        
         if (playerStat != null) //경험치
         {
             playerStat.Exp += 10;
         }
-        */
+        
         //int tempIdx;
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
         StartCoroutine(Die());
@@ -113,7 +115,7 @@ public class Stat : MonoBehaviour
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
         nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
 
-        yield return new WaitForSeconds(7.0f);
+        yield return new WaitForSeconds(5.0f);
 
         Managers.Game.Despawn(gameObject);
     }
