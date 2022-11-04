@@ -7,7 +7,7 @@ public class Enemy2 : Enemy
 {
     //enemyController1은 대기하다가 추적 사정거리 안에 player가 들어오면 무빙하여 attack
     [SerializeField] float _scanRange = 10;  //사정거리
-    [SerializeField] float _attachRange = 2;  //적 공격 사정거리
+    [SerializeField] float _attachRange = 2.5f;  //적 공격 사정거리
 
     GameObject player;
 

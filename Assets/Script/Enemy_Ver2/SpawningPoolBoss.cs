@@ -49,20 +49,20 @@ public class SpawningPoolBoss : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0, _spawnTime));
 
         // _monsterCount를 이 함수에서 늘리지 않아도 GameManagerEx에서 Spawn함수가 실행될 때 Invoke로 _monsterCount를 늘려준다.
-        if (SceneManager.GetActiveScene().name == "InGameCemetery")
+        if (SceneManager.GetActiveScene().name == "6.InGameCemetery")
         {
             enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Warrok W Kurniawan");
             NavMeshAgent nma0 = enemyCharacter[0].GetComponent<NavMeshAgent>();
 
         }
-        else if (SceneManager.GetActiveScene().name == "InGameNature")
+        else if (SceneManager.GetActiveScene().name == "4.InGameNature")
         {
             enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rhino");
             NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
 
             
         }
-        else if (SceneManager.GetActiveScene().name == "InGameDesert")
+        else if (SceneManager.GetActiveScene().name == "5.InGameDesert")
         {
             enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Vanguard");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();

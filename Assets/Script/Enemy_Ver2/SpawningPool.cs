@@ -48,7 +48,7 @@ public class SpawningPool : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0, _spawnTime));
 
         // _monsterCount를 이 함수에서 늘리지 않아도 GameManagerEx에서 Spawn함수가 실행될 때 Invoke로 _monsterCount를 늘려준다.
-        if (SceneManager.GetActiveScene().name == "InGameNature")
+        if (SceneManager.GetActiveScene().name == "4.InGameNature")
         {
             enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
             NavMeshAgent nma0 = enemyCharacter[0].GetComponent<NavMeshAgent>();
@@ -56,14 +56,14 @@ public class SpawningPool : MonoBehaviour
             NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
 
         }
-        else if (SceneManager.GetActiveScene().name == "InGameDesert")
+        else if (SceneManager.GetActiveScene().name == "5.InGameDesert")
         {
             enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_HorrorMutant");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
             enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
             NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
         }
-        else if (SceneManager.GetActiveScene().name == "InGameCemetery")
+        else if (SceneManager.GetActiveScene().name == "6.InGameCemetery")
         {
             enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
