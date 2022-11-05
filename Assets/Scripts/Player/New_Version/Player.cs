@@ -22,7 +22,7 @@ public abstract class Player : MonoBehaviour
                     ani.CrossFade("Move", 0.2f);
                     break;
                 case State.STATE_ATTACK :
-                    ani.CrossFade(job + "_Attack", 0.2f);
+                    ani.CrossFade($"{my_job}_Attack", 0.2f);
                     break;
                 case State.STATE_DIE :
                     ani.CrossFade("Die", 0f);
@@ -31,16 +31,16 @@ public abstract class Player : MonoBehaviour
                     switch(skill)
                     {
                         case HotKey.Q :
-                            ani.CrossFade(job + "_Q", 0.2f);
+                            ani.CrossFade($"{my_job}_Q", 0.2f);
                             break;
                         case HotKey.W :
-                            ani.CrossFade(job + "_W", 0.2f);
+                            ani.CrossFade($"{my_job}_W", 0.2f);
                             break;
                         case HotKey.E :
-                            ani.CrossFade(job + "_E", 0.2f);
+                            ani.CrossFade($"{my_job}_E", 0.2f);
                             break;
                         case HotKey.R :
-                            ani.CrossFade(job + "_R", 0.2f);
+                            ani.CrossFade($"{my_job}_R", 0.2f);
                             break;
                     }
                     break;
@@ -90,9 +90,9 @@ public abstract class Player : MonoBehaviour
 
     public PlayerStat my_stat;
     protected GameObject player;
-    protected string job;
-    public string Job => job;
-
+    //protected string job;
+    //public string Job => job;
+    public Define.Job my_job;
     public enum State
     {
         STATE_IDLE,
@@ -199,10 +199,10 @@ public abstract class Player : MonoBehaviour
     }
     void Skill_level()
     {
-        skill_level[0] = 0;
-        skill_level[1] = 0;
-        skill_level[2] = 0;
-        skill_level[3] = 0;
+        skill_level[0] = 4;
+        skill_level[1] = 4;
+        skill_level[2] = 4;
+        skill_level[3] = 4;
     }
 
     int Action6_count = 0; // Rumba Dance 반복하기 위해서

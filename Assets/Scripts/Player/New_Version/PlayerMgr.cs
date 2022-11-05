@@ -40,7 +40,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         if(obj.Length == 1)//이미 있어?
         {
             ps = obj[0].GetComponent<Player>();
-            job = ps.JOB;
+            job = obj[0].GetComponent<PlayerStat>().my_job;
             my_name = obj[0].name;
             Camera.main.GetComponent<Camera_Controller>().SetTarget(obj[0]);
         }
@@ -60,10 +60,6 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
                 case Define.Job.SORCERER :
                     gameObject.AddComponent<Sorcerer>();
-                    break;
-
-                default :
-                    gameObject.AddComponent<Warrior>();    
                     break;
             }
             GameObject temp = GameObject.Instantiate<GameObject>(character[(int)job]);

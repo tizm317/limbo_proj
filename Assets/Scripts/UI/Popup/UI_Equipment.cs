@@ -174,7 +174,7 @@ public class UI_Equipment : UI_Popup
         // 무기
         if(equipmentItem is WeaponItem weaponItem)
         {
-            if (player_State.Job != weaponItem.Class)
+            if (player_State.my_job.ToString() != weaponItem.Class)
             {
                 // 다른 클래스 무기 착용 불가
                 Debug.Log($"This Weapon Is For {weaponItem.Class}.");

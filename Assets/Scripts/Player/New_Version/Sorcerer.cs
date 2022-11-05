@@ -21,7 +21,7 @@ public class Sorcerer : Player
 
     public override void abstract_Init()
     {
-        job = "Sorcerer";
+        //job = "Sorcerer";
         Magic_bolt = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/BlueBall");
         Icy_Field = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Icy_Field");
         Shield = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/skull shield");

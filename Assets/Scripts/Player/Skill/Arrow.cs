@@ -26,9 +26,9 @@ public class Arrow : MonoBehaviour
             if(Vector3.Distance(gameObject.transform.position, target_pos) < 0.5f)
             {
                 Stat target_stat = _target.GetComponent<Stat>();
-                if(_player.Job == "Archer")
+                if(_player.my_job == Define.Job.ARCHER)
                     target_stat.OnAttacked(_player.my_stat);
-                else if(_player.Job == "Sorcerer")
+                else if(_player.my_job == Define.Job.SORCERER)
                     target_stat.OnAttacked(_player.my_stat.Attack * 2,_player.my_stat);
                 if(target_stat.Hp <= 0)
                 {

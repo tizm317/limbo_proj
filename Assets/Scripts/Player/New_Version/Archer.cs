@@ -9,7 +9,7 @@ public class Archer : Player
     Buff _buff;
     public override void abstract_Init()
     {
-        job = "Archer";
+        //job = "Archer";
         Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Arrow");
         R_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2");
         skill_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2_Small");
