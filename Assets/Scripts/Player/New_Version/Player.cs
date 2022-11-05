@@ -756,7 +756,7 @@ public abstract class Player : MonoBehaviour
                         // 바로 NPC와 대화 상호작용
                         npcPos = hit.collider.transform.position;
                         toNpc = false;
-
+                        
                         npc.getPlayer(player); // npc한테 플레이어 넘겨줌
                         npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }

@@ -27,6 +27,7 @@ public class Camera_Controller : MonoBehaviour
     void Start()
     {
         SetQuarterView(_delta);
+        Set_Resolution();
         //minimapCam = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
     }
     public void SetTarget(GameObject target)
@@ -36,6 +37,7 @@ public class Camera_Controller : MonoBehaviour
 
     void LateUpdate()
     {
+        
         if(camera_control)
         {
             
@@ -81,5 +83,25 @@ public class Camera_Controller : MonoBehaviour
         Camera cam = this.gameObject.GetComponent<Camera>();
         if (Mathf.Abs(cam.fieldOfView - value) > 1.0f)
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, value, Time.deltaTime * 2);
+    }
+
+    public void Set_Resolution()
+    {
+        int set_Width = 1920;
+        int set_Height = 1080;
+        int device_Width = Screen.width;
+        int device_Height = Screen.height;
+
+        Screen.SetResolution(set_Width,(int)((float)device_Height/device_Width) * set_Width, true);
+        if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
+        {
+            float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
+            Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, 1f); // 새로운 Rect 적용
+        }
+        else // 게임의 해상도 비가 더 큰 경우
+        {
+            float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // 새로운 높이
+            Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // 새로운 Rect 적용
+        }
     }
 }
