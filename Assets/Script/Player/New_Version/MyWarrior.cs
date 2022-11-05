@@ -33,8 +33,8 @@ public class MyWarrior : Warrior
         base.Move();
 
         // State가 변하거나, 위치가 변하면 패킷 보냄
-        //if(prevState != curState || Dest != prevDest)
-        if(Dest != prevDest)
+        if(prevState != curState || Dest != prevDest)
+        //if(Dest != prevDest)
         {
             C_Move movePacket = new C_Move();
             movePacket.PosInfo = PosInfo;

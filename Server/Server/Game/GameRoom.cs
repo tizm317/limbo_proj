@@ -80,11 +80,31 @@ namespace Server.Game
 
         public void Broadcast(IMessage packet)
         {
+            // ex) 채팅
             lock (_lock)
             {
                 foreach(Player p in _players)
                 {
                     p.Session.Send(packet);
+                }
+            }
+        }
+
+        public void BroadcastWithOutMyself(IMessage packet)
+        {
+            // ex) 이동동기화 : 내껀 클라에서 이동
+            S_Move mp = packet as S_Move;
+            
+            lock (_lock)
+            {
+                foreach (Player p in _players)
+                {
+                    if (mp != null && mp.PlayerId == p.Info.PlayerId) 
+                    {
+                        // 이동동기화일 때는 나한테 안보낸다
+                    }
+                    else
+                        p.Session.Send(packet);
                 }
             }
         }

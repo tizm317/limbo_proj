@@ -60,7 +60,7 @@ class PacketHandler
 		GameObject go = Managers.Object.FindById(movePacket.PlayerId);
 		if (go == null) return;
 
-		Player p = go.GetComponent<Player>();
+		Warrior p = go.GetComponent<Warrior>();
 		if (p == null) return;
 
 		p.PosInfo = movePacket.PosInfo;

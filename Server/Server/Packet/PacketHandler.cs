@@ -24,9 +24,9 @@ class PacketHandler
 
 		// TODO : 검증
 		
-		// 일단 서버에서 좌표 이동
-		PlayerInfo info = clientSession.MyPlayer.Info;
-		info.PosInfo = movePacket.PosInfo;
+		// 일단 서버에서 좌표 이동 (각자 클라에서 이동)
+		//PlayerInfo info = clientSession.MyPlayer.Info;
+		//info.PosInfo = movePacket.PosInfo;
 
 		//info.Destinations.Clear();
 		//info.Destinations.Add(movePacket.Destinations);
@@ -39,7 +39,7 @@ class PacketHandler
 		//resMovePacket.Destinations.Clear();
 		//resMovePacket.Destinations.Add(movePacket.Destinations);
 		
-		clientSession.MyPlayer.Room.Broadcast(resMovePacket);
+		clientSession.MyPlayer.Room.BroadcastWithOutMyself(resMovePacket);
 	}
 
 
