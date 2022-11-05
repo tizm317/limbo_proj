@@ -646,6 +646,8 @@ public abstract class Player : MonoBehaviour
                 cool[i] -= Time.deltaTime;
             else if(cool[i] < 0)
                 cool[i] = 0;
+
+            if (Skill_img[i+1] == null || cool_max == null || cool == null) return;
             Skill_img[i+1].fillAmount = (cool_max[i] - cool[i])/cool_max[i];
         }
     }

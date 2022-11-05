@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,10 +8,22 @@ using UnityEngine.UI;
 
 public class UI_InGame : UI_Scene
 {
-    // 수정(추가)해야 함
+    #region 코루틴 Wrapper 메소드
+    // predicate 조건 불충족하면, 대기함
+    private void ProcessLater(Func<bool> predicate, Action job)
+    {
+        StartCoroutine(PorcessLaterRoutine());
+
+        // Local
+        IEnumerator PorcessLaterRoutine()
+        {
+            yield return new WaitUntil(predicate);
+            job?.Invoke();
+        }
+    }
+    #endregion
 
     // 연관된 팝업 UI 목록
-    //UI_Inven ui_Inven;
     UI_Inventory uI_Inventory;
     UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
@@ -27,7 +40,7 @@ public class UI_InGame : UI_Scene
     private Sprite[] sprites_emoticon;
     Coroutine co;
 
-    enum Action
+    enum EmoteAction
     {
         freeze,
         pray,
@@ -45,8 +58,7 @@ public class UI_InGame : UI_Scene
     int pieceCount = 8;
     #endregion
 
-    //Player_Controller player;
-    //Player_State player;
+    GameObject playerGO;
     Player player;
     PlayerStat ps;
 
@@ -81,6 +93,8 @@ public class UI_InGame : UI_Scene
         MapChangeEffect,
     }
 
+
+
     private void Start()
     {
         Init();
@@ -103,6 +117,7 @@ public class UI_InGame : UI_Scene
 
         UI_Update();
 
+        if (_ped == null) return;
         _ped.position = Input.mousePosition;
         OnPointerEnter(_ped.position);
         OnPointerExit(_ped.position);
@@ -118,6 +133,8 @@ public class UI_InGame : UI_Scene
     {
         if (SceneName.Contains("InGame"))
             SceneName = SceneName.Substring(6);
+
+        if (GetText((int)Texts.MapText) == null) return;
         GetText((int)Texts.MapText).text = SceneName;
 
         StartCoroutine(CoMapNotificationPopup());
@@ -145,9 +162,15 @@ public class UI_InGame : UI_Scene
         Managers.Input.KeyAction -= ControlPopUpUI;
         Managers.Input.KeyAction += ControlPopUpUI;
 
-        //player = GameObject.Find("@Scene").GetComponent<Player_Controller>();
-        //player = GameObject.Find("Player").GetComponent<Player_State>();
-        player = GameObject.Find("@Scene").GetComponent<Player>();
+
+        playerGO = GameObject.FindGameObjectWithTag("Player");
+        if(playerGO == null)
+        {
+            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루팀으로 대기함
+            ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
+            return;
+        }
+        player = playerGO.GetComponent<MyWarrior>();
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu
@@ -158,7 +181,7 @@ public class UI_InGame : UI_Scene
         for (int i = 0; i < pieceCount; i++)
         {
             num = (i % emoticonCount).ToString("000");
-            sprites_action[i] = Managers.Resource.Load<Sprite>($"Sprites/Action/{(Action)(i % (int)Action.COUNT)}");
+            sprites_action[i] = Managers.Resource.Load<Sprite>($"Sprites/Action/{(EmoteAction)(i % (int)EmoteAction.COUNT)}");
             sprites_emoticon[i] = Managers.Resource.Load<Sprite>($"Sprites/Emoticon/Emoticon{num}");
         }
 
@@ -331,6 +354,7 @@ public class UI_InGame : UI_Scene
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
     {
         ps = player.GetPlayer().GetComponent<PlayerStat>();
+        if (ps == null) return;
         GameObject temp = gameObject.transform.GetChild(0).gameObject;
         
         Hp = temp.transform.GetChild(0).transform.Find("Fill").gameObject.GetComponent<Image>();
@@ -368,6 +392,8 @@ public class UI_InGame : UI_Scene
 
     void UI_Update()
     {
+        if (Hp == null || Hp == null || ps == null) return;
+
         Hp.fillAmount = Mathf.Lerp(Hp.fillAmount, ps.Hp/ps.MaxHp, 0.1f);
         Hp_text.text = ((ps.Hp/ps.MaxHp) * 100).ToString();
         Mp.fillAmount = Mathf.Lerp(Mp.fillAmount, ps.Mana/ps.MaxMana, 0.1f);
@@ -414,6 +440,7 @@ public class UI_InGame : UI_Scene
     void ControlPopUpUI()
     {
         // NPC와 상호작용중이면 X
+        if (player == null) return;
         if (player.IsInteractWithNPC)
             return;
 
@@ -425,13 +452,10 @@ public class UI_InGame : UI_Scene
             if(!uI_Inventory)
             {
                 ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
-                //ui_Inven = Managers.UI.ShowPopupUI<UI_Inven>();
                 uI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
             }
             else
             {
-                //if (!ui_Inven.IsPeek())
-                //    return;
                 if (!uI_Inventory.IsPeek())
                     return;
                 
@@ -439,7 +463,6 @@ public class UI_InGame : UI_Scene
                 uI_Inventory.Save();
 
                 //saveInven();
-                //Managers.UI.ClosePopupUI(ui_Inven);
                 Managers.UI.ClosePopupUI(uI_Inventory);
                 ui_Equipment.ClosePopupUI();
             }
@@ -457,11 +480,6 @@ public class UI_InGame : UI_Scene
                 miniMap.gameObject.SetActive(true);
             
             miniMap.SizeControl();
-
-            //if (!miniMap)
-            //    miniMap = Managers.UI.ShowPopupUI<UI_MiniMap>();
-            //else
-            //    miniMap.SizeControl(); // 미니맵 크기 조절
         }
         else if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -476,9 +494,8 @@ public class UI_InGame : UI_Scene
                 setting = Managers.UI.ShowPopupUI<UI_Setting>();
             else
             {
-                // 인벤토리 내용(변경사항) json 저장(?)
-                if (!setting.IsPeek())
-                    return;
+                //if (!setting.IsPeek())
+                //    return;
 
                 Managers.UI.ClosePopupUI(setting);
             }
@@ -522,7 +539,7 @@ public class UI_InGame : UI_Scene
 
     public void saveInven()
     {
-        // 여기 있을게 아닌거 같은디..
+        // 여기 있을게 아닌거 같은디.. -> Not Use
 
         // dictionary 변경 있으면 json 저장
         //state machine 써야하나..?
@@ -615,5 +632,8 @@ public class UI_InGame : UI_Scene
         if (itemSlot == null && ui_tooltip)
             ui_tooltip.ClosePopupUI();
     }
+
+
+
 
 }

@@ -1,12 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되는 거라면? Instance로 추가, 아니라면 Singleton을 Awake에 추가해주어야함
 {
+    #region 코루틴 Wrapper 메소드
+    // predicate 조건 불충족하면, 대기함
+    private void ProcessLater(Func<bool> predicate, Action job)
+    {
+        StartCoroutine(PorcessLaterRoutine());
+
+        // Local
+        IEnumerator PorcessLaterRoutine()
+        {
+            yield return new WaitUntil(predicate);
+            job?.Invoke();
+        }
+    }
+    #endregion
+
+
     // Start is called before the first frame update
     public Define.Job job;
     SkillData[] skillDatas = new SkillData[5];
+    GameObject playerGO;
     Player ps;
     string my_name;
     [SerializeField]
@@ -36,47 +54,57 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
     void Init()
     {
-        var obj = GameObject.FindGameObjectsWithTag("Player");//플레이어가 있다면(서버넘어가면 수정해야할 내용일듯?)
-        if(obj.Length == 1)//이미 있어?
+        //var obj = GameObject.FindGameObjectsWithTag("Player");//플레이어가 있다면(서버넘어가면 수정해야할 내용일듯?)
+        //if(obj.Length == 1)//이미 있어?
+        //{
+        //    ps = obj[0].GetComponent<Player>();
+        //    //job = ps.JOB;
+        //    my_name = obj[0].name;
+        //    Camera.main.GetComponent<Camera_Controller>().SetTarget(obj[0]);
+        //}
+        //else
+        //{
+        //    GetInfo();
+        //    //캐릭터 종류와 데이터에 따라서 새로운 Instantiate해주는 내용이 필요함
+        //    switch(job)
+        //    {
+        //        case Define.Job.WARRIOR :
+        //            gameObject.AddComponent<Warrior>();            
+        //            break;
+
+        //        case Define.Job.ARCHER :
+        //            gameObject.AddComponent<Archer>();
+        //            break;
+
+        //        case Define.Job.SORCERER :
+        //            gameObject.AddComponent<Sorcerer>();
+        //            break;
+
+        //        default :
+        //            gameObject.AddComponent<Warrior>();    
+        //            break;
+        //    }
+        //    GameObject temp = GameObject.Instantiate<GameObject>(character[(int)job]);
+        //    temp.name = my_name;
+        //    temp.transform.position = pos;
+
+        //    DontDestroyOnLoad(temp);
+        //    ps = gameObject.GetComponent<Player>();
+        //    ps.SetPlayer(temp);
+
+        //    Camera.main.GetComponent<Camera_Controller>().SetTarget(temp);
+        //}
+
+        // 서버에서
+        playerGO = GameObject.FindGameObjectWithTag("Player");
+        if (playerGO == null)
         {
-            ps = obj[0].GetComponent<Player>();
-            //job = ps.JOB;
-            my_name = obj[0].name;
-            Camera.main.GetComponent<Camera_Controller>().SetTarget(obj[0]);
+            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루팀으로 대기함
+            ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
+            return;
         }
-        else
-        {
-            GetInfo();
-            //캐릭터 종류와 데이터에 따라서 새로운 Instantiate해주는 내용이 필요함
-            switch(job)
-            {
-                case Define.Job.WARRIOR :
-                    gameObject.AddComponent<Warrior>();            
-                    break;
+        ps = playerGO.GetComponent<MyWarrior>();
 
-                case Define.Job.ARCHER :
-                    gameObject.AddComponent<Archer>();
-                    break;
-
-                case Define.Job.SORCERER :
-                    gameObject.AddComponent<Sorcerer>();
-                    break;
-
-                default :
-                    gameObject.AddComponent<Warrior>();    
-                    break;
-            }
-            GameObject temp = GameObject.Instantiate<GameObject>(character[(int)job]);
-            temp.name = my_name;
-            temp.transform.position = pos;
-            
-            DontDestroyOnLoad(temp);
-            ps = gameObject.GetComponent<Player>();
-            ps.SetPlayer(temp);
-            
-            Camera.main.GetComponent<Camera_Controller>().SetTarget(temp);
-        }
-        
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
         skill_img = Resources.LoadAll<Sprite>("Skill_Sprite/" + job.ToString());

@@ -2449,8 +2449,6 @@ MonoBehaviour:
   _moveSpeed: 0
   _turnSpeed: 0
   _attackSpeed: 0
-  _itemdata: []
-  _itemIndex: 0
   _exp: 0
   _gold: 0
   _next_level_up: 0
@@ -2458,6 +2456,7 @@ MonoBehaviour:
   _mana: 0
   _max_mana: 0
   _mana_regeneration: 0
+  _skill_point: 0
   level_up: 1
   current_exp: 0
   STR: 0
@@ -2474,8 +2473,8 @@ MonoBehaviour:
   Item_Hp_percent: 0
   Item_Attack_percent: 0
   Item_Mana_percent: 0
-  Item_Mana_Regeneration_percent: 0
   isDead: 0
+  my_job: 0
 --- !u!114 &-1944816110246812008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2497,9 +2496,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   my_enemy: {fileID: 0}
   on_skill: 0
+  skillDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   magicNumber: 100
+  _buff: {fileID: 0}
 --- !u!1 &7413277364404848349
 GameObject:
   m_ObjectHideFlags: 0
