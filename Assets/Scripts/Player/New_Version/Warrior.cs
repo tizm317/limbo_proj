@@ -12,7 +12,7 @@ public class Warrior : Player
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
-        job = "Warrior";
+        //job = "Warrior";
         attackRange = 3f;
         
         for(int i = 0; i < cool.Length; i++)
