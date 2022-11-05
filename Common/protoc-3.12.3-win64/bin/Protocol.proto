@@ -58,13 +58,13 @@ message S_Despawn {
 
 message C_Move {
   PositionInfo posInfo = 1;
-  repeated Position destinations = 2;
+  //repeated Position destinations = 2;
 }
 
 message S_Move {
   int32 playerId = 1;
   PositionInfo posInfo = 2;
-  repeated Position destinations = 3;
+  //repeated Position destinations = 3;
 }
 
 message C_Chat {
@@ -110,7 +110,7 @@ message PlayerInfo {
   int32 playerId = 1;
   string name = 2;
   PositionInfo posInfo = 3;
-  repeated Position destinations = 4;
+  //repeated Position destinations = 4;
 }
 
 message StatInfo {
@@ -129,8 +129,8 @@ message PositionInfo {
   float posZ = 4; 
 }
 
-message Position {
+/*message Position {
   float posX = 1;
   float posY = 2;
   float posZ = 3; 
-}
+}*/

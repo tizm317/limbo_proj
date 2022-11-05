@@ -27,21 +27,22 @@ public class MyWarrior : Warrior
     protected override void Move()
     {
         State prevState = curState;
-        Vector3 prevPos = Pos;
+        Vector3 prevDest = Dest;
         //List<Vector3> prevDest = Destination;
 
         base.Move();
 
         // State가 변하거나, 위치가 변하면 패킷 보냄
-        if(prevState != curState || Pos != prevPos)
+        //if(prevState != curState || Dest != prevDest)
+        if(Dest != prevDest)
         {
             C_Move movePacket = new C_Move();
             movePacket.PosInfo = PosInfo;
 
-            foreach (var v in dest)
-            {
-                movePacket.Destinations.Add(v);
-            }
+            //foreach (var v in dest)
+            //{
+            //    movePacket.Destinations.Add(v);
+            //}
 
             Managers.Network.Send(movePacket);
         }

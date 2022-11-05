@@ -54,7 +54,7 @@ namespace Server
 				MyPlayer.Info.PosInfo.PosY = 1; // 높이
 				MyPlayer.Info.PosInfo.PosZ = -62.6f;
                 MyPlayer.Session = this;
-				MyPlayer.Info.Destinations.Clear();
+				//MyPlayer.Info.Destinations.Clear();
             }
 
             //// TODO : 입장 요청 들어오면

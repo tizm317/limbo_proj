@@ -124,58 +124,58 @@ public abstract class Player : MonoBehaviour
 
 
     //protected List<Vector3> _destination = new List<Vector3>();
-    protected List<Position> dest = new List<Position>();
+    //protected List<Position> dest = new List<Position>();
 
-    Position _position = new Position();
+    //Position _position = new Position();
     //List<Position> positions = new List<Position>();
 
-    public void Vector3ToPosition(List<Vector3> destination)
-    {
-        // 마지막 destination 이 비슷하면 안 바꿈
-        if (destination.Count == 0) return;
+    //public void Vector3ToPosition(List<Vector3> destination)
+    //{
+    //    // 마지막 destination 이 비슷하면 안 바꿈
+    //    if (destination.Count == 0) return;
 
-        if (dest.Count != 0 &&
-            dest[0].PosX - destination[0].x < 2.0f &&
-            dest[0].PosY - destination[0].y < 2.0f &&
-            dest[0].PosZ - destination[0].z < 2.0f)
-            return;
+    //    if (dest.Count != 0 &&
+    //        dest[0].PosX - destination[0].x < 2.0f &&
+    //        dest[0].PosY - destination[0].y < 2.0f &&
+    //        dest[0].PosZ - destination[0].z < 2.0f)
+    //        return;
 
-        foreach (var v in destination)
-        {
-            _position.PosX = v.x;
-            _position.PosY = v.y;
-            _position.PosZ = v.z;
-            dest.Add(_position);
-        }
-    }
+    //    foreach (var v in destination)
+    //    {
+    //        _position.PosX = v.x;
+    //        _position.PosY = v.y;
+    //        _position.PosZ = v.z;
+    //        dest.Add(_position);
+    //    }
+    //}
     
-    private void PositionToVector3(List<Position> dest)
-    {
-        if (dest.Count == 0) return;
+    //private void PositionToVector3(List<Position> dest)
+    //{
+    //    if (dest.Count == 0) return;
 
-        if (destination.Count != 0 &&
-            dest[0].PosX - destination[0].x < 2.0f &&
-            dest[0].PosY - destination[0].y < 2.0f &&
-            dest[0].PosZ - destination[0].z < 2.0f)
-            return;
+    //    if (destination.Count != 0 &&
+    //        dest[0].PosX - destination[0].x < 2.0f &&
+    //        dest[0].PosY - destination[0].y < 2.0f &&
+    //        dest[0].PosZ - destination[0].z < 2.0f)
+    //        return;
 
-        foreach (var v in dest)
-        {
-            destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
-        }
-    }
+    //    foreach (var v in dest)
+    //    {
+    //        destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
+    //    }
+    //}
 
-    public virtual List<Vector3> Destination
-    {
-        get
-        {
-            return destination;
-        }
-        set
-        {
-            destination = value;
-        }
-    }
+    //public virtual List<Vector3> Destination
+    //{
+    //    get
+    //    {
+    //        return destination;
+    //    }
+    //    set
+    //    {
+    //        destination = value;
+    //    }
+    //}
 
     protected List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     protected bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
@@ -214,7 +214,7 @@ public abstract class Player : MonoBehaviour
 
     //
     public int Id { get; set; }
-    public Vector3 Pos 
+    public Vector3 Dest 
     { 
         get
         {
@@ -293,7 +293,6 @@ public abstract class Player : MonoBehaviour
                 Run_Skill();
                 break;
         }
-        
     }
 
     protected virtual void Init()
@@ -363,7 +362,6 @@ public abstract class Player : MonoBehaviour
         //player.GetComponent<Transform>().position = Pos;
         //PositionToVector3(dest);
 
-
         if (my_enemy != null)
         {
             if(Vector3.Distance(player.transform.position, my_enemy.transform.position) < attackRange)
@@ -416,8 +414,9 @@ public abstract class Player : MonoBehaviour
             return;
         }
 
-        //
-        Pos = player.GetComponent<Transform>().position;
+        // 최종 데스티네이션? 넣어서 패킷으로 보내야함
+        Dest = destination[destination.Count-1];
+        //Dest = player.GetComponent<Transform>().position;
         //Vector3ToPosition(destination);
     }
 

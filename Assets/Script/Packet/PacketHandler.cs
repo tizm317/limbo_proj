@@ -64,7 +64,7 @@ class PacketHandler
 		if (p == null) return;
 
 		p.PosInfo = movePacket.PosInfo;
-
+		p.Set_Destination(p.Dest);
 	}
 
 	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
