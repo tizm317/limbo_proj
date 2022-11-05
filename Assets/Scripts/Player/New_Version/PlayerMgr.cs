@@ -40,7 +40,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         if(obj.Length == 1)//이미 있어?
         {
             ps = obj[0].GetComponent<Player>();
-            job = ps.JOB;
+            //job = ps.JOB;
             my_name = obj[0].name;
             Camera.main.GetComponent<Camera_Controller>().SetTarget(obj[0]);
         }
