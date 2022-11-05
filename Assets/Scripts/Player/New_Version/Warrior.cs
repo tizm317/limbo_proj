@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class Warrior : Player
 {
+
     public Buff _buff;
     GameObject Debuff_Effect, Explosion;
+
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
@@ -92,7 +95,7 @@ public class Warrior : Player
             }
             if(pos_selected)
             {
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.Q;
                 Ani_State_Change();
                 yield return new WaitForSeconds(2.2f);
@@ -129,7 +132,7 @@ public class Warrior : Player
         float mul = 1 + skill_level[1];
         float time = 5f;
         float range = attackRange * (2 + skill_level[1]);
-        curState = State.STATE_SKILL;
+        curState = State.Skill;
         skill = HotKey.W;
         Ani_State_Change();
         yield return new WaitForSeconds(2.5f);//애니메이션을 시전하는 동안
@@ -259,7 +262,7 @@ public class Warrior : Player
             {
                 if(Vector3.Distance(player.transform.position, pos) > 3.5f)
                 {
-                    curState = State.STATE_MOVE;
+                    curState = State.Move;
                     Ani_State_Change();
                     Set_Destination(pos);
                     while(Vector3.Distance(player.transform.position, pos) > 3.5f)
@@ -274,7 +277,7 @@ public class Warrior : Player
                     }
                     destination.Clear();
                 }
-                curState = State.STATE_SKILL;
+                curState = State.Skill;
                 skill = HotKey.R;
                 Ani_State_Change();
                 yield return new WaitForSeconds(1.8f);
@@ -313,13 +316,13 @@ public class Warrior : Player
         while(true)
         {
             yield return new WaitForSeconds(1f);//1초마다 반복해서 수행
-            if(my_stat.Hp < my_stat.MaxHp && curState != State.STATE_DIE)//죽지 않고 최대 체력보다 체력이 적다면 패시브 동작
+            if(my_stat.Hp < my_stat.MaxHp && curState != State.Die)//죽지 않고 최대 체력보다 체력이 적다면 패시브 동작
             {
                 my_stat.Hp += (my_stat.MaxHp - my_stat.Hp)*percent/100f;
                 if(my_stat.Hp > my_stat.MaxHp)
                     my_stat.Hp = my_stat.MaxHp;//패시브 돌렸는데 체력이 최대 체력보다 큰 경우는 그냥 최대체력으로 정의
             }
-            else if(curState == State.STATE_DIE)//만약 죽었다면 탈출(캐릭터를 삭제하고 새로 생성한다면 필요함, 그게 아니라면 지워도 됨)
+            else if(curState == State.Die)//만약 죽었다면 탈출(캐릭터를 삭제하고 새로 생성한다면 필요함, 그게 아니라면 지워도 됨)
                 break;
         }
     }

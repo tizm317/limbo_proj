@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using Google.Protobuf.Protocol;
 
 namespace DuloGames.UI
 {
@@ -180,6 +181,7 @@ namespace DuloGames.UI
             }
         }
 
+        Player player;
         /// <summary>
         /// Fired when the submit button is clicked.
         /// </summary>
@@ -194,8 +196,16 @@ namespace DuloGames.UI
                 if (!string.IsNullOrEmpty(text))
                 {
                     // Send the message
-                    this.SendChatMessage(text);
+                    //this.SendChatMessage(text);
+                    player = GameObject.FindWithTag("Player").GetComponent<Player>();
+                    C_Chat chatPacket = new C_Chat();
+                    chatPacket.PlayerId = player.Id;
+                    chatPacket.ChatMessage = text;
+                    Managers.Network.Send(chatPacket);
                 }
+
+                // Clear the input field
+                this.m_InputField.text = "";
             }
         }
 
@@ -261,10 +271,11 @@ namespace DuloGames.UI
             if (!string.IsNullOrEmpty(text))
             {
                 // Make sure the return key is pressed
-                if (Input.GetKey(KeyCode.Return))
+                if (Input.GetKey(KeyCode.Return)|| Input.GetKey(KeyCode.KeypadEnter))
                 {
                     // Send the message
-                    this.SendChatMessage(text);
+                    //this.SendChatMessage(text);
+                    OnSubmitClick();
                 }
             }
         }
@@ -417,6 +428,21 @@ namespace DuloGames.UI
 
             // Scroll to bottom
             this.OnScrollToBottomClick();
+        }
+
+        public void ReceiveChatMessage(S_Chat chatPacket)
+        {
+            string text = "";
+            if (player.Id == chatPacket.PlayerId)
+            {
+                text = $"<color=green>PlayerId_{chatPacket.PlayerId} (³ª)</color> : {chatPacket.ChatMessage}";
+            }
+            else
+            {
+                text = $"PlayerId_{chatPacket.PlayerId} : {chatPacket.ChatMessage}";
+            }
+
+            ReceiveChatMessage(1, text);
         }
     }
 }

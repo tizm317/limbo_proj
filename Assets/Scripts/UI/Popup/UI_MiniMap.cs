@@ -87,6 +87,7 @@ public class UI_MiniMap : UI_Popup
     void Update()
     {
         // 플레이어 위치(파란색), 목적지(빨간색) 표시
+        if (player == null) return;
         playerPos = player.position;
 
         // 미니맵 플레이어, 도착지 이미지 방향
@@ -141,8 +142,15 @@ public class UI_MiniMap : UI_Popup
         GetButton((int)Buttons.ZoomInButton).gameObject.BindEvent(OnZoomInButtonClicked);
         GetButton((int)Buttons.ZoomOutButton).gameObject.BindEvent(OnZoomOutButtonClicked);
 
-        Scene = GameObject.Find("@Scene");
-        player_State = Scene.GetComponent<Player>();
+        //Scene = GameObject.Find("@Scene");
+        //player_State = Scene.GetComponent<Player>();
+        if (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            Debug.Log("There is no player.");
+            return;
+        }
+        player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<MyWarrior>();
+
         player = player_State.GetPlayer().transform;
         //player_Controller = Scene.GetComponent<Player_Controller>();
         //player_State = player.GetComponent<Player_State>();

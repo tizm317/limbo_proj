@@ -105,7 +105,8 @@ namespace AccountServer.Controllers
                         Name = serverDb.Name,
                         IpAddress = serverDb.IpAddress,
                         Port = serverDb.Port,
-                        BusyScore = serverDb.BusyScore
+                        BusyScore = serverDb.BusyScore,
+                        Open = serverDb.Open
                     });
                 }
             }

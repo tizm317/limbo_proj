@@ -63,11 +63,11 @@ public class InputFieldHelper
 
     public bool CheckFocus()
     {
-        if(Input.GetKeyDown(KeyCode.Tab) && !Input.GetKey(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.Tab) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
             MoveNext();
         }
-        else if(Input.GetKeyDown(KeyCode.Return)) // Enter Key
+        else if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) // Enter Key
         {
             // 마지막 Input Field에서 Enter 누르면 Button Click 과 같은 역할
             if (curPos == _inputFields.Count - 1)
@@ -76,7 +76,7 @@ public class InputFieldHelper
                 MoveNext();
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.Tab) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
             MovePrev();
         }

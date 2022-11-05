@@ -7,11 +7,6 @@ public class UI_SelectServer : UI_Popup
 {
     public List<UI_SelectServerItem> Items { get; } = new List<UI_SelectServerItem>();
 
-    enum Buttons
-    {
-
-    }
-
     private void Start()
     {
         Init();   

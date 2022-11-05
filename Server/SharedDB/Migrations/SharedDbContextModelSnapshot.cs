@@ -35,6 +35,9 @@ namespace SharedDB.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Open")
+                        .HasColumnType("int");
+
                     b.Property<int>("Port")
                         .HasColumnType("int");
 

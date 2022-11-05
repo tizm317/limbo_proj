@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Google.Protobuf;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,7 +29,7 @@ namespace Server.Game
                     enterPacket.Player = newPlayer.Info;
                     newPlayer.Session.Send(enterPacket);
                     // 타인 정보
-                    S_SPAWN spawnPacket = new S_SPAWN();
+                    S_Spawn spawnPacket = new S_Spawn();
                     foreach (Player p in _players)
                     {
                         if (newPlayer != p) // 나 빼고
@@ -39,7 +40,7 @@ namespace Server.Game
                 
                 // 타인한테 정보 전송
                 {
-                    S_SPAWN spawnPacket = new S_SPAWN();
+                    S_Spawn spawnPacket = new S_Spawn();
                     spawnPacket.Players.Add(newPlayer.Info);
                     foreach (Player p in _players)
                     {
@@ -61,18 +62,49 @@ namespace Server.Game
 
                 // 본인한테 정보 전송
                 {
-                    S_LEAVE_GAME leavePacket = new S_LEAVE_GAME();
+                    S_LeaveGame leavePacket = new S_LeaveGame();
                     player.Session.Send(leavePacket);
                 }
                 // 타인한테 정보 전송
                 {
-                    S_DESPAWN despawnPacket = new S_DESPAWN();
+                    S_Despawn despawnPacket = new S_Despawn();
                     despawnPacket.PlayerIds.Add(player.Info.PlayerId);
                     foreach (Player p in _players)
                     {
                         if (player != p) // 나 빼고
                             p.Session.Send(despawnPacket);
                     }
+                }
+            }
+        }
+
+        public void Broadcast(IMessage packet)
+        {
+            // ex) 채팅
+            lock (_lock)
+            {
+                foreach(Player p in _players)
+                {
+                    p.Session.Send(packet);
+                }
+            }
+        }
+
+        public void BroadcastWithOutMyself(IMessage packet)
+        {
+            // ex) 이동동기화 : 내껀 클라에서 이동
+            S_Move mp = packet as S_Move;
+            
+            lock (_lock)
+            {
+                foreach (Player p in _players)
+                {
+                    if (mp != null && mp.PlayerId == p.Info.PlayerId) 
+                    {
+                        // 이동동기화일 때는 나한테 안보낸다
+                    }
+                    else
+                        p.Session.Send(packet);
                 }
             }
         }

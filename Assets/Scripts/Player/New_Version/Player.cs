@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,19 +16,19 @@ public abstract class Player : MonoBehaviour
 
             switch(curState)
             {
-                case State.STATE_IDLE :
+                case State.Idle :
                     ani.CrossFade("Idle", 0.2f);
                     break;
-                case State.STATE_MOVE :
+                case State.Move :
                     ani.CrossFade("Move", 0.2f);
                     break;
-                case State.STATE_ATTACK :
+                case State.Attack :
                     ani.CrossFade(job + "_Attack", 0.2f);
                     break;
-                case State.STATE_DIE :
+                case State.Die :
                     ani.CrossFade("Die", 0f);
                     break;
-                case State.STATE_SKILL :
+                case State.Skill :
                     switch(skill)
                     {
                         case HotKey.Q :
@@ -93,16 +94,18 @@ public abstract class Player : MonoBehaviour
     protected string job;
     public string Job => job;
 
-    public enum State
-    {
-        STATE_IDLE,
-        STATE_MOVE,
-        STATE_ATTACK,
-        STATE_SKILL,
-        STATE_DIE,
-        STATE_ACTION, // 춤 등
-    }
-    public State curState { get; set; }
+
+    //public enum State
+    //{
+    //    STATE_IDLE,
+    //    STATE_MOVE,
+    //    STATE_ATTACK,
+    //    STATE_SKILL,
+    //    STATE_DIE,
+    //    STATE_ACTION, // 춤 등
+    //}
+    //public State curState { get; set; }
+
     [SerializeField]
     private float speed { get { return my_stat.MoveSpeed; } set { speed = value; } }
     private float arrivalRange = 0.4f;
@@ -154,6 +157,61 @@ public abstract class Player : MonoBehaviour
 
     #region 이동관련
 
+
+    //protected List<Vector3> _destination = new List<Vector3>();
+    //protected List<Position> dest = new List<Position>();
+
+    //Position _position = new Position();
+    //List<Position> positions = new List<Position>();
+
+    //public void Vector3ToPosition(List<Vector3> destination)
+    //{
+    //    // 마지막 destination 이 비슷하면 안 바꿈
+    //    if (destination.Count == 0) return;
+
+    //    if (dest.Count != 0 &&
+    //        dest[0].PosX - destination[0].x < 2.0f &&
+    //        dest[0].PosY - destination[0].y < 2.0f &&
+    //        dest[0].PosZ - destination[0].z < 2.0f)
+    //        return;
+
+    //    foreach (var v in destination)
+    //    {
+    //        _position.PosX = v.x;
+    //        _position.PosY = v.y;
+    //        _position.PosZ = v.z;
+    //        dest.Add(_position);
+    //    }
+    //}
+    
+    //private void PositionToVector3(List<Position> dest)
+    //{
+    //    if (dest.Count == 0) return;
+
+    //    if (destination.Count != 0 &&
+    //        dest[0].PosX - destination[0].x < 2.0f &&
+    //        dest[0].PosY - destination[0].y < 2.0f &&
+    //        dest[0].PosZ - destination[0].z < 2.0f)
+    //        return;
+
+    //    foreach (var v in dest)
+    //    {
+    //        destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
+    //    }
+    //}
+
+    //public virtual List<Vector3> Destination
+    //{
+    //    get
+    //    {
+    //        return destination;
+    //    }
+    //    set
+    //    {
+    //        destination = value;
+    //    }
+    //}
+
     protected List<Vector3> destination = new List<Vector3>();//이동하는 목적지를 저장하는 변수
     protected bool isMove, isObstacle;//캐릭터가 이동중인지 확인하는 변수
     private Vector3 dir;//이동방향을 위한 변수
@@ -185,9 +243,54 @@ public abstract class Player : MonoBehaviour
     #region 미니맵 관련
 
     // 미니맵 경로 그리기
-    UI_MiniMap ui_MiniMap;
+    protected UI_MiniMap ui_MiniMap;
 
     #endregion
+
+    //
+    public int Id { get; set; }
+    public Vector3 Dest 
+    { 
+        get
+        {
+            return new Vector3(PosInfo.PosX, PosInfo.PosY, PosInfo.PosZ);
+        }
+        set
+        {
+            PosInfo.PosX = value.x;
+            PosInfo.PosY = value.y;
+            PosInfo.PosZ = value.z;
+        }
+    }
+
+
+    PositionInfo _positionInfo = new PositionInfo();
+    public PositionInfo PosInfo
+    {
+        get { return _positionInfo; }
+        set
+        {
+            if (_positionInfo.Equals(value))
+                return;
+
+            // 위치 다르면 갱신
+            _positionInfo = value;
+            //UpdateAnimation
+        }
+    }
+
+    public virtual State curState
+    {
+        get { return PosInfo.State; }
+        set
+        {
+            if (PosInfo.State == value) return;
+            
+            PosInfo.State = value;
+            //UpdateAnimation
+        }
+    }
+
 
     void Start()
     {
@@ -211,19 +314,19 @@ public abstract class Player : MonoBehaviour
         Cool();
         switch(curState)
         {
-            case State.STATE_IDLE :
+            case State.Idle :
                 Idle();
                 break;
-            case State.STATE_MOVE :
+            case State.Move :
                 Move();
                 break;
-            case State.STATE_ATTACK :
+            case State.Attack :
                 Attack();
                 break;
-            case State.STATE_DIE :
+            case State.Die :
                 Die();
                 break;
-            case State.STATE_SKILL :
+            case State.Skill :
                 Run_Skill();
                 break;
             case State.STATE_ACTION:
@@ -245,32 +348,37 @@ public abstract class Player : MonoBehaviour
                 }
                 break;
         }
-        
     }
 
-    void Init()
+    protected virtual void Init()
     {
-        curState = State.STATE_IDLE;
+        curState = State.Idle;
+        player = this.gameObject; //
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
-        Enemy_Update();
-        GetIndicator();
 
-        Managers.Input.MouseAction -= OnMouseClicked;
-        Managers.Input.MouseAction += OnMouseClicked;
 
-        Managers.Input.KeyAction -= OnKeyClicked;
-        Managers.Input.KeyAction += OnKeyClicked;
-        cam = Camera.main;
-        
-        pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
+        Enemy_Update(); // ??
+        //GetIndicator();
+
+        //Managers.Input.MouseAction -= OnMouseClicked;
+        //Managers.Input.MouseAction += OnMouseClicked;
+
+        //Managers.Input.KeyAction -= OnKeyClicked;
+        //Managers.Input.KeyAction += OnKeyClicked;
+
+        //cam = Camera.main;
+       
+        // ??
+        if(GameObject.Find("A*") != null)
+            pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
         enumerator = turnToNPC(); // 코루틴
 
         // 미니맵
-        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>(); 
+        //ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>(); 
     }
 
-    void GetIndicator()
+    protected void GetIndicator()
     {
         if(GameObject.Find("ArrowIndicator") == null)
             ArrowIndicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
@@ -298,14 +406,18 @@ public abstract class Player : MonoBehaviour
     {
         Get_Enemy();
         if(my_enemy != null)
-            curState = State.STATE_ATTACK;
+            curState = State.Attack;
     }
 
     #region 이동
 
-    void Move()
+    protected virtual void Move()
     {
-        if(my_enemy != null)
+        //
+        //player.GetComponent<Transform>().position = Pos;
+        //PositionToVector3(dest);
+
+        if (my_enemy != null)
         {
             if(Vector3.Distance(player.transform.position, my_enemy.transform.position) < attackRange)
             {
@@ -349,15 +461,24 @@ public abstract class Player : MonoBehaviour
         {
             isMove = false;
             if(my_enemy != null)
-                curState = State.STATE_ATTACK;
+                curState = State.Attack;
             else
-                curState = State.STATE_IDLE;
+                curState = State.Idle;
             Ani_State_Change();
-            if(ui_MiniMap)
-                ui_MiniMap.clearLine(); // 미니맵 경로 지우기
+
+            //if(ui_MiniMap)
+            //    ui_MiniMap.clearLine(); // 미니맵 경로 지우기
+
             return;
         }
+
+        // 최종 데스티네이션? 넣어서 패킷으로 보내야함
+        Dest = destination[destination.Count-1];
+        //Dest = player.GetComponent<Transform>().position;
+        //Vector3ToPosition(destination);
     }
+
+
 
     public void Set_Destination(Vector3 dest)
     {
@@ -376,12 +497,12 @@ public abstract class Player : MonoBehaviour
             destination.Add(dest);//새 목적지를 첫번째로
         }
         isMove = true;//움직여도 되는지판별
-        curState = State.STATE_MOVE;
+        curState = State.Move;
         Ani_State_Change();
 
         // 미니맵
-        if(ui_MiniMap)
-            ui_MiniMap.drawLine();
+        //if(ui_MiniMap)
+        //    ui_MiniMap.drawLine();
     }
 
     #endregion
@@ -391,7 +512,7 @@ public abstract class Player : MonoBehaviour
     {
         if (my_enemy == null) 
         {
-            curState = State.STATE_IDLE;
+            curState = State.Idle;
             Ani_State_Change();
             return;
         }
@@ -399,7 +520,7 @@ public abstract class Player : MonoBehaviour
         {
             Vector3 dir = (player.transform.position - my_enemy.transform.position).normalized * attackRange;
             Set_Destination(my_enemy.transform.position - dir);
-            curState = State.STATE_MOVE;
+            curState = State.Move;
             Ani_State_Change();
         }
         else
@@ -418,7 +539,7 @@ public abstract class Player : MonoBehaviour
             isAttack = true;
             isMove = false;
 
-            curState = State.STATE_ATTACK;
+            curState = State.Attack;
             Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
             Ani_State_Change();
             player.transform.LookAt(my_enemy.transform);
@@ -435,7 +556,7 @@ public abstract class Player : MonoBehaviour
                 }
             }
 
-            curState = State.STATE_IDLE;
+            curState = State.Idle;
             Ani_State_Change();
             yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
             isAttack = false;
@@ -512,7 +633,7 @@ public abstract class Player : MonoBehaviour
     {
         if(!on_skill)//스킬 사용 조건부, 만약 스킬을 쓰고 있는 중이 아니라면 idle한 상태로 변환
         {
-            curState = State.STATE_IDLE;
+            curState = State.Idle;
             Ani_State_Change();
         }
     }
@@ -652,10 +773,10 @@ public abstract class Player : MonoBehaviour
     IEnumerator Die(Vector3 pos)//사망 처리 구현부
     {
         my_stat.isDead = false;
-        curState = State.STATE_DIE;
+        curState = State.Die;
         Ani_State_Change();
         yield return new WaitForSeconds(3.9f);//사망 애니메이션 시간
-        curState = State.STATE_IDLE;
+        curState = State.Idle;
         Ani_State_Change();
         my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
         player.transform.position = pos;//초기 위치로 이동시켜줌
@@ -671,7 +792,7 @@ public abstract class Player : MonoBehaviour
 
     #region 입력
 
-    void OnKeyClicked()
+    protected void OnKeyClicked()
     {
         // 스킬 레벨업 단축키인 LeftCtrl + QWER 은 스킬 시전 X
         if (Input.GetKey(KeyCode.LeftControl)) return;
@@ -684,6 +805,7 @@ public abstract class Player : MonoBehaviour
                 Q();
             }
         }
+
         if(Input.GetKeyDown(KeyCode.W))
         {
             if(!on_skill && cool[1] == 0 && skill_level[1] != 0)
@@ -710,7 +832,7 @@ public abstract class Player : MonoBehaviour
         }
     }
 
-    void OnMouseClicked(Define.MouseEvent evt)
+    protected void OnMouseClicked(Define.MouseEvent evt)
     {
         // NPC와 상호작용 중
         if (npc && npc.ui_dialogue_ison)

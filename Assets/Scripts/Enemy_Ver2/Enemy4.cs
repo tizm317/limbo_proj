@@ -65,6 +65,7 @@ public class Enemy4 : Enemy
     protected override void UpdateMoving()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
         //GameObject player = Managers.Game.GetPlayer();
         lockTarget = player;
         if (lockTarget == null) return;
