@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: "✨ Feature request"
 about: 기능 추가 요청
 title: ''
 labels: ''

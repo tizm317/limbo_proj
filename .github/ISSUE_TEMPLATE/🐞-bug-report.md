@@ -1,5 +1,5 @@
 ---
-name: 'Bug report :bug:'
+name: "\U0001F41E Bug report"
 about: 버그 발생 시 작성해주세요.
 title: ''
 labels: ''
