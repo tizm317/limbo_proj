@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Google.Protobuf.Protocol;
+
 public class PlayerStat : Stat
 {
 
@@ -90,7 +92,7 @@ public class PlayerStat : Stat
         {
             isDead = true;
             
-            ps.curState = Player.State.STATE_DIE;
+            ps.curState = State.Idle;
             ps.Ani_State_Change();
         }
         if(time >= 1)

@@ -162,7 +162,7 @@ public class Warrior : Player
         float range = attackRange * (2 + skill_level[2]);
         float percent = 5f * (1 + skill_level[2]);
         float time = 5f;
-        curState = State.STATE_SKILL;
+        curState = State.Skill;
         skill = HotKey.E;
         Ani_State_Change();
         yield return new WaitForSeconds(1f);

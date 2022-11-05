@@ -32,7 +32,7 @@ public class EnemyBoss : Enemy
         _stat.MaxHp = 500.0f;
         _stat.Attack = 20.0f;
         // 디폴트 애니메이션 
-        State = Define.State.Idle;
+        State = Define.EnemyState.Idle;
         
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
@@ -43,7 +43,7 @@ public class EnemyBoss : Enemy
     //Idle 상태
     protected override void UpdateIdle()
     {
-        State = Define.State.Idle;
+        State = Define.EnemyState.Idle;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
             return;
@@ -52,7 +52,7 @@ public class EnemyBoss : Enemy
         if(distance < _scanRange)
         {
             lockTarget = player;
-            State = Define.State.Moving;
+            State = Define.EnemyState.Moving;
             return;
         }
         
@@ -73,13 +73,13 @@ public class EnemyBoss : Enemy
                 nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
                 if (skillIndex <= 9)
                 {
-                    State = Define.State.Skill;
+                    State = Define.EnemyState.Skill;
                     return;
 
                 }
                 else
                 {
-                    State = Define.State.JumpSkill;
+                    State = Define.EnemyState.JumpSkill;
                     return;
 
                 }
@@ -91,7 +91,7 @@ public class EnemyBoss : Enemy
         Vector3 dir = _destPos - transform.position;
         if (dir.magnitude < 0.1f)
         {
-            State = Define.State.Idle;
+            State = Define.EnemyState.Idle;
         }
         else
         {
@@ -137,7 +137,7 @@ public class EnemyBoss : Enemy
         //체력
         if (lockTarget != null)
         {
-            if (State == Define.State.Die) return;
+            if (State == Define.EnemyState.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
@@ -150,26 +150,26 @@ public class EnemyBoss : Enemy
                     skillIndex = Random.Range(1, 11);
                     if(skillIndex >= 5)
                     {
-                        State = Define.State.Skill;
+                        State = Define.EnemyState.Skill;
                         
                     }
                     else
                     {
-                        State = Define.State.JumpSkill;
+                        State = Define.EnemyState.JumpSkill;
 
                     }
                 }
                 else
-                    State = Define.State.Moving;
+                    State = Define.EnemyState.Moving;
             }
             else
             {
-                State = Define.State.Idle;
+                State = Define.EnemyState.Idle;
             }
         }
         else
         {
-            State = Define.State.Idle;
+            State = Define.EnemyState.Idle;
         }
     }
 

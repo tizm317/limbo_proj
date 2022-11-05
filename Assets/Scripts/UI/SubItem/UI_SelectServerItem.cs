@@ -65,7 +65,7 @@ public class UI_SelectServerItem : UI_Base
 
         if (Info.Open == 1)
         {
-            Managers.Scene.LoadScene(Define.Scene.Cemetery);
+            Managers.Scene.LoadScene(Define.Scene.InGameVillage);
             Managers.UI.ClosePopupUI();
         }
         

@@ -70,7 +70,7 @@ public class EnemyStat : Stat
     {
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
         nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
-        enemy.State = Define.State.Die;
+        enemy.State = Define.EnemyState.Die;
 
         yield return new WaitForSeconds(7.0f);
 

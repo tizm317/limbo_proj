@@ -57,34 +57,34 @@ public class Stat : MonoBehaviour
 
     public virtual void OnAttacked(Stat attacker)
     {
-        if (enemy.State == Define.State.Die)
+        if (enemy.State == Define.EnemyState.Die)
             return;
 
         float damage = Mathf.Max(0, attacker.Attack - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
-        enemy.State = Define.State.Hit;
+        enemy.State = Define.EnemyState.Hit;
         //StartCoroutine(Hit());
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
             //enemy.State = Define.State.Die;
-            if (enemy.State != Define.State.Die)
+            if (enemy.State != Define.EnemyState.Die)
                 OnDead(attacker);
         }
     }
 
     public virtual void OnAttacked(float Damage, Stat attacker)
     {
-        if (enemy.State == Define.State.Die)
+        if (enemy.State == Define.EnemyState.Die)
             return;
 
         float damage = Mathf.Max(0, Damage - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
-        enemy.State = Define.State.Hit;
+        enemy.State = Define.EnemyState.Hit;
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
-            if(enemy.State != Define.State.Die)
+            if(enemy.State != Define.EnemyState.Die)
                 OnDead(attacker);
         }
     }
@@ -110,7 +110,7 @@ public class Stat : MonoBehaviour
     }
     IEnumerator Die()
     {
-        enemy.State = Define.State.Die;
+        enemy.State = Define.EnemyState.Die;
 
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
         nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 

@@ -39,7 +39,7 @@ public class Enemy4 : Enemy
         // 스탯은 상속받아서 사용 : _stat
 
         // 디폴트 애니메이션 
-        State = Define.State.Moving;
+        State = Define.EnemyState.Moving;
 
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
@@ -58,7 +58,7 @@ public class Enemy4 : Enemy
     //Idle 상태
     protected override void UpdateIdle()
     {
-        State = Define.State.Idle;
+        State = Define.EnemyState.Idle;
     }
 
     //Moving 상태
@@ -78,7 +78,7 @@ public class Enemy4 : Enemy
         if (dist <= _attachRange)
         {
             nma.SetDestination(tr.position);
-            State = Define.State.Skill;
+            State = Define.EnemyState.Skill;
             return;
         }
         else if (dist <= _scanRange)
@@ -92,7 +92,7 @@ public class Enemy4 : Enemy
             }
             if (dir.magnitude < 0.1f)
             {
-                State = Define.State.Moving;
+                State = Define.EnemyState.Moving;
             }
             else
             {
@@ -179,7 +179,7 @@ public class Enemy4 : Enemy
     {
         if (lockTarget != null)
         {
-            if (State == Define.State.Die) return;
+            if (State == Define.EnemyState.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
@@ -189,30 +189,30 @@ public class Enemy4 : Enemy
                 float dist = (lockTarget.transform.position - tr.position).magnitude;
                 if (dist <= _attachRange)
                 {
-                    State = Define.State.Skill;
+                    State = Define.EnemyState.Skill;
                 }
                 else
-                    State = Define.State.Moving;
+                    State = Define.EnemyState.Moving;
             }
             else
             {
-                State = Define.State.Die;
+                State = Define.EnemyState.Die;
                 targetStat.OnAttacked(_stat);
             }
         }
         else
         {
-            State = Define.State.Moving;
+            State = Define.EnemyState.Moving;
         }
     }
 
     IEnumerator Idle()
     {
-        State = Define.State.Idle;
+        State = Define.EnemyState.Idle;
 
         yield return new WaitForSeconds(2.0f);
 
-        State = Define.State.Moving;
+        State = Define.EnemyState.Moving;
     }
 
 

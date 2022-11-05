@@ -29,7 +29,7 @@ public class Enemy2 : Enemy
         // 스탯은 상속받아서 사용 : _stat
 
         // 디폴트 애니메이션 
-        State = Define.State.Idle;
+        State = Define.EnemyState.Idle;
 
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
@@ -53,7 +53,7 @@ public class Enemy2 : Enemy
         if (distance <= _scanRange)
         {
             lockTarget = player;
-            State = Define.State.Moving;
+            State = Define.EnemyState.Moving;
             return;
         }
 
@@ -70,7 +70,7 @@ public class Enemy2 : Enemy
             {
                 NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
                 nma.SetDestination(transform.position);
-                State = Define.State.Skill;
+                State = Define.EnemyState.Skill;
                 return;
             }
         }
@@ -79,7 +79,7 @@ public class Enemy2 : Enemy
         Vector3 dir = _destPos - transform.position;
         if (dir.magnitude < 0.1f)
         {
-            State = Define.State.Idle;
+            State = Define.EnemyState.Idle;
         }
         else
         {
@@ -132,19 +132,19 @@ public class Enemy2 : Enemy
             {
                 float distance = (lockTarget.transform.position - transform.position).magnitude;
                 if (distance <= _attachRange)
-                    State = Define.State.Skill;
+                    State = Define.EnemyState.Skill;
                 else
-                    State = Define.State.Moving;
+                    State = Define.EnemyState.Moving;
             }
             else
             {
-                State = Define.State.Die;
+                State = Define.EnemyState.Die;
             }
         }
         else
         {
 
-            State = Define.State.Idle;
+            State = Define.EnemyState.Idle;
         }
     }
 }

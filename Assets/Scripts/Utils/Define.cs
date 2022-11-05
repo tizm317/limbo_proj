@@ -12,7 +12,7 @@ public class Define
         Monster,
         Player,
     }
-    public enum State
+    public enum EnemyState // State -> EnemyState 로 임시로 바꿔둠 (구글protobuf에 State가 있어서)
     {
         Idle,
         Moving,
