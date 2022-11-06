@@ -105,7 +105,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
             return;
         }
         ps = playerGO.GetComponent<MyWarrior>();
-        
+        job = ps.my_job;
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
         skill_img = Resources.LoadAll<Sprite>("Skill_Sprite/" + job.ToString());

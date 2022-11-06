@@ -5,38 +5,38 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerEX
 {
-    // Unity Á¦°ø SceneManager ÀÖ±â ¶§¹®¿¡ Extended ºÙÀÓ
-    // ¾À °ü¸®, ¾À ÀÌµ¿
+    // Unity ï¿½ï¿½ï¿½ï¿½ SceneManager ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Extended ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½Ìµï¿½
 
-    // ¼±ºÀ´ë BaseScene Ãâ·Â
-    // BaseScene ÄÄÆ÷³ÍÆ® µé°íÀÖ´Â ¿ÀºêÁ§Æ®¸¦ BaseSceneÀ¸·Î Ãâ·Â(Á¦³Ê¸¯Çü½Ä)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ BaseScene ï¿½ï¿½ï¿½
+    // BaseScene ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ BaseSceneï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½)
     public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
 
     public void LoadScene(Define.Scene type)
     {
-        // ¾À ÀÌµ¿
-        // À¯´ÏÆ¼ Á¦°ø ¹öÀü¿¡¼­´Â string ¹Þ¾Ò´Âµ¥
-        // ¿ì¸®´Â Define.Scene À¸·Î enum °ª È°¿ëÇÏ´Ï±î ¹Ù²Þ
+        // ï¿½ï¿½ ï¿½Ìµï¿½
+        // ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ string ï¿½Þ¾Ò´Âµï¿½
+        // ï¿½ì¸®ï¿½ï¿½ Define.Scene ï¿½ï¿½ï¿½ï¿½ enum ï¿½ï¿½ È°ï¿½ï¿½ï¿½Ï´Ï±ï¿½ ï¿½Ù²ï¿½
 
-        Managers.Clear(); // ºÒÇÊ¿äÇÑ ¸Þ¸ð¸® ½Ï ³¯¸²
-        
-        // À¯´ÏÆ¼ Á¦°ø LoadScene ÇÔ¼ö È°¿ë - string °ª ³Ö±â À§ÇØ GetSceneName ÇÔ¼ö »ç¿ë
-        SceneManager.LoadScene(GetSceneName(type)); // ´ÙÀ½ ¾À ÀÌµ¿  
+        Managers.Clear(); // ï¿½ï¿½ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        LoadingScene.LoadScene(GetSceneName(type));
+        // ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ LoadScene ï¿½Ô¼ï¿½ È°ï¿½ï¿½ - string ï¿½ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ GetSceneName ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½
+        //SceneManager.LoadScene(GetSceneName(type)); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ìµï¿½  
     }
 
     string GetSceneName(Define.Scene type)
     {
-        // Define.Scene °ª(enum)À» stringÀ¸·Î º¯°æÇÏ´Â ÇÔ¼ö
-        // À¯´ÏÆ¼ Á¦°ø SceneManager.LoadScene Àº string À» ÀÔ·Â ¹Þ±â ¶§¹®.
+        // Define.Scene ï¿½ï¿½(enum)ï¿½ï¿½ stringï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
+        // ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ SceneManager.LoadScene ï¿½ï¿½ string ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Þ±ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
-        string name = System.Enum.GetName(typeof(Define.Scene), type); // ½ÇÁ¦ ÀÌ¸§ ÃßÃâ (C# ¸®ÇÃ·º¼Ç ±â´É È°¿ë)
+        string name = System.Enum.GetName(typeof(Define.Scene), type); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ (C# ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½)
         return name;
     }
 
     public void Clear()
     {
-        // ÇöÀç ¾À Å¬¸®¾î ÀÛ¾÷
-        // ÇöÀç »ç¿ëÇÏ´Â ¾À Ã£¾Æ¼­ Å¬¸®¾î
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
         CurrentScene.Clear(); 
         
     }

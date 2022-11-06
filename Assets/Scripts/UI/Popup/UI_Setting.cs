@@ -9,8 +9,8 @@ public class UI_Setting : UI_Popup
 {
     // BGM, SFX, Brightness 조절
 
-    private Slider[] AudioSlide = new Slider[2];
-    private Toggle[] Toggle = new Toggle[2];
+    public Slider[] AudioSlide = new Slider[2];
+    public Toggle[] Toggle = new Toggle[2];
     private Slider BrightSlide;
     private new Light light;
 

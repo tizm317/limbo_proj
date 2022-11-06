@@ -51,7 +51,7 @@ public class PlayerStat : Stat
         Stat_Update();
         time = 0;
         STR = 5;
-        ps = GameObject.Find("@Scene").gameObject.GetComponent<Player>();
+        ps = gameObject.GetComponent<Player>();
     }
 
     void Update()
@@ -92,10 +92,10 @@ public class PlayerStat : Stat
         {
             isDead = true;
             
-            ps.curState = State.Idle;
+            ps.curState = State.Die;
             ps.Ani_State_Change();
         }
-        if(time >= 1)
+        if(time >= 1 && !isDead)
         {
             if(_hp < MaxHp)
             {

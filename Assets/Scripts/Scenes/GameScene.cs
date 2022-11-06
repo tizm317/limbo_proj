@@ -83,8 +83,8 @@ public class GameScene : BaseScene
 
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
-        Screen.SetResolution(640, 480, false);
-
+        //Screen.SetResolution(640, 480, false);
+        Set_Resolution();//나중에 주석 해제해주시면 됨돠!
         // �� UI
         _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
 
@@ -201,6 +201,24 @@ public class GameScene : BaseScene
         Debug.Log("InGameScene Clear");
     }
 
+    public void Set_Resolution()
+    {
+        int set_Width = 2160;
+        int set_Height = 1440;
+        int device_Width = Screen.width;
+        int device_Height = Screen.height;
 
+        Screen.SetResolution(set_Width,(int)((float)device_Height/device_Width) * set_Width, true);
+        if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
+        {
+            float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
+            Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, 1f); // 새로운 Rect 적용
+        }
+        else // 게임의 해상도 비가 더 큰 경우
+        {
+            float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // 새로운 높이
+            Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // 새로운 Rect 적용
+        }
+    }
 
 }
