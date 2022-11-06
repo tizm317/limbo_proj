@@ -8,7 +8,7 @@ using System;
 
 public class UI_GameMenu : UI_Popup
 {
-    UI_Setting setting;
+    UI_Settings setting;
 
     enum Buttons
     {
@@ -42,7 +42,7 @@ public class UI_GameMenu : UI_Popup
 
     public void Options(PointerEventData data)
     {
-        setting = Managers.UI.ShowPopupUI<UI_Setting>();
+        setting = Managers.UI.ShowPopupUI<UI_Settings>();
     }
 
     public void Logout(PointerEventData data)
@@ -55,7 +55,7 @@ public class UI_GameMenu : UI_Popup
         Util.Quit();
     }
 
-    internal UI_Setting getSettingUI()
+    internal UI_Settings getSettingUI()
     {
         return setting;
     }

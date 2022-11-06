@@ -27,7 +27,7 @@ public class UI_InGame : UI_Scene
     UI_Inventory uI_Inventory;
     UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
-    UI_Setting setting;
+    UI_Settings setting;
     UI_GameMenu ui_GameMenu;
     PlayerMgr pm;
     #region RadialMenu
