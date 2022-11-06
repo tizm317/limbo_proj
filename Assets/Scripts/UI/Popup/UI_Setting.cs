@@ -140,6 +140,8 @@ public class UI_Setting : UI_Popup
     }
 
 
+
+
     // 사운드 매니저로 보냄
     //public void SetVolume(int idx)
     //{

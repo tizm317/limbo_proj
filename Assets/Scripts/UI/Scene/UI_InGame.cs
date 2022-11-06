@@ -28,6 +28,7 @@ public class UI_InGame : UI_Scene
     UI_Equipment ui_Equipment;
     UI_MiniMap miniMap;
     UI_Setting setting;
+    UI_GameMenu ui_GameMenu;
     PlayerMgr pm;
     #region RadialMenu
     private UI_RadialMenu radialMenu;
@@ -490,15 +491,36 @@ public class UI_InGame : UI_Scene
         }
         else if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!setting)
-                setting = Managers.UI.ShowPopupUI<UI_Setting>();
+            if (!ui_GameMenu)
+            {
+                ui_GameMenu = Managers.UI.ShowPopupUI<UI_GameMenu>();
+            }
             else
             {
-                //if (!setting.IsPeek())
-                //    return;
+                setting = ui_GameMenu.getSettingUI();
 
-                Managers.UI.ClosePopupUI(setting);
+                if (setting)
+                {
+                    setting.ClosePopupUI();
+                    setting = null;
+                }
+                else
+                {
+                    ui_GameMenu.ClosePopupUI();
+                    ui_GameMenu = null;
+                }
             }
+
+
+            //if (!setting)
+            //    setting = Managers.UI.ShowPopupUI<UI_Setting>();
+            //else
+            //{
+            //    //if (!setting.IsPeek())
+            //    //    return;
+
+            //    Managers.UI.ClosePopupUI(setting);
+            //}
         }
 
         if (Input.GetKeyDown(key_action))
@@ -632,8 +654,4 @@ public class UI_InGame : UI_Scene
         if (itemSlot == null && ui_tooltip)
             ui_tooltip.ClosePopupUI();
     }
-
-
-
-
 }
