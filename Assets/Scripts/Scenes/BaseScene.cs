@@ -33,7 +33,7 @@ public abstract class BaseScene : MonoBehaviour
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
 
         // 한번만 (서버 안쓸때 임시)
-        if(Managers.Object.MyPlayer == null)
+        if(Managers.Object.MyPlayer == null && SceneType != Define.Scene.Login)
         {
             PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo() };
             Managers.Object.Add(info, myPlayer: true);

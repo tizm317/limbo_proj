@@ -17,9 +17,8 @@ public class LoginScene : BaseScene
 
     protected override void Init()
     {
-        base.Init();
-
         SceneType = Define.Scene.Login;
+        base.Init();
 
         Managers.Web.BaseUrl = "https://localhost:5001/api";
 
