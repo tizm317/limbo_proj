@@ -21,8 +21,6 @@ public class Shield : MonoBehaviour
         if(col.CompareTag("Enemy"))
         {
             gameObject.GetComponent<MeshCollider>().isTrigger = false;
-            col.gameObject.GetComponent<Rigidbody>().AddForce(-5*col.gameObject.transform.forward,ForceMode.Impulse);
-            Debug.LogFormat("OnTriggerEnter && tag == {0}",col.gameObject.tag);
         }
         else
             gameObject.GetComponent<MeshCollider>().isTrigger = true;
