@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,13 @@ public abstract class BaseScene : MonoBehaviour
         Object eventSystem = GameObject.FindObjectOfType(typeof(EventSystem));
         if (eventSystem == null)
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
+
+        // 한번만 (서버 안쓸때 임시)
+        if(Managers.Object.MyPlayer == null)
+        {
+            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo() };
+            Managers.Object.Add(info, myPlayer: true);
+        }
     }
 
     // base에서 구현 안 할 거니까 abstaract

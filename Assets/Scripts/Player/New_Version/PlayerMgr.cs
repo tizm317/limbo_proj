@@ -95,6 +95,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         //    Camera.main.GetComponent<Camera_Controller>().SetTarget(temp);
         //}
 
+
         // 서버에서
         playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO == null)
