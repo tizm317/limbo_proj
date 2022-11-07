@@ -11,7 +11,7 @@ public class UI_Settings : UI_Popup
     public Toggle[] Toggle = new Toggle[2];
     private Slider BrightSlide;
     private new Light light;
-
+    private DuloGames.UI.UISelectField cs;
     enum GameObjects
     {
         BGMSwitch,
@@ -25,7 +25,6 @@ public class UI_Settings : UI_Popup
         CloseButton,
         ApplyButton,
     }
-
 
     private void Start()
     {
@@ -73,7 +72,41 @@ public class UI_Settings : UI_Popup
         Bind<Button>(typeof(Buttons));
         GetButton((int)Buttons.CloseButton).gameObject.BindEvent(CloseButtonClicked);
         GetButton((int)Buttons.ApplyButton).gameObject.BindEvent(ApplyButtonClicked);
+        
+    }
 
+    public void Set_Resolution(int idx, string resolution)//바인딩하려했는데 DropDown이 아니네?ㄷㄷ
+    {
+        string width = resolution;
+        string height = resolution;
+        int mul, name_start;
+        mul = resolution.IndexOf("*");
+        name_start = resolution.IndexOf("(");
+
+        width = width.Remove(mul);
+        height = height.Remove(name_start).Replace(width, "").Replace("*", "").Trim();
+
+        int set_Width = int.Parse(width);
+        int set_Height = int.Parse(height);
+        int device_Width = Screen.width;
+        int device_Height = Screen.height;
+
+        Screen.SetResolution(set_Width,(int)((float)device_Height/device_Width) * set_Width, false);
+        if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
+        {
+            float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
+            Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, 1f); // 새로운 Rect 적용
+            Debug.LogFormat("Current Resolution = {0} * {1}",new_Width,set_Height);
+        }
+        else // 게임의 해상도 비가 더 큰 경우
+        {
+            float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // 새로운 높이
+            Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // 새로운 Rect 적용
+            Debug.LogFormat("Current Resolution = {0} * {1}",set_Width,newHeight);
+        }
+        DuloGames.UI.UISelectField cs = FindObjectOfType<DuloGames.UI.UISelectField>();
+        cs.SelectOptionByIndex(idx);
+        
     }
 
     private void CloseButtonClicked(PointerEventData data)
@@ -110,4 +143,6 @@ public class UI_Settings : UI_Popup
     {
         light.intensity = BrightSlide.value;
     }
+
+    
 }
