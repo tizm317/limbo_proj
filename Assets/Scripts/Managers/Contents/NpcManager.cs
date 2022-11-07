@@ -46,7 +46,7 @@ public class NpcManager
             foreach (GameObject npc in Npcs)
             {
                 Util.GetOrAddComponent<MapNpc>(npc);
-                npc.GetComponent<MapNpc>().Init(id: 5);
+                npc.GetComponent<MapNpc>().Init(id: 3);
             }
         }
 

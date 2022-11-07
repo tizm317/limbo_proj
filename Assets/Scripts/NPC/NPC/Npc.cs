@@ -80,7 +80,7 @@ public class Npc : MonoBehaviour
             table[0]._action -= stopPatrol;
             table[0]._action += stopPatrol;
 
-            _moveSpeed = 2.0f;
+            _moveSpeed = 0.5f;
             startPatrol();
         }
         else _moveSpeed = 0.0f;
@@ -185,10 +185,14 @@ public class Npc : MonoBehaviour
     protected IEnumerator turnToPlayer()
     {
         float timeCount = 0.0f;
+        //Vector3 npcVector3 = this.transform.rotation.eulerAngles;
         while (timeCount < 1.0f)
         {
+            // position.y 는 같게 해서 기울지 않도록
+            //Vector3 playerVector = new Vector3(clickedPlayer.transform.position.x, this.transform.position.y, clickedPlayer.transform.position.z);
             Quaternion lookOnlook = Quaternion.LookRotation(clickedPlayer.transform.position - this.transform.position);
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, timeCount);
+            //this.transform.rotation.eulerAngles.Set(0, this.transform.rotation.eulerAngles.y, 0);
             timeCount = Time.deltaTime * _turnSpeed;
             yield return null;
         }
