@@ -311,6 +311,7 @@ public abstract class Player : MonoBehaviour
     void Update()
     {
         Cool();
+        
         switch(curState)
         {
             case State.Idle :
@@ -792,7 +793,6 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 입력
-
     protected void OnKeyClicked()
     {
         // 스킬 레벨업 단축키인 LeftCtrl + QWER 은 스킬 시전 X
