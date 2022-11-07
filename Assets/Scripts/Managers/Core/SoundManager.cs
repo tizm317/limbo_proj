@@ -191,15 +191,16 @@ public class SoundManager
                 break;
         }
         float volume = AudioSlide[idx].value;
-        if (volume != -40f)
+        if (volume >= 0.01f)
         {
             audioMixer.SetFloat(name, volume);
-            Toggle[idx].isOn = false;
+            Toggle[idx].isOn = true;
         }
         else
         {
+            AudioSlide[idx].value = 0.0f;
             audioMixer.SetFloat(name, -80);//음소거
-            Toggle[idx].isOn = true;
+            Toggle[idx].isOn = false;
         }
     }
     float[] temp = new float[10];
@@ -219,16 +220,16 @@ public class SoundManager
                 break;
         }
         float volume = AudioSlide[idx].value;
+
+        // 누르는 순간 이미 isOn 바뀌어있음 (f -> t)
         if (Toggle[idx].isOn)
         {
-            temp[idx] = volume;
-            //Debug.Log(temp[idx]);
-            volume = -80f;
+            volume = temp[idx];
         }
         else
         {
-            //Debug.Log(temp[idx]);
-            volume = temp[idx];
+            temp[idx] = volume;
+            volume = -80f;
         }
         AudioSlide[idx].value = volume;
         audioMixer.SetFloat(name, volume);

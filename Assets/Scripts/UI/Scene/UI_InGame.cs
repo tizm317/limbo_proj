@@ -669,6 +669,10 @@ public class UI_InGame : UI_Scene
         if (itemSlot_tooltip == RaycastAndGetFirstComponent<UI_ItemSlot>())
             return;
 
+        // 다른 팝업 떠있으면 안 뜨게
+        if (Managers.UI.GetStackCount() > 1) // RadialMenu가 기본으로 떠있음
+            return;
+
         itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
         if (itemSlot_tooltip == null) return;
         Transform skillTr = itemSlot_tooltip.transform;

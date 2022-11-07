@@ -98,10 +98,7 @@ public class UI_Setting : UI_Popup
         //if (SFX_volume == -80f)
         //    Toggle[1].isOn = true;
 
-        // Brightness
-        BrightSlide = GetObject((int)GameObjects.Slider_Brightness).GetComponent<Slider>();
-        light = GameObject.Find("Directional Light").GetComponent<Light>();
-        BrightSlide.value = light.intensity;
+       
 
         // 슬라이더 Event 바인딩
         GetObject((int)GameObjects.Slider_BGM).gameObject.BindEvent(OnBGMSliderDrag, Define.UIEvent.Drag);

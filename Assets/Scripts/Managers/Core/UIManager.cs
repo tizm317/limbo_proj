@@ -204,6 +204,11 @@ public class UIManager
             ClosePopupUI();
     }
 
+    public int GetStackCount()
+    {
+        return _popupStack.Count;
+    }
+
     public void Clear()
     {
         // 팝업스택 날리기
