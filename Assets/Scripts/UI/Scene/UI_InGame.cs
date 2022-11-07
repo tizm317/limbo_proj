@@ -63,6 +63,13 @@ public class UI_InGame : UI_Scene
     Player player;
     PlayerStat ps;
 
+    // Chat, Quest UI GO
+    GameObject QuestGo;
+    bool TransparentQuest;
+    GameObject ChatGo;
+    bool TransparentChat;
+
+
     #region UI업데이트
     GameObject Role;
     Image Hp, Mp,Exp_Left, Exp_Right;
@@ -240,27 +247,37 @@ public class UI_InGame : UI_Scene
         // Chat UI Toggle Button
         GetButton((int)Buttons.ChatBtnToggle).gameObject.BindEvent(ChatToggleClicked);
         GetButton((int)Buttons.QuestBtnToggle).gameObject.BindEvent(QuestToggleClicked);
+
+        QuestGo = GetObject((int)GameObjects.QuestTracker);
+        ChatGo = GetObject((int)GameObjects.Chat);
     }
 
+    
     // UI Toggle 
     private void ChatToggleClicked(PointerEventData data)
     {
-        GameObject ChatGo = GetObject((int)GameObjects.Chat);
         for(int i = 0; i < ChatGo.transform.childCount; i++)
         {
             GameObject child = ChatGo.transform.GetChild(i).gameObject;
             if (child.name == "Sidemenu") continue;
             child.SetActive(!child.activeSelf); // 현재 상태의 반대로 set
+
+            // boolean
+            if (child.activeSelf == false) TransparentChat = true;
+            else TransparentChat = false;
         }
     }
 
     private void QuestToggleClicked(PointerEventData data)
     {
-        GameObject QuestGo = GetObject((int)GameObjects.QuestTracker);
         GameObject body = QuestGo.transform.GetChild(1).gameObject;
         
         if (body.name != "Body") return;
         body.SetActive(!body.activeSelf);
+        
+        // boolean
+        if (body.activeSelf == false) TransparentQuest = true;
+        else TransparentQuest = false;
     }
 
     public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
@@ -477,8 +494,26 @@ public class UI_InGame : UI_Scene
         // 탭 누르면 , 인게임 UI 전체 토글 클릭 효과
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            ChatToggleClicked(null);
-            QuestToggleClicked(null);
+            Button chatToggle = GetButton((int)Buttons.ChatBtnToggle);
+            Button questToggle = GetButton((int)Buttons.QuestBtnToggle);
+            if(TransparentChat == TransparentQuest)
+            {
+                // 둘이 같으면 둘다 해주면 되고,
+                ChatToggleClicked(null);
+                QuestToggleClicked(null);
+            }
+            else
+            {
+                // 한명만 off면 다른 것도 off 시켜줌
+                if(TransparentChat == true)
+                {
+                    QuestToggleClicked(null);
+                }
+                else
+                {
+                    ChatToggleClicked(null);
+                }
+            }
         }
 
         // 키보드 입력 -> 팝업UI On/Off
