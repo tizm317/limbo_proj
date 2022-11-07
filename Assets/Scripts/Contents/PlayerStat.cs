@@ -64,24 +64,24 @@ public class PlayerStat : Stat
     {
         if (collision.gameObject.name == "VillagePotal")
             Managers.Scene.LoadScene(Define.Scene.InGameVillage);
-        else if (collision.gameObject.name == "BossPotal")
-        {
-            if (SceneManager.GetActiveScene().name == "InGameCemetery")
-            {
-                    Managers.Scene.LoadScene(Define.Scene.InGameBoss);
+        //else if (collision.gameObject.name == "BossPotal")
+        //{
+        //    if (SceneManager.GetActiveScene().name == "InGameCemetery")
+        //    {
+        //            Managers.Scene.LoadScene(Define.Scene.InGameBoss);
 
-            }
-            else if (SceneManager.GetActiveScene().name == "InGameNature")
-            {
-                    Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
+        //    }
+        //    else if (SceneManager.GetActiveScene().name == "InGameNature")
+        //    {
+        //            Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
 
 
-            }
-            else if (SceneManager.GetActiveScene().name == "InGameDesert")
-            {
-                    Managers.Scene.LoadScene(Define.Scene.InGameDesertBoss);
-            }
-        }
+        //    }
+        //    else if (SceneManager.GetActiveScene().name == "InGameDesert")
+        //    {
+        //            Managers.Scene.LoadScene(Define.Scene.InGameDesertBoss);
+        //    }
+        //}
             
     }
 

@@ -48,7 +48,6 @@ public class Stat : MonoBehaviour
     {
         enemy = gameObject.GetComponent<Enemy>();
         //inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
-
     }
     public void Start()
     {
@@ -63,7 +62,6 @@ public class Stat : MonoBehaviour
         float damage = Mathf.Max(0, attacker.Attack - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
         enemy.State = Define.EnemyState.Hit;
-        //StartCoroutine(Hit());
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
@@ -90,6 +88,8 @@ public class Stat : MonoBehaviour
     }
     protected virtual void OnDead(Stat attacker)
     {
+        StartCoroutine(Die());
+
         PlayerStat playerStat = attacker as PlayerStat;
         
         if (playerStat != null) //경험치
@@ -99,29 +99,24 @@ public class Stat : MonoBehaviour
         
         //int tempIdx;
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
-        StartCoroutine(Die());
+        
 
         //_itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
 
         ////아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
         //int tempIdx;
         //inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
-
     }
     IEnumerator Die()
     {
         enemy.State = Define.EnemyState.Die;
 
-        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
+        //NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        //nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
 
         yield return new WaitForSeconds(5.0f);
 
         Managers.Game.Despawn(gameObject);
     }
-    IEnumerator Hit()
-    {
-        yield return new WaitForSeconds(1.0f);
 
-    }
 }

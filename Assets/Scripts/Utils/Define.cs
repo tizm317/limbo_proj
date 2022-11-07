@@ -39,12 +39,7 @@ public class Define
         Unknown, // 디폴트
         Login,
         Lobby,
-        //InGame,
         Dungeon,
-        InGameBoss,
-        InGameNatureBoss,
-        InGameDesertBoss,
-
         InGameVillage,
         InGameNature,
         InGameDesert,

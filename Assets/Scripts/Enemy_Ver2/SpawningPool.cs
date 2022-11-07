@@ -27,9 +27,10 @@ public class SpawningPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyCharacter = Resources.LoadAll<GameObject>("Prefabs/EnemyCharacters");
         Managers.Game.OnSpawnEvent -= AddMonsterCount;
         Managers.Game.OnSpawnEvent += AddMonsterCount;
+        enemyCharacter = Resources.LoadAll<GameObject>("Prefabs/EnemyCharacters");
+
     }
 
     // Update is called once per frame
@@ -68,8 +69,8 @@ public class SpawningPool : MonoBehaviour
             
             enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
-            //enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
-            //NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
+            enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+            NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
         }
 
 

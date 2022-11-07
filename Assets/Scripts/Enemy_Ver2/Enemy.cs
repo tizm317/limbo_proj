@@ -28,10 +28,10 @@ public abstract class Enemy : MonoBehaviour
                     anim.CrossFade("WALK", 0.2f);
                     break;
                 case Define.EnemyState.Skill:
-                    anim.CrossFade("ATTACK", 0.1f);
+                    anim.CrossFade("ATTACK", 0.2f, -1, 0f);
                     break;
                 case Define.EnemyState.JumpSkill:
-                    anim.CrossFade("JUMPATTACK", 0.1f);
+                    anim.CrossFade("JUMPATTACK", 0.2f, -1, 0f);
                     break;
                 case Define.EnemyState.Hit:
                     anim.CrossFade("DAMAGE", 0.2f);
