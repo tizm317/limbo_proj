@@ -25,7 +25,6 @@ public class StageManager : MonoBehaviour
     public float time = 0f;
     public float F_time = 1f;
 
-
     void Init()
     {
 
@@ -54,10 +53,8 @@ public class StageManager : MonoBehaviour
             StartCoroutine(FadeFlow());
             Stages[stageIndex].SetActive(false);
             stageIndex++;
-            Stages[stageIndex].SetActive(true);
-            //playerReposition();
-            
-            UIStage.text = "STAGE " + (stageIndex +1);
+            //Stages[stageIndex].SetActive(true);
+            //UIStage.text = "STAGE " + (stageIndex +1);
         }
         else
         {
@@ -70,6 +67,7 @@ public class StageManager : MonoBehaviour
         //만약 stageIndex가 null이라면 게임 클리어할 수 있도록 방어 코드 작성해야함
 
     }
+    
     IEnumerator FadeFlow()
     {
         Color alpha = UIBackground.color;
@@ -95,8 +93,11 @@ public class StageManager : MonoBehaviour
             yield return null;
         }
         playerReposition();
+        Stages[stageIndex].SetActive(true);
+        UIStage.text = "STAGE " + (stageIndex + 1);
         yield return null;
     }
+
 
     //플레이어의 위치 재배치 함수
     //tag를 통해 player를 찾아서 해당 위치를 재배치할 수 있도록
@@ -105,6 +106,7 @@ public class StageManager : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         //player reposition
         player.transform.position = new Vector3(25.0f, 1f, 8f);
+        player.transform.rotation = new Quaternion(0f, 180f, 0f, 0f);
     }
 
     public void gameOver()
