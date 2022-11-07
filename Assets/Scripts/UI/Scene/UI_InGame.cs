@@ -75,6 +75,8 @@ public class UI_InGame : UI_Scene
         UI_SkillUpButton_W,
         UI_SkillUpButton_E,
         UI_SkillUpButton_R,
+        ChatBtnToggle,           // Chat UI
+        QuestBtnToggle,           // Quest UI
     }
     enum Texts
     {
@@ -92,6 +94,8 @@ public class UI_InGame : UI_Scene
         LevelUpEffect,
         MapNotification,
         MapChangeEffect,
+        Chat,               // Chat UI
+        QuestTracker,       // Quest UI
     }
 
 
@@ -232,8 +236,32 @@ public class UI_InGame : UI_Scene
         // Level Up Popup Set Active False
         GetObject((int)GameObjects.NotificationLevel).SetActive(false);
         GetObject((int)GameObjects.MapNotification).SetActive(false);
+
+        // Chat UI Toggle Button
+        GetButton((int)Buttons.ChatBtnToggle).gameObject.BindEvent(ChatToggleClicked);
+        GetButton((int)Buttons.QuestBtnToggle).gameObject.BindEvent(QuestToggleClicked);
     }
 
+    // UI Toggle 
+    private void ChatToggleClicked(PointerEventData data)
+    {
+        GameObject ChatGo = GetObject((int)GameObjects.Chat);
+        for(int i = 0; i < ChatGo.transform.childCount; i++)
+        {
+            GameObject child = ChatGo.transform.GetChild(i).gameObject;
+            if (child.name == "Sidemenu") continue;
+            child.SetActive(!child.activeSelf); // 현재 상태의 반대로 set
+        }
+    }
+
+    private void QuestToggleClicked(PointerEventData data)
+    {
+        GameObject QuestGo = GetObject((int)GameObjects.QuestTracker);
+        GameObject body = QuestGo.transform.GetChild(1).gameObject;
+        
+        if (body.name != "Body") return;
+        body.SetActive(!body.activeSelf);
+    }
 
     public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
     {
@@ -444,6 +472,14 @@ public class UI_InGame : UI_Scene
         if (player == null) return;
         if (player.IsInteractWithNPC)
             return;
+
+        // Chat, Quest Toggle
+        // 탭 누르면 , 인게임 UI 전체 토글 클릭 효과
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ChatToggleClicked(null);
+            QuestToggleClicked(null);
+        }
 
         // 키보드 입력 -> 팝업UI On/Off
         if (Input.GetKeyDown(KeyCode.I))
