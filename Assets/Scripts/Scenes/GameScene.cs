@@ -208,7 +208,7 @@ public class GameScene : BaseScene
         int set_Height = 1440;
         int device_Width = Screen.width;
         int device_Height = Screen.height;
-
+        
         // Screen.SetResolution(set_Width,(int)((float)device_Height/device_Width) * set_Width, false);
         // if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
         // {
@@ -222,15 +222,16 @@ public class GameScene : BaseScene
         // }
         if(set_Width > device_Width)
         {
+            set_Height = (int)(set_Height * ((float)device_Width/set_Width));
             set_Width = device_Width;
-            set_Height = set_Height * (int)((float)device_Width/set_Width);
         }
         if(set_Height > device_Height)
         {
-            set_Width = set_Width * (int)((float)device_Height/set_Height);
+            set_Width = (int)(set_Width * ((float)device_Height/set_Height));
             set_Height = device_Height;
         }
-        Screen.SetResolution(set_Width,set_Height, true);
+        Debug.LogFormat("set_Width = {0}, set_Height = {1}",set_Width, set_Height);
+        Screen.SetResolution(set_Width,set_Height, false);
         if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
         {
             float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
