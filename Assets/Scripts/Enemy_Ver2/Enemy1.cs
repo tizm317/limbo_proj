@@ -169,21 +169,17 @@ public class Enemy1 : Enemy
     
     void OnHitEvent()
     {
+        if (_stat.Hp <= 0)
+        {
+            return;
+        }
+
         if (lockTarget != null)
         {
             if (State == Define.EnemyState.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
-            /*
-            float damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage; //플레이어 데미지
 
-            
-            if(targetStat.Hp <= 0)
-            {
-                Managers.Game.Despawn(targetStat.gameObject);
-            }
-            */
             //죽었는지 여부 체크 
             if (targetStat.Hp > 0)
             {
@@ -199,7 +195,7 @@ public class Enemy1 : Enemy
             else
             {
                 State = Define.EnemyState.Die;
-                targetStat.OnAttacked(_stat);
+                //targetStat.OnAttacked(_stat);
             }
         }
         else
