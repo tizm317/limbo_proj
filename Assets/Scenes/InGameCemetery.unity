@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -14567,6 +14567,81 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 315222277}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &316129731
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 552512537}
+    m_Modifications:
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -60.317303
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8924627405348917106, guid: 0f4a564756b29b842899d103d684046d,
+        type: 3}
+      propertyPath: m_Name
+      value: Dreyar By M.Aure
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f4a564756b29b842899d103d684046d, type: 3}
+--- !u!4 &316129732 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8111394127758333384, guid: 0f4a564756b29b842899d103d684046d,
+    type: 3}
+  m_PrefabInstance: {fileID: 316129731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &317835464
 GameObject:
   m_ObjectHideFlags: 0
@@ -26031,6 +26106,7 @@ Transform:
   m_LocalPosition: {x: -42.9, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 316129732}
   - {fileID: 1806672149}
   - {fileID: 1509275218}
   m_Father: {fileID: 0}
@@ -82124,7 +82200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1509275218
 Transform:
   m_ObjectHideFlags: 0
@@ -82139,7 +82215,7 @@ Transform:
   - {fileID: 1739264240}
   - {fileID: 177488566}
   m_Father: {fileID: 552512537}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1509275219
 CapsuleCollider:
@@ -97676,7 +97752,7 @@ PrefabInstance:
     - target: {fileID: 876284492942085110, guid: 58f4ebb02c4d5664ca354bf049322a1d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 876284492942085110, guid: 58f4ebb02c4d5664ca354bf049322a1d,
         type: 3}
@@ -97772,6 +97848,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI_NpcName
+      objectReference: {fileID: 0}
+    - target: {fileID: 4877731214150217833, guid: 58f4ebb02c4d5664ca354bf049322a1d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7905455786152981041, guid: 58f4ebb02c4d5664ca354bf049322a1d,
         type: 3}
