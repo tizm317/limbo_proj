@@ -7,11 +7,11 @@ using UnityEngine.EventSystems;
 
 public abstract class UI_Base : MonoBehaviour
 {
-    // ¸ðµç UI ÀÇ ÃÖ»óÀ§ º£ÀÌ½º Å¬·¡½º
-    // Bind ÇÔ¼öµé, Get ÇÔ¼öµé
+    // ï¿½ï¿½ï¿½ UI ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
+    // Bind ï¿½Ô¼ï¿½ï¿½ï¿½, Get ï¿½Ô¼ï¿½ï¿½ï¿½
 
-    // µñ¼Å³Ê¸®·Î ÀúÀå
-    // °¢ Type º°·Î list·Î µé°í ÀÖÀ½
+    // ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ Type ï¿½ï¿½ï¿½ï¿½ listï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 
     public abstract void Init();
@@ -22,37 +22,37 @@ public abstract class UI_Base : MonoBehaviour
     }
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
-        // UI ÀÚµ¿È­ ±â´É : À¯´ÏÆ¼ Åø·Î ¿¬°áÁö¾îÁÖ´Â ±â´É ÀÚµ¿È­ 
-        // ¸ÊÇÎ ±â´É
+        // UI ï¿½Úµï¿½È­ ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½Úµï¿½È­ 
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         
-        // enum °ªÀ» ¾î¶»°Ô ³Ñ°Ü¹ÞÁö?
-        // C# ÀÇ reflection ±â´É »ç¿ë
-        // reflection : ¿ÀºêÁ§Æ® ¿¢½º·¹ÀÌ Âï¾î¼­ Á¤º¸ ÃßÃâ
-        // Type À» ÀÌ¿ëÇØ¼­ ÀÔ·Â¹ÞÀ½, typeof() ÀÌ¿ëÇØ¼­ ³ÖÀ½.
+        // enum ï¿½ï¿½ï¿½ï¿½ ï¿½î¶»ï¿½ï¿½ ï¿½Ñ°Ü¹ï¿½ï¿½ï¿½?
+        // C# ï¿½ï¿½ reflection ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // reflection : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î¼­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // Type ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½Ô·Â¹ï¿½ï¿½ï¿½, typeof() ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
-        // ÇÏ´Â ÀÏ
-        // enum »êÇÏ¿¡¼­ ÇØ´çµÇ´Â ÀÌ¸§À» Ã£¾Æ¼­ ¿ÀºêÁ§Æ® Ã£¾Æ¼­ ¿¬µ¿
-        // Á¤È®È÷´Â ÄÄÆ÷³ÍÆ®¸¦ µé°í ÀÖ´Â ¿ÀºêÁ§Æ®
-        // generic À¸·Î ÄÄÆ÷³ÍÆ® ³Ö¾î¼­ ...
+        // ï¿½Ï´ï¿½ ï¿½ï¿½
+        // enum ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½Ç´ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+        // generic ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ö¾î¼­ ...
 
-        // 1. C# ±â´ÉÀ¸·Î ÀÌ¸§ º¯È¯ enum -> string º¯È¯
+        // 1. C# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½È¯ enum -> string ï¿½ï¿½È¯
         string[] names = Enum.GetNames(type); 
 
-        // 2. °³¼ö¸¸Å­ ¿ÀºêÁ§Æ® ¸®½ºÆ® »ý¼º
+        // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
         
-        // 3. Å¸ÀÔº°·Î ¸®½ºÆ®¸¦ µñ¼Å³Ê¸®¿¡ ³Ö±â
+        // 3. Å¸ï¿½Ôºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
         _objects.Add(typeof(T), objects);
 
-        // 4. ÀÚµ¿À¸·Î ³Ö±â (ÀÌ¸§ÇÏ°í °°Àº ¿ÀºêÁ§Æ® Ã£¾Æ¼­)
+        // 4. ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½ (ï¿½Ì¸ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ã£ï¿½Æ¼ï¿½)
         for (int i = 0; i < names.Length; i++)
         {
-            if (typeof(T) == typeof(GameObject)) // °ÔÀÓ ¿ÀºêÁ§Æ®¸é
-                objects[i] = Util.FindChild(gameObject, names[i], true); // GameObject Àü¿ë ¹öÀü FindChild
+            if (typeof(T) == typeof(GameObject)) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½
+                objects[i] = Util.FindChild(gameObject, names[i], true); // GameObject ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ FindChild
             else
-                objects[i] = Util.FindChild<T>(gameObject, names[i], true); // ÄÄÆ÷³ÍÆ® ¹öÀü FindChild
+                objects[i] = Util.FindChild<T>(gameObject, names[i], true); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ FindChild
 
-            // ¹ÙÀÎµå ½ÇÆÐ
+            // ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½
             if (objects[i] == null)
                 Debug.Log($"Failed to Bind :  {names[i]}");
         }
@@ -62,43 +62,42 @@ public abstract class UI_Base : MonoBehaviour
 
     protected T Get<T>(int idx) where T : UnityEngine.Object
     {
-        // Get ÇÔ¼ö : µñ¼Å³Ê¸®¿¡¼­ ²¨³»¼­ ¾²´Â ÇÔ¼ö
+        // Get ï¿½Ô¼ï¿½ : ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 
-        // 1. ÀúÀåÇÒ ¸®½ºÆ® ¼±¾ð
+        // 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         UnityEngine.Object[] objects = null;
 
-        // 2. µñ¼Å³Ê¸®¿¡¼­ Ã£¾Æ¼­ ¸®½ºÆ® ¸¸µê
+        // 2. ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         if (_objects.TryGetValue(typeof(T), out objects) == false)
             return null;
 
-        // 3. T·Î casting ÇØ¼­ ¹ÝÈ¯
+        // 3. Tï¿½ï¿½ casting ï¿½Ø¼ï¿½ ï¿½ï¿½È¯
         return objects[idx] as T;
     }
 
-    // Get ´Ù¸¥ ¹öÀüµé : GetObject, GetText, GetButton, GetImage
+    // Get ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : GetObject, GetText, GetButton, GetImage
     protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
     protected Text GetText(int idx) { return Get<Text>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
-
     public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
-        // °ÔÀÓ ¿ÀºêÁ§Æ® ¹Þ¾Æ¼­, UI_EventHandler ÄÄÆ÷³ÍÆ® ÃßÃâÇÏ°í, ¹º°¡ Ãß°¡ÇÏ´Â ±â´É
-        // ÀÔ·Â : °ÔÀÓ ¿ÀºêÁ§Æ® , ÄÝ¹éÀ¸·Î ¹ÞÀ» ¿¬µ¿ÇÒ ÇÔ¼ö actionÀ¸·Î ¹ÞÀ½ , UI_Event Á¾·ù
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Þ¾Æ¼ï¿½, UI_EventHandler ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
+        // ï¿½Ô·ï¿½ : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® , ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ actionï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ , UI_Event ï¿½ï¿½ï¿½ï¿½
 
-        // 1. UI_EventHandler °¡Á®¿À±â (¾øÀ¸¸é Ãß°¡)
+        // 1. UI_EventHandler ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½)
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
-        // 2. type¿¡ µû¶ó ¿¬µ¿
+        // 2. typeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         switch(type)
         {
-            // Click typeÀÌ¸é, ÇØ´ç action ÀÌ OnClickHandler ±¸µ¶½ÅÃ»
+            // Click typeï¿½Ì¸ï¿½, ï¿½Ø´ï¿½ action ï¿½ï¿½ OnClickHandler ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»
             case Define.UIEvent.Click:
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
 
-                // Drag typeÀÌ¸é, ÇØ´ç action ÀÌ OnDragHandler ±¸µ¶½ÅÃ»
+                // Drag typeï¿½Ì¸ï¿½, ï¿½Ø´ï¿½ action ï¿½ï¿½ OnDragHandler ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»
             case Define.UIEvent.Drag:
                 evt.OnDragHandler -= action;
                 evt.OnDragHandler += action;
