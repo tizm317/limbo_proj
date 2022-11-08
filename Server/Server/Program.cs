@@ -71,7 +71,11 @@ namespace Server
 
 		static void Main(string[] args)
 		{
+			// Config파일, 데이터 로드
 			ConfigManager.LoadConfig();
+			DataManager.LoadData();
+
+			var d = DataManager.StatDict;
 			//
 
 			//// DB Test // DB를 컨텐츠 코드에서 바로 접근하는 것도 문제(오래 걸리면 .. 다른 부분도 오래걸림)

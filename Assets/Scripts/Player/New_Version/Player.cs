@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public abstract class Player : MonoBehaviour
 {
+
     protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
     #region 애니메이션
     protected Animator ani;
