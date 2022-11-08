@@ -695,38 +695,44 @@ public class UI_InGame : UI_Scene
         return _rrList[0].gameObject.GetComponent<T>();
     }
 
-    UI_SkillDescription ui_tooltip;
+    UI_SkillDescription ui_skillTooltip;
+    UI_SkillSlot skillSlot_tooltip;
+
+    UI_ItemDescription ui_itemTooltip;
     UI_ItemSlot itemSlot_tooltip;
     private void OnPointerEnter(Vector2 pointer)
     {
         // 중복 수행 방지
         pm.ToolTip();
-        if (itemSlot_tooltip == RaycastAndGetFirstComponent<UI_ItemSlot>())
+        if (skillSlot_tooltip == RaycastAndGetFirstComponent<UI_SkillSlot>())
             return;
 
         // 다른 팝업 떠있으면 안 뜨게
         if (Managers.UI.GetStackCount() > 1) // RadialMenu가 기본으로 떠있음
             return;
 
-        itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
-        if (itemSlot_tooltip == null) return;
-        Transform skillTr = itemSlot_tooltip.transform;
-        if (itemSlot_tooltip != null)
+        skillSlot_tooltip = RaycastAndGetFirstComponent<UI_SkillSlot>();
+        //itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
+        if (skillSlot_tooltip == null) return;
+        Transform skillTr = skillSlot_tooltip.transform;
+
+        if (skillSlot_tooltip != null)
         {
-            if (!ui_tooltip)
+            if (!ui_skillTooltip)
             {
-                ui_tooltip = Managers.UI.ShowPopupUI<UI_SkillDescription>();
+                ui_skillTooltip = Managers.UI.ShowPopupUI<UI_SkillDescription>();
             }
 
             int idx = skillTr.GetSiblingIndex();
-            ui_tooltip.setSkillTooltip(player.skillDatas[idx], pointer);
+            ui_skillTooltip.setSkillTooltip(player.skillDatas[idx], pointer);
         }
     }
 
     private void OnPointerExit(Vector2 pointer)
     {
-        UI_ItemSlot itemSlot = RaycastAndGetFirstComponent<UI_ItemSlot>();
-        if (itemSlot == null && ui_tooltip)
-            ui_tooltip.ClosePopupUI();
+        UI_SkillSlot skillSlot = RaycastAndGetFirstComponent<UI_SkillSlot>();
+
+        if (skillSlot == null && ui_skillTooltip)
+            ui_skillTooltip.ClosePopupUI();
     }
 }
