@@ -799,7 +799,7 @@ public abstract class Player : MonoBehaviour
         // 스킬 레벨업 단축키인 LeftCtrl + QWER 은 스킬 시전 X
         if (Input.GetKey(KeyCode.LeftControl)) return;
 
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL1]))
         {
             if(!on_skill && cool[0] == 0 && skill_level[0] != 0)
             {
@@ -808,7 +808,7 @@ public abstract class Player : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.W))
+        if(Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL2]))
         {
             if(!on_skill && cool[1] == 0 && skill_level[1] != 0)
             {
@@ -816,7 +816,7 @@ public abstract class Player : MonoBehaviour
                 W();
             }
         }
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL3]))
         {
             if(!on_skill && cool[2] == 0 && skill_level[2] != 0)
             {
@@ -824,7 +824,7 @@ public abstract class Player : MonoBehaviour
                 E();
             }
         }
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL4]))
         {
             if(!on_skill && cool[3] == 0 && skill_level[3] != 0)
             {

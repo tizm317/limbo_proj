@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1684,6 +1684,7 @@ GameObject:
   - component: {fileID: 29188126}
   - component: {fileID: 29188128}
   - component: {fileID: 29188129}
+  - component: {fileID: 29188130}
   m_Layer: 0
   m_Name: '@Scene'
   m_TagString: Untagged
@@ -1771,6 +1772,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bdc6847198575f4a9fc57c654d558e8, type: 2}
   _CoinData: {fileID: 11400000, guid: e1dcddb975adb5a468ab11ed4867bae9, type: 2}
   IsUpdated: 0
+--- !u!114 &29188130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29188125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 165f27828c6cc8d409d64588af4141cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &29556984
 GameObject:
   m_ObjectHideFlags: 0
