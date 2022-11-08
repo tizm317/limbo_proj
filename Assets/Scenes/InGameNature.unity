@@ -2577,12 +2577,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!1 &98546848
 GameObject:
@@ -4285,12 +4291,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!4 &172308829 stripped
 Transform:
@@ -6234,6 +6246,33 @@ Transform:
   m_Father: {fileID: 645007664}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &257697750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 476336719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &257697758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257697750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!4 &257711940 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 442488, guid: ec78ebca7517fb745a45a931cb06d2bd,
@@ -11218,6 +11257,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1642993998}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &439676281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 894819075}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &439676289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439676281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &440274559
 GameObject:
   m_ObjectHideFlags: 0
@@ -12517,12 +12583,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!1 &477622081
 GameObject:
@@ -14710,6 +14782,33 @@ Transform:
   m_Father: {fileID: 713467222}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &579568699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 168423517}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &579568707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579568699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &579925920
 GameObject:
   m_ObjectHideFlags: 0
@@ -15627,12 +15726,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!1 &625830211
 GameObject:
@@ -19914,6 +20019,33 @@ Transform:
   m_Father: {fileID: 2122943493}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &792284899 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1123150797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &792284907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792284899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &795440055
 GameObject:
   m_ObjectHideFlags: 0
@@ -20499,6 +20631,33 @@ Transform:
   m_Father: {fileID: 1442263270}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &824737596 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 97614290}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &824737604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824737596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!4 &826583823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 429508, guid: 9c74caa742791864f9c678287121e6c9,
@@ -21881,12 +22040,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!1 &895517339
 GameObject:
@@ -23886,6 +24051,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c63ea781a273235439e583799176c846, type: 3}
+--- !u!1 &970123493 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 625682234}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &970123501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970123493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1001 &971129930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27713,12 +27905,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!1001 &1126360156
 PrefabInstance:
@@ -38568,12 +38766,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Metalon (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8276736861217043809, guid: 151adfe323d30c64287103cab5890d3e,
         type: 3}
       propertyPath: _attachRange
       value: 2.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1913941092965520396, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 151adfe323d30c64287103cab5890d3e, type: 3}
 --- !u!1 &1497603589
 GameObject:
@@ -48857,6 +49061,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c74caa742791864f9c678287121e6c9, type: 3}
+--- !u!1 &1937208616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1912813580386056745, guid: 151adfe323d30c64287103cab5890d3e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1497428753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1937208624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937208616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 2
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!4 &1937337744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 429508, guid: 9c74caa742791864f9c678287121e6c9,
