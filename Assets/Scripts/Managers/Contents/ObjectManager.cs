@@ -13,25 +13,28 @@ public class ObjectManager
     {
         if (myPlayer)
         {
-            GameObject go = Managers.Resource.Instantiate("Character/MyWarrior");
+            GameObject go = Managers.Resource.Instantiate("Character/MySorcerer");
             go.name = info.Name;
             _objects.Add(info.PlayerId, go);
 
-            MyPlayer = go.GetComponent<MyWarrior>();
+            MyPlayer = go.GetComponent<MySorcerer>();
             MyPlayer.Id = info.PlayerId;
             MyPlayer.PosInfo = info.PosInfo;
+            //MyPlayer.my_job = (Define.Job)info.Job;
+
             //foreach(var v in info.Destinations)
             //    MyPlayer.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }
         else
         {
-            GameObject go = Managers.Resource.Instantiate("Character/Warrior");
+            GameObject go = Managers.Resource.Instantiate("Character/Sorcerer");
             go.name = info.Name;
             _objects.Add(info.PlayerId, go);
 
-            Warrior p = go.GetComponent<Warrior>();
+            Sorcerer p = go.GetComponent<Sorcerer>();
             p.Id = info.PlayerId;
             p.PosInfo = info.PosInfo;
+            p.my_job = (Define.Job)info.Job;
             //foreach (var v in info.Destinations)
             //    p.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }

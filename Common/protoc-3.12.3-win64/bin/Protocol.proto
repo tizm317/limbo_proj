@@ -104,12 +104,14 @@ message C_EnterGame {
 message LobbyPlayerInfo {
   string name = 1;
   StatInfo statInfo = 2;
+  int32 job = 3;
 }
 
 message PlayerInfo {
   int32 playerId = 1;
   string name = 2;
   PositionInfo posInfo = 3;
+  int32 job = 4;
   //repeated Position destinations = 4;
 }
 

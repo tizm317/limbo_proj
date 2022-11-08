@@ -182,7 +182,7 @@ public class UI_InGame : UI_Scene
             ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
             return;
         }
-        player = playerGO.GetComponent<MyWarrior>();
+        player = playerGO.GetComponent<Player>();
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu

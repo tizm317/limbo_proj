@@ -22,6 +22,7 @@ namespace Server.DB
         // PK
         public int PlayerDbId { get; set; }
         public string PlayerName { get; set; }
+        public int PlayerJob { get; set; }
 
         // 어떤 Account Id인지 직접 지정하기 위해 foreign key (..?)
         // playerDb 만들 때, AccountDbId를 맘대로 설정해서 save하면 직접 연동할 수 있음
