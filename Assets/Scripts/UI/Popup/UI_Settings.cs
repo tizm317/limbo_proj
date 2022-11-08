@@ -7,11 +7,14 @@ using UnityEngine.UI;
 public class UI_Settings : UI_Popup
 {
     // TODO : 기능 채우기
+    [SerializeField]
+    private GameObject[] taps;
     public Slider[] AudioSlide = new Slider[2];
     public Toggle[] Toggle = new Toggle[2];
     private Slider BrightSlide;
     private new Light light;
-    private DuloGames.UI.UISelectField cs;
+    private new KeyManager KM;
+    public Button[] buttons = new Button[5];
     enum GameObjects
     {
         BGMSwitch,
@@ -24,6 +27,11 @@ public class UI_Settings : UI_Popup
     {
         CloseButton,
         ApplyButton,
+        SKILL1,
+        SKILL2,
+        SKILL3,
+        SKILL4,
+        OPTION,
     }
 
     private void Start()
@@ -34,7 +42,10 @@ public class UI_Settings : UI_Popup
     public override void Init()
     {
         base.Init();
-
+        if(KM == null)
+        {
+            KM = new KeyManager();
+        }
         Bind<GameObject>(typeof(GameObjects));
         AudioSlide[0] = GetObject((int)GameObjects.BGMSlider).GetComponent<Slider>();
         Toggle[0] = GetObject((int)GameObjects.BGMSwitch).GetComponent<Toggle>();
@@ -68,10 +79,16 @@ public class UI_Settings : UI_Popup
         // 토글 Event 바인딩
         GetObject((int)GameObjects.BGMSwitch).gameObject.BindEvent(OnBGMToggle, Define.UIEvent.Click);
         GetObject((int)GameObjects.SFXSwitch).gameObject.BindEvent(OnSFXToggle, Define.UIEvent.Click);
-
+        taps[2].SetActive(true);
         Bind<Button>(typeof(Buttons));
         GetButton((int)Buttons.CloseButton).gameObject.BindEvent(CloseButtonClicked);
         GetButton((int)Buttons.ApplyButton).gameObject.BindEvent(ApplyButtonClicked);
+        GetButton((int)Buttons.SKILL1).gameObject.BindEvent(SKILL1Change);
+        GetButton((int)Buttons.SKILL2).gameObject.BindEvent(SKILL2Change);
+        GetButton((int)Buttons.SKILL3).gameObject.BindEvent(SKILL3Change);
+        GetButton((int)Buttons.SKILL4).gameObject.BindEvent(SKILL4Change);
+        GetButton((int)Buttons.OPTION).gameObject.BindEvent(OPTIONChange);
+        taps[2].SetActive(false);
         
     }
     public void Set_Resolution(int idx, string resolution)
@@ -155,6 +172,27 @@ public class UI_Settings : UI_Popup
     public void Set_BrightNess(PointerEventData data)
     {
         light.intensity = BrightSlide.value;
+    }
+
+    private void SKILL1Change(PointerEventData data)
+    {
+        KM.ChangeKey(0);
+    }
+    private void SKILL2Change(PointerEventData data)
+    {
+        KM.ChangeKey(1);
+    }
+    private void SKILL3Change(PointerEventData data)
+    {
+        KM.ChangeKey(2);
+    }
+    private void SKILL4Change(PointerEventData data)
+    {
+        KM.ChangeKey(3);
+    }
+    private void OPTIONChange(PointerEventData data)
+    {
+        KM.ChangeKey(4);
     }
 
     

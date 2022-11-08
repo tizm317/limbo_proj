@@ -15,6 +15,7 @@ public enum KeyAction
 public static class KeySetting
 {
     public static Dictionary<KeyAction, KeyCode> keys = new Dictionary<KeyAction, KeyCode>();
+    public static bool first = true;
 }
 public class KeyManager : MonoBehaviour
 {
@@ -23,7 +24,8 @@ public class KeyManager : MonoBehaviour
 
     void Start()
     {
-        Init();
+        if(KeySetting.first)
+            Init();
     }
 
     void Init()
@@ -32,6 +34,7 @@ public class KeyManager : MonoBehaviour
         {
             KeySetting.keys.Add((KeyAction)i,default_key[i]);
         }
+        KeySetting.first = false;
     }
 
     int key = -1;
