@@ -15,6 +15,7 @@ public class UI_Settings : UI_Popup
     private new Light light;
     private new KeyManager KM;
     public Button[] buttons = new Button[5];
+    public Text[] button_texts = new Text[5];
     enum GameObjects
     {
         BGMSwitch,
@@ -42,10 +43,7 @@ public class UI_Settings : UI_Popup
     public override void Init()
     {
         base.Init();
-        if(KM == null)
-        {
-            KM = new KeyManager();
-        }
+        KM = gameObject.GetComponent<KeyManager>();
         Bind<GameObject>(typeof(GameObjects));
         AudioSlide[0] = GetObject((int)GameObjects.BGMSlider).GetComponent<Slider>();
         Toggle[0] = GetObject((int)GameObjects.BGMSwitch).GetComponent<Toggle>();
@@ -81,15 +79,25 @@ public class UI_Settings : UI_Popup
         GetObject((int)GameObjects.SFXSwitch).gameObject.BindEvent(OnSFXToggle, Define.UIEvent.Click);
         taps[2].SetActive(true);
         Bind<Button>(typeof(Buttons));
+        
         GetButton((int)Buttons.CloseButton).gameObject.BindEvent(CloseButtonClicked);
         GetButton((int)Buttons.ApplyButton).gameObject.BindEvent(ApplyButtonClicked);
         GetButton((int)Buttons.SKILL1).gameObject.BindEvent(SKILL1Change);
+        buttons[0] = GetButton((int)Buttons.SKILL1).gameObject.GetComponent<Button>();
         GetButton((int)Buttons.SKILL2).gameObject.BindEvent(SKILL2Change);
+        buttons[1] = GetButton((int)Buttons.SKILL2).gameObject.GetComponent<Button>();
         GetButton((int)Buttons.SKILL3).gameObject.BindEvent(SKILL3Change);
+        buttons[2] = GetButton((int)Buttons.SKILL3).gameObject.GetComponent<Button>();
         GetButton((int)Buttons.SKILL4).gameObject.BindEvent(SKILL4Change);
+        buttons[3] = GetButton((int)Buttons.SKILL4).gameObject.GetComponent<Button>();
         GetButton((int)Buttons.OPTION).gameObject.BindEvent(OPTIONChange);
+        buttons[4] = GetButton((int)Buttons.OPTION).gameObject.GetComponent<Button>();
         taps[2].SetActive(false);
-        
+        for(int i = 0; i < buttons.Length; i++)
+        {
+            button_texts[i] = buttons[i].transform.Find("Text").GetComponent<Text>();
+        }
+        StartCoroutine(Button_Text_Update());
     }
     public void Set_Resolution(int idx, string resolution)
     {
@@ -177,23 +185,45 @@ public class UI_Settings : UI_Popup
     private void SKILL1Change(PointerEventData data)
     {
         KM.ChangeKey(0);
+        button_texts[0].text = KeySetting.keys[KeyAction.SKILL1].ToString();
     }
     private void SKILL2Change(PointerEventData data)
     {
         KM.ChangeKey(1);
+        button_texts[1].text = KeySetting.keys[KeyAction.SKILL2].ToString();
     }
     private void SKILL3Change(PointerEventData data)
     {
         KM.ChangeKey(2);
+        button_texts[2].text = KeySetting.keys[KeyAction.SKILL3].ToString();
     }
     private void SKILL4Change(PointerEventData data)
     {
         KM.ChangeKey(3);
+        button_texts[3].text = KeySetting.keys[KeyAction.SKILL4].ToString();
     }
     private void OPTIONChange(PointerEventData data)
     {
         KM.ChangeKey(4);
+        button_texts[4].text = KeySetting.keys[KeyAction.OPTION].ToString();
+    }
+   
+    private void _Button_Text_Update()
+    {
+        for(int i = 0; i < buttons.Length; i++)
+        {
+            button_texts[i].text = KeySetting.keys[(KeyAction)i].ToString();
+        }
     }
 
+    IEnumerator Button_Text_Update()
+    {
+        while(true)
+        {
+            if(taps[2].activeSelf)
+                _Button_Text_Update();
+            yield return new WaitForEndOfFrame();
+        }
+    }
     
 }

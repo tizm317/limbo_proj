@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum KeyAction
 {
-    Q,
-    W,
-    E,
-    R,
-    ESC,
+    SKILL1,
+    SKILL2,
+    SKILL3,
+    SKILL4,
+    OPTION,
     KEYCOUNT//마지막 친구임, Count대신에 쓸거
 }
 
@@ -22,7 +22,7 @@ public class KeyManager : MonoBehaviour
     
     KeyCode[] default_key = new KeyCode[]{KeyCode.Q,KeyCode.W,KeyCode.E,KeyCode.R,KeyCode.Escape};
 
-    void Start()
+    void Awake()
     {
         if(KeySetting.first)
             Init();
@@ -44,8 +44,14 @@ public class KeyManager : MonoBehaviour
         Event KeyEvent = Event.current;
         if(KeyEvent.isKey)
         {
-            KeySetting.keys[(KeyAction)key] = KeyEvent.keyCode;
-            default_key[key] = KeyEvent.keyCode;
+            KeyCode input = KeyEvent.keyCode;
+            bool already_using = false;
+            for(int i = 0; i < (int)KeyAction.KEYCOUNT; i++)
+                if(KeySetting.keys[(KeyAction)i] == input)
+                    already_using = true;
+            if(!already_using)
+                KeySetting.keys[(KeyAction)key] = input;
+            //default_key[key] = KeyEvent.keyCode;
             key = -1;
         }
     }
