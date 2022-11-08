@@ -53,7 +53,8 @@ namespace Server
 				MyPlayer.Info.PosInfo.PosX = 1.2f;
 				MyPlayer.Info.PosInfo.PosY = 1; // 높이
 				MyPlayer.Info.PosInfo.PosZ = -62.6f;
-                MyPlayer.Session = this;
+				MyPlayer.Info.Job = 0;
+				MyPlayer.Session = this;
 				//MyPlayer.Info.Destinations.Clear();
             }
 

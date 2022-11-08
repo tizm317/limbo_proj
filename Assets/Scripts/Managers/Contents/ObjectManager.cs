@@ -11,27 +11,44 @@ public class ObjectManager
 
     public void Add(PlayerInfo info, bool myPlayer = false)
     {
+        string job = "";
+        switch (info.Job)
+        {
+            case 1:
+                job = "Archer";
+                break;
+            case 2:
+                job = "Sorcerer";
+                break;
+            default:
+                job = "Warrior";
+                break;
+        }
+
         if (myPlayer)
         {
-            GameObject go = Managers.Resource.Instantiate("Character/MyWarrior");
+            GameObject go = Managers.Resource.Instantiate($"Character/My{job}");
             go.name = info.Name;
             _objects.Add(info.PlayerId, go);
 
-            MyPlayer = go.GetComponent<MyWarrior>();
+            MyPlayer = go.GetComponent<Player>();
             MyPlayer.Id = info.PlayerId;
             MyPlayer.PosInfo = info.PosInfo;
+            MyPlayer.my_job = (Define.Job)info.Job;
+
             //foreach(var v in info.Destinations)
             //    MyPlayer.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }
         else
         {
-            GameObject go = Managers.Resource.Instantiate("Character/Warrior");
+            GameObject go = Managers.Resource.Instantiate($"Character/{job}");
             go.name = info.Name;
             _objects.Add(info.PlayerId, go);
 
-            Warrior p = go.GetComponent<Warrior>();
+            Player p = go.GetComponent<Player>();
             p.Id = info.PlayerId;
             p.PosInfo = info.PosInfo;
+            p.my_job = (Define.Job)info.Job;
             //foreach (var v in info.Destinations)
             //    p.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }

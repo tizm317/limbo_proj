@@ -20,7 +20,7 @@ public class GameManagerEx
             case Define.WorldObject.Monster:
                 _monsters.Add(go);
                 if(OnSpawnEvent != null)
-                    OnSpawnEvent.Invoke(1);
+                    OnSpawnEvent.Invoke(1);                    
                 break;
         }
         return go;

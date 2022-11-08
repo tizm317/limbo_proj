@@ -47,6 +47,7 @@ namespace Server
 						LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo()
 						{
 							Name = playerDb.PlayerName,
+							Job = playerDb.PlayerJob,
 							StatInfo = new StatInfo()
 							{
 								Level = playerDb.Level,

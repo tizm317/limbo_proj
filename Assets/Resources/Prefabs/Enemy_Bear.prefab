@@ -424,9 +424,9 @@ GameObject:
   - component: {fileID: 2397426521362073246}
   - component: {fileID: 2397426521362073245}
   - component: {fileID: 2397426521362073244}
-  - component: {fileID: 2397426521362073243}
   - component: {fileID: 6772712334688447059}
   - component: {fileID: 4197842749915188488}
+  - component: {fileID: -4179667184913763134}
   m_Layer: 9
   m_Name: Enemy_Bear
   m_TagString: Enemy
@@ -520,28 +520,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2397426521362073243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2397426521362073241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 0
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
-  _defense: 0
-  _moveSpeed: 0
-  _turnSpeed: 0
-  _attackSpeed: 0
-  _itemdata: []
-  _itemIndex: 0
 --- !u!114 &6772712334688447059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +551,27 @@ MonoBehaviour:
   _scanRange: 20
   _attachRange: 3
   points: []
+--- !u!114 &-4179667184913763134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397426521362073241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 3
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &2397426521367229789
 GameObject:
   m_ObjectHideFlags: 0
