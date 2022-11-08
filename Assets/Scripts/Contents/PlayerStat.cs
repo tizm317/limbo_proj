@@ -163,14 +163,13 @@ public class PlayerStat : Stat
 
     public override void OnAttacked(Stat attacker)
     {
-       
+
         float damage = Mathf.Max(0, attacker.Attack - Defense);
-        if(ps.attackable == true)
+        if (ps.attackable == true)
             Hp -= damage; //나의 hp에서 demage 만큼 깎는다
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
-            //enemy.State = Define.State.Hit;
             OnDead(attacker);
         }
     }

@@ -47,8 +47,8 @@ GameObject:
   - component: {fileID: 927162108014975373}
   - component: {fileID: 287655529160846936}
   - component: {fileID: 5348750337330710872}
-  - component: {fileID: 910553173334961119}
   - component: {fileID: 6592072429444786616}
+  - component: {fileID: 7892505701966910623}
   m_Layer: 9
   m_Name: Enemy_Rhino
   m_TagString: Enemy
@@ -162,26 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsing: 0
---- !u!114 &910553173334961119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106997085945216679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 8
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
-  _defense: 0
-  _moveSpeed: 0
-  _turnSpeed: 0
-  _attackSpeed: 0
 --- !u!114 &6592072429444786616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +184,27 @@ MonoBehaviour:
   _effectTransfrom: {fileID: 6480059551366410012}
   destroyTime: 1.5
   currentTime: 0
+--- !u!114 &7892505701966910623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106997085945216679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 8
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &367594358656011771
 GameObject:
   m_ObjectHideFlags: 0

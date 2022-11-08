@@ -5,39 +5,34 @@ using UnityEngine.AI;
 
 public class EnemyStat : Stat
 {
-    // enemy 공통 필요 변수
+    //enemy 필요 변수
     //tool에서 확인하기 위함
-    // HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
+    //HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
+    [SerializeField] protected int _enemyExp; //제공하는 exp
+    //[SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
+    //[SerializeField] private int _itemIndex;
 
-    [SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
-    [SerializeField] private int _itemIndex;
     Enemy enemy;
-    Inventory inventory;
+    //Inventory inventory;
 
 
     // 외부에서 사용할 때
-    public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
+    public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
 
-    //private void Awake()
-    //{
-    //    _level = 1;
-    //    _hp = 100;
-    //    _maxHp = 100;
-    //    _attack = 6.0f;
-    //    _defense = 0;
-    //    _moveSpeed = 1f;
-    //    _turnSpeed = 5.0f;
-    //}
+    //public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
+
+    void Init()
+    {
+        enemy = gameObject.GetComponent<Enemy>();
+        //inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
+    }
     void Start()
     {
-        _level = 1;
-        _defense = 0;
+        Init();
         _moveSpeed = 1.0f;
         _turnSpeed = 5.0f;
-
         SetStat(_level);
     }
-
     public void SetStat(int level)
     {
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
@@ -45,11 +40,8 @@ public class EnemyStat : Stat
         _hp = stat.maxHp;
         _maxHp = stat.maxHp;
         _attack = stat.attack;
-    }
-    void Init()
-    {
-        enemy = gameObject.GetComponent<Enemy>();
-        inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
+        _enemyExp = stat.totalExp;
+
     }
 
     public override void OnAttacked(Stat attacker)
@@ -80,7 +72,7 @@ public class EnemyStat : Stat
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
-            if (enemy.State != Define.EnemyState.Die)
+            if(enemy.State != Define.EnemyState.Die)
                 OnDead(attacker);
         }
     }
@@ -89,15 +81,15 @@ public class EnemyStat : Stat
         StartCoroutine(Die());
 
         PlayerStat playerStat = attacker as PlayerStat;
-
+        
         if (playerStat != null) //경험치
         {
-            playerStat.Exp += 10;
+            playerStat.Exp += EnemyExp;
         }
-
+        
         //int tempIdx;
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
-
+        
 
         //_itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
 
@@ -116,4 +108,5 @@ public class EnemyStat : Stat
 
         Managers.Game.Despawn(gameObject);
     }
+
 }
