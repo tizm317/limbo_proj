@@ -187,21 +187,15 @@ public class Enemy1 : Enemy
                 if (dist <= _attachRange)
                 {
                     State = Define.EnemyState.Skill;
-                    StartCoroutine(Attack());
                 }
                 else
                     State = Define.EnemyState.Moving;
             }
             else
-            {
                 State = Define.EnemyState.Die;
-                //targetStat.OnAttacked(_stat);
-            }
         }
         else
-        {
             State = Define.EnemyState.Moving;
-        }
     }
     IEnumerator Attack()
     {

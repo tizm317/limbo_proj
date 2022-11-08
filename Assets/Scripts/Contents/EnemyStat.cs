@@ -18,15 +18,33 @@ public class EnemyStat : Stat
     // 외부에서 사용할 때
     public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    _level = 1;
+    //    _hp = 100;
+    //    _maxHp = 100;
+    //    _attack = 6.0f;
+    //    _defense = 0;
+    //    _moveSpeed = 1f;
+    //    _turnSpeed = 5.0f;
+    //}
+    void Start()
     {
         _level = 1;
-        _hp = 100;
-        _maxHp = 100;
-        _attack = 6.0f;
         _defense = 0;
-        _moveSpeed = 1f;
+        _moveSpeed = 1.0f;
         _turnSpeed = 5.0f;
+
+        SetStat(_level);
+    }
+
+    public void SetStat(int level)
+    {
+        Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
+        Data.Stat stat = dict[level];
+        _hp = stat.maxHp;
+        _maxHp = stat.maxHp;
+        _attack = stat.attack;
     }
     void Init()
     {
@@ -34,45 +52,67 @@ public class EnemyStat : Stat
         inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
     }
 
-    public virtual void OnAttacked(Stat attacker)
+    public override void OnAttacked(Stat attacker)
     {
-       
+        if (enemy.State == Define.EnemyState.Die)
+            return;
+
         float damage = Mathf.Max(0, attacker.Attack - Defense);
         Hp -= damage; //나의 hp에서 demage 만큼 깎는다
+        enemy.State = Define.EnemyState.Hit;
         if (Hp <= 0)  //음수 경우 hp = 0;
         {
             Hp = 0;  //내가 죽었을 경우
-            //enemy.State = Define.State.Hit;
-            OnDead(attacker);
+            //enemy.State = Define.State.Die;
+            if (enemy.State != Define.EnemyState.Die)
+                OnDead(attacker);
         }
     }
 
-    protected virtual void OnDead(Stat attacker)
+    public override void OnAttacked(float Damage, Stat attacker)
     {
+        if (enemy.State == Define.EnemyState.Die)
+            return;
+
+        float damage = Mathf.Max(0, Damage - Defense);
+        Hp -= damage; //나의 hp에서 demage 만큼 깎는다
+        enemy.State = Define.EnemyState.Hit;
+        if (Hp <= 0)  //음수 경우 hp = 0;
+        {
+            Hp = 0;  //내가 죽었을 경우
+            if (enemy.State != Define.EnemyState.Die)
+                OnDead(attacker);
+        }
+    }
+    protected override void OnDead(Stat attacker)
+    {
+        StartCoroutine(Die());
+
         PlayerStat playerStat = attacker as PlayerStat;
-        /*
+
         if (playerStat != null) //경험치
         {
             playerStat.Exp += 10;
         }
-        */
+
         //int tempIdx;
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
-        StartCoroutine(Die());
 
-        _itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
-        //아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
-        int tempIdx;
-        inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
 
+        //_itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
+
+        ////아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
+        //int tempIdx;
+        //inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
     }
     IEnumerator Die()
     {
-        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
         enemy.State = Define.EnemyState.Die;
 
-        yield return new WaitForSeconds(7.0f);
+        //NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        //nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
+
+        yield return new WaitForSeconds(5.0f);
 
         Managers.Game.Despawn(gameObject);
     }

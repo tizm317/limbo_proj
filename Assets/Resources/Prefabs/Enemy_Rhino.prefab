@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 910553173334961119}
   - component: {fileID: 6592072429444786616}
   m_Layer: 9
-  m_Name: Enemy_Rhino 1
+  m_Name: Enemy_Rhino
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: 0
+  _level: 8
   _hp: 0
   _maxHp: 0
   _attack: 0
@@ -182,8 +182,6 @@ MonoBehaviour:
   _moveSpeed: 0
   _turnSpeed: 0
   _attackSpeed: 0
-  _itemdata: []
-  _itemIndex: 0
 --- !u!114 &6592072429444786616
 MonoBehaviour:
   m_ObjectHideFlags: 0

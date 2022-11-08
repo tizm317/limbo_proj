@@ -8,7 +8,6 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Define.EnemyState state = Define.EnemyState.Moving;  //상태 초기값 
     [SerializeField] protected GameObject lockTarget;  //타켓
     protected Stat _stat;
-
     public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown; 
     public virtual Define.EnemyState State
     {
@@ -79,7 +78,10 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Init()
     {
         _stat = gameObject.GetComponent<Stat>();
-        //_stat.Hp = 100;
+        if(_stat.Hp <= 0)
+        {
+            _stat.Hp = _stat.MaxHp;
+        }
     }
 
     protected virtual void UpdateIdle()

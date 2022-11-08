@@ -34,16 +34,18 @@ public class Stat : MonoBehaviour
     public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
     //public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
 
-    private void Awake()
-    {
-        _level = 1;
-        _hp = 100;
-        _maxHp = 100;
-        _attack = 6.0f;
-        _defense = 0;
-        _moveSpeed = 1.0f;
-        _turnSpeed = 5.0f;
-    }
+    //private void Awake()
+    //{
+    //    _level = 1;
+    //    _hp = 100;
+    //    _maxHp = 100;
+    //    _attack = 6.0f;
+    //    _defense = 0;
+    //    _moveSpeed = 1.0f;
+    //    _turnSpeed = 5.0f;
+    //}
+
+
     void Init()
     {
         enemy = gameObject.GetComponent<Enemy>();
@@ -52,6 +54,18 @@ public class Stat : MonoBehaviour
     public void Start()
     {
         Init();
+
+        _moveSpeed = 1.0f;
+        _turnSpeed = 5.0f;
+        SetStat(_level);
+    }
+    public void SetStat(int level)
+    {
+        Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
+        Data.Stat stat = dict[level];
+        _hp = stat.maxHp;
+        _maxHp = stat.maxHp;
+        _attack = stat.attack;
     }
 
     public virtual void OnAttacked(Stat attacker)
