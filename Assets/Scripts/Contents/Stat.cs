@@ -40,16 +40,14 @@ public class Stat : MonoBehaviour
     //}
 
 
-    void Init()
-    {
+    //void Init()
+    //{
 
-    }
-    void Start()
-    {
-        Init();
-    }
-
-
+    //}
+    //void Start()
+    //{
+    //    Init();
+    //}
     public virtual void OnAttacked(Stat attacker)
     {
 

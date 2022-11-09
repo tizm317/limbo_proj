@@ -931,12 +931,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2106832265834382311}
   - component: {fileID: 2046848631612277725}
-  - component: {fileID: 6688433451388254994}
   - component: {fileID: 8562209798724887026}
   - component: {fileID: 5005058632552757081}
   - component: {fileID: 2256828460102561199}
   - component: {fileID: 1308699724061374356}
   - component: {fileID: 862479691891931824}
+  - component: {fileID: 921801677044141545}
   m_Layer: 9
   m_Name: Enemy_CrabMonster
   m_TagString: Enemy
@@ -980,26 +980,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6688433451388254994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2104664821243049569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 4
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
-  _defense: 0
-  _moveSpeed: 0
-  _turnSpeed: 0
-  _attackSpeed: 0
 --- !u!114 &8562209798724887026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,6 +1063,27 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: -0}
+--- !u!114 &921801677044141545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104664821243049569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 4
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &2104669439583126051
 GameObject:
   m_ObjectHideFlags: 0

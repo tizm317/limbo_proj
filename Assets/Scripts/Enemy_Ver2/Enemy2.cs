@@ -123,7 +123,6 @@ public class Enemy2 : Enemy
         //체력
         if (lockTarget != null)
         {
-
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
@@ -138,12 +137,11 @@ public class Enemy2 : Enemy
             }
             else
             {
-                State = Define.EnemyState.Die;
+                State = Define.EnemyState.Idle;
             }
         }
         else
         {
-
             State = Define.EnemyState.Idle;
         }
     }
