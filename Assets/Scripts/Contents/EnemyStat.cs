@@ -10,11 +10,10 @@ public class EnemyStat : Stat
     //HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
     [SerializeField] protected int _enemyExp; //제공하는 exp
     [SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
-    [SerializeField] private int _itemIndex;
 
     Enemy enemy;
     Inventory inventory;
-
+    int _itemidx;
 
     // 외부에서 사용할 때
     public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
@@ -80,18 +79,19 @@ public class EnemyStat : Stat
         PlayerStat playerStat = attacker as PlayerStat;
         
         if (playerStat != null) //경험치
-        {
             playerStat.Exp += EnemyExp;
-        }
+
+        //임시 test용 랜덤값 받기 위함
+        _itemidx = Random.Range(0, _itemdata.Length);
+
+        int tempIdx;
+        inventory.Add(_itemdata[_itemidx], idx: out tempIdx);
 
         StartCoroutine(Die());
 
-        //inventory.Add(_itemdata, idx: out tempIdx, 1);
-
-        //_itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
-
         ////아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
         //int tempIdx;
+        //inventory.Add(_itemdata, idx: out tempIdx, 1);
         //inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
     }
     IEnumerator Die()
