@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.49643743, g: 0.60847163, b: 0.48815304, a: 1}
+  m_IndirectSpecularColor: {r: 0.49643695, g: 0.6084713, b: 0.48815262, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 29188129}
   - component: {fileID: 29188131}
   - component: {fileID: 29188130}
+  - component: {fileID: 29188132}
   m_Layer: 0
   m_Name: '@Scene'
   m_TagString: Untagged
@@ -265,6 +266,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 842edd017f8245c46b276589bdb82669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &29188132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29188125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 165f27828c6cc8d409d64588af4141cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &38536234
@@ -5547,7 +5560,7 @@ PrefabInstance:
     - target: {fileID: 5687491605903377438, guid: d1f7cc737021ffd45b81cd07e7a573df,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25
+      value: 19.2
       objectReference: {fileID: 0}
     - target: {fileID: 5687491605903377438, guid: d1f7cc737021ffd45b81cd07e7a573df,
         type: 3}
@@ -8687,14 +8700,14 @@ RectTransform:
   m_GameObject: {fileID: 1427187529}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 977145218}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -926, y: 418}
+  m_AnchoredPosition: {x: -951, y: 468}
   m_SizeDelta: {x: 600, y: -880}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1427187531
@@ -10613,7 +10626,7 @@ PrefabInstance:
     - target: {fileID: 5687491605903377438, guid: d1f7cc737021ffd45b81cd07e7a573df,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 5687491605903377438, guid: d1f7cc737021ffd45b81cd07e7a573df,
         type: 3}
@@ -10623,7 +10636,7 @@ PrefabInstance:
     - target: {fileID: 5687491605903377438, guid: d1f7cc737021ffd45b81cd07e7a573df,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.14
+      value: 35.4
       objectReference: {fileID: 0}
     - target: {fileID: 5687491605903377438, guid: d1f7cc737021ffd45b81cd07e7a573df,
         type: 3}
