@@ -177,6 +177,11 @@ public class Enemy4 : Enemy
     
     void OnHitEvent()
     {
+        if (_stat.Hp <= 0)
+        {
+            return;
+        }
+
         if (lockTarget != null)
         {
             if (State == Define.EnemyState.Die) return;
@@ -196,8 +201,7 @@ public class Enemy4 : Enemy
             }
             else
             {
-                State = Define.EnemyState.Die;
-                targetStat.OnAttacked(_stat);
+                State = Define.EnemyState.Moving;
             }
         }
         else

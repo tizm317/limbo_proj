@@ -454,9 +454,9 @@ GameObject:
   - component: {fileID: 7156254868178400432}
   - component: {fileID: 7161752639751132555}
   - component: {fileID: 3339881871029735122}
-  - component: {fileID: 4369544426737880787}
   - component: {fileID: 4243506290860353517}
   - component: {fileID: 3293006824656979569}
+  - component: {fileID: 3020597041934124822}
   m_Layer: 9
   m_Name: Enemy_HorrorMutant
   m_TagString: Enemy
@@ -544,26 +544,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsing: 0
---- !u!114 &4369544426737880787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4327902884739295831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 3
-  _hp: 100
-  _maxHp: 100
-  _attack: 6
-  _defense: 0
-  _moveSpeed: 0.5
-  _turnSpeed: 5
-  _attackSpeed: 0
 --- !u!195 &4243506290860353517
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -616,6 +596,27 @@ MonoBehaviour:
   bomb: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5, type: 3}
   idx: 0
   cooldownTime: 5
+--- !u!114 &3020597041934124822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4327902884739295831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 3
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &4429280293357452733
 GameObject:
   m_ObjectHideFlags: 0

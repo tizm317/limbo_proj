@@ -2330,8 +2330,8 @@ GameObject:
   - component: {fileID: 7289687821100091755}
   - component: {fileID: 7289687821100091668}
   - component: {fileID: 7289687821100091669}
-  - component: {fileID: 7289687821100091670}
   - component: {fileID: 7289687821100091671}
+  - component: {fileID: 2924049141102679320}
   m_Layer: 9
   m_Name: Warrok W Kurniawan
   m_TagString: Enemy
@@ -2427,26 +2427,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7289687821100091670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7289687821100091664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 10
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
-  _defense: 0
-  _moveSpeed: 0
-  _turnSpeed: 0
-  _attackSpeed: 0
 --- !u!114 &7289687821100091671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,6 +2449,27 @@ MonoBehaviour:
   _effectTransfrom: {fileID: 7289687820717926599}
   destroyTime: 1.5
   currentTime: 0
+--- !u!114 &2924049141102679320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7289687821100091664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 10
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &7289687821114453554
 GameObject:
   m_ObjectHideFlags: 0

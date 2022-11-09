@@ -192,7 +192,7 @@ public class Enemy1 : Enemy
                     State = Define.EnemyState.Moving;
             }
             else
-                State = Define.EnemyState.Die;
+                State = Define.EnemyState.Moving;
         }
         else
             State = Define.EnemyState.Moving;

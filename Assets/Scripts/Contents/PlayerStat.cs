@@ -69,13 +69,10 @@ public class PlayerStat : Stat
         //    if (SceneManager.GetActiveScene().name == "InGameCemetery")
         //    {
         //            Managers.Scene.LoadScene(Define.Scene.InGameBoss);
-
         //    }
         //    else if (SceneManager.GetActiveScene().name == "InGameNature")
         //    {
         //            Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
-
-
         //    }
         //    else if (SceneManager.GetActiveScene().name == "InGameDesert")
         //    {

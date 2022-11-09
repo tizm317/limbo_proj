@@ -1102,10 +1102,10 @@ GameObject:
   - component: {fileID: 7186821212117662989}
   - component: {fileID: 8568053807169896190}
   - component: {fileID: 8159516890003118086}
-  - component: {fileID: 8745786575217856028}
   - component: {fileID: 4353398205884955283}
   - component: {fileID: 4353398205884955281}
   - component: {fileID: 4353398205884955295}
+  - component: {fileID: 8016364250018600459}
   m_Layer: 9
   m_Name: Enemy_Monster
   m_TagString: Enemy
@@ -1198,26 +1198,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsing: 0
---- !u!114 &8745786575217856028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353398205884955294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 6
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
-  _defense: 0
-  _moveSpeed: 0
-  _turnSpeed: 0
-  _attackSpeed: 0
 --- !u!23 &4353398205884955283
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1297,6 +1277,27 @@ MonoBehaviour:
   _scanRange: 8
   _attachRange: 2
   points: []
+--- !u!114 &8016364250018600459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353398205884955294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 6
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
 --- !u!1 &4353398205884956202
 GameObject:
   m_ObjectHideFlags: 0

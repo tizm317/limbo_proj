@@ -129,12 +129,11 @@ public class Enemy_Skeleton : Enemy
             }
             else
             {
-                State = Define.EnemyState.Die;
+                State = Define.EnemyState.Idle;
             }
         }
         else
         {
-
             State = Define.EnemyState.Idle;
         }
     }

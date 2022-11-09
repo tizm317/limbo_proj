@@ -160,6 +160,10 @@ public class Enemy3 : Enemy
 
     void OnHitEvent()
     {
+        if (_stat.Hp <= 0)
+        {
+            return;
+        }
         if (lockTarget != null)
         {
             if (State == Define.EnemyState.Die) return;
