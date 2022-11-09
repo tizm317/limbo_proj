@@ -33,15 +33,16 @@ public class MyWarrior : Warrior
         Managers.Input.KeyAction -= OnKeyClicked;
         Managers.Input.KeyAction += OnKeyClicked;
 
-        // 인게임 씬 전에 Init한번하는데?
+        // 인게임 씬 전에 Init한번하는데? -> null 이면 나중에 다시 Init 실행
         cam = Camera.main;
-        if (cam == null)
+        Camera_Controller controller = cam.GetComponent<Camera_Controller>();
+        if (cam == null || controller == null)
         {
             // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루팀으로 대기함
             ProcessLater(() => Camera.main != null, () => Init());
             return;
         }
-        cam.GetComponent<Camera_Controller>().SetTarget(this.gameObject);
+        controller.SetTarget(this.gameObject);
 
 
         // 미니맵
