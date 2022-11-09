@@ -32,8 +32,8 @@ public class UI_InGame : UI_Scene
     PlayerMgr pm;
     #region RadialMenu
     private UI_RadialMenu radialMenu;
-    private KeyCode key_emoticon = KeyCode.T;
-    private KeyCode key_action = KeyCode.G;
+    //private KeyCode key_emoticon = KeySetting.keys[KeyAction.EMOJI];
+    //private KeyCode key_action = KeySetting.keys[KeyAction.];
 
     UI_Emoticon emoticon;
 
@@ -655,7 +655,7 @@ public class UI_InGame : UI_Scene
     {
         while (true)
         {
-            if (Input.GetKeyUp(key_action))
+            if (Input.GetKeyUp(KeySetting.keys[KeyAction.EMOTEACTION]))
             {
                 int selected = radialMenu.Hide();
                 //Debug.Log($"Selected : {selected}");
@@ -665,7 +665,7 @@ public class UI_InGame : UI_Scene
                 StopCoroutine(co);
             }
 
-            if (Input.GetKeyUp(key_emoticon))
+            if (Input.GetKeyUp(KeySetting.keys[KeyAction.EMOJI]))
             {
                 int selected = radialMenu.Hide();
                 //Debug.Log($"Selected : {selected}");
