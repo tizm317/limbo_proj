@@ -11,12 +11,11 @@ public class VillageScene : BaseScene
 
     protected override void Init()
     {
-        // 초기화
-
-        base.Init();
-
         // 씬타입 설정
         SceneType = Define.Scene.InGameVillage;
+        
+        // 초기화
+        base.Init();
 
         // 씬 UI
         Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");

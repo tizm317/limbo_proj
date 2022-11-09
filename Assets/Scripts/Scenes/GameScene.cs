@@ -65,8 +65,6 @@ public class GameScene : BaseScene
 
     protected override void Init()
     {
-        base.Init();
-
         Scene scene = SceneManager.GetActiveScene();
         switch (scene.name)
         {
@@ -80,7 +78,7 @@ public class GameScene : BaseScene
                 SceneType = Define.Scene.InGameCemetery;
                 break;
         }
-
+        base.Init();
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
         //Screen.SetResolution(640, 480, false);
