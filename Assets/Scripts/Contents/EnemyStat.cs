@@ -9,11 +9,17 @@ public class EnemyStat : Stat
     //tool에서 확인하기 위함
     //HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
     [SerializeField] protected int _enemyExp; //제공하는 exp
-    [SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
+    public ItemData[] _itemdata; //인벤토리에 넣을 아이템 
 
     Enemy enemy;
     Inventory inventory;
     int _itemidx;
+
+    
+    public float aRate; //a비율
+    public float bRate; //b비율
+    private float rate;
+    private int length;
 
     // 외부에서 사용할 때
     public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
@@ -23,6 +29,10 @@ public class EnemyStat : Stat
     {
         enemy = gameObject.GetComponent<Enemy>();
         inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
+
+        float a = bRate / (bRate + aRate);
+        length = _itemdata.Length;
+        rate = length - (length * a);
     }
     void Start()
     {
@@ -85,7 +95,7 @@ public class EnemyStat : Stat
         _itemidx = Random.Range(0, _itemdata.Length);
 
         int tempIdx;
-        inventory.Add(_itemdata[_itemidx], idx: out tempIdx);
+        inventory.Add(_itemdata[GetRandomRate()], idx: out tempIdx);
 
         StartCoroutine(Die());
 
@@ -93,6 +103,18 @@ public class EnemyStat : Stat
         //int tempIdx;
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
         //inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
+    }
+
+    private int GetRandomRate()
+    {
+        int tmp = Random.Range(0, length);
+
+        if (tmp <= rate - 1) // length는 0을 포함하지 않기 때문에 0부터 세기 위해 정답 개수 - 1
+        {
+            return 0; // 프리팹 배열의 인덱스로 반환
+        }
+        else return 1;
+
     }
     IEnumerator Die()
     {
