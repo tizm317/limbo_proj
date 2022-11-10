@@ -257,6 +257,40 @@ public abstract class Player : MonoBehaviour
     { 
         get
         {
+            return new Vector3(DestInfo.PosX, DestInfo.PosY, DestInfo.PosZ);
+        }
+        set
+        {
+            DestInfo.PosX = value.x;
+            DestInfo.PosY = value.y;
+            DestInfo.PosZ = value.z;
+        }
+    }
+
+    // PositionInfo 원본 데이터
+    PositionInfo _destinationInfo = new PositionInfo();
+    public PositionInfo DestInfo
+    {
+        get { return _destinationInfo; }
+        set
+        {
+            if (_destinationInfo.Equals(value))
+                return;
+
+            // 위치 다르면 갱신
+            Dest = new Vector3(value.PosX, value.PosY, value.PosZ);
+            curState = value.State;
+
+            //_destinationInfo = value; // 각각 갱신하도록 수정!
+            //UpdateAnimation()
+        }
+    }
+
+    // 실제 플레이어 위치
+    public Vector3 Pos
+    {
+        get
+        {
             return new Vector3(PosInfo.PosX, PosInfo.PosY, PosInfo.PosZ);
         }
         set
@@ -285,18 +319,20 @@ public abstract class Player : MonoBehaviour
             //UpdateAnimation()
         }
     }
+
     #endregion
     public virtual State curState
     {
-        get { return PosInfo.State; }
+        get { return DestInfo.State; }
         set
         {
-            if (PosInfo.State == value) return;
-            
-            PosInfo.State = value;
+            if (DestInfo.State == value) return;
+
+            DestInfo.State = value;
             //UpdateAnimation
         }
     }
+
     // dir 따로 필요한가?
 
 

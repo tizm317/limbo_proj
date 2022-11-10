@@ -15,7 +15,7 @@ class PacketHandler
 		C_Move movePacket = packet as C_Move;
 		ClientSession clientSession = session as ClientSession;
 
-        Console.WriteLine($"C_Move ({movePacket.PosInfo.PosX}, {movePacket.PosInfo.PosY}, {movePacket.PosInfo.PosZ})");
+        Console.WriteLine($"C_Move Destiantion ({movePacket.DestInfo.PosX}, {movePacket.DestInfo.PosY}, {movePacket.DestInfo.PosZ})");
 
 		if (clientSession.MyPlayer == null)
 			return;
@@ -27,7 +27,7 @@ class PacketHandler
 		// 다른 플레이어한테도 알려준다
 		S_Move resMovePacket = new S_Move();
 		resMovePacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
-		resMovePacket.PosInfo = movePacket.PosInfo; // destination의 좌표를 보내주는 것
+		resMovePacket.DestInfo = movePacket.DestInfo; // destination의 좌표를 보내주는 것
 
 		// 나 빼고 같은 Room 에 속한 사람들에게 Broadcasting
 		// 나는 클라쪽에서 이동했기 때문.
