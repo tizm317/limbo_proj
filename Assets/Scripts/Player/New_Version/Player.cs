@@ -312,7 +312,7 @@ public abstract class Player : MonoBehaviour
                 return;
 
             // 위치 다르면 갱신
-            Dest = new Vector3(value.PosX, value.PosY, value.PosZ);
+            Pos = new Vector3(value.PosX, value.PosY, value.PosZ);
             curState = value.State;
 
             //_positionInfo = value; // 각각 갱신하도록 수정!
@@ -397,12 +397,16 @@ public abstract class Player : MonoBehaviour
 
     protected virtual void Init()
     {
-        // 서버에서 안 올 때 대비해서 초기화하는 부분 (시작위치..도 있긴 해야할듯?)
-        curState = State.Idle;              
-        player = this.gameObject;         
-        Dest = player.transform.position; // 목적지 : 현재 위치
+        
+        player = this.gameObject;
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
+        // 서버에서 안 올 때 대비해서 초기화하는 부분 (시작위치..도 있긴 해야할듯?)
+        curState = State.Idle;              
+        //Pos = new Vector3(1.2f, 1, -62.6f); // 없으면 (0,0,0)
+        player.transform.position = Pos;
+        Dest = player.transform.position;   // 목적지 : 현재 위치
+
 
 
         Enemy_Update(); // ??

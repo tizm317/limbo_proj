@@ -36,7 +36,10 @@ public class ObjectManager
             MyPlayer = go.GetComponent<Player>();
             MyPlayer.Id = info.PlayerId;
             MyPlayer.PosInfo = info.PosInfo;
+            MyPlayer.DestInfo = info.DestInfo;
             MyPlayer.my_job = (Define.Job)info.Job;
+            
+            MyPlayer.transform.position = MyPlayer.Pos;
         }
         else // Not myPlayer
         {
@@ -47,7 +50,10 @@ public class ObjectManager
             Player p = go.GetComponent<Player>();
             p.Id = info.PlayerId;
             p.PosInfo = info.PosInfo;
+            p.DestInfo = info.DestInfo;
             p.my_job = (Define.Job)info.Job;
+
+            p.transform.position = p.Pos;
         }
     }
     public void Add(int id, GameObject go)
