@@ -92,7 +92,8 @@ public class Inventory : MonoBehaviour
         }
 
         // 골드
-        _MyGolds = uint.MaxValue;
+        //_MyGolds = uint.MaxValue;
+        _MyGolds = 0;
         _UI_inventory.SetMyGolds(_MyGolds);
     }
 
@@ -127,8 +128,9 @@ public class Inventory : MonoBehaviour
         }
 
         // 골드
-        _MyGolds = uint.MaxValue;
-        _UI_inventory.SetMyGolds(_MyGolds);
+        //_MyGolds = 0;
+
+        //_UI_inventory.SetMyGolds(_MyGolds);
 
         // 로드 완료
         LoadFinish = true;
@@ -334,6 +336,10 @@ public class Inventory : MonoBehaviour
         }
 
         _UI_inventory.SetMyGolds(Golds);
+    }
+    public void AddGold(uint gold)
+    {
+        Golds += gold;
     }
 
     // 해당하는 인덱스의 슬롯 상태 및 UI 업데이트

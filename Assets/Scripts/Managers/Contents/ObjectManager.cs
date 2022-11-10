@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class ObjectManager
 {
-    public Player MyPlayer { get; set; }
-    Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
+    public Player MyPlayer { get; set; } // '나' 는 따로 관리하면 편함
+    Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>(); // 서버쪽에서 부여받은 ID
+    // 모든 오브젝트 하나로 관리할 수도 있고/ (_players/_monsters/_envs) 등으로 나눠서 관리할 수도 있음
 
+    // Add, Remove, Find, Clear
     public void Add(PlayerInfo info, bool myPlayer = false)
     {
         string job = "";
@@ -35,11 +37,8 @@ public class ObjectManager
             MyPlayer.Id = info.PlayerId;
             MyPlayer.PosInfo = info.PosInfo;
             MyPlayer.my_job = (Define.Job)info.Job;
-
-            //foreach(var v in info.Destinations)
-            //    MyPlayer.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }
-        else
+        else // Not myPlayer
         {
             GameObject go = Managers.Resource.Instantiate($"Character/{job}");
             go.name = info.Name;
@@ -49,16 +48,12 @@ public class ObjectManager
             p.Id = info.PlayerId;
             p.PosInfo = info.PosInfo;
             p.my_job = (Define.Job)info.Job;
-            //foreach (var v in info.Destinations)
-            //    p.Destination.Add(new Vector3(v.PosX, v.PosY, v.PosZ));
         }
     }
-
     public void Add(int id, GameObject go)
     {
         _objects.Add(id, go);
     }
-
     public void Remove(int id)
     {
         GameObject go = FindById(id);
@@ -67,7 +62,6 @@ public class ObjectManager
         _objects.Remove(id);
         Managers.Resource.Destroy(go);
     }
-
     public void RemoveMyPlayer()
     {
         if (MyPlayer == null) return;
@@ -75,15 +69,12 @@ public class ObjectManager
         Remove(MyPlayer.Id);
         MyPlayer = null;
     }
-
-
     public GameObject FindById(int id)
     {
         GameObject go = null;
         _objects.TryGetValue(id, out go);
         return go;
     }
-
     public GameObject Find(Vector3Int Pos)
     {
         foreach (GameObject go in _objects.Values)
@@ -98,7 +89,6 @@ public class ObjectManager
 
         return null;
     }
-
     public GameObject Find(Func<GameObject, bool> condition)
     {
         foreach (GameObject go in _objects.Values)
@@ -109,12 +99,11 @@ public class ObjectManager
 
         return null;
     }
-
     public void Clear()
     {
         foreach (GameObject go in _objects.Values)
             Managers.Resource.Destroy(go);
-        
+
         _objects.Clear();
     }
 }

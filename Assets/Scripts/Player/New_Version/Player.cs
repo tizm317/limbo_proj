@@ -249,8 +249,46 @@ public abstract class Player : MonoBehaviour
 
     //
     public int Id { get; set; }
+    #region DestiantionPosistionForMove
+    // 인터페이스 상으로 Dest 를 통해 get하면 필요로 하는 값 추출 가능
+    // PosInfo(원본 데이터)값을 받아옴
+    // Dest 사용하면 된다.
     public Vector3 Dest 
     { 
+        get
+        {
+            return new Vector3(DestInfo.PosX, DestInfo.PosY, DestInfo.PosZ);
+        }
+        set
+        {
+            DestInfo.PosX = value.x;
+            DestInfo.PosY = value.y;
+            DestInfo.PosZ = value.z;
+        }
+    }
+
+    // PositionInfo 원본 데이터
+    PositionInfo _destinationInfo = new PositionInfo();
+    public PositionInfo DestInfo
+    {
+        get { return _destinationInfo; }
+        set
+        {
+            if (_destinationInfo.Equals(value))
+                return;
+
+            // 위치 다르면 갱신
+            Dest = new Vector3(value.PosX, value.PosY, value.PosZ);
+            curState = value.State;
+
+            //_destinationInfo = value; // 각각 갱신하도록 수정!
+            //UpdateAnimation()
+        }
+    }
+
+    // 실제 플레이어 위치
+    public Vector3 Pos
+    {
         get
         {
             return new Vector3(PosInfo.PosX, PosInfo.PosY, PosInfo.PosZ);
@@ -263,7 +301,7 @@ public abstract class Player : MonoBehaviour
         }
     }
 
-
+    // PositionInfo 원본 데이터
     PositionInfo _positionInfo = new PositionInfo();
     public PositionInfo PosInfo
     {
@@ -274,22 +312,28 @@ public abstract class Player : MonoBehaviour
                 return;
 
             // 위치 다르면 갱신
-            _positionInfo = value;
+            Dest = new Vector3(value.PosX, value.PosY, value.PosZ);
+            curState = value.State;
+
+            //_positionInfo = value; // 각각 갱신하도록 수정!
+            //UpdateAnimation()
+        }
+    }
+
+    #endregion
+    public virtual State curState
+    {
+        get { return DestInfo.State; }
+        set
+        {
+            if (DestInfo.State == value) return;
+
+            DestInfo.State = value;
             //UpdateAnimation
         }
     }
 
-    public virtual State curState
-    {
-        get { return PosInfo.State; }
-        set
-        {
-            if (PosInfo.State == value) return;
-            
-            PosInfo.State = value;
-            //UpdateAnimation
-        }
-    }
+    // dir 따로 필요한가?
 
 
     void Start()
@@ -353,8 +397,10 @@ public abstract class Player : MonoBehaviour
 
     protected virtual void Init()
     {
-        curState = State.Idle;
-        player = this.gameObject; //
+        // 서버에서 안 올 때 대비해서 초기화하는 부분 (시작위치..도 있긴 해야할듯?)
+        curState = State.Idle;              
+        player = this.gameObject;         
+        Dest = player.transform.position; // 목적지 : 현재 위치
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
 
@@ -414,9 +460,7 @@ public abstract class Player : MonoBehaviour
 
     protected virtual void Move()
     {
-        //
-        //player.GetComponent<Transform>().position = Pos;
-        //PositionToVector3(dest);
+        //이동하는 부분
 
         if (my_enemy != null)
         {
@@ -475,8 +519,6 @@ public abstract class Player : MonoBehaviour
 
         // 최종 데스티네이션? 넣어서 패킷으로 보내야함
         Dest = destination[destination.Count-1];
-        //Dest = player.GetComponent<Transform>().position;
-        //Vector3ToPosition(destination);
     }
 
 

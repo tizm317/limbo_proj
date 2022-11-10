@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,8 +66,6 @@ public class GameScene : BaseScene
 
     protected override void Init()
     {
-        base.Init();
-
         Scene scene = SceneManager.GetActiveScene();
         switch (scene.name)
         {
@@ -79,12 +78,18 @@ public class GameScene : BaseScene
             case "InGameCemetery":
                 SceneType = Define.Scene.InGameCemetery;
                 break;
+            case "InGameVillage":
+                SceneType = Define.Scene.InGameVillage;
+                break;
+            default: // 나머지 던전
+                SceneType = Define.Scene.Dungeon;
+                break;
         }
-
+        base.Init();
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
         //Screen.SetResolution(640, 480, false);
-        Set_Resolution();//나중에 주석 해제해주시면 됨돠!
+        //Set_Resolution();//나중에 주석 해제해주시면 됨돠! (HY : BaseScene으로 옮김!)
         // �� UI
         _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
 
@@ -124,6 +129,8 @@ public class GameScene : BaseScene
 
         //
         Managers.NPC.Init(SceneType);
+
+
     }
     private void Update()
     {
@@ -202,47 +209,5 @@ public class GameScene : BaseScene
         Debug.Log("InGameScene Clear");
     }
 
-    public void Set_Resolution()
-    {
-        int set_Width = 2560;
-        int set_Height = 1440;
-        int device_Width = Screen.width;
-        int device_Height = Screen.height;
-        
-        // Screen.SetResolution(set_Width,(int)((float)device_Height/device_Width) * set_Width, false);
-        // if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
-        // {
-        //     float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
-        //     Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, 1f); // 새로운 Rect 적용
-        // }
-        // else // 게임의 해상도 비가 더 큰 경우
-        // {
-        //     float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // 새로운 높이
-        //     Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // 새로운 Rect 적용
-        // }
-        if(set_Width > device_Width)
-        {
-            set_Height = (int)(set_Height * ((float)device_Width/set_Width));
-            set_Width = device_Width;
-        }
-        if(set_Height > device_Height)
-        {
-            set_Width = (int)(set_Width * ((float)device_Height/set_Height));
-            set_Height = device_Height;
-        }
-        Debug.LogFormat("set_Width = {0}, set_Height = {1}",set_Width, set_Height);
-        Screen.SetResolution(set_Width,set_Height, false);
-        if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
-        {
-            float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
-            Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, set_Height); // 새로운 Rect 적용
-            //Debug.LogFormat("Current Resolution = {0} * {1}",new_Width,set_Height);
-        }
-        else // 게임의 해상도 비가 더 큰 경우
-        {
-            float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // 새로운 높이
-            Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, set_Width, newHeight); // 새로운 Rect 적용
-            //Debug.LogFormat("Current Resolution = {0} * {1}",set_Width,newHeight);
-        }
-    }
+    
 }

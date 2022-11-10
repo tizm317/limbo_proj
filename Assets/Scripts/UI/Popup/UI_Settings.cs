@@ -14,8 +14,8 @@ public class UI_Settings : UI_Popup
     private Slider BrightSlide;
     private new Light light;
     private new KeyManager KM;
-    public Button[] buttons = new Button[5];
-    public Text[] button_texts = new Text[5];
+    public Button[] buttons = new Button[8];
+    public Text[] button_texts = new Text[8];
     enum GameObjects
     {
         BGMSwitch,
@@ -33,6 +33,12 @@ public class UI_Settings : UI_Popup
         SKILL3,
         SKILL4,
         OPTION,
+        EMOJI,
+        EMOTEACTION,
+        UITOGGLE,
+        INVENTORY,
+        MINIMAP,
+        ZOOM,
     }
 
     private void Start()
@@ -82,18 +88,42 @@ public class UI_Settings : UI_Popup
         
         GetButton((int)Buttons.CloseButton).gameObject.BindEvent(CloseButtonClicked);
         GetButton((int)Buttons.ApplyButton).gameObject.BindEvent(ApplyButtonClicked);
+        
         GetButton((int)Buttons.SKILL1).gameObject.BindEvent(SKILL1Change);
         buttons[0] = GetButton((int)Buttons.SKILL1).gameObject.GetComponent<Button>();
+        
         GetButton((int)Buttons.SKILL2).gameObject.BindEvent(SKILL2Change);
         buttons[1] = GetButton((int)Buttons.SKILL2).gameObject.GetComponent<Button>();
+        
         GetButton((int)Buttons.SKILL3).gameObject.BindEvent(SKILL3Change);
         buttons[2] = GetButton((int)Buttons.SKILL3).gameObject.GetComponent<Button>();
+        
         GetButton((int)Buttons.SKILL4).gameObject.BindEvent(SKILL4Change);
         buttons[3] = GetButton((int)Buttons.SKILL4).gameObject.GetComponent<Button>();
+        
         GetButton((int)Buttons.OPTION).gameObject.BindEvent(OPTIONChange);
         buttons[4] = GetButton((int)Buttons.OPTION).gameObject.GetComponent<Button>();
+        
+        GetButton((int)Buttons.EMOJI).gameObject.BindEvent(EMOJIChange);
+        buttons[5] = GetButton((int)Buttons.EMOJI).gameObject.GetComponent<Button>();
+        
+        GetButton((int)Buttons.EMOTEACTION).gameObject.BindEvent(EMOTEACTIONChange);
+        buttons[6] = GetButton((int)Buttons.EMOTEACTION).gameObject.GetComponent<Button>();
+        
+        GetButton((int)Buttons.UITOGGLE).gameObject.BindEvent(UITOGGLEChange);
+        buttons[7] = GetButton((int)Buttons.UITOGGLE).gameObject.GetComponent<Button>();
+
+        GetButton((int)Buttons.INVENTORY).gameObject.BindEvent(INVENTORYChange);
+        buttons[8] = GetButton((int)Buttons.INVENTORY).gameObject.GetComponent<Button>();
+
+        GetButton((int)Buttons.MINIMAP).gameObject.BindEvent(MINIMAPChange);
+        buttons[9] = GetButton((int)Buttons.MINIMAP).gameObject.GetComponent<Button>();
+
+        GetButton((int)Buttons.ZOOM).gameObject.BindEvent(ZOOMChange);
+        buttons[10] = GetButton((int)Buttons.ZOOM).gameObject.GetComponent<Button>();
+
         taps[2].SetActive(false);
-        for(int i = 0; i < buttons.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
             button_texts[i] = buttons[i].transform.Find("Text").GetComponent<Text>();
         }
@@ -207,7 +237,37 @@ public class UI_Settings : UI_Popup
         KM.ChangeKey(4);
         button_texts[4].text = KeySetting.keys[KeyAction.OPTION].ToString();
     }
-   
+    private void EMOJIChange(PointerEventData data)
+    {
+        KM.ChangeKey(5);
+        button_texts[5].text = KeySetting.keys[KeyAction.EMOJI].ToString();
+    }
+    private void EMOTEACTIONChange(PointerEventData data)
+    {
+        KM.ChangeKey(6);
+        button_texts[6].text = KeySetting.keys[KeyAction.EMOTEACTION].ToString();
+    }
+    private void UITOGGLEChange(PointerEventData data)
+    {
+        KM.ChangeKey(7);
+        button_texts[7].text = KeySetting.keys[KeyAction.UITOGGLE].ToString();
+    }
+    private void INVENTORYChange(PointerEventData data)
+    {
+        KM.ChangeKey(8);
+        button_texts[8].text = KeySetting.keys[KeyAction.INVENTORY].ToString();
+    }
+    private void MINIMAPChange(PointerEventData data)
+    {
+        KM.ChangeKey(9);
+        button_texts[9].text = KeySetting.keys[KeyAction.MINIMAP].ToString();
+    }
+    private void ZOOMChange(PointerEventData data)
+    {
+        KM.ChangeKey(10);
+        button_texts[10].text = KeySetting.keys[KeyAction.ZOOM].ToString();
+    }
+
     private void _Button_Text_Update()
     {
         for(int i = 0; i < buttons.Length; i++)
@@ -218,10 +278,14 @@ public class UI_Settings : UI_Popup
 
     IEnumerator Button_Text_Update()
     {
+        UI_InGame instance = FindObjectOfType<UI_InGame>();
         while(true)
         {
             if(taps[2].activeSelf)
+            {
                 _Button_Text_Update();
+                instance.Skill_HotKeyChange();
+            }
             yield return new WaitForEndOfFrame();
         }
     }

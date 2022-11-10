@@ -10,7 +10,7 @@ public class PlayerStat : Stat
 
     // player 필요 변수
     [SerializeField] protected int _exp;
-    [SerializeField] protected int _gold;
+    [SerializeField] protected uint _gold;
     [SerializeField] protected float _next_level_up;
     [SerializeField] protected float _regeneration;
     [SerializeField] protected float _mana;
@@ -18,7 +18,7 @@ public class PlayerStat : Stat
     [SerializeField] protected float _mana_regeneration;
     [SerializeField] protected int _skill_point;
     public int Exp { get { return _exp; } set { _exp = value; } }
-    public int Gold { get { return _gold; } set { _gold = value; } }
+    public uint Gold { get { return _gold; } set { _gold = value; } }
     public bool level_up = true;
     public float next_level_up {get {return _next_level_up; } set { _next_level_up = value; }}
     public float current_exp;
@@ -69,13 +69,10 @@ public class PlayerStat : Stat
         //    if (SceneManager.GetActiveScene().name == "InGameCemetery")
         //    {
         //            Managers.Scene.LoadScene(Define.Scene.InGameBoss);
-
         //    }
         //    else if (SceneManager.GetActiveScene().name == "InGameNature")
         //    {
         //            Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
-
-
         //    }
         //    else if (SceneManager.GetActiveScene().name == "InGameDesert")
         //    {

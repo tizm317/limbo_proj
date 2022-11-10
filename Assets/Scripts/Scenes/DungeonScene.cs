@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DungeonScene : BaseScene
+public class DungeonScene : GameScene
 {
    // CAPTCHA system
     UI_Captcha uI_Captcha;
@@ -16,9 +16,9 @@ public class DungeonScene : BaseScene
 
     protected override void Init()
     {
+        SceneType = Define.Scene.Dungeon;
         base.Init();
 
-        SceneType = Define.Scene.Dungeon;
 
         // 화면 크기 설정 *** (멀티 플레이 테스트할 때 전체화면 불편)
         Screen.SetResolution(640, 480, false);

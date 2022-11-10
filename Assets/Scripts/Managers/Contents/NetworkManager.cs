@@ -40,7 +40,7 @@ public class NetworkManager
 
 	public void OnUpdate()
 	{
-		// 패킷 큐 처리
+		// 패킷 큐에 넣은 거 다 꺼내서 처리하는 과정
 		List<PacketMessage> list = PacketQueue.Instance.PopAll();
 		foreach (PacketMessage packet in list)
 		{

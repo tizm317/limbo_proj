@@ -15948,11 +15948,11 @@ GameObject:
   - component: {fileID: 1730009821565375826}
   - component: {fileID: 1730009821565375661}
   - component: {fileID: 1730009821565375660}
-  - component: {fileID: 1730009821565375663}
   - component: {fileID: 1730009821565375662}
   - component: {fileID: -6909455830207362446}
+  - component: {fileID: 5509162820510981470}
   m_Layer: 9
-  m_Name: Enemy_Wizard
+  m_Name: Enemy_Wizard 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16051,26 +16051,6 @@ NavMeshAgent:
   m_BaseOffset: -1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1730009821565375663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730009821565375656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12a2f2a0a970a3408c1f4f291e0a33f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 7
-  _hp: 0
-  _maxHp: 0
-  _attack: 0
-  _defense: 0
-  _moveSpeed: 0
-  _turnSpeed: 0
-  _attackSpeed: 0
 --- !u!114 &1730009821565375662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16106,6 +16086,33 @@ MonoBehaviour:
   bomb: {fileID: 940739929112868649, guid: b02a899f65b7a55448bbc239510294d5, type: 3}
   idx: 0
   cooldownTime: 5
+--- !u!114 &5509162820510981470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730009821565375656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f893939d20cfbba49997f2bf8c3230c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: 7
+  _hp: 0
+  _maxHp: 0
+  _attack: 0
+  _defense: 0
+  _moveSpeed: 0
+  _turnSpeed: 0
+  _attackSpeed: 0
+  _enemyExp: 0
+  _itemData:
+  - {fileID: 11400000, guid: 881994cd713bc8346951c557c79a2b0a, type: 2}
+  - {fileID: 11400000, guid: 3b4b0a4100c708b448f72fc5a68854ac, type: 2}
+  _questItemData: {fileID: 11400000, guid: 0466937eec6b87848a3876adb717d9a5, type: 2}
+  aRate: 5
+  bRate: 5
 --- !u!1 &1730009821568943016
 GameObject:
   m_ObjectHideFlags: 0

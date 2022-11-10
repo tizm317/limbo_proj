@@ -33,15 +33,17 @@ public class MyWarrior : Warrior
         Managers.Input.KeyAction -= OnKeyClicked;
         Managers.Input.KeyAction += OnKeyClicked;
 
-        // 인게임 씬 전에 Init한번하는데?
+        // 인게임 씬 전에 Init한번하는데? -> null 이면 나중에 다시 Init 실행
         cam = Camera.main;
-        if (cam == null)
+        Camera_Controller controller = cam.GetComponent<Camera_Controller>();
+        //Debug.Log(Managers.Scene.CurrentScene.SceneType);
+        if (cam == null || controller == null)
         {
             // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루팀으로 대기함
-            ProcessLater(() => Camera.main != null, () => Init());
+            ProcessLater(() => cam != null, () => Init());
             return;
         }
-        cam.GetComponent<Camera_Controller>().SetTarget(this.gameObject);
+        controller.SetTarget(this.gameObject);
 
 
         // 미니맵
@@ -50,23 +52,18 @@ public class MyWarrior : Warrior
 
     protected override void Move()
     {
+        // 서버에 패킷 보냄
+        // 이전 상태, 이전 목적지 위치
         State prevState = curState;
         Vector3 prevDest = Dest;
-        //List<Vector3> prevDest = Destination;
 
-        base.Move();
+        base.Move(); // 이동하는 부분
 
-        // State가 변하거나, 위치가 변하면 패킷 보냄
+        // State가 변하거나, 목적지 위치가 변하면 서버에 패킷 보냄
         if(prevState != curState || Dest != prevDest)
-        //if(Dest != prevDest)
         {
             C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
-
-            //foreach (var v in dest)
-            //{
-            //    movePacket.Destinations.Add(v);
-            //}
+            movePacket.DestInfo = DestInfo;
 
             Managers.Network.Send(movePacket);
         }

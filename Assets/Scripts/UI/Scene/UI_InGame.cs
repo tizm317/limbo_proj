@@ -32,8 +32,8 @@ public class UI_InGame : UI_Scene
     PlayerMgr pm;
     #region RadialMenu
     private UI_RadialMenu radialMenu;
-    private KeyCode key_emoticon = KeyCode.T;
-    private KeyCode key_action = KeyCode.G;
+    //private KeyCode key_emoticon = KeySetting.keys[KeyAction.EMOJI];
+    //private KeyCode key_action = KeySetting.keys[KeyAction.];
 
     UI_Emoticon emoticon;
 
@@ -87,10 +87,14 @@ public class UI_InGame : UI_Scene
     }
     enum Texts
     {
-        Q_LvText,
-        W_LvText,
-        E_LvText,
-        R_LvText,
+        SKILL1_LvText,
+        SKILL2_LvText,
+        SKILL3_LvText,
+        SKILL4_LvText,
+        SKILL1_HotKey,
+        SKILL2_HotKey,
+        SKILL3_HotKey,
+        SKILL4_HotKey,
         LevelText,
         MapText,
     }
@@ -183,6 +187,8 @@ public class UI_InGame : UI_Scene
             return;
         }
         player = playerGO.GetComponent<Player>();
+        player.SetPlayer(playerGO);
+
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu
@@ -400,6 +406,7 @@ public class UI_InGame : UI_Scene
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
     {
         ps = player.GetPlayer().GetComponent<PlayerStat>();
+        //ps = playerGO.GetComponent<PlayerStat>();
         if (ps == null) return;
         GameObject temp = gameObject.transform.GetChild(0).gameObject;
         
@@ -475,6 +482,14 @@ public class UI_InGame : UI_Scene
         StopCoroutine(CoLevelUpPopup());
     }
 
+    public void Skill_HotKeyChange()
+    {
+        GetText((int)Texts.SKILL1_HotKey).text = KeySetting.keys[KeyAction.SKILL1].ToString();
+        GetText((int)Texts.SKILL2_HotKey).text = KeySetting.keys[KeyAction.SKILL2].ToString();
+        GetText((int)Texts.SKILL3_HotKey).text = KeySetting.keys[KeyAction.SKILL3].ToString();
+        GetText((int)Texts.SKILL4_HotKey).text = KeySetting.keys[KeyAction.SKILL4].ToString();
+    }
+
     private void OnApplicationQuit()
     {
         // 꺼질 때에도 저장해야 함
@@ -492,7 +507,7 @@ public class UI_InGame : UI_Scene
 
         // Chat, Quest Toggle
         // 탭 누르면 , 인게임 UI 전체 토글 클릭 효과
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.UITOGGLE]))
         {
             Button chatToggle = GetButton((int)Buttons.ChatBtnToggle);
             Button questToggle = GetButton((int)Buttons.QuestBtnToggle);
@@ -517,7 +532,7 @@ public class UI_InGame : UI_Scene
         }
 
         // 키보드 입력 -> 팝업UI On/Off
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.INVENTORY]))
         {
             // 인벤토리 UI
 
@@ -539,7 +554,7 @@ public class UI_InGame : UI_Scene
                 ui_Equipment.ClosePopupUI();
             }
         }
-        else if(Input.GetKeyDown(KeyCode.M))
+        else if(Input.GetKeyDown(KeySetting.keys[KeyAction.MINIMAP]))
         {
             // 미니맵 UI
             // off -> 최소 -> 중간 -> 최대 -> off
@@ -553,14 +568,14 @@ public class UI_InGame : UI_Scene
             
             miniMap.SizeControl();
         }
-        else if(Input.GetKeyDown(KeyCode.Z))
+        else if(Input.GetKeyDown(KeySetting.keys[KeyAction.ZOOM]))
         {
             if (!miniMap)
                 return;
             // 미니맵 줌 조절
             miniMap.Zoom();
         }
-        else if(Input.GetKeyDown(KeyCode.Escape))
+        else if(Input.GetKeyDown(KeySetting.keys[KeyAction.OPTION]))
         {
             if (!ui_GameMenu)
             {
@@ -594,14 +609,14 @@ public class UI_InGame : UI_Scene
             //}
         }
 
-        if (Input.GetKeyDown(key_action))
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.EMOTEACTION]))
         {
             radialMenu.SetPieceImageSprites(sprites_action);
             radialMenu.Show();
             co = StartCoroutine(coKeyUpCheck());
         }
 
-        if (Input.GetKeyDown(key_emoticon))
+        if (Input.GetKeyDown(KeySetting.keys[KeyAction.EMOJI]))
         {
             radialMenu.SetPieceImageSprites(sprites_emoticon);
             radialMenu.Show();
@@ -610,19 +625,19 @@ public class UI_InGame : UI_Scene
 
         // 스킬 레벨업 단축키 (좌컨트롤 + QWER)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL1]))
             {
                 skillUpButtonClicked(UI_SkillUpButtonList[0]);
             }
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL2]))
             {
                 skillUpButtonClicked(UI_SkillUpButtonList[1]);
             }
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL3]))
             {
                 skillUpButtonClicked(UI_SkillUpButtonList[2]);
             }
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeySetting.keys[KeyAction.SKILL4]))
             {
                 skillUpButtonClicked(UI_SkillUpButtonList[3]);
             }
@@ -655,7 +670,7 @@ public class UI_InGame : UI_Scene
     {
         while (true)
         {
-            if (Input.GetKeyUp(key_action))
+            if (Input.GetKeyUp(KeySetting.keys[KeyAction.EMOTEACTION]))
             {
                 int selected = radialMenu.Hide();
                 //Debug.Log($"Selected : {selected}");
@@ -665,7 +680,7 @@ public class UI_InGame : UI_Scene
                 StopCoroutine(co);
             }
 
-            if (Input.GetKeyUp(key_emoticon))
+            if (Input.GetKeyUp(KeySetting.keys[KeyAction.EMOJI]))
             {
                 int selected = radialMenu.Hide();
                 //Debug.Log($"Selected : {selected}");

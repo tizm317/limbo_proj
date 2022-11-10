@@ -16,7 +16,7 @@ namespace Server
 	{
 		public PlayerServerState ServerState { get; private set; } = PlayerServerState.ServerStateLogin;
 
-		public Player MyPlayer { get; set; }
+		public Player MyPlayer { get; set; } // Session이 관리하는 Player(Room) 알면 편함 (ex : 내 Room 찾아서 나갈 때 접근)
 		public int SessionId { get; set; }
 
 
@@ -34,11 +34,12 @@ namespace Server
 			Send(new ArraySegment<byte>(sendBuffer));
 		}
 
+		// 연결 이후 작업
 		public override void OnConnected(EndPoint endPoint)
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
-			// 연결됨을 알림.
+			// 연결됨을 알림. To Client
             {
 				S_Connected connectedPacket = new S_Connected();
 				Send(connectedPacket);
@@ -49,19 +50,27 @@ namespace Server
             MyPlayer = PlayerManager.Instance.Add();
             {   // 정보 셋팅
                 MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시 (나중에는 DB에서)
+				
+				// 플레이어 위치
 				MyPlayer.Info.PosInfo.State = State.Idle;
 				MyPlayer.Info.PosInfo.PosX = 1.2f;
 				MyPlayer.Info.PosInfo.PosY = 1; // 높이
 				MyPlayer.Info.PosInfo.PosZ = -62.6f;
+
+				// 목적지 위치
+				MyPlayer.Info.DestInfo.State = State.Idle;
+				MyPlayer.Info.DestInfo.PosX = 1.2f;
+				MyPlayer.Info.DestInfo.PosY = 1; // 높이
+				MyPlayer.Info.DestInfo.PosZ = -62.6f;
+
 				MyPlayer.Info.Job = 0;
 				MyPlayer.Session = this;
 				//MyPlayer.Info.Destinations.Clear();
             }
 
             //// TODO : 입장 요청 들어오면
+			// Room 1 찾아서 입장시킴
             RoomManager.Instance.Find(1).EnterGame(MyPlayer);
-
-
         }
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -69,10 +78,13 @@ namespace Server
 			PacketManager.Instance.OnRecvPacket(this, buffer);
 		}
 
+		// 연결 끊긴 이후 작업
 		public override void OnDisconnected(EndPoint endPoint)
 		{
+			// Room 1에서 Leave시킴
 			RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.PlayerId);
 
+			// 세션 제거
 			SessionManager.Instance.Remove(this);
 
 			Console.WriteLine($"OnDisconnected : {endPoint}");
