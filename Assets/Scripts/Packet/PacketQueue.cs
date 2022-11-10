@@ -10,6 +10,7 @@ public class PacketMessage
 	public IMessage Message { get; set; }
 }
 
+// 유니티는 별도 쓰레드에서 컨텐츠 코드 바로 건드리면 안됨 -> 패킷큐에 넣고, 유니티 메인쓰레드에서 실행
 public class PacketQueue
 {
 	public static PacketQueue Instance { get; } = new PacketQueue();

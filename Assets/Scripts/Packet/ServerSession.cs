@@ -13,9 +13,10 @@ public class ServerSession : PacketSession
 	{
 		Debug.Log($"OnConnected : {endPoint}");
 
+		// 커스텀 핸들러 등록
 		PacketManager.Instance.CustomHandler = (s, m, i) =>
 		{
-			// 패킷 큐에 넣음 -> NetworkManager에서 처리(Main Thread)
+			// 커스텀 핸들러 하는 일 : 패킷을 패킷 큐에 넣음 (-> 나중에 NetworkManager에서 꺼내서 처리(Main Thread))
 			PacketQueue.Instance.Push(i, m);
 		};
 	}

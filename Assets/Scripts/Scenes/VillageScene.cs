@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VillageScene : BaseScene
+public class VillageScene : GameScene
 {
     void Awake()
     {
@@ -16,26 +16,6 @@ public class VillageScene : BaseScene
         
         // 초기화
         base.Init();
-
-        // 씬 UI
-        Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
-
-        // Village Scene BGM 설정
-        Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
-
-
-        // 커서컨트롤러 @Scene
-        gameObject.GetOrAddComponent<CursorController>();
-        // @Scene으로 옮김
-        //gameObject.GetOrAddComponent<UI_Setting>();
-        //gameObject.GetOrAddComponent<Player_Controller>();
-
-
-        //
-        Managers.Data.MapDict.Clear();
-        Managers.Data.MapTestSceneMapDataLoad();
-
-        Managers.NPC.Init(SceneType);
     }
     public override void Clear()
     {

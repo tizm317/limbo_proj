@@ -23,23 +23,20 @@ class PacketHandler
 			return;
 
 		// TODO : 검증
-		
-		// 일단 서버에서 좌표 이동 (각자 클라에서 이동)
-		//PlayerInfo info = clientSession.MyPlayer.Info;
-		//info.PosInfo = movePacket.PosInfo;
-
-		//info.Destinations.Clear();
-		//info.Destinations.Add(movePacket.Destinations);
 
 		// 다른 플레이어한테도 알려준다
 		S_Move resMovePacket = new S_Move();
 		resMovePacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
-		resMovePacket.PosInfo = movePacket.PosInfo;
+		resMovePacket.PosInfo = movePacket.PosInfo; // destination의 좌표를 보내주는 것
 
-		//resMovePacket.Destinations.Clear();
-		//resMovePacket.Destinations.Add(movePacket.Destinations);
-		
+		// 나 빼고 같은 Room 에 속한 사람들에게 Broadcasting
+		// 나는 클라쪽에서 이동했기 때문.
 		clientSession.MyPlayer.Room.BroadcastWithOutMyself(resMovePacket);
+
+
+		// 일단 서버에서 좌표 이동 (각자 클라에서 이동하도록 수정함)
+		//PlayerInfo info = clientSession.MyPlayer.Info;
+		//info.PosInfo = movePacket.PosInfo;
 	}
 
 

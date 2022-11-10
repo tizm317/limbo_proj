@@ -183,6 +183,8 @@ public class UI_InGame : UI_Scene
             return;
         }
         player = playerGO.GetComponent<Player>();
+        player.SetPlayer(playerGO);
+
         miniMap = GetComponentInChildren<UI_MiniMap>();
 
         #region RadialMenu
@@ -400,6 +402,7 @@ public class UI_InGame : UI_Scene
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
     {
         ps = player.GetPlayer().GetComponent<PlayerStat>();
+        //ps = playerGO.GetComponent<PlayerStat>();
         if (ps == null) return;
         GameObject temp = gameObject.transform.GetChild(0).gameObject;
         
