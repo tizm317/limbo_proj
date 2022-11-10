@@ -12,6 +12,8 @@ public class EnemyStat : Stat
     public ItemData[] _itemData; //인벤토리에 넣을 아이템 
     public ItemData _questItemData; //인벤토리에 넣을 아이템 
 
+    //[SerializeField] protected uint _gold; //골드
+
     Enemy enemy;
     Inventory inventory;
 
@@ -24,6 +26,7 @@ public class EnemyStat : Stat
     public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
     public ItemData[] ItemData { get { return _itemData; } set { _itemData = value; } }
     public ItemData QuestItemData { get { return _questItemData; } set { _questItemData = value; } }
+    //public uint Gold { get { return _gold; } set { _gold = value; } }
 
     void Init()
     {
@@ -49,7 +52,6 @@ public class EnemyStat : Stat
         _maxHp = stat.maxHp;
         _attack = stat.attack;
         _enemyExp = stat.totalExp;
-
     }
 
     public override void OnAttacked(Stat attacker)
@@ -95,6 +97,7 @@ public class EnemyStat : Stat
 
         inventory.Add_Without_UI_Update(_itemData[GetRandomRate()], out tempIdx);
         inventory.Add_Without_UI_Update(_questItemData, out tempIdx);
+        inventory.AddGold((uint)(_enemyExp*8));
 
         StartCoroutine(Die());
 
