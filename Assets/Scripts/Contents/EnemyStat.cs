@@ -9,22 +9,21 @@ public class EnemyStat : Stat
     //tool에서 확인하기 위함
     //HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
     [SerializeField] protected int _enemyExp; //제공하는 exp
-    //[SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
-    //[SerializeField] private int _itemIndex;
+    [SerializeField] protected ItemData[] _itemdata; //인벤토리에 넣을 아이템 
+    [SerializeField] private int _itemIndex;
 
     Enemy enemy;
-    //Inventory inventory;
+    Inventory inventory;
 
 
     // 외부에서 사용할 때
     public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
-
-    //public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
+    public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
 
     void Init()
     {
         enemy = gameObject.GetComponent<Enemy>();
-        //inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
+        inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
     }
     void Start()
     {
@@ -78,18 +77,16 @@ public class EnemyStat : Stat
     }
     protected override void OnDead(Stat attacker)
     {
-        StartCoroutine(Die());
-
         PlayerStat playerStat = attacker as PlayerStat;
         
         if (playerStat != null) //경험치
         {
             playerStat.Exp += EnemyExp;
         }
-        
-        //int tempIdx;
+
+        StartCoroutine(Die());
+
         //inventory.Add(_itemdata, idx: out tempIdx, 1);
-        
 
         //_itemIndex = Random.Range(1, ItemData.Length);  //확률 적용해야함
 
@@ -108,5 +105,6 @@ public class EnemyStat : Stat
 
         Managers.Game.Despawn(gameObject);
     }
+
 
 }

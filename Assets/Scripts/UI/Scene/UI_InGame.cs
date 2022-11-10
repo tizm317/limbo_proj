@@ -87,10 +87,14 @@ public class UI_InGame : UI_Scene
     }
     enum Texts
     {
-        Q_LvText,
-        W_LvText,
-        E_LvText,
-        R_LvText,
+        SKILL1_LvText,
+        SKILL2_LvText,
+        SKILL3_LvText,
+        SKILL4_LvText,
+        SKILL1_HotKey,
+        SKILL2_HotKey,
+        SKILL3_HotKey,
+        SKILL4_HotKey,
         LevelText,
         MapText,
     }
@@ -476,6 +480,14 @@ public class UI_InGame : UI_Scene
         
         GetObject((int)GameObjects.NotificationLevel).SetActive(false);
         StopCoroutine(CoLevelUpPopup());
+    }
+
+    public void Skill_HotKeyChange()
+    {
+        GetText((int)Texts.SKILL1_HotKey).text = KeySetting.keys[KeyAction.SKILL1].ToString();
+        GetText((int)Texts.SKILL2_HotKey).text = KeySetting.keys[KeyAction.SKILL2].ToString();
+        GetText((int)Texts.SKILL3_HotKey).text = KeySetting.keys[KeyAction.SKILL3].ToString();
+        GetText((int)Texts.SKILL4_HotKey).text = KeySetting.keys[KeyAction.SKILL4].ToString();
     }
 
     private void OnApplicationQuit()

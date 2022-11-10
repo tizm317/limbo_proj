@@ -278,10 +278,14 @@ public class UI_Settings : UI_Popup
 
     IEnumerator Button_Text_Update()
     {
+        UI_InGame instance = FindObjectOfType<UI_InGame>();
         while(true)
         {
             if(taps[2].activeSelf)
+            {
                 _Button_Text_Update();
+                instance.Skill_HotKeyChange();
+            }
             yield return new WaitForEndOfFrame();
         }
     }
