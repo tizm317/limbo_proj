@@ -92,7 +92,8 @@ public class Inventory : MonoBehaviour
         }
 
         // 골드
-        _MyGolds = uint.MaxValue;
+        //_MyGolds = uint.MaxValue;
+        _MyGolds = 0;
         _UI_inventory.SetMyGolds(_MyGolds);
     }
 
@@ -127,7 +128,8 @@ public class Inventory : MonoBehaviour
         }
 
         // 골드
-        _MyGolds = uint.MaxValue;
+        _MyGolds = 0;
+
         _UI_inventory.SetMyGolds(_MyGolds);
 
         // 로드 완료

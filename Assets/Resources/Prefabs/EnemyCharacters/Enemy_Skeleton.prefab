@@ -622,7 +622,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2443415099472430716}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -7.997867, y: 0, z: -7.642368}
+  m_LocalPosition: {x: -2.5783556, y: 0, z: 0.31961626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3867111384189034385}
@@ -753,9 +753,12 @@ MonoBehaviour:
   _turnSpeed: 0
   _attackSpeed: 0
   _enemyExp: 0
-  _itemdata: []
-  aRate: 0
-  bRate: 0
+  _itemData:
+  - {fileID: 11400000, guid: 881994cd713bc8346951c557c79a2b0a, type: 2}
+  - {fileID: 11400000, guid: 83ea7c0224ed5894dba4ea6400ce70e6, type: 2}
+  _questItemData: {fileID: 11400000, guid: d67d05751d6eb9f4db993a4412f77c70, type: 2}
+  aRate: 5
+  bRate: 5
 --- !u!1 &2453952598364242577
 GameObject:
   m_ObjectHideFlags: 0

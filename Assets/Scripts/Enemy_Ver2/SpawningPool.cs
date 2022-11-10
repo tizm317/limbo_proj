@@ -53,23 +53,23 @@ public class SpawningPool : MonoBehaviour
         {
             enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
             NavMeshAgent nma0 = enemyCharacter[0].GetComponent<NavMeshAgent>();
-            //enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Bear");
-            //NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
+            enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Bear");
+            NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
 
         }
         else if (SceneManager.GetActiveScene().name == "InGameDesert")
         {
-            enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_HorrorMutant");
+            enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_HorrorMutant");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
-            //enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
-            //NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
+            enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
+            NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
         }
         else if (SceneManager.GetActiveScene().name == "InGameCemetery")
         {
             
-            enemyCharacter[2] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
+            enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
             NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
-            enemyCharacter[3] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+            enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
             NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
         }
 

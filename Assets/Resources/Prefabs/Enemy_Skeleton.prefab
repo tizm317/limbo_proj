@@ -608,7 +608,7 @@ GameObject:
   - component: {fileID: 2892485228583897306}
   - component: {fileID: 2142077473178402836}
   m_Layer: 9
-  m_Name: Enemy_Skeleton
+  m_Name: Enemy_Skeleton 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -753,6 +753,12 @@ MonoBehaviour:
   _turnSpeed: 0
   _attackSpeed: 0
   _enemyExp: 0
+  _itemData:
+  - {fileID: 11400000, guid: 881994cd713bc8346951c557c79a2b0a, type: 2}
+  - {fileID: 11400000, guid: 83ea7c0224ed5894dba4ea6400ce70e6, type: 2}
+  _questItemData: {fileID: 11400000, guid: d67d05751d6eb9f4db993a4412f77c70, type: 2}
+  aRate: 5
+  bRate: 5
 --- !u!1 &2453952598364242577
 GameObject:
   m_ObjectHideFlags: 0

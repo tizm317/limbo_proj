@@ -9,13 +9,12 @@ public class EnemyStat : Stat
     //tool에서 확인하기 위함
     //HY : 내부에서 쓰이는 변수 이름 앞에 _ 붙여둠
     [SerializeField] protected int _enemyExp; //제공하는 exp
-    public ItemData[] _itemdata; //인벤토리에 넣을 아이템 
+    public ItemData[] _itemData; //인벤토리에 넣을 아이템 
+    public ItemData _questItemData; //인벤토리에 넣을 아이템 
 
     Enemy enemy;
     Inventory inventory;
-    int _itemidx;
 
-    
     public float aRate; //a비율
     public float bRate; //b비율
     private float rate;
@@ -23,7 +22,8 @@ public class EnemyStat : Stat
 
     // 외부에서 사용할 때
     public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
-    public ItemData[] ItemData { get { return _itemdata; } set { _itemdata = value; } }
+    public ItemData[] ItemData { get { return _itemData; } set { _itemData = value; } }
+    public ItemData QuestItemData { get { return _questItemData; } set { _questItemData = value; } }
 
     void Init()
     {
@@ -31,7 +31,7 @@ public class EnemyStat : Stat
         inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
 
         float a = bRate / (bRate + aRate);
-        length = _itemdata.Length;
+        length = _itemData.Length;
         rate = length - (length * a);
     }
     void Start()
@@ -91,17 +91,15 @@ public class EnemyStat : Stat
         if (playerStat != null) //경험치
             playerStat.Exp += EnemyExp;
 
-        //임시 test용 랜덤값 받기 위함
-        _itemidx = Random.Range(0, _itemdata.Length);
-
         int tempIdx;
-        inventory.Add(_itemdata[GetRandomRate()], idx: out tempIdx);
+
+        inventory.Add_Without_UI_Update(_itemData[GetRandomRate()], out tempIdx);
+        inventory.Add_Without_UI_Update(_questItemData, out tempIdx);
 
         StartCoroutine(Die());
 
         ////아이템 리스트로 해서 아이템 넣어두고 랜덤하게 나올 수 있도록 만들어야 함
         //int tempIdx;
-        //inventory.Add(_itemdata, idx: out tempIdx, 1);
         //inventory.Add_Without_UI_Update(ItemData[_itemIndex], idx: out tempIdx, 1);
     }
 
