@@ -47,8 +47,7 @@ public class UI_Equipment : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         GetObject((int)GameObjects.Slider).BindEvent(onSliderDrag, Define.UIEvent.Drag);
 
-        Scene = GameObject.Find("@Scene");
-        player_State = Scene.GetComponent<Player>();
+        player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         player = player_State.GetPlayer().transform;
         //player = GameObject.Find("Player").transform;
         selfCam = player.Find("SelfCam").GetComponent<Camera>();
