@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DungeonScene : BaseScene
+public class DungeonScene : GameScene
 {
    // CAPTCHA system
     UI_Captcha uI_Captcha;

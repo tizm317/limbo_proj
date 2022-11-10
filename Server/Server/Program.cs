@@ -88,6 +88,8 @@ namespace Server
 			//	db.SaveChanges(); // exception Handling 을 해야함
 			//         }
 
+			// 게임룸 1개 생성 -> TODO 나중에는 데이터로 빼서, 시작지역 몇번에서 시작하고 정해줘야함!!
+			// 일단은 1번룸만 사용한다고 가정
 			RoomManager.Instance.Add();
 
 			// DNS (Domain Name System)

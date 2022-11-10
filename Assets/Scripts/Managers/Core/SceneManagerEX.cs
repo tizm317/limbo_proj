@@ -19,9 +19,9 @@ public class SceneManagerEX
         // �츮�� Define.Scene ���� enum �� Ȱ���ϴϱ� �ٲ�
 
         Managers.Clear(); // ���ʿ��� �޸� �� ����
-        LoadingScene.LoadScene(GetSceneName(type));
+        //LoadingScene.LoadScene(GetSceneName(type));
         // ����Ƽ ���� LoadScene �Լ� Ȱ�� - string �� �ֱ� ���� GetSceneName �Լ� ���
-        //SceneManager.LoadScene(GetSceneName(type)); // ���� �� �̵�  
+        SceneManager.LoadScene(GetSceneName(type)); // ���� �� �̵�  
     }
 
     string GetSceneName(Define.Scene type)

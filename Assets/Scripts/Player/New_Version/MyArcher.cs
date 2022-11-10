@@ -26,23 +26,18 @@ public class MyArcher : Archer
 
     protected override void Move()
     {
+        // 서버에 패킷 보냄
+        // 이전 상태, 이전 목적지 위치
         State prevState = curState;
         Vector3 prevDest = Dest;
-        //List<Vector3> prevDest = Destination;
 
-        base.Move();
+        base.Move(); // 이동하는 부분
 
-        // State가 변하거나, 위치가 변하면 패킷 보냄
+        // State가 변하거나, 목적지 위치가 변하면 서버에 패킷 보냄
         if (prevState != curState || Dest != prevDest)
-        //if(Dest != prevDest)
         {
             C_Move movePacket = new C_Move();
             movePacket.PosInfo = PosInfo;
-
-            //foreach (var v in dest)
-            //{
-            //    movePacket.Destinations.Add(v);
-            //}
 
             Managers.Network.Send(movePacket);
         }

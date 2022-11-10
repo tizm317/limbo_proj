@@ -16,7 +16,7 @@ namespace Server
 	{
 		public PlayerServerState ServerState { get; private set; } = PlayerServerState.ServerStateLogin;
 
-		public Player MyPlayer { get; set; }
+		public Player MyPlayer { get; set; } // Session이 관리하는 Player(Room) 알면 편함 (ex : 내 Room 찾아서 나갈 때 접근)
 		public int SessionId { get; set; }
 
 
@@ -34,11 +34,12 @@ namespace Server
 			Send(new ArraySegment<byte>(sendBuffer));
 		}
 
+		// 연결 이후 작업
 		public override void OnConnected(EndPoint endPoint)
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
-			// 연결됨을 알림.
+			// 연결됨을 알림. To Client
             {
 				S_Connected connectedPacket = new S_Connected();
 				Send(connectedPacket);
@@ -59,9 +60,8 @@ namespace Server
             }
 
             //// TODO : 입장 요청 들어오면
+			// Room 1 찾아서 입장시킴
             RoomManager.Instance.Find(1).EnterGame(MyPlayer);
-
-
         }
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -69,10 +69,13 @@ namespace Server
 			PacketManager.Instance.OnRecvPacket(this, buffer);
 		}
 
+		// 연결 끊긴 이후 작업
 		public override void OnDisconnected(EndPoint endPoint)
 		{
+			// Room 1에서 Leave시킴
 			RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.PlayerId);
 
+			// 세션 제거
 			SessionManager.Instance.Remove(this);
 
 			Console.WriteLine($"OnDisconnected : {endPoint}");

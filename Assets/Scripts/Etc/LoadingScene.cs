@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class LoadingScene : MonoBehaviour
+public class LoadingScene : BaseScene
 {
     public static string nextScene = "InGameCemetery";
     [SerializeField] Image progressBar;
@@ -11,6 +11,7 @@ public class LoadingScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SceneType = Define.Scene.Unknown;
         StartCoroutine(LoadScene());
     }
 
@@ -52,5 +53,10 @@ public class LoadingScene : MonoBehaviour
 
             }
         }
+    }
+
+    public override void Clear()
+    {
+
     }
 }

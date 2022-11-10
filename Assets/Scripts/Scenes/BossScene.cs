@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossScene : BaseScene
+public class BossScene : GameScene
 {
     /*
     //class Test
