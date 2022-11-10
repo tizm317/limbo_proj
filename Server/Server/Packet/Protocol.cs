@@ -27,22 +27,23 @@ namespace Google.Protobuf.Protocol {
             "Cg5Qcm90b2NvbC5wcm90bxIIUHJvdG9jb2wiMwoLU19FbnRlckdhbWUSJAoG",
             "cGxheWVyGAEgASgLMhQuUHJvdG9jb2wuUGxheWVySW5mbyINCgtTX0xlYXZl",
             "R2FtZSIwCgdTX1NwYXduEiUKB3BsYXllcnMYASADKAsyFC5Qcm90b2NvbC5Q",
-            "bGF5ZXJJbmZvIh4KCVNfRGVzcGF3bhIRCglwbGF5ZXJJZHMYASADKAUiMQoG",
-            "Q19Nb3ZlEicKB3Bvc0luZm8YASABKAsyFi5Qcm90b2NvbC5Qb3NpdGlvbklu",
-            "Zm8iQwoGU19Nb3ZlEhAKCHBsYXllcklkGAEgASgFEicKB3Bvc0luZm8YAiAB",
-            "KAsyFi5Qcm90b2NvbC5Qb3NpdGlvbkluZm8iLwoGQ19DaGF0EhAKCHBsYXll",
-            "cklkGAEgASgFEhMKC2NoYXRNZXNzYWdlGAIgASgJIi8KBlNfQ2hhdBIQCghw",
-            "bGF5ZXJJZBgBIAEoBRITCgtjaGF0TWVzc2FnZRgCIAEoCSINCgtTX0Nvbm5l",
-            "Y3RlZCIbCgdDX0xvZ2luEhAKCHVuaXF1ZUlkGAEgASgJIkYKB1NfTG9naW4S",
-            "DwoHbG9naW5PaxgBIAEoBRIqCgdwbGF5ZXJzGAIgAygLMhkuUHJvdG9jb2wu",
-            "TG9iYnlQbGF5ZXJJbmZvIh4KDkNfQ3JlYXRlUGxheWVyEgwKBG5hbWUYASAB",
-            "KAkiOwoOU19DcmVhdGVQbGF5ZXISKQoGcGxheWVyGAEgASgLMhkuUHJvdG9j",
-            "b2wuTG9iYnlQbGF5ZXJJbmZvIhsKC0NfRW50ZXJHYW1lEgwKBG5hbWUYASAB",
-            "KAkiUgoPTG9iYnlQbGF5ZXJJbmZvEgwKBG5hbWUYASABKAkSJAoIc3RhdElu",
-            "Zm8YAiABKAsyEi5Qcm90b2NvbC5TdGF0SW5mbxILCgNqb2IYAyABKAUiYgoK",
-            "UGxheWVySW5mbxIQCghwbGF5ZXJJZBgBIAEoBRIMCgRuYW1lGAIgASgJEicK",
-            "B3Bvc0luZm8YAyABKAsyFi5Qcm90b2NvbC5Qb3NpdGlvbkluZm8SCwoDam9i",
-            "GAQgASgFImUKCFN0YXRJbmZvEg0KBWxldmVsGAEgASgFEgoKAmhwGAIgASgF",
+            "bGF5ZXJJbmZvIh4KCVNfRGVzcGF3bhIRCglwbGF5ZXJJZHMYASADKAUiMgoG",
+            "Q19Nb3ZlEigKCGRlc3RJbmZvGAEgASgLMhYuUHJvdG9jb2wuUG9zaXRpb25J",
+            "bmZvIkQKBlNfTW92ZRIQCghwbGF5ZXJJZBgBIAEoBRIoCghkZXN0SW5mbxgC",
+            "IAEoCzIWLlByb3RvY29sLlBvc2l0aW9uSW5mbyIvCgZDX0NoYXQSEAoIcGxh",
+            "eWVySWQYASABKAUSEwoLY2hhdE1lc3NhZ2UYAiABKAkiLwoGU19DaGF0EhAK",
+            "CHBsYXllcklkGAEgASgFEhMKC2NoYXRNZXNzYWdlGAIgASgJIg0KC1NfQ29u",
+            "bmVjdGVkIhsKB0NfTG9naW4SEAoIdW5pcXVlSWQYASABKAkiRgoHU19Mb2dp",
+            "bhIPCgdsb2dpbk9rGAEgASgFEioKB3BsYXllcnMYAiADKAsyGS5Qcm90b2Nv",
+            "bC5Mb2JieVBsYXllckluZm8iHgoOQ19DcmVhdGVQbGF5ZXISDAoEbmFtZRgB",
+            "IAEoCSI7Cg5TX0NyZWF0ZVBsYXllchIpCgZwbGF5ZXIYASABKAsyGS5Qcm90",
+            "b2NvbC5Mb2JieVBsYXllckluZm8iGwoLQ19FbnRlckdhbWUSDAoEbmFtZRgB",
+            "IAEoCSJSCg9Mb2JieVBsYXllckluZm8SDAoEbmFtZRgBIAEoCRIkCghzdGF0",
+            "SW5mbxgCIAEoCzISLlByb3RvY29sLlN0YXRJbmZvEgsKA2pvYhgDIAEoBSKM",
+            "AQoKUGxheWVySW5mbxIQCghwbGF5ZXJJZBgBIAEoBRIMCgRuYW1lGAIgASgJ",
+            "EicKB3Bvc0luZm8YAyABKAsyFi5Qcm90b2NvbC5Qb3NpdGlvbkluZm8SKAoI",
+            "ZGVzdEluZm8YBCABKAsyFi5Qcm90b2NvbC5Qb3NpdGlvbkluZm8SCwoDam9i",
+            "GAUgASgFImUKCFN0YXRJbmZvEg0KBWxldmVsGAEgASgFEgoKAmhwGAIgASgF",
             "Eg0KBW1heEhwGAMgASgFEg4KBmF0dGFjaxgEIAEoBRINCgVzcGVlZBgFIAEo",
             "AhIQCgh0b3RhbEV4cBgGIAEoBSJYCgxQb3NpdGlvbkluZm8SHgoFc3RhdGUY",
             "ASABKA4yDy5Qcm90b2NvbC5TdGF0ZRIMCgRwb3NYGAIgASgCEgwKBHBvc1kY",
@@ -65,8 +66,8 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_LeaveGame), global::Google.Protobuf.Protocol.S_LeaveGame.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Spawn), global::Google.Protobuf.Protocol.S_Spawn.Parser, new[]{ "Players" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Despawn), global::Google.Protobuf.Protocol.S_Despawn.Parser, new[]{ "PlayerIds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_Move), global::Google.Protobuf.Protocol.C_Move.Parser, new[]{ "PosInfo" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Move), global::Google.Protobuf.Protocol.S_Move.Parser, new[]{ "PlayerId", "PosInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_Move), global::Google.Protobuf.Protocol.C_Move.Parser, new[]{ "DestInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Move), global::Google.Protobuf.Protocol.S_Move.Parser, new[]{ "PlayerId", "DestInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_Chat), global::Google.Protobuf.Protocol.C_Chat.Parser, new[]{ "PlayerId", "ChatMessage" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Chat), global::Google.Protobuf.Protocol.S_Chat.Parser, new[]{ "PlayerId", "ChatMessage" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Connected), global::Google.Protobuf.Protocol.S_Connected.Parser, null, null, null, null, null),
@@ -76,7 +77,7 @@ namespace Google.Protobuf.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_CreatePlayer), global::Google.Protobuf.Protocol.S_CreatePlayer.Parser, new[]{ "Player" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.C_EnterGame), global::Google.Protobuf.Protocol.C_EnterGame.Parser, new[]{ "Name" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.LobbyPlayerInfo), global::Google.Protobuf.Protocol.LobbyPlayerInfo.Parser, new[]{ "Name", "StatInfo", "Job" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerInfo), global::Google.Protobuf.Protocol.PlayerInfo.Parser, new[]{ "PlayerId", "Name", "PosInfo", "Job" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerInfo), global::Google.Protobuf.Protocol.PlayerInfo.Parser, new[]{ "PlayerId", "Name", "PosInfo", "DestInfo", "Job" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.StatInfo), global::Google.Protobuf.Protocol.StatInfo.Parser, new[]{ "Level", "Hp", "MaxHp", "Attack", "Speed", "TotalExp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PositionInfo), global::Google.Protobuf.Protocol.PositionInfo.Parser, new[]{ "State", "PosX", "PosY", "PosZ" }, null, null, null, null)
           }));
@@ -629,7 +630,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public C_Move(C_Move other) : this() {
-      posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      destInfo_ = other.destInfo_ != null ? other.destInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -638,17 +639,17 @@ namespace Google.Protobuf.Protocol {
       return new C_Move(this);
     }
 
-    /// <summary>Field number for the "posInfo" field.</summary>
-    public const int PosInfoFieldNumber = 1;
-    private global::Google.Protobuf.Protocol.PositionInfo posInfo_;
+    /// <summary>Field number for the "destInfo" field.</summary>
+    public const int DestInfoFieldNumber = 1;
+    private global::Google.Protobuf.Protocol.PositionInfo destInfo_;
     /// <summary>
     ///repeated Position destinations = 2;
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.Protocol.PositionInfo PosInfo {
-      get { return posInfo_; }
+    public global::Google.Protobuf.Protocol.PositionInfo DestInfo {
+      get { return destInfo_; }
       set {
-        posInfo_ = value;
+        destInfo_ = value;
       }
     }
 
@@ -665,14 +666,14 @@ namespace Google.Protobuf.Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (!object.Equals(DestInfo, other.DestInfo)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (destInfo_ != null) hash ^= DestInfo.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -686,9 +687,9 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (posInfo_ != null) {
+      if (destInfo_ != null) {
         output.WriteRawTag(10);
-        output.WriteMessage(PosInfo);
+        output.WriteMessage(DestInfo);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -698,8 +699,8 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (posInfo_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      if (destInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DestInfo);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -712,11 +713,11 @@ namespace Google.Protobuf.Protocol {
       if (other == null) {
         return;
       }
-      if (other.posInfo_ != null) {
-        if (posInfo_ == null) {
-          PosInfo = new global::Google.Protobuf.Protocol.PositionInfo();
+      if (other.destInfo_ != null) {
+        if (destInfo_ == null) {
+          DestInfo = new global::Google.Protobuf.Protocol.PositionInfo();
         }
-        PosInfo.MergeFrom(other.PosInfo);
+        DestInfo.MergeFrom(other.DestInfo);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -730,10 +731,10 @@ namespace Google.Protobuf.Protocol {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (posInfo_ == null) {
-              PosInfo = new global::Google.Protobuf.Protocol.PositionInfo();
+            if (destInfo_ == null) {
+              DestInfo = new global::Google.Protobuf.Protocol.PositionInfo();
             }
-            input.ReadMessage(PosInfo);
+            input.ReadMessage(DestInfo);
             break;
           }
         }
@@ -768,7 +769,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public S_Move(S_Move other) : this() {
       playerId_ = other.playerId_;
-      posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      destInfo_ = other.destInfo_ != null ? other.destInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -788,17 +789,17 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
-    /// <summary>Field number for the "posInfo" field.</summary>
-    public const int PosInfoFieldNumber = 2;
-    private global::Google.Protobuf.Protocol.PositionInfo posInfo_;
+    /// <summary>Field number for the "destInfo" field.</summary>
+    public const int DestInfoFieldNumber = 2;
+    private global::Google.Protobuf.Protocol.PositionInfo destInfo_;
     /// <summary>
     ///repeated Position destinations = 3;
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.Protocol.PositionInfo PosInfo {
-      get { return posInfo_; }
+    public global::Google.Protobuf.Protocol.PositionInfo DestInfo {
+      get { return destInfo_; }
       set {
-        posInfo_ = value;
+        destInfo_ = value;
       }
     }
 
@@ -816,7 +817,7 @@ namespace Google.Protobuf.Protocol {
         return true;
       }
       if (PlayerId != other.PlayerId) return false;
-      if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (!object.Equals(DestInfo, other.DestInfo)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -824,7 +825,7 @@ namespace Google.Protobuf.Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (PlayerId != 0) hash ^= PlayerId.GetHashCode();
-      if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (destInfo_ != null) hash ^= DestInfo.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -842,9 +843,9 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(PlayerId);
       }
-      if (posInfo_ != null) {
+      if (destInfo_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(PosInfo);
+        output.WriteMessage(DestInfo);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -857,8 +858,8 @@ namespace Google.Protobuf.Protocol {
       if (PlayerId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(PlayerId);
       }
-      if (posInfo_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      if (destInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DestInfo);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -874,11 +875,11 @@ namespace Google.Protobuf.Protocol {
       if (other.PlayerId != 0) {
         PlayerId = other.PlayerId;
       }
-      if (other.posInfo_ != null) {
-        if (posInfo_ == null) {
-          PosInfo = new global::Google.Protobuf.Protocol.PositionInfo();
+      if (other.destInfo_ != null) {
+        if (destInfo_ == null) {
+          DestInfo = new global::Google.Protobuf.Protocol.PositionInfo();
         }
-        PosInfo.MergeFrom(other.PosInfo);
+        DestInfo.MergeFrom(other.DestInfo);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -896,10 +897,10 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 18: {
-            if (posInfo_ == null) {
-              PosInfo = new global::Google.Protobuf.Protocol.PositionInfo();
+            if (destInfo_ == null) {
+              DestInfo = new global::Google.Protobuf.Protocol.PositionInfo();
             }
-            input.ReadMessage(PosInfo);
+            input.ReadMessage(DestInfo);
             break;
           }
         }
@@ -2213,6 +2214,7 @@ namespace Google.Protobuf.Protocol {
       playerId_ = other.playerId_;
       name_ = other.name_;
       posInfo_ = other.posInfo_ != null ? other.posInfo_.Clone() : null;
+      destInfo_ = other.destInfo_ != null ? other.destInfo_.Clone() : null;
       job_ = other.job_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2255,8 +2257,19 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "destInfo" field.</summary>
+    public const int DestInfoFieldNumber = 4;
+    private global::Google.Protobuf.Protocol.PositionInfo destInfo_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.Protocol.PositionInfo DestInfo {
+      get { return destInfo_; }
+      set {
+        destInfo_ = value;
+      }
+    }
+
     /// <summary>Field number for the "job" field.</summary>
-    public const int JobFieldNumber = 4;
+    public const int JobFieldNumber = 5;
     private int job_;
     /// <summary>
     ///repeated Position destinations = 4;
@@ -2285,6 +2298,7 @@ namespace Google.Protobuf.Protocol {
       if (PlayerId != other.PlayerId) return false;
       if (Name != other.Name) return false;
       if (!object.Equals(PosInfo, other.PosInfo)) return false;
+      if (!object.Equals(DestInfo, other.DestInfo)) return false;
       if (Job != other.Job) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2295,6 +2309,7 @@ namespace Google.Protobuf.Protocol {
       if (PlayerId != 0) hash ^= PlayerId.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (posInfo_ != null) hash ^= PosInfo.GetHashCode();
+      if (destInfo_ != null) hash ^= DestInfo.GetHashCode();
       if (Job != 0) hash ^= Job.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2321,8 +2336,12 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(26);
         output.WriteMessage(PosInfo);
       }
+      if (destInfo_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(DestInfo);
+      }
       if (Job != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteInt32(Job);
       }
       if (_unknownFields != null) {
@@ -2341,6 +2360,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (posInfo_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosInfo);
+      }
+      if (destInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DestInfo);
       }
       if (Job != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Job);
@@ -2367,6 +2389,12 @@ namespace Google.Protobuf.Protocol {
           PosInfo = new global::Google.Protobuf.Protocol.PositionInfo();
         }
         PosInfo.MergeFrom(other.PosInfo);
+      }
+      if (other.destInfo_ != null) {
+        if (destInfo_ == null) {
+          DestInfo = new global::Google.Protobuf.Protocol.PositionInfo();
+        }
+        DestInfo.MergeFrom(other.DestInfo);
       }
       if (other.Job != 0) {
         Job = other.Job;
@@ -2397,7 +2425,14 @@ namespace Google.Protobuf.Protocol {
             input.ReadMessage(PosInfo);
             break;
           }
-          case 32: {
+          case 34: {
+            if (destInfo_ == null) {
+              DestInfo = new global::Google.Protobuf.Protocol.PositionInfo();
+            }
+            input.ReadMessage(DestInfo);
+            break;
+          }
+          case 40: {
             Job = input.ReadInt32();
             break;
           }

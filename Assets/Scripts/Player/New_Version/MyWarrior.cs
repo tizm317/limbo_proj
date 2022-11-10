@@ -63,7 +63,7 @@ public class MyWarrior : Warrior
         if(prevState != curState || Dest != prevDest)
         {
             C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
+            movePacket.DestInfo = DestInfo;
 
             Managers.Network.Send(movePacket);
         }

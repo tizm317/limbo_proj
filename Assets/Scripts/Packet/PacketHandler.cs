@@ -62,7 +62,7 @@ class PacketHandler
 		if (p == null) return;
 
 		// 목적지 위치 넣어줌
-		p.PosInfo = movePacket.PosInfo;
+		p.DestInfo = movePacket.DestInfo;
 		p.Set_Destination(p.Dest);
 	}
 	public static void S_ConnectedHandler(PacketSession session, IMessage packet)

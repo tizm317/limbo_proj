@@ -57,13 +57,13 @@ message S_Despawn {
 }
 
 message C_Move {
-  PositionInfo posInfo = 1;
+  PositionInfo destInfo = 1;
   //repeated Position destinations = 2;
 }
 
 message S_Move {
   int32 playerId = 1;
-  PositionInfo posInfo = 2;
+  PositionInfo destInfo = 2;
   //repeated Position destinations = 3;
 }
 
@@ -111,7 +111,8 @@ message PlayerInfo {
   int32 playerId = 1;
   string name = 2;
   PositionInfo posInfo = 3;
-  int32 job = 4;
+  PositionInfo destInfo = 4;
+  int32 job = 5;
   //repeated Position destinations = 4;
 }
 

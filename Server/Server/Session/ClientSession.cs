@@ -50,10 +50,19 @@ namespace Server
             MyPlayer = PlayerManager.Instance.Add();
             {   // 정보 셋팅
                 MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시 (나중에는 DB에서)
+				
+				// 플레이어 위치
 				MyPlayer.Info.PosInfo.State = State.Idle;
 				MyPlayer.Info.PosInfo.PosX = 1.2f;
 				MyPlayer.Info.PosInfo.PosY = 1; // 높이
 				MyPlayer.Info.PosInfo.PosZ = -62.6f;
+
+				// 목적지 위치
+				MyPlayer.Info.DestInfo.State = State.Idle;
+				MyPlayer.Info.DestInfo.PosX = 1.2f;
+				MyPlayer.Info.DestInfo.PosY = 1; // 높이
+				MyPlayer.Info.DestInfo.PosZ = -62.6f;
+
 				MyPlayer.Info.Job = 0;
 				MyPlayer.Session = this;
 				//MyPlayer.Info.Destinations.Clear();

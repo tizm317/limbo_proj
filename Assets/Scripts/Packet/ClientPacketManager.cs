@@ -18,8 +18,7 @@ class PacketManager
 
 	Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>> _onRecv = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>, ushort>>();
 	Dictionary<ushort, Action<PacketSession, IMessage>> _handler = new Dictionary<ushort, Action<PacketSession, IMessage>>();
-	
-	// 클라이언트용 커스텀핸들러
+		
 	public Action<PacketSession, IMessage, ushort> CustomHandler { get; set; }	
 
 	public void Register()
@@ -58,7 +57,6 @@ class PacketManager
 			action.Invoke(session, buffer, id);
 	}
 
-	// 패킷 만드는 부분
 	void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer, ushort id) where T : IMessage, new()
 	{
 		T pkt = new T();
@@ -66,12 +64,10 @@ class PacketManager
 
 		if (CustomHandler != null)
 		{
-			// 커스텀핸들러가 있다면(클라이언트), 커스텀 핸들러 invoke
 			CustomHandler.Invoke(session, pkt, id);
 		}
 		else
 		{
-			// 없다면(서버) 바로 핸들링하는 부분 호출
 			Action<PacketSession, IMessage> action = null;
 			if (_handler.TryGetValue(id, out action))
 				action.Invoke(session, pkt);
