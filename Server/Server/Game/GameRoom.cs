@@ -36,7 +36,9 @@ namespace Server.Game
                     foreach (Player p in _players)
                     {
                         if (newPlayer != p) // 나 빼고
+                        {
                             spawnPacket.Players.Add(p.Info);
+                        }
                     }
                     newPlayer.Session.Send(spawnPacket);
                 }
@@ -100,7 +102,8 @@ namespace Server.Game
                 // 다른 플레이어한테도 알려준다
                 S_Move resMovePacket = new S_Move();
                 resMovePacket.PlayerId = player.Info.PlayerId;
-                resMovePacket.DestInfo = movePacket.DestInfo; // destination의 좌표를 보내주는 것
+                resMovePacket.DestInfo = movePacket.DestInfo;   // destination의 좌표를 보내주는 것
+                resMovePacket.PosInfo = movePacket.PosInfo;   // 플레이어 위치
 
                 // 나 빼고 같은 Room 에 속한 사람들에게 Broadcasting
                 // 나는 클라쪽에서 이동했기 때문.

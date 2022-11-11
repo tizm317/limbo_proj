@@ -32,7 +32,7 @@ public abstract class BaseScene : MonoBehaviour
         if (eventSystem == null)
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
 
-        Set_Resolution();
+        //Set_Resolution();
     }
 
     public void Set_Resolution()

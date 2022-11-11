@@ -60,13 +60,13 @@ message S_Despawn {
 
 message C_Move {
   PositionInfo destInfo = 1;
-  //repeated Position destinations = 2;
+  PositionInfo posInfo = 2;
 }
 
 message S_Move {
   int32 playerId = 1;
   PositionInfo destInfo = 2;
-  //repeated Position destinations = 3;
+  PositionInfo posInfo = 3;
 }
 
 message C_Skill {
@@ -124,7 +124,7 @@ message PlayerInfo {
   PositionInfo posInfo = 3;
   PositionInfo destInfo = 4;
   int32 job = 5;
-  //repeated Position destinations = 4;
+  StatInfo statInfo = 6;
 }
 
 message StatInfo {

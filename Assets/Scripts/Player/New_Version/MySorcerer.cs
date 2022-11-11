@@ -39,6 +39,7 @@ public class MySorcerer : Sorcerer
         {
             C_Move movePacket = new C_Move();
             movePacket.DestInfo = DestInfo;
+            movePacket.PosInfo = PosInfo;
 
             Managers.Network.Send(movePacket);
         }
