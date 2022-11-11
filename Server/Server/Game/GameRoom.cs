@@ -54,6 +54,9 @@ namespace Server.Game
                 }
             }
         }
+
+ 
+
         public void LeaveGame(int playerId)
         {
             lock(_lock)
@@ -81,6 +84,58 @@ namespace Server.Game
                             p.Session.Send(despawnPacket);
                     }
                 }
+            }
+        }
+
+        // 이동 처리
+        internal void HandleMove(Player player, C_Move movePacket)
+        {
+            if (player == null) return;
+
+            // 정보 수정은 한번에 한명씩 (경합상태 해결)
+            lock(_lock)
+            {
+                // TODO : 검증
+
+                // 다른 플레이어한테도 알려준다
+                S_Move resMovePacket = new S_Move();
+                resMovePacket.PlayerId = player.Info.PlayerId;
+                resMovePacket.DestInfo = movePacket.DestInfo; // destination의 좌표를 보내주는 것
+
+                // 나 빼고 같은 Room 에 속한 사람들에게 Broadcasting
+                // 나는 클라쪽에서 이동했기 때문.
+                BroadcastWithOutMyself(resMovePacket);
+
+
+                // 일단 서버에서 좌표 이동 (각자 클라에서 이동하도록 수정함)
+                //PlayerInfo info = clientSession.MyPlayer.Info;
+                //info.PosInfo = movePacket.PosInfo;
+            }
+        }
+
+        internal void HandleSkill(Player player, C_Skill skillPacket)
+        {
+            if (player == null) return;
+
+            lock (_lock)
+            {
+                PlayerInfo info = player.Info;
+
+                // 스킬 쓸 수 있는 조건인지 체크(state?, cooltime? 등)
+                // Idle 일 때만?
+                if (info.PosInfo.State != State.Idle)
+                    return;
+                // TODO : 스킬 사용 가능 여부 체크
+
+                // 통과
+                info.DestInfo.State = State.Skill;
+
+                S_Skill skill = new S_Skill{Info = new SkillInfo()};
+                skill.PlayerId = info.PlayerId;
+                skill.Info.SkillId = 1; // 나중에 데이터시트로 따로 관리(json, xml)
+                Broadcast(skill);
+
+                // 데미지 판정
             }
         }
 
