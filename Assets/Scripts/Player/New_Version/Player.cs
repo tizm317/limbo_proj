@@ -81,6 +81,14 @@ public abstract class Player : MonoBehaviour
         }
     }
 
+    internal void UseSkill(int skillId)
+    {
+        if(skillId == 1) // 평타
+        {
+            Attack();
+        }
+    }
+
     public void Ani_State_Change()
     {
         Ani_State = curState;
@@ -312,7 +320,7 @@ public abstract class Player : MonoBehaviour
                 return;
 
             // 위치 다르면 갱신
-            Dest = new Vector3(value.PosX, value.PosY, value.PosZ);
+            Pos = new Vector3(value.PosX, value.PosY, value.PosZ);
             curState = value.State;
 
             //_positionInfo = value; // 각각 갱신하도록 수정!
@@ -397,12 +405,15 @@ public abstract class Player : MonoBehaviour
 
     protected virtual void Init()
     {
-        // 서버에서 안 올 때 대비해서 초기화하는 부분 (시작위치..도 있긴 해야할듯?)
-        curState = State.Idle;              
-        player = this.gameObject;         
-        Dest = player.transform.position; // 목적지 : 현재 위치
+        
+        player = this.gameObject;
         ani = player.GetComponent<Animator>();
         my_stat = player.GetComponent<PlayerStat>();
+        // 서버에서 안 올 때 대비해서 초기화하는 부분 (시작위치..도 있긴 해야할듯?)
+        curState = State.Idle;              
+        player.transform.position = Pos;
+        Dest = player.transform.position;   // 목적지 : 현재 위치
+
 
 
         Enemy_Update(); // ??

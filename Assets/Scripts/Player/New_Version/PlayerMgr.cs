@@ -97,11 +97,11 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         //}
 
         //// 한번만 (서버 안쓸때 임시)
-        /// 플레이어 초기화
+        // 플레이어 초기화
         if (Managers.Object.MyPlayer == null)
         {
             // playerMgr 에 public으로 셋팅된 직업
-            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo(), Job = (int)job };
+            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo(), DestInfo = new PositionInfo(), Job = (int)job };
             Managers.Object.Add(info, myPlayer: true);
         }
 
