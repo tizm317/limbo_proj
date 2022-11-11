@@ -51,7 +51,7 @@ namespace Server
             {   // 정보 셋팅
                 MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시 (나중에는 DB에서)
 				
-				// 플레이어 위치
+				// 플레이어 위치 (TODO : 나중에 DB에서 가져옴 / 종료될 때 저장함)
 				MyPlayer.Info.PosInfo.State = State.Idle;
 				MyPlayer.Info.PosInfo.PosX = 1.2f;
 				MyPlayer.Info.PosInfo.PosY = 1; // 높이
