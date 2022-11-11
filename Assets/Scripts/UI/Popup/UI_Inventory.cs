@@ -32,7 +32,10 @@ public class UI_Inventory : UI_Popup
         //_inventory.test();
 
         if (_inventory.LoadFinish == false)
+        {
             _inventory.InvenLoad();
+            _inventory.UpdateCurrency();
+        }
         else
         {
             _inventory.UpdateAllSlot();

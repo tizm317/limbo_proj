@@ -15952,7 +15952,7 @@ GameObject:
   - component: {fileID: -6909455830207362446}
   - component: {fileID: 5509162820510981470}
   m_Layer: 9
-  m_Name: Enemy_Wizard
+  m_Name: Enemy_Wizard 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16107,6 +16107,12 @@ MonoBehaviour:
   _turnSpeed: 0
   _attackSpeed: 0
   _enemyExp: 0
+  _itemData:
+  - {fileID: 11400000, guid: 881994cd713bc8346951c557c79a2b0a, type: 2}
+  - {fileID: 11400000, guid: 3b4b0a4100c708b448f72fc5a68854ac, type: 2}
+  _questItemData: {fileID: 11400000, guid: 0466937eec6b87848a3876adb717d9a5, type: 2}
+  aRate: 5
+  bRate: 5
 --- !u!1 &1730009821568943016
 GameObject:
   m_ObjectHideFlags: 0
