@@ -142,6 +142,11 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         switch (job)
         {
             case Define.Job.WARRIOR:
+                skillDatas[0].Name = "";
+                skillDatas[1].Name = "";
+                skillDatas[2].Name = "";
+                skillDatas[3].Name = "";
+                skillDatas[4].Name = "";
                 skillDatas[0].Tooltip = $"매초 잃은 체력의 1%를 회복합니다.";
                 skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 1.5f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 줍니다.";
                 skillDatas[2].Tooltip = $"{ps.attackRange * (2 + ps.skill_level[1])}거리 이내의 적들을 도발하고, 5초간 체력 재생력이 {1 + ps.skill_level[1]}배 만큼 증가합니다.";
@@ -149,6 +154,11 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[4].Tooltip = $"도약한 뒤 지면을 내려쳐 {1 + ps.skill_level[3]}거리 이내의 적들에게 {ps.my_stat.Attack * (ps.skill_level[3] * 0.5f + 1f)}만큼의 데미지를 줍니다.";
                 break;
             case Define.Job.ARCHER:
+                skillDatas[0].Name = "";
+                skillDatas[1].Name = "";
+                skillDatas[2].Name = "";
+                skillDatas[3].Name = "";
+                skillDatas[4].Name = "";
                 skillDatas[0].Tooltip = $"레벨당 사거리가 0.1씩 증가합니다(현재 증가량 : {(ps.my_stat.Level - 1f) * 0.1f}";
                 skillDatas[1].Tooltip = $"궁수가 적의 공격을 신속히 회피합니다(짧은 시간동안 무적상태가 됩니다.)";
                 skillDatas[2].Tooltip = $"비전 약물을 투여하여 {(int)(4f + ps.skill_level[1])}초간 공격속도가 {50f + ps.skill_level[1] * 10f}퍼센트 만큼 증가합니다.";
@@ -156,6 +166,11 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[4].Tooltip = $"화살 한발에 최대한 많은 마나를 담아 발사합니다. 화살은 경로상의 모든 적들에게 {ps.my_stat.Attack * 5f}의 데미지를 줍니다.";
                 break;
             case Define.Job.SORCERER:
+                skillDatas[0].Name = "";
+                skillDatas[1].Name = "";
+                skillDatas[2].Name = "";
+                skillDatas[3].Name = "";
+                skillDatas[4].Name = "";
                 skillDatas[0].Tooltip = $"공격에 5의 마나를 소모하여 적에게 더 큰 피해를 줍니다.";
                 skillDatas[1].Tooltip = $"마법사가 안개속에 숨어 {4 + ps.skill_level[0]}초간 적들이 찾을 수 없습니다.";
                 skillDatas[2].Tooltip = $"마법사가 아군의 체력을 {ps.my_stat.Attack}만큼 회복합니다.";
