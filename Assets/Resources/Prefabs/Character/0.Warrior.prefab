@@ -2413,7 +2413,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &7663079657952958050
 CapsuleCollider:
@@ -2454,7 +2454,11 @@ MonoBehaviour:
   _next_level_up: 0
   _regeneration: 0
   _mana: 0
+  _max_mana: 0
   _mana_regeneration: 0
+  _skill_point: 0
+  level_up: 1
+  current_exp: 0
   STR: 0
   DEX: 0
   INT: 0
@@ -2469,7 +2473,8 @@ MonoBehaviour:
   Item_Hp_percent: 0
   Item_Attack_percent: 0
   Item_Mana_percent: 0
-  Item_Mana_Regeneration_percent: 0
+  isDead: 0
+  my_job: 0
 --- !u!114 &7393172848446829783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2486,9 +2491,27 @@ MonoBehaviour:
   _maxCapacity: 42
   _UI_inventory: {fileID: 286161426470419700, guid: dd2623a390bea594883253e50675ca1f,
     type: 3}
-  weaponItemData: {fileID: 11400000, guid: 2bdc6847198575f4a9fc57c654d558e8, type: 2}
-  armorItemData: {fileID: 11400000, guid: bde564bd06ab6fd4ea6b706c56910326, type: 2}
-  potionItemData: {fileID: 11400000, guid: 881994cd713bc8346951c557c79a2b0a, type: 2}
+  _MyGolds: 0
+  _maxGolds: 4294967295
+  itemDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _CoinData: {fileID: 0}
+  IsUpdated: 0
 --- !u!1 &7413277364404848349
 GameObject:
   m_ObjectHideFlags: 0
