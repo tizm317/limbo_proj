@@ -65,6 +65,20 @@ class PacketHandler
 		p.DestInfo = movePacket.DestInfo;
 		p.Set_Destination(p.Dest);
 	}
+
+	public static void S_SkillHandler(PacketSession session, IMessage packet)
+	{
+		S_Skill skillPacket = packet as S_Skill;
+
+		GameObject go = Managers.Object.FindById(skillPacket.PlayerId);
+		if (go == null) return;
+
+		Player p = go.GetComponent<Player>();
+		if (p == null) return;
+
+		p.UseSkill(skillPacket.Info.SkillId);
+	}
+
 	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
 	{
 		Debug.Log("S_ConnectedHandler");

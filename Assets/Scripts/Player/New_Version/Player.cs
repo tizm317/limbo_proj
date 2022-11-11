@@ -81,6 +81,14 @@ public abstract class Player : MonoBehaviour
         }
     }
 
+    internal void UseSkill(int skillId)
+    {
+        if(skillId == 1) // 평타
+        {
+            Attack();
+        }
+    }
+
     public void Ani_State_Change()
     {
         Ani_State = curState;
@@ -403,7 +411,6 @@ public abstract class Player : MonoBehaviour
         my_stat = player.GetComponent<PlayerStat>();
         // 서버에서 안 올 때 대비해서 초기화하는 부분 (시작위치..도 있긴 해야할듯?)
         curState = State.Idle;              
-        //Pos = new Vector3(1.2f, 1, -62.6f); // 없으면 (0,0,0)
         player.transform.position = Pos;
         Dest = player.transform.position;   // 목적지 : 현재 위치
 

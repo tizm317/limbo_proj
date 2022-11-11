@@ -13,6 +13,8 @@ enum MsgId {
   S_MOVE = 5;
   S_CHAT = 6;
   C_CHAT = 7;
+  S_SKILL = 8;
+  C_SKILL = 9;
   S_CONNECTED = 10;
   C_LOGIN = 11;
   S_LOGIN = 12;
@@ -65,6 +67,15 @@ message S_Move {
   int32 playerId = 1;
   PositionInfo destInfo = 2;
   //repeated Position destinations = 3;
+}
+
+message C_Skill {
+  SkillInfo info = 1;
+}
+
+message S_Skill {
+  int32 playerId = 1;
+  SkillInfo info = 2;
 }
 
 message C_Chat {
@@ -130,6 +141,10 @@ message PositionInfo {
   float posX = 2;
   float posY = 3;
   float posZ = 4; 
+}
+
+message SkillInfo {
+  int32 skillId = 1;
 }
 
 /*message Position {
