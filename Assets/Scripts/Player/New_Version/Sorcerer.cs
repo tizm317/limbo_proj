@@ -594,6 +594,19 @@ public class Sorcerer : Player
                 }
 
                 float wanted_height = 1f;
+                Enemy_Update();
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(pos, enemies[i].transform.position);
+
+                        if(far < width)
+                        {
+                            enemies[i].GetComponent<Rigidbody>().isKinematic = false;
+                        } 
+                    }
+                }
                 while(true)//위로 튀어나오는 부분
                 {
                     float height = 0f;;
@@ -645,6 +658,7 @@ public class Sorcerer : Player
                         break;
                     yield return new WaitForEndOfFrame();
                 }
+                Enemy_Update();
                 for(int i = 0; i < enemies.Count; i++)
                 {
                     if(enemies[i] != null)
@@ -693,6 +707,19 @@ public class Sorcerer : Player
                     if(Mathf.Abs(wanted_height-height) <= 0.01f)
                         break;
                     yield return new WaitForEndOfFrame();
+                }
+                Enemy_Update();
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(pos, enemies[i].transform.position);
+
+                        if(far < width)
+                        {
+                            enemies[i].GetComponent<Rigidbody>().isKinematic = true;
+                        } 
+                    }
                 }
                 foreach(GameObject i in shields)
                     Destroy(i);
