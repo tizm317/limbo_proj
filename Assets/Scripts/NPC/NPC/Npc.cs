@@ -330,9 +330,9 @@ public class Npc : MonoBehaviour
             case Define.NpcState.STATE_IDLE:
                 {
                     if (_patrolable)
-                        anim.CrossFade("Move", 0.2f);
+                        anim.CrossFade("WALK", 0.2f);
                     else
-                        anim.CrossFade("Idle", 0.2f);
+                        anim.CrossFade("WAIT", 0.2f);
                 }
                 break;
             default:
