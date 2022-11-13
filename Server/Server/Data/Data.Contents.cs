@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Server.Data
 {
-    #region Stat
+    #region PlayerStat
     [Serializable]
-    public class StatData : ILoader<int, StatInfo>
+    public class PlayerStatData : ILoader<int, PlayerStatInfo>
     {
-        public List<StatInfo> stats = new List<StatInfo>();
+        public List<PlayerStatInfo> playerstats = new List<PlayerStatInfo>();
 
-        public Dictionary<int, StatInfo> MakeDict()
+        public Dictionary<int, PlayerStatInfo> MakeDict()
         {
-            Dictionary<int, StatInfo> dict = new Dictionary<int, StatInfo>();
-            foreach (StatInfo stat in stats)
+            Dictionary<int, PlayerStatInfo> dict = new Dictionary<int, PlayerStatInfo>();
+            foreach (PlayerStatInfo stat in playerstats)
                 dict.Add(stat.Level, stat);
             return dict;
         }

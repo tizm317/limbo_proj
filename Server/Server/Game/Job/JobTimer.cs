@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using ServerCore;
 
-namespace Server
+namespace Server.Game
 {
+	// Job 예약
+
 	struct JobTimerElem : IComparable<JobTimerElem>
 	{
 		public int execTick; // 실행 시간
-		public Action action;
+		public IJob job;
 
 		public int CompareTo(JobTimerElem other)
 		{
@@ -16,46 +18,45 @@ namespace Server
 		}
 	}
 
-	class JobTimer
+	public class JobTimer
 	{
 		PriorityQueue<JobTimerElem> _pq = new PriorityQueue<JobTimerElem>();
 		object _lock = new object();
 
-		public static JobTimer Instance { get; } = new JobTimer();
-
-		public void Push(Action action, int tickAfter = 0)
+		public void Push(IJob job, int tickAfter = 0)
 		{
-			JobTimerElem job;
-			job.execTick = System.Environment.TickCount + tickAfter;
-			job.action = action;
+			JobTimerElem jobElement;
+			jobElement.execTick = System.Environment.TickCount + tickAfter;
+			jobElement.job = job;
 
 			lock (_lock)
 			{
-				_pq.Push(job);
+				_pq.Push(jobElement);
 			}
 		}
 
+		// 현재 시간에 실행할 수 있는 일감 모두 실행
 		public void Flush()
 		{
 			while (true)
 			{
 				int now = System.Environment.TickCount;
 
-				JobTimerElem job;
+				JobTimerElem jobElement;
 
 				lock (_lock)
 				{
 					if (_pq.Count == 0)
 						break;
 
-					job = _pq.Peek();
-					if (job.execTick > now)
+					jobElement = _pq.Peek();
+					if (jobElement.execTick > now)
 						break;
 
 					_pq.Pop();
 				}
 
-				job.action.Invoke();
+				jobElement.job.Excute();
 			}
 		}
 	}

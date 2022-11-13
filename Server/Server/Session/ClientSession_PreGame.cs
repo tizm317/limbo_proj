@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Server.DB;
+using Server.Game;
+using Server.Utils;
 using ServerCore;
 using System;
 using System.Collections.Generic;
@@ -12,28 +14,37 @@ namespace Server
 {
     public partial class ClientSession : PacketSession
     {
+		// PreGame (인게임 이전)
+
 		public int AccountDbId { get; private set; }
+
+		// 현재 로비에서 들고 있는 플레이어 목록
 		public List<LobbyPlayerInfo> LobbyPlayers { get; set; } = new List<LobbyPlayerInfo>();
 
         public void HandleLogin(C_Login loginPacket)
         {
-			//Console.WriteLine($"UniqueId({loginPacket.UniqueId})");
 			// TODO : 이런 저런 보안 체크
+			// 1. State 체크
 			if (ServerState != PlayerServerState.ServerStateLogin)
 				return;
 
+			// 혹시 HandleLogin 여러번 실행될 수 있으니 clear 먼저 해줌
 			LobbyPlayers.Clear();
 
 			// TODO : 문제가 있긴 있다
+			// - 동시에 다른 사람들이 같은 UniqueId를 보낸다면?
+			// - 악의적으로 여러번 보낸다면?
+			// - 생뚱맞은 타이밍에 그냥 이 패킷을 보낸다면?
+
 			// 해당하는 Account 있는지 체크
 			using (AppDbContext db = new AppDbContext())
 			{
 				// 계정db에 있는지 찾아보고,
 				AccountDb findAccount = db.Accounts
-					.Include(a => a.Players) // Account 연동 플레이어들 가져오기
+					.Include(a => a.Players) // Account와 연동된 플레이어들 가져오기
 					.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();
 
-				if (findAccount != null)
+				if (findAccount != null) // 이전에 만든 플레이어가 있다
 				{
 					// AccountDbId 메모리에 기억
 					AccountDbId = findAccount.AccountDbId;
@@ -46,20 +57,36 @@ namespace Server
                     {
 						LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo()
 						{
+							PlayerDbId = playerDb.PlayerDbId,
 							Name = playerDb.PlayerName,
 							Job = playerDb.PlayerJob,
-							StatInfo = new StatInfo()
+							PlayerStatInfo = new PlayerStatInfo()
 							{
+								// Db에서 가져와서 넣어줌
+								//StatInfo = new StatInfo()
+                                //{
 								Level = playerDb.Level,
 								Hp = playerDb.Hp,
 								MaxHp = playerDb.MaxHp,
 								Attack = playerDb.Attack,
-								Speed = playerDb.Speed,
-								TotalExp = playerDb.TotalExp
+								Defence = playerDb.Defence,
+								MoveSpeed = playerDb.MoveSpeed,
+								TurnSpeed = playerDb.TurnSpeed,
+								AttackSpeed = playerDb.AttackSpeed,
+								//},
+								Exp = playerDb.Exp,
+								Gold = playerDb.Gold,
+								NextLevelUp = playerDb.Next_level_up,
+								CurrentExp = playerDb.Current_exp,
+								Regeneration = playerDb.Regeneration,
+								Mana = playerDb.Mana,
+								MaxMana = playerDb.Max_mana,
+								ManaRegeneration = playerDb.Mana_regeneration,
+								SkillPoint = playerDb.Skill_point
                             }
 						};
 
-						// 메모리에 들고 있는다 (DB 접근 한번만)
+						// 메모리에 들고 있는다 (장점 : DB 접근 한번만 해서 성능 up)
 						LobbyPlayers.Add(lobbyPlayer);
 
 						// 패킷에 넣어준다
@@ -70,12 +97,13 @@ namespace Server
 					// 로비로 이동
 					ServerState = PlayerServerState.ServerStateLobby;
 				}
-				else
+				else // 이전에 만든 플레이어가 없다
 				{
-					// 없으면 db에 저장
+					// 이전에 만든 플레이어가 없다는 정보만 보내주면 됨!!
 					AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
 					db.Accounts.Add(newAccount);
-					db.SaveChanges(); // TODO: Exception
+					bool success = db.SaveChangesEx(); // TODO: Exception
+					if (success == false) return;
 
 					// AccountDbId 메모리에 기억
 					AccountDbId = newAccount.AccountDbId;
@@ -87,8 +115,8 @@ namespace Server
 					ServerState = PlayerServerState.ServerStateLobby;
 				}
 			}
+			//Console.WriteLine($"UniqueId({loginPacket.UniqueId})");
 		}
-
 		public void HandleEnterGame(C_EnterGame enterGamePacket)
 		{
 			// 로비에서만 가능
@@ -99,18 +127,40 @@ namespace Server
 			LobbyPlayerInfo playerInfo = LobbyPlayers.Find(p => p.Name == enterGamePacket.Name);
 			if (playerInfo == null) return;
 
-			/////////////////////////////////////////////////////////////////////////
-			//MyPlayer = PlayerManager.Instance.Add();
-			//{   // 정보 셋팅
-			//	MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시
-			//	MyPlayer.Info.PosX = 0;
-			//	MyPlayer.Info.PosY = 0;
-			//	MyPlayer.Session = this;
-			//}
+			MyPlayer = PlayerManager.Instance.Add();
+			{   // 정보 셋팅
+				MyPlayer.PlayerDbId = playerInfo.PlayerDbId;
+				MyPlayer.Info.Name = playerInfo.Name; 
 
-			//RoomManager.Instance.Find(1).EnterGame(MyPlayer);
+				// 플레이어 위치 (TODO : 나중에 DB에서 가져옴 / 종료될 때 저장함)
+				MyPlayer.Info.PosInfo.State = State.Idle;
+				MyPlayer.Info.PosInfo.PosX = -25f;
+				MyPlayer.Info.PosInfo.PosY = 0; // 높이
+				MyPlayer.Info.PosInfo.PosZ = -30f;
+
+				// 목적지 위치
+				MyPlayer.Info.DestInfo.State = State.Idle;
+				MyPlayer.Info.DestInfo.PosX = -25f; //1.2
+				MyPlayer.Info.DestInfo.PosY = 0;
+				MyPlayer.Info.DestInfo.PosZ = -30f;
+
+				// PlayerStatInfo
+				MyPlayer.StatInfo.MergeFrom(playerInfo.PlayerStatInfo);
+
+				// Job
+				MyPlayer.Info.Job = playerInfo.Job;
+
+				// session
+				MyPlayer.Session = this;
+			}
+
+			// State 변경
+			ServerState = PlayerServerState.ServerStateGame;
+
+			// Room 1 찾아서 입장시킴
+			GameRoom room = RoomManager.Instance.Find(1);
+			room.Push(room.EnterGame, MyPlayer);
 		}
-
 		public void HandleCreatePlayer(C_CreatePlayer createPacket)
         {
 			// TODO : 이런 저런 보안 체크
@@ -125,49 +175,85 @@ namespace Server
 
 				if(findPlayer != null)
                 {
-					// 이름이 겹친다
+					// 이름이 겹친다 -> 빈 값으로 보냄
 					Send(new S_CreatePlayer());
                 }
-				else
+				else // 이름이 안 겹침 -> 새 플레이어 만들기
                 {
-					// 1레벨 스탯 정보 추출
-					StatInfo stat = null;
-					DataManager.StatDict.TryGetValue(1, out stat);
+					// 1레벨 스탯 정보 추출(데이터 시트에서 읽어옴)
+					//StatInfo stat = null;
+					PlayerStatInfo playerStat = null;
+					DataManager.PlayerStatDict.TryGetValue(1, out playerStat); // 1레벨 정보 추출
 
 					// DB에 플레이어 만들기
 					PlayerDb newPlayerDb = new PlayerDb()
 					{
+						// 정보 추가
 						PlayerName = createPacket.Name,
-						Level = stat.Level,
-						Hp = stat.Hp,
-						Attack = stat.Attack,
-						Speed = stat.Speed,
-						TotalExp = 0,
+						PlayerJob = createPacket.Job,
+
+						Level = playerStat.Level,
+						Hp = playerStat.Hp,
+						MaxHp = playerStat.MaxHp,
+						Attack = playerStat.Attack,
+						Defence = playerStat.Defence,
+						MoveSpeed = playerStat.MoveSpeed,
+						AttackSpeed = playerStat.AttackSpeed,
+						TurnSpeed = playerStat.TurnSpeed,
+
+						Exp = playerStat.Exp,
+						Gold = playerStat.Gold,
+						Next_level_up = playerStat.NextLevelUp,
+						Current_exp = playerStat.CurrentExp,
+						Regeneration = playerStat.Regeneration,
+						Mana = playerStat.Mana,
+						Max_mana = playerStat.MaxMana,
+						Mana_regeneration = playerStat.ManaRegeneration,
+						Skill_point = playerStat.SkillPoint,
+
 						AccountDbId = AccountDbId
 					};
 
 					db.Players.Add(newPlayerDb);
-					db.SaveChanges(); // TODO : ExceptionHandling (이름 겹치는 문제)
+					bool success = db.SaveChangesEx(); // TODO : ExceptionHandling (이름 겹치는 문제(player 이름이 찰나의 순간에 다른 사람이 선점))
+					if (success == false) return;
 
 					// 메모리에 추가
 					LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo()
 					{
+						PlayerDbId = newPlayerDb.PlayerDbId,
 						Name = createPacket.Name,
-						StatInfo = new StatInfo()
+						Job = createPacket.Job,
+						PlayerStatInfo = new PlayerStatInfo()
 						{
-							Level = stat.Level,
-							Hp = stat.Hp,
-							MaxHp = stat.MaxHp,
-							Attack = stat.Attack,
-							Speed = stat.Speed,
-							TotalExp = 0
+							// Db에서 가져와서 넣어줌
+							//StatInfo = new StatInfo()
+							//{
+							Level = playerStat.Level,
+							Hp = playerStat.Hp,
+							MaxHp = playerStat.MaxHp,
+							Attack = playerStat.Attack,
+							Defence = playerStat.Defence,
+							MoveSpeed = playerStat.MoveSpeed,
+							AttackSpeed = playerStat.AttackSpeed,
+							TurnSpeed = playerStat.TurnSpeed,
+							//},
+							Exp = playerStat.Exp,
+							Gold = playerStat.Gold,
+							NextLevelUp = playerStat.NextLevelUp,
+							CurrentExp = playerStat.CurrentExp,
+							Regeneration = playerStat.Regeneration,
+							Mana = playerStat.Mana,
+							MaxMana = playerStat.MaxMana,
+							ManaRegeneration = playerStat.ManaRegeneration,
+							SkillPoint = playerStat.SkillPoint
 						}
 					};
 
-					// 메모리에 들고 있는다 (DB 접근 한번만)
+					// 메모리에 들고 있는다 (장점 : DB 접근 한번만 해서 성능 up)
 					LobbyPlayers.Add(lobbyPlayer);
 
-					// 클라에 전송
+					// 클라에 전송 (정보 넣어서)
 					S_CreatePlayer newPlayer = new S_CreatePlayer() { Player = new LobbyPlayerInfo() };
 					newPlayer.Player.MergeFrom(lobbyPlayer);
 

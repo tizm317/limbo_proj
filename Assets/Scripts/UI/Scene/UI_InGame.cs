@@ -316,14 +316,18 @@ public class UI_InGame : UI_Scene
                     continue;
                 }
 
-                UI_SkillUpButtonList[i].transform.position = new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
+                UI_SkillUpButtonList[i].transform.Translate(Vector3.up * Time.deltaTime);
+                    //= new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
+                //UI_SkillUpButtonList[i].transform.position = new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
             }
 
             // R(궁극기)            
             // 특정 레벨 이후 혹은 내려가는 경우에만 움직임
             if (isPopups[3] == true || (player.skill_level[3] != 4 && player.skill_level[3] < ps.Level / 8))
             {
-                UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
+                UI_SkillUpButtonList[3].transform.Translate(Vector3.up * Time.deltaTime);
+                    //= new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
+                //UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
                 //isPopup_R = true;
             }
             yield return null;

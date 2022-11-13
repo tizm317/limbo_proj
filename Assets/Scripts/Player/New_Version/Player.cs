@@ -354,10 +354,10 @@ public abstract class Player : MonoBehaviour
     }
     void Skill_level()
     {
-        skill_level[0] = 4;
-        skill_level[1] = 4;
-        skill_level[2] = 4;
-        skill_level[3] = 4;
+        skill_level[0] = 0;
+        skill_level[1] = 0;
+        skill_level[2] = 0;
+        skill_level[3] = 0;
     }
 
     int Action6_count = 0; // Rumba Dance 반복하기 위해서

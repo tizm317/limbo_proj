@@ -29,6 +29,7 @@ public class DataManager
     // 딕셔너리로 들고 있는게 효율적 - (리스트 찾기 위해 다 순회해야함.)
     // 외부에서 사용할 때 : Dictionary 뽑아서 사용 (예시 : Dictionary<int, Stat> dict = Managers.Data.StatDict;)
     public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>(); // 키 값을 레벨로
+    public Dictionary<int, Data.PlayerStat> PlayerStatDict { get; private set; } = new Dictionary<int, Data.PlayerStat>(); // 키 값을 레벨로
     //(추가 하는 부분)
     //public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
@@ -53,6 +54,7 @@ public class DataManager
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
+        PlayerStatDict = LoadJson<Data.PlayerStatData, int, Data.PlayerStat>("PlayerStatData").MakeDict(); //
         InvenDict = LoadJson<Data.ItemData2, int, Data.Item>("InvenData").MakeDict();
         NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
 

@@ -8,6 +8,8 @@ namespace Server.Utils
 {
     public static class Extentions
     {
+        // SaveChanges 확장
+        // Exception Handling : return boolean
         public static bool SaveChangesEx(this AppDbContext db)
         {
             try

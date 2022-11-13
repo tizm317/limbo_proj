@@ -18,6 +18,7 @@ namespace Server.Game
         {
             // 게임룸 생성
             GameRoom gameRoom = new GameRoom();
+            gameRoom.Init();
 
             // 게임룸 추가
             lock(_lock)

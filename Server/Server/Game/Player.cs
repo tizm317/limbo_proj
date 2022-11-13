@@ -1,4 +1,7 @@
 ﻿using Google.Protobuf.Protocol;
+using Microsoft.EntityFrameworkCore;
+using Server.DB;
+using Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,8 +10,61 @@ namespace Server.Game
 {
     public class Player
     {
-        public PlayerInfo Info { get; set; } = new PlayerInfo() { PosInfo = new PositionInfo(), DestInfo = new PositionInfo()};
+        public int PlayerDbId { get; set; }
         public GameRoom Room { get; set; }          // 어떤 Room 에 있는지
         public ClientSession Session { get; set; }  // 플레이어가 패킷 보낼 때 사용
+
+        public PlayerInfo Info { get; set; } = new PlayerInfo();
+        public PositionInfo PosInfo { get; set; } = new PositionInfo();
+        public PositionInfo DestInfo { get; set; } = new PositionInfo();
+        public PlayerStatInfo StatInfo { get; set; } = new PlayerStatInfo();
+
+        public Player()
+        {
+            Info.PosInfo = PosInfo;
+            Info.DestInfo = DestInfo;
+            Info.PlayerStatInfo = StatInfo;
+        }
+
+        // DB 연동?
+        // 1) 피가 깎일 때마다 DB 접근할 필요가 있을까?
+        // -> 방 나갈 때마다 DB 갱신
+        // 2) 서버 다운되면 아직 저장되지 않은 정보 날아감
+        // 3) 코드 흐름을 다 막아버린다 !!!
+        // -> 비동기(Async) 방법 사용?
+        // -> 다른 쓰레드로 DB 일감을 던저버리면 되지 않을까?
+        //  -- 결과를 받아서 이어서 처리를 해야 하는 경우가 많음
+        //  -- 아이템 생성 (DB 저장되지 않은 상태에서 이어서 작업하는건 문제가 된다)
+        //      ->  결론 : 다른 애들한테 일감을 던지는 건 맞고 + 일감이 끝나면 통보 받고 이어서 작업해야함
+        
+        // 비유
+        // 게임룸      : 서빙 담당 (클라 끼리 교류)
+        // 디비 작업   : 결제 담당
+        public void OnLeaveGame()
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                // 1. DB 읽을 때/쓸 때 2번 접근
+                //PlayerDb playerDb = db.Players.Find(PlayerDbId);
+                //// TODO: 갱신 내용
+                //{
+                //    //playerDb.Hp = StatInfo.Hp;
+                //}
+                //db.SaveChanges();
+
+                // 2. DB 한번만 접근하는 방법 (get 없이 바로 update)
+                PlayerDb playerDb = new PlayerDb();
+                playerDb.PlayerDbId = PlayerDbId;
+                {
+                    // TODO : 갱신 내용*********************
+                    // playerDb.Hp = StatInfo.Hp;
+                }
+                // State 조절(EntityFramework 수업에서)
+                db.Entry(playerDb).State = EntityState.Unchanged;
+                db.Entry(playerDb).Property(nameof(PlayerDb.Hp)).IsModified = true; // Hp만 변화있는거 감지해서 쿼리 효율적으로 만들어줌
+
+                db.SaveChangesEx();
+            }
+        }
     }
 }

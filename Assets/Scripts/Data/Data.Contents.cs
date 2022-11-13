@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,45 @@ using UnityEngine;
 
 namespace Data
 {
+    #region PlayerStat
+    [Serializable]
+    public class PlayerStat
+    {
+        //public StatInfo statInfo = new StatInfo();
+        public int level;
+        public float hp;
+        public float maxHp;
+        public float attack;
+        public float defence;
+        public float moveSpeed;
+        public float turnSpeed;
+        public float attackSpeed;
+        public int exp;
+        public uint gold;
+        public float next_level_up;
+        public float current_exp;
+        public float regeneration;
+        public float mana;
+        public float max_mana;
+        public float mana_regeneration;
+        public int skill_point;
+    }
+
+    [Serializable]
+    public class PlayerStatData : ILoader<int, PlayerStat>
+    {
+        public List<PlayerStat> playerstats = new List<PlayerStat>();
+
+        public Dictionary<int, PlayerStat> MakeDict()
+        {
+            Dictionary<int, PlayerStat> dict = new Dictionary<int, PlayerStat>();
+            foreach (PlayerStat stat in playerstats)
+                dict.Add(stat.level, stat);
+            return dict;
+        }
+    }
+    #endregion
+
     #region Stat
     [Serializable] // 메모리에서 들고 있는걸 파일로 변환할수있다는 의미
     public class Stat

@@ -32,10 +32,23 @@ namespace Server.DB
 
         // StatInfo
         public int Level { get; set; }
-        public int Hp { get; set; }
-        public int MaxHp { get; set; }
-        public int Attack { get; set; }
-        public float Speed { get; set; }
-        public int TotalExp { get; set; }
+        public float Hp { get; set; }
+        public float MaxHp { get; set; }
+        public float Attack { get; set; }
+        public float Defence { get; set; }
+        public float MoveSpeed { get; set; }
+        public float TurnSpeed { get; set; }
+        public float AttackSpeed { get; set; }
+
+        // PlayerStatInfo
+        public int Exp { get; set; }
+        public uint Gold { get; set; }
+        public float Next_level_up { get; set; }
+        public float Current_exp { get; set; }
+        public float Regeneration { get; set; }
+        public float Mana { get; set; }
+        public float Max_mana { get; set; }
+        public float Mana_regeneration { get; set; }
+        public int Skill_point { get; set; }
     }
 }

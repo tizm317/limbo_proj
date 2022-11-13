@@ -27,7 +27,7 @@ class PacketHandler
 		if (room == null) return;
 
 		// Room 안에서 처리하도록 함
-		room.HandleMove(player, movePacket);
+		room.Push(room.HandleMove, player, movePacket);
 	}
 
 	public static void C_SkillHandler(PacketSession session, IMessage packet)
@@ -41,7 +41,7 @@ class PacketHandler
 		GameRoom room = clientSession.MyPlayer.Room;
 		if (room == null) return;
 
-		room.HandleSkill(player, skillPacket);
+		room.Push(room.HandleSkill, player, skillPacket);
 	}
 
 	public static void C_LoginHandler(PacketSession session, IMessage packet)

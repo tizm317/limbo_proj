@@ -102,6 +102,7 @@ message S_Login {
 
 message C_CreatePlayer {
   string name = 1;
+  int32 job = 2;
 }
 
 message S_CreatePlayer {
@@ -112,10 +113,12 @@ message C_EnterGame {
   string name = 1;
 }
 
+// Lobby 에서만 사용하는 PlayerInfo
 message LobbyPlayerInfo {
-  string name = 1;
-  StatInfo statInfo = 2;
-  int32 job = 3;
+  int32 playerDbId = 1;
+  string name = 2;
+  PlayerStatInfo playerStatInfo = 3;
+  int32 job = 4;
 }
 
 message PlayerInfo {
@@ -124,16 +127,46 @@ message PlayerInfo {
   PositionInfo posInfo = 3;
   PositionInfo destInfo = 4;
   int32 job = 5;
-  StatInfo statInfo = 6;
+  PlayerStatInfo playerStatInfo = 6;
 }
 
 message StatInfo {
   int32 level = 1;
-  int32 hp = 2;
-  int32 maxHp = 3;
-  int32 attack = 4;
-  float speed = 5;
-  int32 totalExp = 6;
+  float hp = 2;
+  float maxHp = 3;
+  float attack = 4;
+  float defence = 5;
+  float moveSpeed = 6;
+  float turnSpeed = 7;
+  float attackSpeed = 8;
+}
+
+message PlayerStatInfo {
+  int32 level = 1;
+  float hp = 2;
+  float maxHp = 3;
+  float attack = 4;
+  float defence = 5;
+  float moveSpeed = 6;
+  float turnSpeed = 7;
+  float attackSpeed = 8;
+  //StatInfo statInfo = 1;
+  int32 exp = 9;
+  uint32 gold = 10;
+  float next_level_up = 11;
+  float current_exp = 12;
+  float regeneration = 13;
+  float mana = 14;
+  float max_mana = 15;
+  float mana_regeneration = 16;
+  int32 skill_point = 17;
+  // TODO : STR,DEX,INT,LUC
+}
+
+message EnemyStatInfo {
+  StatInfo statInfo = 1;
+  int32 enemyExp = 2;
+  // TODO : ItemData
 }
 
 message PositionInfo {

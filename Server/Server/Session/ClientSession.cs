@@ -45,32 +45,7 @@ namespace Server
 				Send(connectedPacket);
             }
 
-            // TODO : 로비에서 캐릭터 선택
-            // PROTO Test
-            MyPlayer = PlayerManager.Instance.Add();
-            {   // 정보 셋팅
-                MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}"; // 임시 (나중에는 DB에서)
-				
-				// 플레이어 위치 (TODO : 나중에 DB에서 가져옴 / 종료될 때 저장함)
-				MyPlayer.Info.PosInfo.State = State.Idle;
-				MyPlayer.Info.PosInfo.PosX = 1.2f;
-				MyPlayer.Info.PosInfo.PosY = 1; // 높이
-				MyPlayer.Info.PosInfo.PosZ = -62.6f;
-
-				// 목적지 위치
-				MyPlayer.Info.DestInfo.State = State.Idle;
-				MyPlayer.Info.DestInfo.PosX = 1.2f;
-				MyPlayer.Info.DestInfo.PosY = 1; // 높이
-				MyPlayer.Info.DestInfo.PosZ = -62.6f;
-
-				MyPlayer.Info.Job = 0;
-				MyPlayer.Session = this;
-				//MyPlayer.Info.Destinations.Clear();
-            }
-
-            //// TODO : 입장 요청 들어오면
-			// Room 1 찾아서 입장시킴
-            RoomManager.Instance.Find(1).EnterGame(MyPlayer);
+			// 캐릭터 만드는 부분 PreGame쪽으로 이동함
         }
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -82,7 +57,8 @@ namespace Server
 		public override void OnDisconnected(EndPoint endPoint)
 		{
 			// Room 1에서 Leave시킴
-			RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.PlayerId);
+			GameRoom room = RoomManager.Instance.Find(1);
+			room.Push(room.LeaveGame, MyPlayer.Info.PlayerId);
 
 			// 세션 제거
 			SessionManager.Instance.Remove(this);

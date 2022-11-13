@@ -22,11 +22,18 @@ namespace Server
 	class Program
 	{
 		static Listener _listener = new Listener();
+		static List<System.Timers.Timer> _timers = new List<System.Timers.Timer>(); // 주기적으로 도는 타이머들(혹시 멈추고 싶을 경우)
 
-		static void FlushRoom()
-		{
-			JobTimer.Instance.Push(FlushRoom, 250);
-		}
+		static void TickRoom(GameRoom room, int tick = 100)
+        {
+			var timer = new System.Timers.Timer();
+			timer.Interval = tick; // 몇 틱마다 실행
+			timer.Elapsed += ((s, e) => { room.Update(); }); // 시간 지나면 무엇을 실행시킬지
+			timer.AutoReset = true; // 매번마다 리셋
+			timer.Enabled = true;
+
+			_timers.Add(timer);
+        }
 
 		static void StartServerInfoTask()
         {
@@ -75,8 +82,8 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
-			var d = DataManager.StatDict;
-			//
+
+
 
 			//// DB Test // DB를 컨텐츠 코드에서 바로 접근하는 것도 문제(오래 걸리면 .. 다른 부분도 오래걸림)
 			//using (AppDbContext db = new AppDbContext())
@@ -90,7 +97,8 @@ namespace Server
 
 			// 게임룸 1개 생성 -> TODO 나중에는 데이터로 빼서, 시작지역 몇번에서 시작하고 정해줘야함!!
 			// 일단은 1번룸만 사용한다고 가정
-			RoomManager.Instance.Add();
+			GameRoom room =  RoomManager.Instance.Add();
+			TickRoom(room, 50); // 50틱마다 한번씩 실행되도록 예약
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
@@ -106,11 +114,12 @@ namespace Server
 			StartServerInfoTask();
 
 			//FlushRoom();
-			JobTimer.Instance.Push(FlushRoom);
+			//JobTimer.Instance.Push(FlushRoom);
 
 			while (true)
 			{
-				JobTimer.Instance.Flush();
+				//JobTimer.Instance.Flush();
+				Thread.Sleep(100); // 프로그램 꺼지지 않게만 유지
 			}
 		}
 	}
