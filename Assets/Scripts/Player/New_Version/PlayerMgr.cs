@@ -30,7 +30,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     string my_name;
     [SerializeField]
     Vector3 pos;
-    protected Vector3 start_pos = new Vector3(1.2f, 1f, -62.6f);
+    protected Vector3 start_pos = new Vector3(1.2f, 2f, -62.6f);
     [SerializeField]
     GameObject[] character;
     void Awake()
@@ -101,10 +101,10 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         if (Managers.Object.MyPlayer == null)
         {
             // playerMgr 에 public으로 셋팅된 직업
-            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo(), DestInfo = new PositionInfo(), Job = (int)job };
+            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo(pos.x,pos.y,pos.z), DestInfo = new PositionInfo(), Job = (int)job };
             Managers.Object.Add(info, myPlayer: true);
         }
-
+        
         // 서버에서
         playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO == null)
@@ -113,6 +113,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
             ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
             return;
         }
+
         ps = playerGO.GetComponent<Player>();
         job = ps.my_job;
         GameObject skill_ui_root = GameObject.Find("Grid");
