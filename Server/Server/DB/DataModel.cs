@@ -30,6 +30,9 @@ namespace Server.DB
         public int AccountDbId { get; set; }
         public AccountDb Account { get; set; } // 소속 계정 정보
 
+        // 1(player)대 다(Items) 관계
+        public ICollection<ItemDb> Items { get; set; }
+
         // StatInfo
         public int Level { get; set; }
         public float Hp { get; set; }
@@ -50,5 +53,20 @@ namespace Server.DB
         public float Max_mana { get; set; }
         public float Mana_regeneration { get; set; }
         public int Skill_point { get; set; }
+    }
+
+    [Table("Item")]
+    public class ItemDb
+    {
+        public int ItemDbId { get; set; } // DB에서 발급한 ID
+        public int TemplateId { get; set; } // 우리가 지정한 데이터시트에서의 ID
+        public int Count { get; set; } // 들고 있는 아이템 수량
+        public int Slot { get; set; }   // 슬롯 인덱스(인벤토리에서 배치시킨 슬롯 위치)
+        // 게임에 따라 다르지만 내가 착용한 아이템이나 창고같은 경우도 Slot으로 관리할 수 있음
+        // ex) 0~10 : 착용 아이템 / 11~40 : 인벤토리 / 41~100 : 창고 등..
+
+        [ForeignKey("Owner")] // 외래키로 Owner랑 연동
+        public int? OwnerDbId { get; set; } // Nullable Type (땅에 떨어졌을 때는 주인 없으니)
+        public PlayerDb Owner { get; set; } // 아이템 갖고 있는 주인
     }
 }

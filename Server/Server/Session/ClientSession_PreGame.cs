@@ -152,6 +152,34 @@ namespace Server
 
 				// session
 				MyPlayer.Session = this;
+
+				S_ItemList itemListPacket = new S_ItemList();
+
+				// 아이템 목록 갖고 오기
+				using (AppDbContext db = new AppDbContext())
+                {
+					List<ItemDb> items = db.Items
+						.Where(i=> i.OwnerDbId == playerInfo.PlayerDbId)
+						.ToList();
+
+					foreach(ItemDb itemDb in items)
+                    {
+						// itemDb 정보로 item 만듦
+						Item item = Item.MakeItem(itemDb);
+                        // 인벤토리
+						if(item != null)
+                        {
+							// 인벤토리 추가
+							MyPlayer.Inven.Add(item);
+						
+							// 패킷에 추가
+							ItemInfo info = new ItemInfo();
+							info.MergeFrom(item.Info); // 해당 아이템 정보 넣어줌
+							itemListPacket.Items.Add(info);
+						}
+					}
+				}
+				Send(itemListPacket);
 			}
 
 			// State 변경

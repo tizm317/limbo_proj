@@ -13,6 +13,7 @@ namespace Server.Game
         public int PlayerDbId { get; set; }
         public GameRoom Room { get; set; }          // 어떤 Room 에 있는지
         public ClientSession Session { get; set; }  // 플레이어가 패킷 보낼 때 사용
+        public Inventory Inven { get; private set; } = new Inventory();
 
         public PlayerInfo Info { get; set; } = new PlayerInfo();
         public PositionInfo PosInfo { get; set; } = new PositionInfo();
@@ -42,29 +43,8 @@ namespace Server.Game
         // 디비 작업   : 결제 담당
         public void OnLeaveGame()
         {
-            using (AppDbContext db = new AppDbContext())
-            {
-                // 1. DB 읽을 때/쓸 때 2번 접근
-                //PlayerDb playerDb = db.Players.Find(PlayerDbId);
-                //// TODO: 갱신 내용
-                //{
-                //    //playerDb.Hp = StatInfo.Hp;
-                //}
-                //db.SaveChanges();
-
-                // 2. DB 한번만 접근하는 방법 (get 없이 바로 update)
-                PlayerDb playerDb = new PlayerDb();
-                playerDb.PlayerDbId = PlayerDbId;
-                {
-                    // TODO : 갱신 내용*********************
-                    // playerDb.Hp = StatInfo.Hp;
-                }
-                // State 조절(EntityFramework 수업에서)
-                db.Entry(playerDb).State = EntityState.Unchanged;
-                db.Entry(playerDb).Property(nameof(PlayerDb.Hp)).IsModified = true; // Hp만 변화있는거 감지해서 쿼리 효율적으로 만들어줌
-
-                db.SaveChangesEx();
-            }
+            // Room 떠날 때 Db 갱신 작업
+            DbTransaction.SavePlayerStatus_Step1(this, Room);
         }
     }
 }

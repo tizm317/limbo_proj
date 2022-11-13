@@ -35,6 +35,17 @@ namespace Server
 			_timers.Add(timer);
         }
 
+		static void TickDb(int tick = 100)
+		{
+			var timer = new System.Timers.Timer();
+			timer.Interval = tick; // 몇 틱마다 실행
+			timer.Elapsed += ((s, e) => { DbTransaction.Instance.Flush(); });
+			timer.AutoReset = true; // 매번마다 리셋
+			timer.Enabled = true;
+
+			_timers.Add(timer);
+		}
+
 		static void StartServerInfoTask()
         {
 			var t = new System.Timers.Timer();
@@ -82,9 +93,6 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
-
-
-
 			//// DB Test // DB를 컨텐츠 코드에서 바로 접근하는 것도 문제(오래 걸리면 .. 다른 부분도 오래걸림)
 			//using (AppDbContext db = new AppDbContext())
 			//         {
@@ -98,7 +106,13 @@ namespace Server
 			// 게임룸 1개 생성 -> TODO 나중에는 데이터로 빼서, 시작지역 몇번에서 시작하고 정해줘야함!!
 			// 일단은 1번룸만 사용한다고 가정
 			GameRoom room =  RoomManager.Instance.Add();
-			TickRoom(room, 50); // 50틱마다 한번씩 실행되도록 예약
+
+			// 
+            {
+				TickRoom(room, 50); // 50틱마다 한번씩 실행되도록 예약
+				TickDb(50); // 50틱 마다 Db Job Flush 실행하도록 예약
+			}
+
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();

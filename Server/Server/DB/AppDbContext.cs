@@ -12,6 +12,7 @@ namespace Server.DB
         // 테이블 연동
         public DbSet<AccountDb> Accounts { get; set; }
         public DbSet<PlayerDb> Players { get; set; }
+        public DbSet<ItemDb> Items { get; set; }
 
         // for logging
         static readonly ILoggerFactory _logger = LoggerFactory.Create( builder => { builder.AddConsole(); });
