@@ -5,8 +5,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Equipment : UI_Popup
+public class UI_Equipment : UI_Base
 {
+    #region 코루틴 Wrapper 메소드
+    // predicate 조건 불충족하면, 대기함
+    private void ProcessLater(Func<bool> predicate, Action job)
+    {
+        StartCoroutine(PorcessLaterRoutine());
+
+        // Local
+        IEnumerator PorcessLaterRoutine()
+        {
+            yield return new WaitUntil(predicate);
+            job?.Invoke();
+        }
+    }
+    #endregion
+
     Transform player;
     Camera selfCam;
     float x_cam;
@@ -43,12 +58,20 @@ public class UI_Equipment : UI_Popup
 
     public override void Init()
     {
-        base.Init();
+        //base.Init();
         Bind<GameObject>(typeof(GameObjects));
         GetObject((int)GameObjects.Slider).BindEvent(onSliderDrag, Define.UIEvent.Drag);
 
         player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        player = player_State.GetPlayer().transform;
+        GameObject playerGO = player_State.GetPlayer();
+        if (playerGO == null)
+        {
+            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루틴으로 대기함
+            ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
+            return;
+        }
+        player = playerGO.transform;
+
         //player = GameObject.Find("Player").transform;
         selfCam = player.Find("SelfCam").GetComponent<Camera>();
         selfCam.gameObject.SetActive(true);
@@ -163,6 +186,11 @@ public class UI_Equipment : UI_Popup
     {
         if(selfCam)
             selfCam.gameObject.SetActive(false);
+    }
+    private void OnEnable()
+    {
+        if (selfCam)
+            selfCam.gameObject.SetActive(true);
     }
 
     internal bool Equip(EquipmentItem equipmentItem, out EquipmentItem exchangedItem)

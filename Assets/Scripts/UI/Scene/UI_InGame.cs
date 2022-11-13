@@ -24,8 +24,8 @@ public class UI_InGame : UI_Scene
     #endregion
 
     // 연관된 팝업 UI 목록
-    UI_Inventory uI_Inventory;
-    UI_Equipment ui_Equipment;
+    public UI_Inventory uI_Inventory { get; private set; }
+    public UI_Equipment ui_Equipment { get; private set; }
     UI_MiniMap miniMap;
     UI_Settings setting;
     UI_GameMenu ui_GameMenu;
@@ -171,6 +171,12 @@ public class UI_InGame : UI_Scene
     public override void Init()
     {
         base.Init();
+
+        ui_Equipment = GetComponentInChildren<UI_Equipment>();
+        uI_Inventory = GetComponentInChildren<UI_Inventory>();
+        ui_Equipment.gameObject.SetActive(false);
+        uI_Inventory.gameObject.SetActive(false);
+
 
 
         pm = GameObject.Find("@Scene").GetComponent<PlayerMgr>();
@@ -536,22 +542,28 @@ public class UI_InGame : UI_Scene
         {
             // 인벤토리 UI
 
-            if(!uI_Inventory)
+            if(uI_Inventory.gameObject.activeInHierarchy == false)
             {
-                ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
-                uI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
+                uI_Inventory.gameObject.SetActive(true);
+                ui_Equipment.gameObject.SetActive(true);
+
+                //ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
+                //uI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
             }
             else
             {
-                if (!uI_Inventory.IsPeek())
-                    return;
-                
+                uI_Inventory.gameObject.SetActive(false);
+                ui_Equipment.gameObject.SetActive(false);
+
+                //if (!uI_Inventory.IsPeek())
+                //    return;
+
                 // 인벤토리 내용(변경사항) json 저장
                 uI_Inventory.Save();
 
                 //saveInven();
-                Managers.UI.ClosePopupUI(uI_Inventory);
-                ui_Equipment.ClosePopupUI();
+                //Managers.UI.ClosePopupUI(uI_Inventory);
+                //ui_Equipment.ClosePopupUI();
             }
         }
         else if(Input.GetKeyDown(KeySetting.keys[KeyAction.MINIMAP]))

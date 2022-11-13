@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Inventory : UI_Popup
+public class UI_Inventory : UI_Base
 {
     enum GameObjects
     {
-        Window,
+        UI_Inventory,
         Borders,
         Header,
         Content,
@@ -70,19 +70,20 @@ public class UI_Inventory : UI_Popup
 
     public override void Init()
     {
-        base.Init();
+        //base.Init();
         Bind<GameObject>(typeof(GameObjects));
-        GameObject window = Get<GameObject>((int)GameObjects.Window);
-        GameObject header = Get<GameObject>((int)GameObjects.Header);
-        BindEvent(header, (PointerEventData data) => {
-            if (data.pointerId != -1) return;
-            window.transform.position = data.position;
-        }, Define.UIEvent.Drag);
+        //GameObject window = Get<GameObject>((int)GameObjects.UI_Inventory);
+        //GameObject header = Get<GameObject>((int)GameObjects.Header);
+        //BindEvent(header, (PointerEventData data) =>
+        //{
+        //    if (data.pointerId != -1) return;
+        //    window.transform.position = data.position;
+        //}, Define.UIEvent.Drag);
 
 
         Bind<Button>(typeof(Buttons));
         Button buttonClose = GetButton((int)Buttons.ButtonClose);
-        buttonClose.gameObject.BindEvent(Quit_Inventory);
+        //buttonClose.gameObject.BindEvent(Quit_Inventory);
         //GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(Quit_Inventory);
 
         Button buttonTrim = GetButton((int)Buttons.ButtonTrim);
@@ -121,10 +122,10 @@ public class UI_Inventory : UI_Popup
     }
 
 
-    public void Quit_Inventory(PointerEventData data)
-    {
-        this.ClosePopupUI();
-    }
+    //public void Quit_Inventory(PointerEventData data)
+    //{
+    //    this.ClosePopupUI();
+    //}
 
 
     /* 아이템 드래그 앤 드롭 이동 */

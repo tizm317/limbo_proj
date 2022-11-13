@@ -109,7 +109,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO == null)
         {
-            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루팀으로 대기함
+            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루틴으로 대기함
             ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
             return;
         }
@@ -148,7 +148,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[2].Name = "Berserker's Call";
                 skillDatas[3].Name = "Overpower";
                 skillDatas[4].Name = "Mercy Stroke";
-                skillDatas[0].Tooltip = $"매초 잃은 체력의 1%를 회복합니다.";
+                skillDatas[0].Tooltip = $"(패시브) 매초 잃은 체력의 1%를 회복합니다.";
                 skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 1.5f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 줍니다.";
                 skillDatas[2].Tooltip = $"{ps.attackRange * (2 + ps.skill_level[1])}거리 이내의 적들을 도발하고, 5초간 체력 재생력이 {1 + ps.skill_level[1]}배 만큼 증가합니다.";
                 skillDatas[3].Tooltip = $"힘찬 함성으로 주위 적들을 꾸짖어 5초간 {ps.attackRange * (2 + ps.skill_level[2])}거리 이내의 적들의 공격력과 공격속도를 {5f * ps.skill_level[2]}%만큼 감소시킵니다.";
@@ -160,7 +160,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[2].Name = "Fianl Hour";
                 skillDatas[3].Name = "Scatter Arrow";
                 skillDatas[4].Name = "Longinus";
-                skillDatas[0].Tooltip = $"레벨당 사거리가 0.1씩 증가합니다(현재 증가량 : {(ps.my_stat.Level - 1f) * 0.1f}";
+                skillDatas[0].Tooltip = $"(패시브) 레벨당 사거리가 0.1씩 증가합니다(현재 증가량 : {(ps.my_stat.Level - 1f) * 0.1f}";
                 skillDatas[1].Tooltip = $"궁수가 적의 공격을 신속히 회피합니다(짧은 시간동안 무적상태가 됩니다.)";
                 skillDatas[2].Tooltip = $"비전 약물을 투여하여 {(int)(4f + ps.skill_level[1])}초간 공격속도가 {50f + ps.skill_level[1] * 10f}퍼센트 만큼 증가합니다.";
                 skillDatas[3].Tooltip = $"마나를 담은 화살을 넓은 범위로 발사하여 {ps.attackRange}거리의 적들에게 {ps.my_stat.Attack * (1f + ps.skill_level[2] * 0.25f)}의 데미지를 줍니다.";
@@ -172,7 +172,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[2].Name = "Heal";
                 skillDatas[3].Name = "Frost Mourne";
                 skillDatas[4].Name = "Aegis of the Legion";
-                skillDatas[0].Tooltip = $"공격에 5의 마나를 소모하여 적에게 더 큰 피해를 줍니다.";
+                skillDatas[0].Tooltip = $"(패시브) 공격에 5의 마나를 소모하여 적에게 더 큰 피해를 줍니다.";
                 skillDatas[1].Tooltip = $"마법사가 안개속에 숨어 {4 + ps.skill_level[0]}초간 적들이 찾을 수 없습니다.";
                 skillDatas[2].Tooltip = $"마법사가 아군의 체력을 {ps.my_stat.Attack}만큼 회복합니다.";
                 skillDatas[3].Tooltip = $"마법사가 마법으로 인챈트된 냉기의 검을 소환하여 {ps.skill_level[2] + 1}범위의 적들의 이동속도를 {20f + ps.skill_level[2] * 5f}만큼 감소시키고 {ps.my_stat.Attack * (1 + ps.skill_level[2] * 0.25f)}만큼 데미지를 줍니다.";
