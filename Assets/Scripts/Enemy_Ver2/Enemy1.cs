@@ -72,7 +72,7 @@ public class Enemy1 : Enemy
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.speed = _stat.MoveSpeed;
+        nma.speed = 1f;
 
         if (dist <= _attachRange)
         {
