@@ -40,8 +40,7 @@ public class Sorcerer : Player
     public override void Cool_Update()
     {
         cool_max[0] = 10f - (skill_level[0] -1);
-        //cool_max[1] = 20f - (3f * skill_level[1] - 1);
-        cool_max[1] = 0f;
+        cool_max[1] = 20f - (3f * skill_level[1] - 1);
         cool_max[2] = 10f - (2f * skill_level[2] -1);
         cool_max[3] = 30 - 4f * skill_level[3];
     }
