@@ -64,12 +64,13 @@ public class Archer : Player
             isMove = false;
 
             curState = State.Attack;
-            //Managers.Sound.Play("Sound/Attack Jump & Hit Damage Human Sounds/Jump & Attack 2",Define.Sound.Effect);
+           
             Ani_State_Change();
             player.transform.forward = (my_enemy.transform.position - player.transform.position).normalized;
             ani.SetFloat("AttackSpeed",attack_speed);
             yield return new WaitForSeconds(3.8f/attack_speed);//공격 애니메이션 시간
-            
+            Managers.Sound.Stop();
+            Managers.Sound.Play("Sound/Skill_Sound/Archer_Fire",Define.Sound.Effect, 1.0f, true);
             if(my_enemy != null)
             {
                 GameObject temp = GameObject.Instantiate<GameObject>(Arrow);
@@ -148,6 +149,8 @@ public class Archer : Player
                 curState = State.Skill;
                 skill = HotKey.Q;
                 Ani_State_Change();
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Archer_Q",Define.Sound.Effect, 1.0f, true);
                 attackable = false;
                 yield return new WaitForSeconds(1.08f);
                 attackable = true;
@@ -164,6 +167,8 @@ public class Archer : Player
 
     IEnumerator Archer_W()
     {
+        Managers.Sound.Stop();
+        Managers.Sound.Play("Sound/Skill_Sound/Archer_W",Define.Sound.Effect, 1.0f, true);
         float speed = 50f + skill_level[1] * 10f;
         float time = 4f + skill_level[1];
         my_stat.AttackSpeed *= (1f + speed/100f);
@@ -175,6 +180,7 @@ public class Archer : Player
         
         cool[1] = cool_max[1];//시전시간이 없어서 일단은 바로 쿨 돌리기
         yield return new WaitForSeconds(time);//지속시간
+        Managers.Sound.Stop();
         Destroy(temp);
         my_stat.AttackSpeed /= (1f + speed/100f);;
     }
@@ -235,6 +241,8 @@ public class Archer : Player
                 float arrow_moved = 0f;
                 float time = 0f;
                 float speed = 15f;
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Archer_Fire",Define.Sound.Effect, 1.0f, true);
                 while(arrow_moved < distance && time < 5f)
                 {
                     float move_distance = Time.deltaTime * speed;
@@ -246,6 +254,7 @@ public class Archer : Player
                     time += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
+                
                 for(int i = 0; i < enemies.Count; i++)
                 {
                     Vector3 targetDir = (enemies[i].transform.position - player.transform.position).normalized;//방향 계산
@@ -259,6 +268,7 @@ public class Archer : Player
                     if(theta <= SightAngle && far < distance)
                         enemies[i].GetComponent<Stat>().OnAttacked(damage, my_stat);
                 }
+
                 foreach(GameObject i in temp)
                     Destroy(i);
                 cool[2] = cool_max[2];
@@ -310,6 +320,8 @@ public class Archer : Player
                 skill = HotKey.R;
                 Ani_State_Change();
                 yield return new WaitForSeconds(3.6f);
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Archer_R",Define.Sound.Effect, 1.0f, true);
                 GameObject temp = Instantiate<GameObject>(R_Arrow);
                 temp.transform.position = player.transform.position;
                 Vector3 dir = player.transform.forward;

@@ -87,6 +87,11 @@ public class SoundManager
         Play(audioClip, type, pitch, option); 
     }
 
+    public void Stop(Define.Sound type = Define.Sound.Effect)
+    {
+        _audioSources[(int)type].Stop();
+    }
+
     public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f, bool option = false)
     {
         // �����Ŭ�� ���� �޴� ���� Play �Լ�
@@ -191,14 +196,14 @@ public class SoundManager
                 break;
         }
         float volume = AudioSlide[idx].value;
-        if (volume >= 0.01f)
+        if (volume > -40f)
         {
             audioMixer.SetFloat(name, volume);
             Toggle[idx].isOn = true;
         }
         else
         {
-            AudioSlide[idx].value = 0.0f;
+            AudioSlide[idx].value = -40f;
             audioMixer.SetFloat(name, -80);//음소거
             Toggle[idx].isOn = false;
         }

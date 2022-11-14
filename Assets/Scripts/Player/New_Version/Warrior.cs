@@ -98,7 +98,10 @@ public class Warrior : Player
                 curState = State.Skill;
                 skill = HotKey.Q;
                 Ani_State_Change();
-                yield return new WaitForSeconds(2.2f);
+                yield return new WaitForSeconds(1f);
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Warrior_Q",Define.Sound.Effect, 1.0f, true);
+                yield return new WaitForSeconds(1.2f);
 
                 for(int i = 0; i < enemies.Count; i++)
                 {
@@ -135,6 +138,9 @@ public class Warrior : Player
         curState = State.Skill;
         skill = HotKey.W;
         Ani_State_Change();
+        int idx = (int)Random.Range(1,6);
+        Managers.Sound.Stop();
+        Managers.Sound.Play("Sound/Skill_Sound/Warrior_W/Warrior_W_" + idx.ToString(),Define.Sound.Effect, 1.0f, true);
         yield return new WaitForSeconds(2.5f);//애니메이션을 시전하는 동안
 
         my_stat.Regeneration *= mul;
@@ -166,7 +172,8 @@ public class Warrior : Player
         skill = HotKey.E;
         Ani_State_Change();
         yield return new WaitForSeconds(1f);
-        Managers.Sound.Play("Sound/warrior_yelling",Define.Sound.Effect, 1.0f, true);
+        Managers.Sound.Stop();
+        Managers.Sound.Play("Sound/Skill_Sound/Warrior_E",Define.Sound.Effect, 1.0f, true);
         yield return new WaitForSeconds(4f);
         //적의 공격속도와 공격력을 감소시키는 내용이 있어야함 - 희진누나랑 상담해볼 부분
         cool[2] = cool_max[2];
@@ -282,6 +289,8 @@ public class Warrior : Player
                 Ani_State_Change();
                 yield return new WaitForSeconds(1.8f);
                 StartCoroutine(CameraShake(0.5f));
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Warrior_R",Define.Sound.Effect, 1.0f, true);
                 temp.SetActive(true);
                 temp.transform.position = player.transform.position;
                 temp.transform.localScale = Vector3.one * 0.1f * range;
