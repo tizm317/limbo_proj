@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy2 : Enemy
+public class Enemy_Dragon : Enemy
 {
     //enemyController1은 대기하다가 추적 사정거리 안에 player가 들어오면 무빙하여 attack
     [SerializeField] float _scanRange = 10;  //사정거리
     [SerializeField] float _attachRange = 2.5f;  //적 공격 사정거리
 
     GameObject player;
-
-    //private void Start()
-    //{
-    //    Init();
-    //}
 
     private void OnEnable()
     {
@@ -37,7 +32,6 @@ public class Enemy2 : Enemy
 
         player = GameObject.FindGameObjectWithTag("Player");
         lockTarget = player;
-
     }
 
     protected override void UpdateIdle()
@@ -61,16 +55,17 @@ public class Enemy2 : Enemy
 
     protected override void UpdateMoving()
     {
+        _destPos = lockTarget.transform.position;
+
         //플레이어가 사정 거리보다 가까우면 공격
         if (lockTarget != null)
         {
-            _destPos = lockTarget.transform.position;
             float distance = (_destPos - transform.position).magnitude;
             if (distance <= _attachRange)
             {
                 NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+                nma.speed = 1.3f;
                 nma.SetDestination(transform.position);
-                nma.speed = 1.2f;
                 State = Define.EnemyState.Skill;
                 return;
             }
@@ -84,8 +79,8 @@ public class Enemy2 : Enemy
         }
         else
         {
-            _destPos = lockTarget.transform.position;
             NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+            nma.speed = 1.3f;
             nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
         }
