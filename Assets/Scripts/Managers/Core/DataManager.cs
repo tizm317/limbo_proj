@@ -65,9 +65,14 @@ public class DataManager
         // csv 파일 파싱 테스트 (csv to json 파일 저장)
         //ParseTextData("test");
 
-        // 대사 딕셔너리
+        // 대사 딕셔너리 (수정해야함)
         Dict_DialogDict["0"] = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict();
         Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        Dict_DialogDict["2"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        Dict_DialogDict["3"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        Dict_DialogDict["4"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        Dict_DialogDict["5"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        Dict_DialogDict["6"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
 
         PlayerTable = LoadJson<Data.PlayerData, string, Data.Player>("PlayerData").MakeDict();
 

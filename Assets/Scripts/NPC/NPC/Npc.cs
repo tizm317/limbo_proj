@@ -74,6 +74,8 @@ public class Npc : MonoBehaviour
         // 3. NPC Patrol
         if (_patrolable)
         {
+            //NavMeshAgent
+
             table[2]._action -= startPatrol;
             table[2]._action += startPatrol;
 
@@ -291,6 +293,10 @@ public class Npc : MonoBehaviour
         agent = Util.GetOrAddComponent<NavMeshAgent>(this.gameObject);
         agent.autoBraking = false;
         agent.speed = _moveSpeed;
+        
+        // 정지되어있을 경우 다시 재생
+        if (agent.isStopped == true)
+            agent.isStopped = false;
 
         GotoNextPoint();
         if (_patrolable) patrol_coroutine = StartCoroutine(patrol());
@@ -311,6 +317,10 @@ public class Npc : MonoBehaviour
     {
         isPatroling = false;
         StopCoroutine(patrol_coroutine);
+        ChangeAnim();
+        
+        // NevMeshAgent 정지
+        agent.isStopped = true;
     }
     private void GotoNextPoint()
     {
@@ -330,13 +340,13 @@ public class Npc : MonoBehaviour
             case Define.NpcState.STATE_IDLE:
                 {
                     if (_patrolable)
-                        anim.CrossFade("Move", 0.2f);
+                        anim.CrossFade("WALK", 0.2f);
                     else
-                        anim.CrossFade("Idle", 0.2f);
+                        anim.CrossFade("WAIT", 0.2f);
                 }
                 break;
             default:
-                anim.CrossFade("Idle", 0.2f);
+                anim.CrossFade("WAIT", 0.2f);
                 break;
         }
     }

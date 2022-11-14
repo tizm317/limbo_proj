@@ -623,7 +623,7 @@ public abstract class Player : MonoBehaviour
         my_enemy_stat = enemy.GetComponent<Stat>();
     }
 
-    private void Enemy_Update()
+    protected void Enemy_Update()
     {
         enemies.Clear();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Enemy");

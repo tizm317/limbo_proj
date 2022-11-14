@@ -2108,6 +2108,7 @@ MonoBehaviour:
   _mana: 0
   _max_mana: 0
   _mana_regeneration: 0
+  _skill_point: 0
   level_up: 1
   current_exp: 0
   STR: 0
@@ -2124,7 +2125,8 @@ MonoBehaviour:
   Item_Hp_percent: 0
   Item_Attack_percent: 0
   Item_Mana_percent: 0
-  Item_Mana_Regeneration_percent: 0
+  isDead: 0
+  my_job: 0
 --- !u!114 &2348436605236481152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2161,6 +2163,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _CoinData: {fileID: 0}
+  IsUpdated: 0
 --- !u!54 &6813560670729502522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2175,7 +2178,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &8698110500112714718
 CapsuleCollider:

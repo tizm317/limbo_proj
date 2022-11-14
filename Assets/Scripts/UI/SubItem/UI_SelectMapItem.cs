@@ -42,8 +42,8 @@ public class UI_SelectMapItem : UI_Base
         //Managers.Network.ConnectToGame(Info);
 
         // 서버... 맵 이동....
-
-        Managers.Scene.LoadScene(Info.scene);
+        LoadingScene.LoadScene(Info.scene.ToString());
+        //Managers.Scene.LoadScene(Info.scene);
         Managers.UI.ClosePopupUI();
     }
 }

@@ -4189,6 +4189,14 @@ namespace Google.Protobuf.Protocol {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
+    public PositionInfo(float x, float y, float z) : this(){
+      state_ = State.Idle;
+      posX_ = x;
+      posY_ = y;
+      posZ_ = z;
+      _unknownFields = pb::UnknownFieldSet.Clone(this._unknownFields);
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PositionInfo Clone() {
       return new PositionInfo(this);

@@ -6,7 +6,7 @@ public class MerchantNpc : Npc
 {
     UI_Shop _UI_Shop;
     //UI_Inven _UI_Inven;
-    UI_Inventory _UI_Inventory;
+    //UI_Inventory _UI_Inventory;
 
 
     // 판매 아이템 목록
@@ -171,20 +171,20 @@ public class MerchantNpc : Npc
         UpdateAllSlots();
 
         // Inventory UI
-        _UI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
+        //_UI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
 
         // 인벤토리 UI를 거래용으로 씀
-        _UI_Inventory.Trading = true;
+        //_UI_Inventory.Trading = true;
     }
 
     public void CloseTradeUI()
     {
         // 거래용으로 쓰던 인벤토리 UI를 false
-        _UI_Inventory.Trading = false;
+        //_UI_Inventory.Trading = false;
 
         // Inventory UI
-        _UI_Inventory.ClosePopupUI();
-        _UI_Inventory = null;
+        //_UI_Inventory.ClosePopupUI();
+        //_UI_Inventory = null;
 
         // Shop UI
         _UI_Shop.ClosePopupUI();

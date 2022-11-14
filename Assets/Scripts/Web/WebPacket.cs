@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class CreateAccountPacketReq
 {
@@ -41,4 +42,14 @@ public class MapInfo
 {
     public string Name;
     public Define.Scene scene;
+}
+
+
+//
+public class CertificateWhore : CertificateHandler
+{
+    protected override bool ValidateCertificate(byte[] certificateData)
+    {
+        return true;
+    }
 }

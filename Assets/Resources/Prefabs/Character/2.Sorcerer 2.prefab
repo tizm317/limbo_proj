@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 2600467835897992023}
   - component: {fileID: 2600467835897992020}
   m_Layer: 0
-  m_Name: 2.Sorcerer
+  m_Name: 2.Sorcerer 2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -832,6 +832,7 @@ MonoBehaviour:
   _mana: 0
   _max_mana: 0
   _mana_regeneration: 0
+  _skill_point: 0
   level_up: 1
   current_exp: 0
   STR: 0
@@ -849,6 +850,7 @@ MonoBehaviour:
   Item_Attack_percent: 0
   Item_Mana_percent: 0
   isDead: 0
+  my_job: 0
 --- !u!114 &2600467835897992022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,7 +901,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &2600467835897992020
 CapsuleCollider:

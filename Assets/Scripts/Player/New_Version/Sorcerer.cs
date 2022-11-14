@@ -39,10 +39,11 @@ public class Sorcerer : Player
 
     public override void Cool_Update()
     {
-       cool_max[0] = 10f - (skill_level[0] -1);
-       cool_max[1] = 20f - (3f * skill_level[1] - 1);
-       cool_max[2] = 10f - (2f * skill_level[2] -1);
-       cool_max[3] = 30 - 4f * skill_level[3];
+        cool_max[0] = 10f - (skill_level[0] -1);
+        //cool_max[1] = 20f - (3f * skill_level[1] - 1);
+        cool_max[1] = 0f;
+        cool_max[2] = 10f - (2f * skill_level[2] -1);
+        cool_max[3] = 30 - 4f * skill_level[3];
     }
 
     public override void Attack()
@@ -138,6 +139,9 @@ public class Sorcerer : Player
         yield return new WaitForSeconds(3.250f);
         attackable = false;
         player.tag = "Untagged";
+        foreach(GameObject i  in enemies)
+            i.GetComponent<Enemy>().set_target(null);
+        FindObjectOfType<EnemyBoss>().set_target(null);
         changeRenderMode(player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial,BlendMode.Transparent);
         GameObject temp = Instantiate<GameObject>(Smoke);
         temp.transform.SetParent(player.transform);
@@ -177,6 +181,7 @@ public class Sorcerer : Player
         attackable = true;
         player.tag = "Player";
         player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial.SetColor("_Color",new Color(1,1,1,1f));
+        Destroy(temp);
     }
 
     public static void changeRenderMode(Material standardShaderMaterial, BlendMode blendMode)
@@ -236,6 +241,7 @@ public class Sorcerer : Player
     {
         float heal = my_stat.Attack;
         float range = attackRange;
+        float generate_speed = 5f;
         pos_selected = false;
         canceled = false;
         Vector3 pos;
@@ -256,7 +262,10 @@ public class Sorcerer : Player
                         target = hit.transform.gameObject;
                         pos_selected = true;
                         pos = target.transform.position;
-                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
+                        if(pos != target.transform.position)
+                            player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
+                        else
+                            target = gameObject;
                     }
                     else
                         canceled = true;
@@ -297,25 +306,47 @@ public class Sorcerer : Player
                     cool[1] = cool_max[1];
                     on_skill = false;
                     target.GetComponent<PlayerStat>().Hp += heal;
+                    
                     GameObject temp = Instantiate<GameObject>(Heal_effect);
                     temp.transform.SetParent(target.transform);
-                    temp.transform.localPosition = Vector3.zero;
+                    temp.transform.localPosition = new Vector3(0,0.1f,0);
+                    
                     float wanted_size = 0.1f;
                     float effect_size = 0f;
-                    float speed = 3f;
-                    while(Mathf.Abs(wanted_size-effect_size) > 0.01f)
+                    
+                    while(true)
                     {
-                        effect_size = Mathf.Lerp(effect_size,wanted_size,Time.deltaTime*speed);
+                        if(Mathf.Abs(wanted_size-effect_size) < 0.001f)
+                            break;
+                        effect_size = Mathf.Lerp(effect_size,wanted_size,0.1f);
                         temp.transform.localScale = Vector3.one * effect_size;
+                        yield return new WaitForEndOfFrame();
                     }
-                    if(target.GetComponent<PlayerStat>().Hp>target.GetComponent<PlayerStat>().MaxHp)
+                    float time = 0;
+                    while(time <= 1f)
+                    {
+                        target.GetComponent<PlayerStat>().Hp += (heal * Time.deltaTime);
+                        Debug.Log(heal * Time.deltaTime);
+                        if(target.GetComponent<PlayerStat>().Hp>target.GetComponent<PlayerStat>().MaxHp)
                         target.GetComponent<PlayerStat>().Hp = target.GetComponent<PlayerStat>().MaxHp;
-                    wanted_size = 0f;
-                    while(Mathf.Abs(wanted_size-effect_size) > 0.01f)
-                    {
-                        effect_size = Mathf.Lerp(effect_size,wanted_size,Time.deltaTime*speed);
-                        temp.transform.localScale = Vector3.one * effect_size;
+                        time += Time.deltaTime;
+                        yield return new WaitForEndOfFrame();
                     }
+                    
+                    wanted_size = 0f;
+                    while(true)
+                    {
+                        if(Mathf.Abs(wanted_size-effect_size) < 0.001f)
+                        {
+                            //Destroy(temp);
+                            break;
+                        }
+                            
+                        effect_size = Mathf.Lerp(effect_size,wanted_size,0.1f);
+                        temp.transform.localScale = Vector3.one * effect_size;
+                        yield return new WaitForEndOfFrame();
+                    }
+                    
                     break;
                 }    
             }
@@ -438,7 +469,7 @@ public class Sorcerer : Player
                         if(far < width)
                         {
                             enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
-                            if(enemies[i].GetComponent<Stat>().Hp <= 0)
+                            if(enemies[i].GetComponent<Stat>().Hp <= 0 || enemies[i] == null)
                                 break;
                             enemies[i].GetComponent<NavMeshAgent>().speed *= (slow / 100f);
                             slowed_enemy.Add(enemies[i]);
@@ -481,9 +512,11 @@ public class Sorcerer : Player
             yield return new WaitForEndOfFrame();
         }
         Destroy(temp);//최초 1회만 생성하고 반복해서 사용하게 수정할 수 있음
+        Destroy(temp2);
         yield return new WaitForSeconds(time);//적들 이동속도 회복 시간
         foreach(GameObject i in slowed_enemy)
-            i.GetComponent<NavMeshAgent>().speed = i.GetComponent<Stat>().MoveSpeed;
+            if(i != null)
+                i.GetComponent<NavMeshAgent>().speed = i.GetComponent<Stat>().MoveSpeed;
     }
 #endregion
 
@@ -561,6 +594,19 @@ public class Sorcerer : Player
                 }
 
                 float wanted_height = 1f;
+                Enemy_Update();
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(pos, enemies[i].transform.position);
+
+                        if(far < width)
+                        {
+                            enemies[i].GetComponent<Rigidbody>().isKinematic = false;
+                        } 
+                    }
+                }
                 while(true)//위로 튀어나오는 부분
                 {
                     float height = 0f;;
@@ -612,6 +658,7 @@ public class Sorcerer : Player
                         break;
                     yield return new WaitForEndOfFrame();
                 }
+                Enemy_Update();
                 for(int i = 0; i < enemies.Count; i++)
                 {
                     if(enemies[i] != null)
@@ -660,6 +707,19 @@ public class Sorcerer : Player
                     if(Mathf.Abs(wanted_height-height) <= 0.01f)
                         break;
                     yield return new WaitForEndOfFrame();
+                }
+                Enemy_Update();
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    if(enemies[i] != null)
+                    {
+                        float far = Vector3.Distance(pos, enemies[i].transform.position);
+
+                        if(far < width)
+                        {
+                            enemies[i].GetComponent<Rigidbody>().isKinematic = true;
+                        } 
+                    }
                 }
                 foreach(GameObject i in shields)
                     Destroy(i);

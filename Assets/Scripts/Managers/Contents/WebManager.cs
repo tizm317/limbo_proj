@@ -31,6 +31,9 @@ public class WebManager
             uwr.downloadHandler = new DownloadHandlerBuffer();
             uwr.SetRequestHeader("Content-Type", "application/json");
 
+            // 우회
+            uwr.certificateHandler = new CertificateWhore();
+
             yield return uwr.SendWebRequest();
 
             if(uwr.isNetworkError || uwr.isHttpError)
