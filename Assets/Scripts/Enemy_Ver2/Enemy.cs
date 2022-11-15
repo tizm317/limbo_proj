@@ -8,6 +8,9 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Define.EnemyState state = Define.EnemyState.Moving;  //상태 초기값 
     [SerializeField] protected GameObject lockTarget;  //타켓
     protected EnemyStat _stat;
+
+    public AudioClip audioDie;
+    AudioSource audioSource;
     public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown; 
     public virtual Define.EnemyState State
     {
@@ -36,6 +39,8 @@ public abstract class Enemy : MonoBehaviour
                     anim.CrossFade("DAMAGE", 0.2f);
                     break;
                 case Define.EnemyState.Die:
+                    audioSource.clip = audioDie;
+                    audioSource.Play();
                     anim.CrossFade("DIE", 0.2f);
                     break;
             }
@@ -70,7 +75,7 @@ public abstract class Enemy : MonoBehaviour
             case Define.EnemyState.Hit:
                 UpdateHit();
                 break;
-            case Define.EnemyState.Die:
+            case Define.EnemyState.Die:                
                 UpdateDie();
                 break;
         }
@@ -82,6 +87,7 @@ public abstract class Enemy : MonoBehaviour
         {
             _stat.Hp = _stat.MaxHp;
         }
+        audioSource = GetComponent<AudioSource>();  
     }
 
     protected virtual void UpdateIdle()
