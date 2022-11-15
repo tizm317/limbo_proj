@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DungeonScene : GameScene
 {
@@ -29,9 +30,21 @@ public class DungeonScene : GameScene
 
 
         // InGame Scene BGM ����
-        Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
+        //Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
-        
+        if (SceneManager.GetActiveScene().name == "DungeonCemetery")
+        {
+            Managers.Sound.Play("Sound/BGM/BGM_DungeonCemetery", Define.Sound.Bgm);
+
+        }
+        else if (SceneManager.GetActiveScene().name == "DungeonNature")
+        {
+            Managers.Sound.Play("Sound/BGM/BGM_DungeonNature", Define.Sound.Bgm);
+        }
+        else if (SceneManager.GetActiveScene().name == "DungeonDesert")
+        {
+            Managers.Sound.Play("Sound/BGM/BGM_DungeonDesert", Define.Sound.Bgm);
+        }
 
         // DataManager test
         Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
