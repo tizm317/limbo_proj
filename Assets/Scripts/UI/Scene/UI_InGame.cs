@@ -150,25 +150,25 @@ public class UI_InGame : UI_Scene
         if (SceneName.Contains("InGame"))
             SceneName = SceneName.Substring(6);
 
-        string mapName = "";
+        //string mapName = "";
         switch(SceneName)
         {
             case "Village":
-                mapName = "Miðgarðr";
+                SceneName = "Miðgarðr";
                 break; 
             case "Nature":
-                mapName = "Járnviðr";
+                SceneName = "Járnviðr";
                 break;
             case "Desert":
-                mapName = "Múspellsheimr";
+                SceneName = "Múspellsheimr";
                 break;
             case "Cemetery":
-                mapName = "Helheim";
+                SceneName = "Helheim";
                 break;
         }
 
         if (GetText((int)Texts.MapText) == null) return;
-        GetText((int)Texts.MapText).text = mapName;
+        GetText((int)Texts.MapText).text = SceneName;
 
         StartCoroutine(CoMapNotificationPopup());
     }

@@ -50,6 +50,7 @@ public class UI_Dialogue : UI_Popup
         Init();
     }
 
+    List<Button> buttons;
     public override void Init()
     {
         base.Init();
@@ -65,8 +66,30 @@ public class UI_Dialogue : UI_Popup
 
         GetButton((int)Buttons.MapButton).gameObject.BindEvent(startMap);
 
-        if (npc._name != "경비 대장")
-            GetButton((int)Buttons.MapButton).gameObject.SetActive(false);
+        GridLayoutGroup buttons = GetComponentInChildren<GridLayoutGroup>();
+        foreach(Button button in buttons.GetComponentsInChildren<Button>())
+        {
+            button.gameObject.SetActive(false);
+        }
+
+        switch (npc._job)
+        {
+            case "MerchantNpc":
+                GetButton((int)Buttons.TradeButton).gameObject.SetActive(true);
+                break;
+            case "MapNpc":
+                GetButton((int)Buttons.MapButton).gameObject.SetActive(true);
+                break;
+            case "QuestNpc":
+                GetButton((int)Buttons.QuestButton).gameObject.SetActive(true);
+                break;
+        }
+        GetButton((int)Buttons.DialogueButton).gameObject.SetActive(true);
+        GetButton((int)Buttons.EndButton).gameObject.SetActive(true);
+
+
+        //if (npc._name != "경비 대장")
+        //    GetButton((int)Buttons.MapButton).gameObject.SetActive(false);
 
         // 대사 초기화
         GetText((int)Texts.ScriptText).text = "";
@@ -171,12 +194,34 @@ public class UI_Dialogue : UI_Popup
             case 1: // STATE_NPC_UI_POPUP
                 if (GetButton((int)Buttons.DialogueButton) == null) // null 레퍼 오류
                     break;
+                switch (npc._job)
+                {
+                    case "MerchantNpc":
+                        GetButton((int)Buttons.TradeButton).interactable = true;
+                        break;
+                    case "MapNpc":
+                        GetButton((int)Buttons.MapButton).interactable = true;
+                        break;
+                    case "QuestNpc":
+                        GetButton((int)Buttons.QuestButton).interactable = true;
+                        break;
+                }
                 GetButton((int)Buttons.DialogueButton).interactable = true;
-                GetButton((int)Buttons.TradeButton).interactable = true;
                 GetButton((int)Buttons.EndButton).interactable = true;
                 break;
             case 2: // STATE_DIALOGUE
-                GetButton((int)Buttons.TradeButton).interactable = false;
+                switch (npc._job)
+                {
+                    case "MerchantNpc":
+                        GetButton((int)Buttons.TradeButton).interactable = false;
+                        break;
+                    case "MapNpc":
+                        GetButton((int)Buttons.MapButton).interactable = false;
+                        break;
+                    case "QuestNpc":
+                        GetButton((int)Buttons.QuestButton).interactable = false;
+                        break;
+                }
                 if (lineNum == -1)
                 {
                     // 대사 끝
@@ -195,9 +240,20 @@ public class UI_Dialogue : UI_Popup
                 GetButton((int)Buttons.EndButton).interactable = false;
                 break;
             default: // STATE_IDLE,
+                switch(npc._job)
+                {
+                    case "MerchantNpc":
+                        GetButton((int)Buttons.TradeButton).interactable = true;
+                        break;
+                    case "MapNpc":
+                        GetButton((int)Buttons.MapButton).interactable = true;
+                        break;
+                    case "QuestNpc":
+                        GetButton((int)Buttons.QuestButton).interactable = true;
+                        break;
+                }
                 Debug.Log("디폴트");
                 GetButton((int)Buttons.DialogueButton).interactable = true;
-                GetButton((int)Buttons.TradeButton).interactable = true;
                 GetButton((int)Buttons.EndButton).interactable = true;
                 break;
 

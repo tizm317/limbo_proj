@@ -52,23 +52,23 @@ public class UI_NewMiniMap : UI_Popup
         if (SceneName.Contains("InGame"))
             SceneName = SceneName.Substring(6);
 
-        string mapName = "";
+        //string mapName = "";
         switch (SceneName)
         {
             case "Village":
-                mapName = "Miðgarðr";
+                SceneName = "Miðgarðr";
                 break;
             case "Nature":
-                mapName = "Járnviðr";
+                SceneName = "Járnviðr";
                 break;
             case "Desert":
-                mapName = "Múspellsheimr";
+                SceneName = "Múspellsheimr";
                 break;
             case "Cemetery":
-                mapName = "Helheim";
+                SceneName = "Helheim";
                 break;
         }
-        _MapNameText.text = mapName;
+        _MapNameText.text = SceneName;
  
 
 
