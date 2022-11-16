@@ -48,9 +48,29 @@ public class UI_NewMiniMap : UI_Popup
 
         // 맵 이름 초기화
         Text _MapNameText = GetText((int)Texts.MapNameText);
-        _MapNameText.text = SceneManager.GetActiveScene().name;
-        if (_MapNameText.text.Contains("InGame"))
-            _MapNameText.text = _MapNameText.text.Substring(6);
+        string SceneName = SceneManager.GetActiveScene().name;
+        if (SceneName.Contains("InGame"))
+            SceneName = SceneName.Substring(6);
+
+        string mapName = "";
+        switch (SceneName)
+        {
+            case "Village":
+                mapName = "Miðgarðr";
+                break;
+            case "Nature":
+                mapName = "Járnviðr";
+                break;
+            case "Desert":
+                mapName = "Múspellsheimr";
+                break;
+            case "Cemetery":
+                mapName = "Helheim";
+                break;
+        }
+        _MapNameText.text = mapName;
+ 
+
 
         images = GetComponentsInChildren<Image>();
         mapImg = GetComponentInChildren<RawImage>();

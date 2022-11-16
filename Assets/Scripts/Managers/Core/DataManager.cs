@@ -1,36 +1,36 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO; // FILE
 
-// ½ÇÁ¦ ÆÄÀÏ ÀĞ¾îµéÀÌ´Â ºÎºĞ
+// ì‹¤ì œ íŒŒì¼ ì½ì–´ë“¤ì´ëŠ” ë¶€ë¶„
 
 public interface ILoader<Key, Value>
 {
-    // ±ò²ûÇÏ°Ô °ü¸®ÇÏ±â À§ÇØ ÀÎÅÍÆäÀÌ½º ¸¸µê
-    // ÀÌ ÀÎÅÍÆäÀÌ½º °¡Áö°í ÀÖ´Â Å¬·¡½º´Â Dictionary<K, V> return ÇÏ´Â MakeDict() ±¸ÇöÇØ¾ß ÇÔ
+    // ê¹”ë”í•˜ê²Œ ê´€ë¦¬í•˜ê¸° ìœ„í•´ ì¸í„°í˜ì´ìŠ¤ ë§Œë“¦
+    // ì´ ì¸í„°í˜ì´ìŠ¤ ê°€ì§€ê³  ìˆëŠ” í´ë˜ìŠ¤ëŠ” Dictionary<K, V> return í•˜ëŠ” MakeDict() êµ¬í˜„í•´ì•¼ í•¨
     Dictionary<Key, Value> MakeDict();
 }
 
 public class DataManager
 {
-    // °ÔÀÓ¿¡ µîÀåÇÏ´Â ¸ğµç ¼öÄ¡ °ü¸®ÇÏ´Â ¸Å´ÏÀú
+    // ê²Œì„ì— ë“±ì¥í•˜ëŠ” ëª¨ë“  ìˆ˜ì¹˜ ê´€ë¦¬í•˜ëŠ” ë§¤ë‹ˆì €
 
-    // ex : ·¹º§º° ½ºÅİ, ·¹º§º° °æÇèÄ¡, ¸ó½ºÅÍ ai µî µ¥ÀÌÅÍ etc
-    // ÇÏµå ÄÚµùÇÏ¸é, ¼öÄ¡ °íÄ¥ ¶§ Ã£¾Æ¼­ ¼öÁ¤ÇØ¾ßÇÔ
-    // ½ÇÇàÆÄÀÏ¿¡ ¹­¿©¼­, ¾÷µ¥ÀÌÆ®ÇÏ·Á¸é ¹èÆ÷¸¦ ´Ù½Ã ÇØ¾ßÇÔ
+    // ex : ë ˆë²¨ë³„ ìŠ¤í…Ÿ, ë ˆë²¨ë³„ ê²½í—˜ì¹˜, ëª¬ìŠ¤í„° ai ë“± ë°ì´í„° etc
+    // í•˜ë“œ ì½”ë”©í•˜ë©´, ìˆ˜ì¹˜ ê³ ì¹  ë•Œ ì°¾ì•„ì„œ ìˆ˜ì •í•´ì•¼í•¨
+    // ì‹¤í–‰íŒŒì¼ì— ë¬¶ì—¬ì„œ, ì—…ë°ì´íŠ¸í•˜ë ¤ë©´ ë°°í¬ë¥¼ ë‹¤ì‹œ í•´ì•¼í•¨
 
-    // ¸ğµç ¼öÄ¡ °ü·Ã -> json ÆÄÀÏ·Î µé°í ÀÖÀ½
-    // À¥ Åë½ÅÀ¸·Î ÆÄÀÏ¸¸ ¹Ù²Ù¸é ¹Ù·Î Àû¿ëµÊ.
-    // ¼­¹ö, Å¬¶ó µ¿±âÈ­ÇÒ ¶§µµ
+    // ëª¨ë“  ìˆ˜ì¹˜ ê´€ë ¨ -> json íŒŒì¼ë¡œ ë“¤ê³  ìˆìŒ
+    // ì›¹ í†µì‹ ìœ¼ë¡œ íŒŒì¼ë§Œ ë°”ê¾¸ë©´ ë°”ë¡œ ì ìš©ë¨.
+    // ì„œë²„, í´ë¼ ë™ê¸°í™”í•  ë•Œë„
 
-    // DataManager°¡ µñ¼Å³Ê¸®·Î µé°íÀÖÀ½
-    // µñ¼Å³Ê¸®·Î µé°í ÀÖ´Â°Ô È¿À²Àû - (¸®½ºÆ® Ã£±â À§ÇØ ´Ù ¼øÈ¸ÇØ¾ßÇÔ.)
-    // ¿ÜºÎ¿¡¼­ »ç¿ëÇÒ ¶§ : Dictionary »Ì¾Æ¼­ »ç¿ë (¿¹½Ã : Dictionary<int, Stat> dict = Managers.Data.StatDict;)
-    public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>(); // Å° °ªÀ» ·¹º§·Î
-    public Dictionary<int, Data.PlayerStat> PlayerStatDict { get; private set; } = new Dictionary<int, Data.PlayerStat>(); // Å° °ªÀ» ·¹º§·Î
-    //(Ãß°¡ ÇÏ´Â ºÎºĞ)
+    // DataManagerê°€ ë”•ì…”ë„ˆë¦¬ë¡œ ë“¤ê³ ìˆìŒ
+    // ë”•ì…”ë„ˆë¦¬ë¡œ ë“¤ê³  ìˆëŠ”ê²Œ íš¨ìœ¨ì  - (ë¦¬ìŠ¤íŠ¸ ì°¾ê¸° ìœ„í•´ ë‹¤ ìˆœíšŒí•´ì•¼í•¨.)
+    // ì™¸ë¶€ì—ì„œ ì‚¬ìš©í•  ë•Œ : Dictionary ë½‘ì•„ì„œ ì‚¬ìš© (ì˜ˆì‹œ : Dictionary<int, Stat> dict = Managers.Data.StatDict;)
+    public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>(); // í‚¤ ê°’ì„ ë ˆë²¨ë¡œ
+    public Dictionary<int, Data.PlayerStat> PlayerStatDict { get; private set; } = new Dictionary<int, Data.PlayerStat>(); // í‚¤ ê°’ì„ ë ˆë²¨ë¡œ
+    //(ì¶”ê°€ í•˜ëŠ” ë¶€ë¶„)
     //public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
     public Dictionary<int, Data.Item> InvenDict { get; private set; } = new Dictionary<int, Data.Item>();
@@ -40,10 +40,10 @@ public class DataManager
 
     public Dictionary<int, Data.Npc> NpcDict { get; private set; } = new Dictionary<int, Data.Npc>();
 
-    //public Dictionary<int, Data.Dialog> DialogDict { get; private set; } = new Dictionary<int, Data.Dialog>(); // Å×½ºÆ®¿ë
-    //public Dictionary<int, Data.Dialog> DialogDict2 { get; private set; } = new Dictionary<int, Data.Dialog>(); // Å×½ºÆ®¿ë
+    //public Dictionary<int, Data.Dialog> DialogDict { get; private set; } = new Dictionary<int, Data.Dialog>(); // í…ŒìŠ¤íŠ¸ìš©
+    //public Dictionary<int, Data.Dialog> DialogDict2 { get; private set; } = new Dictionary<int, Data.Dialog>(); // í…ŒìŠ¤íŠ¸ìš©
 
-    // »óÈ²º° ´ë»ç µñ¼Å³Ê¸® ¸ğ¾ÆµĞ ÀüÃ¼ µñ¼Å³Ê¸®
+    // ìƒí™©ë³„ ëŒ€ì‚¬ ë”•ì…”ë„ˆë¦¬ ëª¨ì•„ë‘” ì „ì²´ ë”•ì…”ë„ˆë¦¬
     public Dictionary<string, Dictionary<int, Data.Dialog>> Dict_DialogDict { get; private set; } = new Dictionary<string, Dictionary<int, Data.Dialog>>();
 
     public Dictionary<int, Data.Item2> ItemTable { get; private set; } = new Dictionary<int, Data.Item2>();
@@ -52,7 +52,7 @@ public class DataManager
 
     public void Init()
     {
-        // json ÆÄÀÏ ÀĞ¾î¿È
+        // json íŒŒì¼ ì½ì–´ì˜´
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         PlayerStatDict = LoadJson<Data.PlayerStatData, int, Data.PlayerStat>("PlayerStatData").MakeDict(); //
         InvenDict = LoadJson<Data.ItemData2, int, Data.Item>("InvenData").MakeDict();
@@ -62,47 +62,47 @@ public class DataManager
         Inventories = LoadJson<Data.InventoryData, string, List<Data.Inventory>>("Inventories").MakeDict();
         ItemTable = LoadJson<Data.ItemTable, int, Data.Item2>("ItemTable").MakeDict();
 
-        // csv ÆÄÀÏ ÆÄ½Ì Å×½ºÆ® (csv to json ÆÄÀÏ ÀúÀå)
+        // csv íŒŒì¼ íŒŒì‹± í…ŒìŠ¤íŠ¸ (csv to json íŒŒì¼ ì €ì¥)
         //ParseTextData("test");
 
-        // ´ë»ç µñ¼Å³Ê¸® (¼öÁ¤ÇØ¾ßÇÔ)
-        Dict_DialogDict["0"] = LoadJson<Data.DialogData, int, Data.Dialog>("DialogTest").MakeDict();
-        Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
-        Dict_DialogDict["2"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
-        Dict_DialogDict["3"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
-        Dict_DialogDict["4"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
-        Dict_DialogDict["5"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
-        Dict_DialogDict["6"] = LoadJson<Data.DialogData, int, Data.Dialog>("test").MakeDict();
+        // ëŒ€ì‚¬ ë”•ì…”ë„ˆë¦¬ (ìˆ˜ì •í•´ì•¼í•¨)
+        Dict_DialogDict["0"] = LoadJson<Data.DialogData, int, Data.Dialog>("Valkyrie").MakeDict();
+        Dict_DialogDict["1"] = LoadJson<Data.DialogData, int, Data.Dialog>("Soldier").MakeDict();
+        Dict_DialogDict["2"] = LoadJson<Data.DialogData, int, Data.Dialog>("Soldier").MakeDict();
+        Dict_DialogDict["3"] = LoadJson<Data.DialogData, int, Data.Dialog>("Hejmdal").MakeDict();
+        Dict_DialogDict["4"] = LoadJson<Data.DialogData, int, Data.Dialog>("GeirrÃ¶th").MakeDict();
+        Dict_DialogDict["5"] = LoadJson<Data.DialogData, int, Data.Dialog>("Askr").MakeDict();
+        Dict_DialogDict["6"] = LoadJson<Data.DialogData, int, Data.Dialog>("Embla").MakeDict();
 
         PlayerTable = LoadJson<Data.PlayerData, string, Data.Player>("PlayerData").MakeDict();
 
-        // path ³»¿¡ MapData Á¸Àç ¾ÈÇÏ¸é json ÆÄÀÏ·Î ÀúÀå ÈÄ,
-        //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // °æ·Î ¼öÁ¤ ÇÊ¿ä
+        // path ë‚´ì— MapData ì¡´ì¬ ì•ˆí•˜ë©´ json íŒŒì¼ë¡œ ì €ì¥ í›„,
+        //string path = "D:/Unity/limbo_proj/Assets/Resources/Data/MapData.json"; // ê²½ë¡œ ìˆ˜ì • í•„ìš”
 
-        // ¹Ø¿¡´Â ÀÎ°ÔÀÓ¾À ¸Êµ¥ÀÌÅÍ
+        // ë°‘ì—ëŠ” ì¸ê²Œì„ì”¬ ë§µë°ì´í„°
         if (Managers.Scene.CurrentScene.SceneType == Define.Scene.InGameCemetery)
         {
-            string path = "Data/MapData.json"; // InGame ¾À ¸Ê µ¥ÀÌÅÍ Á¤º¸
+            string path = "Data/MapData.json"; // InGame ì”¬ ë§µ ë°ì´í„° ì •ë³´
 
             if (!File.Exists(path))
             {
-                // ¸Ê ¾È¿¡ ÀÖ´Â ¿ÀºêÁ§Æ® °¹¼ö Ä«¿îÆ®
+                // ë§µ ì•ˆì— ìˆëŠ” ì˜¤ë¸Œì íŠ¸ ê°¯ìˆ˜ ì¹´ìš´íŠ¸
                 int objCount = 0;
 
                 string json = "";
 
-                // ¸Ê ¿ÀºêÁ§Æ® ´ã±ä ºÎ¸ğ ¿ÀºêÁ§Æ®
+                // ë§µ ì˜¤ë¸Œì íŠ¸ ë‹´ê¸´ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸
                 GameObject prop = GameObject.Find("prop");
 
 
-                // ¸Ê ¿ÀºêÁ§Æ®(child) ¼øÈ¸
+                // ë§µ ì˜¤ë¸Œì íŠ¸(child) ìˆœíšŒ
                 foreach (Transform child in prop.transform)
                 {
-                    // Layer °¡ Building ¾Æ´Ï¸é continue (³ªÁß¿¡ Á¶°Ç ¹Ù²ğ ¼ö ÀÖÀ½ - Áß¿ä °Ç¹°¸¸ ÇÑ´Ù´ø°¡)
+                    // Layer ê°€ Building ì•„ë‹ˆë©´ continue (ë‚˜ì¤‘ì— ì¡°ê±´ ë°”ë€” ìˆ˜ ìˆìŒ - ì¤‘ìš” ê±´ë¬¼ë§Œ í•œë‹¤ë˜ê°€)
                     if (child.gameObject.layer != (int)Define.Layer.Building)
                         continue;
 
-                    // dictionary¿¡ ¹Ù·Î ³Ö±â
+                    // dictionaryì— ë°”ë¡œ ë„£ê¸°
                     {
                         Data.Map obj = new Data.Map();
 
@@ -115,21 +115,21 @@ public class DataManager
                         MapDict.Add(objCount, obj);
                     }
 
-                    // MakeList() ¿¡¼­ List ¸¸µé¾î¼­ ¹İÈ¯
+                    // MakeList() ì—ì„œ List ë§Œë“¤ì–´ì„œ ë°˜í™˜
                     json = MakeList(child.gameObject, objCount);
                     objCount++;
                 }
-                // List ÃÖÁ¾º»ÀÌ json¿¡ ÀúÀåµÈ Ã¤·Î ³ª¿È
+                // List ìµœì¢…ë³¸ì´ jsonì— ì €ì¥ëœ ì±„ë¡œ ë‚˜ì˜´
 
-                // jsonÆÄÀÏ ÀúÀå
+                // jsoníŒŒì¼ ì €ì¥
                 SaveJson(json, "MapData.json");
 
-                // ¹Ì´Ï¸Ê Å³ ¶§, Map Dictionary ¸¸µé¾îÁÜ
-                // UI_InGame¿¡¼­ MakeMapDict() È£Ãâ
+                // ë¯¸ë‹ˆë§µ í‚¬ ë•Œ, Map Dictionary ë§Œë“¤ì–´ì¤Œ
+                // UI_InGameì—ì„œ MakeMapDict() í˜¸ì¶œ
             }
             else
             {
-                // Map Dictionary ¸¸µê
+                // Map Dictionary ë§Œë“¦
                 MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
             }
         }
@@ -143,27 +143,27 @@ public class DataManager
         ///// ...?
         if (Managers.Scene.CurrentScene.SceneType == Define.Scene.InGameVillage)
         {
-            string path = "Data/MapData2.json"; // InGame ¾À ¸Ê µ¥ÀÌÅÍ Á¤º¸
+            string path = "Data/MapData2.json"; // InGame ì”¬ ë§µ ë°ì´í„° ì •ë³´
 
             if (!File.Exists(path))
             {
-                // ¸Ê ¾È¿¡ ÀÖ´Â ¿ÀºêÁ§Æ® °¹¼ö Ä«¿îÆ®
+                // ë§µ ì•ˆì— ìˆëŠ” ì˜¤ë¸Œì íŠ¸ ê°¯ìˆ˜ ì¹´ìš´íŠ¸
                 int objCount = 0;
 
                 string json = "";
 
-                // ¸Ê ¿ÀºêÁ§Æ® ´ã±ä ºÎ¸ğ ¿ÀºêÁ§Æ®
+                // ë§µ ì˜¤ë¸Œì íŠ¸ ë‹´ê¸´ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸
                 GameObject prop = GameObject.Find("prop");
 
 
-                // ¸Ê ¿ÀºêÁ§Æ®(child) ¼øÈ¸
+                // ë§µ ì˜¤ë¸Œì íŠ¸(child) ìˆœíšŒ
                 foreach (Transform child in prop.transform)
                 {
-                    // Layer °¡ Building ¾Æ´Ï¸é continue (³ªÁß¿¡ Á¶°Ç ¹Ù²ğ ¼ö ÀÖÀ½ - Áß¿ä °Ç¹°¸¸ ÇÑ´Ù´ø°¡)
+                    // Layer ê°€ Building ì•„ë‹ˆë©´ continue (ë‚˜ì¤‘ì— ì¡°ê±´ ë°”ë€” ìˆ˜ ìˆìŒ - ì¤‘ìš” ê±´ë¬¼ë§Œ í•œë‹¤ë˜ê°€)
                     if (child.gameObject.layer != (int)Define.Layer.Building)
                         continue;
 
-                    // dictionary¿¡ ¹Ù·Î ³Ö±â
+                    // dictionaryì— ë°”ë¡œ ë„£ê¸°
                     {
                         Data.Map obj = new Data.Map();
 
@@ -176,21 +176,21 @@ public class DataManager
                         MapDict.Add(objCount, obj);
                     }
 
-                    // MakeList() ¿¡¼­ List ¸¸µé¾î¼­ ¹İÈ¯
+                    // MakeList() ì—ì„œ List ë§Œë“¤ì–´ì„œ ë°˜í™˜
                     json = MakeList(child.gameObject, objCount);
                     objCount++;
                 }
-                // List ÃÖÁ¾º»ÀÌ json¿¡ ÀúÀåµÈ Ã¤·Î ³ª¿È
+                // List ìµœì¢…ë³¸ì´ jsonì— ì €ì¥ëœ ì±„ë¡œ ë‚˜ì˜´
 
-                // jsonÆÄÀÏ ÀúÀå
+                // jsoníŒŒì¼ ì €ì¥
                 SaveJson(json, "MapData2.json");
 
-                // ¹Ì´Ï¸Ê Å³ ¶§, Map Dictionary ¸¸µé¾îÁÜ
-                // UI_InGame¿¡¼­ MakeMapDict() È£Ãâ
+                // ë¯¸ë‹ˆë§µ í‚¬ ë•Œ, Map Dictionary ë§Œë“¤ì–´ì¤Œ
+                // UI_InGameì—ì„œ MakeMapDict() í˜¸ì¶œ
             }
             else
             {
-                // Map Dictionary ¸¸µê
+                // Map Dictionary ë§Œë“¦
                 MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData2").MakeDict();
             }
         }
@@ -198,21 +198,21 @@ public class DataManager
 
     public void MakeMapDict()
     {
-        // Ã³À½¿¡ json ÆÄÀÏÀÌ ¾ø¾î¼­ save ÇÏ°í ¹Ù·Î load ¸øÇØ¼­ ¹Ì´Ï¸Ê Å³ ¶§ loadÇÏµµ·Ï
+        // ì²˜ìŒì— json íŒŒì¼ì´ ì—†ì–´ì„œ save í•˜ê³  ë°”ë¡œ load ëª»í•´ì„œ ë¯¸ë‹ˆë§µ í‚¬ ë•Œ loadí•˜ë„ë¡
         MapDict = LoadJson<Data.MapData, int, Data.Map>("MapData").MakeDict();
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
     {
-        // json ÆÄÀÏ ÀĞ¾î¿À´Â ÇÔ¼ö
-        // Ãß°¡ÇÒ ¶§ µû·Î °Çµé ÇÊ¿ä ¾øÀ½
+        // json íŒŒì¼ ì½ì–´ì˜¤ëŠ” í•¨ìˆ˜
+        // ì¶”ê°€í•  ë•Œ ë”°ë¡œ ê±´ë“¤ í•„ìš” ì—†ìŒ
 
-        // ÆÄÀÏ Æ÷¸Ë ¸ÂÃç¾ß ÇÔ : json vs xml
+        // íŒŒì¼ í¬ë§· ë§ì¶°ì•¼ í•¨ : json vs xml
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
 
 
-        // À¯´ÏÆ¼ json ÆÄ½Ì Á¦°ø
-        // FromJson : json -> class·Î <-> ToJson
+        // ìœ ë‹ˆí‹° json íŒŒì‹± ì œê³µ
+        // FromJson : json -> classë¡œ <-> ToJson
         return JsonUtility.FromJson<Loader>(textAsset.text);
     }
 
@@ -235,23 +235,23 @@ public class DataManager
         Debug.Log("CSV To JSON");
 
 
-        // csv ÆÄÀÏ ÀĞ±â
+        // csv íŒŒì¼ ì½ê¸°
         // csv to json
         List<TextData> textDatas = new List<TextData>();
         ContainerTextData container = new ContainerTextData();
 
         TextAsset textAsset = Resources.Load<TextAsset>($"Data/{path}");
-        // , \r\n À¸·Î ±¸ºĞ
+        // , \r\n ìœ¼ë¡œ êµ¬ë¶„
 
-        // \n À¸·Î ±¸ºĞ -> ÁÙ(Çà) ´ÜÀ§ ±¸ºĞ
+        // \n ìœ¼ë¡œ êµ¬ë¶„ -> ì¤„(í–‰) ë‹¨ìœ„ êµ¬ë¶„
         string[] rows = textAsset.text.Split('\n');
         
-        // '\r' -> '' ±³Ã¼ + ',' ·Î ¿­ ±¸ºĞ
+        // '\r' -> '' êµì²´ + ',' ë¡œ ì—´ êµ¬ë¶„
         for(int i = 1; i < rows.Length; i++)
         {
             string[] cols = rows[i].Replace("\r", "").Split(',');
 
-            // list ¿¡ ³Ö¾îÁÖ±â
+            // list ì— ë„£ì–´ì£¼ê¸°
             textDatas.Add(new TextData()
             {
                 lineNum = (i - 1).ToString(),
@@ -262,19 +262,19 @@ public class DataManager
             Debug.Log($"{textDatas[i-1].lineNum} | {textDatas[i - 1].name} : {textDatas[i - 1].script}");
         }
 
-        // Á÷Á¢ÀûÀ¸·Î º¯È¯ÀÌ ¾ÈµÇ¾î¼­ °¨½ÎÁÖ´Â ÇüÅÂ·Î..
+        // ì§ì ‘ì ìœ¼ë¡œ ë³€í™˜ì´ ì•ˆë˜ì–´ì„œ ê°ì‹¸ì£¼ëŠ” í˜•íƒœë¡œ..
         container.dialogs = textDatas.ToArray();
         string json = JsonUtility.ToJson(container);
         //Debug.Log(json);
 
 
-        // json À¸·Î ÀúÀå (ÀÌ¸§Àº csv ÆÄÀÏ ±×´ë·Î)
+        // json ìœ¼ë¡œ ì €ì¥ (ì´ë¦„ì€ csv íŒŒì¼ ê·¸ëŒ€ë¡œ)
         path = $"Assets/Resources/Data/{path}.json";
         File.WriteAllText(path, json);
 
     }
 
-    // ÀúÀå ±â´É (MakeList , Savejson)
+    // ì €ì¥ ê¸°ëŠ¥ (MakeList , Savejson)
 
     [System.Serializable]
     public class ObjContainer
@@ -288,51 +288,51 @@ public class DataManager
 
     public class SaveData
     {
-        // List ¸¸µé±â À§ÇØ¼­
+        // List ë§Œë“¤ê¸° ìœ„í•´ì„œ
         public List<ObjContainer> map = new List<ObjContainer>();
     }
     SaveData saveData = new SaveData();
 
     public class SaveData2
     {
-        // List ¸¸µé±â À§ÇØ¼­
+        // List ë§Œë“¤ê¸° ìœ„í•´ì„œ
         public List<itemContainer> items = new List<itemContainer>();
     }
 
     SaveData2 saveData2 = new SaveData2();
     public void resetSaveData2()
     {
-        // »õ·Î µ¤¾î¾²±âÀ§ÇØ¼­?
+        // ìƒˆë¡œ ë®ì–´ì“°ê¸°ìœ„í•´ì„œ?
         saveData2.items.Clear();
     }
 
-    // ¸®½ºÆ® ¸¸µå´Â ºÎºĞ(MakeList)ÀÌ¶û ÀúÀåÇÏ´Â ºÎºĞ(SaveJson) ³ª´®
+    // ë¦¬ìŠ¤íŠ¸ ë§Œë“œëŠ” ë¶€ë¶„(MakeList)ì´ë‘ ì €ì¥í•˜ëŠ” ë¶€ë¶„(SaveJson) ë‚˜ëˆ”
     public string MakeList(GameObject obj, int count)
     {
-        // ¸®½ºÆ® ¸¸µå´Â ÇÔ¼ö
+        // ë¦¬ìŠ¤íŠ¸ ë§Œë“œëŠ” í•¨ìˆ˜
 
-        // ¿ÀºêÁ§Æ® Á¤º¸ ´ãÀ» ÄÁÅ×ÀÌ³Ê
+        // ì˜¤ë¸Œì íŠ¸ ì •ë³´ ë‹´ì„ ì»¨í…Œì´ë„ˆ
         ObjContainer MyObjContainer = new ObjContainer();
 
-        // Á¤º¸ ³Ö¾îÁÖ°í
+        // ì •ë³´ ë„£ì–´ì£¼ê³ 
         MyObjContainer.code = count;
         MyObjContainer.name = obj.name;
         MyObjContainer.x = obj.transform.position.x;
         MyObjContainer.y = obj.transform.position.y;
         MyObjContainer.z = obj.transform.position.z;
 
-        // List ¿¡ add
+        // List ì— add
         saveData.map.Add(MyObjContainer);
 
-        // List¸¦ jsonÀ¸·Î
-        // List °è¼Ó »õ·Î µ¤ÀÌ´Âµ¥
-        // °á±¹ ¸¶Áö¸·²¨·Î µ¤¿©¼­ ÀúÀåµÊ (ÃÖÁ¾º»À¸·Î..)
+        // Listë¥¼ jsonìœ¼ë¡œ
+        // List ê³„ì† ìƒˆë¡œ ë®ì´ëŠ”ë°
+        // ê²°êµ­ ë§ˆì§€ë§‰êº¼ë¡œ ë®ì—¬ì„œ ì €ì¥ë¨ (ìµœì¢…ë³¸ìœ¼ë¡œ..)
         string json = JsonUtility.ToJson(saveData, true);
 
         return json;
     }
 
-    // ÀÓ½Ã·Î.. ¾ÆÀÌÅÛ¿ë
+    // ì„ì‹œë¡œ.. ì•„ì´í…œìš©
     [System.Serializable]
     public class itemContainer
     {
@@ -345,24 +345,24 @@ public class DataManager
 
     public string MakeListInDict(Data.Item item)
     {
-        // ¸®½ºÆ® ¸¸µå´Â ÇÔ¼ö
+        // ë¦¬ìŠ¤íŠ¸ ë§Œë“œëŠ” í•¨ìˆ˜
 
-        // ¿ÀºêÁ§Æ® Á¤º¸ ´ãÀ» ÄÁÅ×ÀÌ³Ê
+        // ì˜¤ë¸Œì íŠ¸ ì •ë³´ ë‹´ì„ ì»¨í…Œì´ë„ˆ
         itemContainer MyItemContainer = new itemContainer();
 
-        // Á¤º¸ ³Ö¾îÁÖ°í
+        // ì •ë³´ ë„£ì–´ì£¼ê³ 
         MyItemContainer.id = item.id;
         MyItemContainer.name = item.name;
         MyItemContainer.type = item.type;
         MyItemContainer.grade = item.grade;
         MyItemContainer.count = item.count;
 
-        // List ¿¡ add
+        // List ì— add
         saveData2.items.Add(MyItemContainer); 
 
-        // List¸¦ jsonÀ¸·Î
-        // List °è¼Ó »õ·Î µ¤ÀÌ´Âµ¥
-        // °á±¹ ¸¶Áö¸·²¨·Î µ¤¿©¼­ ÀúÀåµÊ (ÃÖÁ¾º»À¸·Î..)
+        // Listë¥¼ jsonìœ¼ë¡œ
+        // List ê³„ì† ìƒˆë¡œ ë®ì´ëŠ”ë°
+        // ê²°êµ­ ë§ˆì§€ë§‰êº¼ë¡œ ë®ì—¬ì„œ ì €ì¥ë¨ (ìµœì¢…ë³¸ìœ¼ë¡œ..)
         string json = JsonUtility.ToJson(saveData2, true);
         
         return json;
@@ -371,19 +371,19 @@ public class DataManager
 
     public void SaveJson(string json)
     {
-        // json ÆÄÀÏ·Î ÀúÀåÇÏ´Â ÇÔ¼ö
-        string path = "Assets/Resources/Data/MapData.json"; // °æ·Î ¼öÁ¤ ÇÊ¿ä
+        // json íŒŒì¼ë¡œ ì €ì¥í•˜ëŠ” í•¨ìˆ˜
+        string path = "Assets/Resources/Data/MapData.json"; // ê²½ë¡œ ìˆ˜ì • í•„ìš”
 
-        // ÀúÀå
+        // ì €ì¥
         File.WriteAllText(path, json);
     }
 
     public void SaveJson(string json, string path)
     {
-        // json ÆÄÀÏ·Î ÀúÀåÇÏ´Â ÇÔ¼ö
-        string path1 = $"Assets/Resources/Data/{path}"; // °æ·Î ¼öÁ¤ ÇÊ¿ä
+        // json íŒŒì¼ë¡œ ì €ì¥í•˜ëŠ” í•¨ìˆ˜
+        string path1 = $"Assets/Resources/Data/{path}"; // ê²½ë¡œ ìˆ˜ì • í•„ìš”
 
-        // ÀúÀå
+        // ì €ì¥
         File.WriteAllText(path1, json);
     }
 

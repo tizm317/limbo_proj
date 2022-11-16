@@ -95,14 +95,14 @@ public class UI_InGame : UI_Scene
         SKILL2_HotKey,
         SKILL3_HotKey,
         SKILL4_HotKey,
-        LevelText,
+        //LevelText,
         MapText,
     }
 
     enum GameObjects
     {
-        NotificationLevel,
-        LevelUpEffect,
+        //NotificationLevel,
+        //LevelUpEffect,
         MapNotification,
         MapChangeEffect,
         Chat,               // Chat UI
@@ -125,11 +125,11 @@ public class UI_InGame : UI_Scene
     private void Update()
     {
         // Canvas Render Camera Setting (어디서 바뀌어서 오는거지..?)
-        if (this.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
-        {
-            this.GetComponent<Canvas>().worldCamera = Camera.main;
-            this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        }
+        //if (this.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay)
+        //{
+        //    this.GetComponent<Canvas>().worldCamera = Camera.main;
+        //    this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        //}
 
         UI_Update();
 
@@ -150,8 +150,25 @@ public class UI_InGame : UI_Scene
         if (SceneName.Contains("InGame"))
             SceneName = SceneName.Substring(6);
 
+        string mapName = "";
+        switch(SceneName)
+        {
+            case "Village":
+                mapName = "Miðgarðr";
+                break; 
+            case "Nature":
+                mapName = "Járnviðr";
+                break;
+            case "Desert":
+                mapName = "Múspellsheimr";
+                break;
+            case "Cemetery":
+                mapName = "Helheim";
+                break;
+        }
+
         if (GetText((int)Texts.MapText) == null) return;
-        GetText((int)Texts.MapText).text = SceneName;
+        GetText((int)Texts.MapText).text = mapName;
 
         StartCoroutine(CoMapNotificationPopup());
     }
@@ -253,7 +270,7 @@ public class UI_InGame : UI_Scene
 
         // Notification UI
         // Level Up Popup Set Active False
-        GetObject((int)GameObjects.NotificationLevel).SetActive(false);
+        //GetObject((int)GameObjects.NotificationLevel).SetActive(false);
         GetObject((int)GameObjects.MapNotification).SetActive(false);
 
         // Chat UI Toggle Button
@@ -322,18 +339,18 @@ public class UI_InGame : UI_Scene
                     continue;
                 }
 
-                UI_SkillUpButtonList[i].transform.Translate(Vector3.up * Time.deltaTime);
+                //UI_SkillUpButtonList[i].transform.Translate(Vector3.up * Time.deltaTime);
                     //= new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
-                //UI_SkillUpButtonList[i].transform.position = new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
+                UI_SkillUpButtonList[i].transform.position = new Vector3(UI_SkillUpButtonList[i].transform.position.x, value, UI_SkillUpButtonList[i].transform.position.z);
             }
 
             // R(궁극기)            
             // 특정 레벨 이후 혹은 내려가는 경우에만 움직임
             if (isPopups[3] == true || (player.skill_level[3] != 4 && player.skill_level[3] < ps.Level / 8))
             {
-                UI_SkillUpButtonList[3].transform.Translate(Vector3.up * Time.deltaTime);
+                //UI_SkillUpButtonList[3].transform.Translate(Vector3.up * Time.deltaTime);
                     //= new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
-                //UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
+                UI_SkillUpButtonList[3].transform.position = new Vector3(UI_SkillUpButtonList[3].transform.position.x, value, UI_SkillUpButtonList[3].transform.position.z);
                 //isPopup_R = true;
             }
             yield return null;
@@ -475,22 +492,15 @@ public class UI_InGame : UI_Scene
         }
 
         // LEVEL UP Effect
+        
         if (ps.level_up == true)
         {
-            StartCoroutine(CoLevelUpPopup());
+            uI_NotificationLevel = Managers.UI.ShowPopupUI<UI_NotificationLevel>();
+            uI_NotificationLevel.Notify(Level);
         }
     }
 
-    IEnumerator CoLevelUpPopup()
-    {
-        GetObject((int)GameObjects.NotificationLevel).SetActive(true);
-        GetText((int)Texts.LevelText).text = $"LEVEL {Level.text}";
-        GetObject((int)GameObjects.LevelUpEffect).GetComponent<ParticleSystem>().Play();
-        yield return new WaitForSeconds(10.0f);
-        
-        GetObject((int)GameObjects.NotificationLevel).SetActive(false);
-        StopCoroutine(CoLevelUpPopup());
-    }
+    UI_NotificationLevel uI_NotificationLevel;
 
     public void Skill_HotKeyChange()
     {

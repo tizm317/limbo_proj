@@ -39,22 +39,22 @@ public class MapNpc : QuestNpc
     {
         new MapInfo
         {
-            Name = "Nature",
+            Name = "Járnviðr",
             scene = Define.Scene.InGameNature
         },
         new MapInfo
         {
-            Name = "Desert",
+            Name = "Múspellsheimr",
             scene = Define.Scene.InGameDesert
         },
         new MapInfo
         {
-            Name = "Cemetery",
+            Name = "Helheim",
             scene = Define.Scene.InGameCemetery
         },
         new MapInfo
         {
-            Name = "Village",
+            Name = "Miðgarðr",
             scene = Define.Scene.InGameVillage
         },
     };

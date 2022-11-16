@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -21075,7 +21075,7 @@ GameObject:
   m_Component:
   - component: {fileID: 357985756}
   m_Layer: 13
-  m_Name: NPC2
+  m_Name: Soldier2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33863,7 +33863,7 @@ GameObject:
   m_Component:
   - component: {fileID: 764064490}
   m_Layer: 0
-  m_Name: NPC0
+  m_Name: Valkyrie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47288,7 +47288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 944375124}
   m_Layer: 13
-  m_Name: NPC1
+  m_Name: Soldier1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66731,7 +66731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1215287984}
   m_Layer: 13
-  m_Name: NPC3
+  m_Name: Hejmdal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66792,7 +66792,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1220142385}
   m_Layer: 13
-  m_Name: NPC5
+  m_Name: Askr
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81371,7 +81371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1462841627}
   m_Layer: 13
-  m_Name: NPC6
+  m_Name: Embla
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90016,107 +90016,6 @@ Transform:
   m_Father: {fileID: 932882372}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1636000446
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1636000449}
-  - component: {fileID: 1636000448}
-  - component: {fileID: 1636000447}
-  - component: {fileID: 1636000450}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!81 &1636000447
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636000446}
-  m_Enabled: 1
---- !u!20 &1636000448
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636000446}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &1636000449
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636000446}
-  m_LocalRotation: {x: -0.32395676, y: -0.13197987, z: 0.04574619, w: -0.9357033}
-  m_LocalPosition: {x: -7.1, y: 74.9, z: -88.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1636000450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636000446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5b6007de59a2f14a9a7db6ef9cc5b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mode: 0
-  _delta: {x: 0, y: 6, z: -5}
-  _player: {fileID: 0}
-  _yPos: {x: 0, y: 1, z: 0}
-  camera_control: 1
 --- !u!4 &1636295151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 416096, guid: 2394d7d557201f048b00c84246231eb0,
@@ -91324,7 +91223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1699918698}
   m_Layer: 13
-  m_Name: NPC4
+  m_Name: "Geirr\xF6th"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114286,6 +114185,75 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2137841098}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &683920230605646165
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 74.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -88.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.9357033
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.32395676
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.13197987
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.04574619
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969646996, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 683920228969647083, guid: e5005fc85a2513c4a90dfa1d05b72c40,
+        type: 3}
+      propertyPath: m_Name
+      value: Main Camera
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5005fc85a2513c4a90dfa1d05b72c40, type: 3}
 --- !u!1 &6227476699070281345
 GameObject:
   m_ObjectHideFlags: 0
