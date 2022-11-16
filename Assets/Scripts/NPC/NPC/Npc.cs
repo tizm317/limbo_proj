@@ -266,7 +266,7 @@ public class Npc : MonoBehaviour
     #endregion
     #region Patrol
     [SerializeField]
-    protected bool _patrolable;       // 패트롤여부
+    public bool _patrolable;       // 패트롤여부
     [SerializeField]
     protected float _moveSpeed;       // 이동 속도
     [SerializeField]

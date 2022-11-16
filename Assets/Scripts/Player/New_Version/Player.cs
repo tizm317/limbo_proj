@@ -251,7 +251,7 @@ public abstract class Player : MonoBehaviour
     #region 미니맵 관련
 
     // 미니맵 경로 그리기
-    protected UI_MiniMap ui_MiniMap;
+    protected UI_NewMiniMap ui_MiniMap;
 
     #endregion
 
@@ -522,8 +522,11 @@ public abstract class Player : MonoBehaviour
                 curState = State.Idle;
             Ani_State_Change();
 
-            //if(ui_MiniMap)
-            //    ui_MiniMap.clearLine(); // 미니맵 경로 지우기
+            if (ui_MiniMap)
+            {
+                ui_MiniMap.clearLine(); // 미니맵 경로 지우기
+            }
+
 
             return;
         }
@@ -555,8 +558,11 @@ public abstract class Player : MonoBehaviour
         Ani_State_Change();
 
         // 미니맵
-        //if(ui_MiniMap)
-        //    ui_MiniMap.drawLine();
+        if(ui_MiniMap)
+        {
+            ui_MiniMap.drawLine();
+        }
+
     }
 
     #endregion

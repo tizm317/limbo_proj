@@ -17,6 +17,7 @@ public class UI_NewMiniMap : UI_Popup
         DestinationMarker,
         BorderImage1,
         BorderImage2,
+        //UI_NpcMarker,
         //ZoomIn,
         //ZoomOut,
     }
@@ -61,6 +62,11 @@ public class UI_NewMiniMap : UI_Popup
     const float tempDist = 100.0f;
     const float arriveDist = 1.0f;
 
+    Npc[] Npcs;
+    List<Npc> patrolNpc = new List<Npc>();
+    List<UI_NpcMarker> patrolNpcMarkers = new List<UI_NpcMarker>();
+
+
     private void Update()
     {
         // 플레이어 위치(파란색), 목적지(빨간색) 표시
@@ -75,6 +81,15 @@ public class UI_NewMiniMap : UI_Popup
         // 플레이어
         playerPos.y = player.position.z;
         playerPos.z = 0;
+
+        for(int i = 0; i < patrolNpc.Count; i++)
+        {
+            Vector3 npcPos = patrolNpc[i].transform.position;
+            npcPos.y = npcPos.z;
+            npcPos.z = 0;
+            patrolNpcMarkers[i].gameObject.transform.localPosition = npcPos;
+            patrolNpcMarkers[i].gameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
 
         switch (curZoom)
         {
@@ -101,6 +116,7 @@ public class UI_NewMiniMap : UI_Popup
 
     private RectTransform playerImage;
     private RectTransform destinationImage;
+    private RectTransform npcImage;
     private RectTransform mapImage;
     private RectTransform boarderImage1;
     private RectTransform boarderImage2;
@@ -134,6 +150,7 @@ public class UI_NewMiniMap : UI_Popup
 
         playerImage = GetObject((int)GameObjects.PlayerMarker).GetComponent<RectTransform>();
         destinationImage = GetObject((int)GameObjects.DestinationMarker).GetComponent<RectTransform>();
+        //npcImage = GetObject((int)GameObjects.UI_NpcMarker).GetComponent<RectTransform>();
         mapImage = GetObject((int)GameObjects.MapImage).GetComponent<RectTransform>();
         boarderImage1 = GetObject((int)GameObjects.BorderImage1).GetComponent<RectTransform>();
         boarderImage2 = GetObject((int)GameObjects.BorderImage2).GetComponent<RectTransform>();
@@ -229,7 +246,27 @@ public class UI_NewMiniMap : UI_Popup
         _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
+
+        Npcs = GameObject.Find("NPC").GetComponentsInChildren<Npc>();
+        foreach(Npc npc in Npcs)
+        {
+            
+            GameObject item = Managers.UI.MakeSubItem<UI_NpcMarker>(parent: mapImage.transform).gameObject;
+            UI_NpcMarker objImg = item.GetOrAddComponent<UI_NpcMarker>();
+            Vector3 npcPos = npc.transform.position;
+            npcPos.y = npcPos.z;
+            npcPos.z = 0;
+            objImg.gameObject.transform.localPosition = npcPos;
+            objImg.gameObject.transform.localScale = new Vector3(1, 1, 1);
+
+            if (npc._patrolable == true)
+            {
+                patrolNpc.Add(npc);
+                patrolNpcMarkers.Add(objImg);
+            }
+        }
     }
+
 
     void RotationControl(RectTransform image)
     {
