@@ -190,6 +190,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75ffed2bf9bc4414a96e4c60c78b770a, type: 3}
+--- !u!4 &8067996 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 8067995}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &29188125
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +447,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 981787467}
+  - {fileID: 8067996}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -628,12 +633,6 @@ PrefabInstance:
 --- !u!1 &209472563 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 619639690854058326, guid: 75ffed2bf9bc4414a96e4c60c78b770a,
-    type: 3}
-  m_PrefabInstance: {fileID: 944244132}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &209472571 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 619639690854058329, guid: 75ffed2bf9bc4414a96e4c60c78b770a,
     type: 3}
   m_PrefabInstance: {fileID: 944244132}
   m_PrefabAsset: {fileID: 0}
@@ -1600,6 +1599,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75ffed2bf9bc4414a96e4c60c78b770a, type: 3}
+--- !u!4 &944244133 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 944244132}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &977145214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,12 +1707,6 @@ RectTransform:
 --- !u!1 &981787459 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 619639690854058326, guid: 75ffed2bf9bc4414a96e4c60c78b770a,
-    type: 3}
-  m_PrefabInstance: {fileID: 8067995}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &981787467 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 619639690854058329, guid: 75ffed2bf9bc4414a96e4c60c78b770a,
     type: 3}
   m_PrefabInstance: {fileID: 8067995}
   m_PrefabAsset: {fileID: 0}
@@ -1904,7 +1902,7 @@ Transform:
   m_LocalPosition: {x: 25, y: 0, z: 25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 209472571}
+  - {fileID: 944244133}
   - {fileID: 704237714}
   - {fileID: 1184254936}
   m_Father: {fileID: 0}
@@ -2554,7 +2552,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2160, y: 1440}
+  m_SizeDelta: {x: 2560, y: 1440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1507139461
 MonoBehaviour:
