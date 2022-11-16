@@ -199,8 +199,9 @@ public class UIManager
     {
         // 모든 팝업 지우기
         // 스택 통채로 지움
+        // Radial UI 제외
 
-        while (_popupStack.Count > 0)
+        while (_popupStack.Count > 1)
             ClosePopupUI();
     }
 

@@ -752,6 +752,10 @@ public class UI_InGame : UI_Scene
         if (Managers.UI.GetStackCount() > 1) // RadialMenu가 기본으로 떠있음
             return;
 
+        // 인베토리 및 장비창 떠있으면 안뜨게 (얘네 씬UI 소속이라 위에꺼에서 안걸러짐)
+        if (uI_Inventory.gameObject.activeSelf == true || ui_Equipment.gameObject.activeSelf == true)
+            return;
+
         skillSlot_tooltip = RaycastAndGetFirstComponent<UI_SkillSlot>();
         //itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
         if (skillSlot_tooltip == null) return;

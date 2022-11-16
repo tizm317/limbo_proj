@@ -6,7 +6,7 @@ public class MerchantNpc : Npc
 {
     UI_Shop _UI_Shop;
     //UI_Inven _UI_Inven;
-    //UI_Inventory _UI_Inventory;
+    UI_Inventory _UI_Inventory;
 
 
     // 판매 아이템 목록
@@ -171,24 +171,30 @@ public class MerchantNpc : Npc
         UpdateAllSlots();
 
         // Inventory UI
-        //_UI_Inventory = Managers.UI.ShowPopupUI<UI_Inventory>();
+        UI_InGame uI_InGame = GameObject.Find("@UI_Root").GetComponentInChildren<UI_InGame>();
+        _UI_Inventory = uI_InGame.GetComponentInChildren<UI_Inventory>(true);
+        _UI_Inventory.gameObject.SetActive(true);
+
 
         // 인벤토리 UI를 거래용으로 씀
-        //_UI_Inventory.Trading = true;
+        //_UI_Inventory = _UI_Shop.GetComponentInChildren<UI_Inventory>(true);
+        _UI_Inventory.Trading = true;
     }
 
     public void CloseTradeUI()
     {
         // 거래용으로 쓰던 인벤토리 UI를 false
-        //_UI_Inventory.Trading = false;
+        _UI_Inventory.Trading = false;
+        _UI_Inventory.gameObject.SetActive(false);
 
         // Inventory UI
         //_UI_Inventory.ClosePopupUI();
-        //_UI_Inventory = null;
+        //_UI_Inventory.gameObject.SetActive(false);
 
         // Shop UI
         _UI_Shop.ClosePopupUI();
         _UI_Shop = null;
+        _UI_Inventory = null;
     }
 
     // 해당 슬롯의 아이템 정보 리턴

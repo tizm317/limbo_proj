@@ -24,7 +24,7 @@ public class UI_SkillDescription : UI_Popup
 
     public override void Init()
     {
-        base.Init();
+        //base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Text>(typeof(Texts));
