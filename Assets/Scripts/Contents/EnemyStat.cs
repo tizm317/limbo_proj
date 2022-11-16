@@ -95,9 +95,9 @@ public class EnemyStat : Stat
 
         int tempIdx;
 
-        inventory.Add_Without_UI_Update(_itemData[GetRandomRate()], out tempIdx);
-        inventory.Add_Without_UI_Update(_questItemData, out tempIdx);
-        inventory.AddGold((uint)(_enemyExp*8));
+        inventory.Add_Without_UI_Update(_itemData[GetRandomRate()], out tempIdx);  //랜덤 아이템
+        inventory.Add_Without_UI_Update(_questItemData, out tempIdx);  //퀘스트 아이템
+        inventory.AddGold((uint)(_enemyExp*8));   //gold는 경험치의 8배
 
         StartCoroutine(Die());
 

@@ -70,6 +70,7 @@ public class Enemy2 : Enemy
             {
                 NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
                 nma.SetDestination(transform.position);
+                nma.speed = 1.2f;
                 State = Define.EnemyState.Skill;
                 return;
             }

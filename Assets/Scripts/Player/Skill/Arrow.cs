@@ -26,10 +26,17 @@ public class Arrow : MonoBehaviour
             if(Vector3.Distance(gameObject.transform.position, target_pos) < 0.5f)
             {
                 Stat target_stat = _target.GetComponent<Stat>();
+                Managers.Sound.Stop();
                 if(_player.my_job == Define.Job.ARCHER)
+                {
+                    Managers.Sound.Play("Sound/Skill_Sound/Archer_Hit",Define.Sound.Effect, 1.0f, true);
                     target_stat.OnAttacked(_player.my_stat);
+                }
                 else if(_player.my_job == Define.Job.SORCERER)
+                {
+                    Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_Hit",Define.Sound.Effect, 1.0f, true);
                     target_stat.OnAttacked(_player.my_stat.Attack * 2,_player.my_stat);
+                }
                 if(target_stat.Hp <= 0)
                 {
                     _player.my_enemy = null;

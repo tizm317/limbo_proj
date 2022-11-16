@@ -46,7 +46,7 @@ namespace DuloGames.UI
             if (this.m_Text != null)
             {
                 if (this.m_Display == DisplayValue.Percentage)
-                    this.m_Text.text = (value * 100f).ToString(this.m_Format) + this.m_Append;
+                    this.m_Text.text = (((40 + value)/40) * 100f).ToString(this.m_Format) + this.m_Append;
                 else
                     this.m_Text.text = value.ToString(this.m_Format) + this.m_Append;
             }

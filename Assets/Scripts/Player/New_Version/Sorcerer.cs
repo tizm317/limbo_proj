@@ -40,8 +40,7 @@ public class Sorcerer : Player
     public override void Cool_Update()
     {
         cool_max[0] = 10f - (skill_level[0] -1);
-        //cool_max[1] = 20f - (3f * skill_level[1] - 1);
-        cool_max[1] = 0f;
+        cool_max[1] = 20f - (3f * skill_level[1] - 1);
         cool_max[2] = 10f - (2f * skill_level[2] -1);
         cool_max[3] = 30 - 4f * skill_level[3];
     }
@@ -136,6 +135,8 @@ public class Sorcerer : Player
         curState = State.Skill;
         skill = HotKey.Q;
         Ani_State_Change();
+        Managers.Sound.Stop();
+        Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_Q",Define.Sound.Effect, 1.0f, true);
         yield return new WaitForSeconds(3.250f);
         attackable = false;
         player.tag = "Untagged";
@@ -303,6 +304,8 @@ public class Sorcerer : Player
                     skill = HotKey.W;
                     Ani_State_Change();
                     yield return new WaitForSeconds(2.6f);
+                    Managers.Sound.Stop();
+                    Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_W",Define.Sound.Effect, 1.0f, true);
                     cool[1] = cool_max[1];
                     on_skill = false;
                     target.GetComponent<PlayerStat>().Hp += heal;
@@ -437,6 +440,8 @@ public class Sorcerer : Player
                 wanted_size = new Vector3(1f,1f,5/9f) * width;
                 wanted_size2 = 0.1f * width;
                 size = 0f;
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_E_Freeze",Define.Sound.Effect, 1.0f, true);
                 while(true)
                 {
                     Vector3 temp_size = temp.transform.localScale;
@@ -452,6 +457,8 @@ public class Sorcerer : Player
                     yield return new WaitForEndOfFrame();
                 }
                 wanted_height = 0.5f;
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_E_Summon",Define.Sound.Effect, 1.0f, true);
                 while(true)
                 {
                     if(Mathf.Abs(wanted_height - sword.transform.localPosition.z) <= 0.1f)
@@ -607,6 +614,8 @@ public class Sorcerer : Player
                         } 
                     }
                 }
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_R_1",Define.Sound.Effect, 1.0f, true);
                 while(true)//위로 튀어나오는 부분
                 {
                     float height = 0f;;
@@ -646,6 +655,8 @@ public class Sorcerer : Player
                 {
                     i.transform.GetChild(1).gameObject.SetActive(true);
                 }
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_R_2",Define.Sound.Effect, 1.0f, true);
                 while(true)//광선 발사
                 {
                     size = Mathf.Lerp(size,1,Time.deltaTime);
@@ -695,6 +706,8 @@ public class Sorcerer : Player
                     yield return new WaitForEndOfFrame();
                 }
                 wanted_height = -10f;
+                Managers.Sound.Stop();
+                Managers.Sound.Play("Sound/Skill_Sound/Sorcerer_R_3",Define.Sound.Effect, 1.0f, true);
                 while(true)//방패 사라져!
                 {
                     float height = 0f;

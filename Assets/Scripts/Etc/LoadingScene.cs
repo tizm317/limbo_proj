@@ -23,16 +23,20 @@ public class LoadingScene : BaseScene
 
     IEnumerator LoadScene()
     {
+        Managers.Sound.Play("Sound/BGM/LoadingScene",Define.Sound.Bgm, 1.0f, true);
+                   
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
         float timer = 0.0f;
+        float timer2 = 0.0f;
         while(!op.isDone)
         {
             yield return null;
             timer += Time.deltaTime;
             if(op.progress < 0.9f)
             {
+                timer2 += Time.deltaTime;
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress,timer);
                 Percent.text = $"{progressBar.fillAmount * 100f}%";
                 if(progressBar.fillAmount >= op.progress)
@@ -42,11 +46,13 @@ public class LoadingScene : BaseScene
             }
             else
             {  
+                
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
                 Percent.text = $"{progressBar.fillAmount * 100f}%";
                 if(progressBar.fillAmount == 1.0f)
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    if(timer2 < 8)
+                        yield return new WaitForSeconds(8f - timer2);
                     op.allowSceneActivation = true;
                     yield break;
                 }
