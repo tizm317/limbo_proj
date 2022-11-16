@@ -47,7 +47,7 @@ public class MyWarrior : Warrior
 
 
         // 미니맵
-        //ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>();
+        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_NewMiniMap>();
     }
 
     protected override void Move()

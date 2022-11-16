@@ -92,8 +92,8 @@ public class UI_MiniMap : UI_Popup
 
         // 미니맵 플레이어, 도착지 이미지 방향
         RotationControl(playerImage);
-        //if (destinationImage)
-        //    RotationControl(destinationImage);
+        if (destinationImage)
+            RotationControl(destinationImage);
 
         // 플레이어
         playerPos.y = player.position.z;
@@ -149,7 +149,7 @@ public class UI_MiniMap : UI_Popup
             Debug.Log("There is no player.");
             return;
         }
-        player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<MyWarrior>();
+        player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         player = player_State.GetPlayer().transform;
         //player_Controller = Scene.GetComponent<Player_Controller>();

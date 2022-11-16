@@ -26,7 +26,7 @@ public class UI_InGame : UI_Scene
     // 연관된 팝업 UI 목록
     public UI_Inventory uI_Inventory { get; private set; }
     public UI_Equipment ui_Equipment { get; private set; }
-    UI_MiniMap miniMap;
+    UI_NewMiniMap miniMap;
     UI_Settings setting;
     UI_GameMenu ui_GameMenu;
     PlayerMgr pm;
@@ -191,8 +191,10 @@ public class UI_InGame : UI_Scene
 
         ui_Equipment = GetComponentInChildren<UI_Equipment>();
         uI_Inventory = GetComponentInChildren<UI_Inventory>();
-        ui_Equipment.gameObject.SetActive(false);
-        uI_Inventory.gameObject.SetActive(false);
+        if(ui_Equipment)
+            ui_Equipment.gameObject.SetActive(false);
+        if(uI_Inventory)
+            uI_Inventory.gameObject.SetActive(false);
 
 
 
@@ -212,7 +214,7 @@ public class UI_InGame : UI_Scene
         player = playerGO.GetComponent<Player>();
         player.SetPlayer(playerGO);
 
-        miniMap = GetComponentInChildren<UI_MiniMap>();
+        miniMap = GetComponentInChildren<UI_NewMiniMap>();
 
         #region RadialMenu
         sprites_action = new Sprite[8];
@@ -585,7 +587,7 @@ public class UI_InGame : UI_Scene
             // 미니맵 UI
             // off -> 최소 -> 중간 -> 최대 -> off
             if (!miniMap)
-                miniMap = GetComponentInChildren<UI_MiniMap>();
+                miniMap = GetComponentInChildren<UI_NewMiniMap>();
 
             if (!miniMap) return;
 

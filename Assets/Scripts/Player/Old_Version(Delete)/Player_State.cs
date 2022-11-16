@@ -116,7 +116,7 @@ public class Player_State : MonoBehaviour
     public bool IsInteractWithNPC { get; private set; }
 
     // 미니맵 경로 그리기
-    UI_MiniMap ui_MiniMap;
+    UI_NewMiniMap ui_MiniMap;
 
 
     void Start()
@@ -167,7 +167,7 @@ public class Player_State : MonoBehaviour
         enumerator = turnToNPC(); // 코루틴
 
         // 미니맵
-        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>();
+        ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_NewMiniMap>();
         
     }
     
