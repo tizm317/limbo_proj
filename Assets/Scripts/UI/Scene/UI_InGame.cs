@@ -306,7 +306,7 @@ public class UI_InGame : UI_Scene
                 case "EquipmentButton":
                     button.gameObject.BindEvent(EquipmentButtonClicked);
                     break;
-                case "Button6":
+                case "ScreenShotButton":
                     button.gameObject.BindEvent(ScreenShotButtonClicked);
                     break;
             }
