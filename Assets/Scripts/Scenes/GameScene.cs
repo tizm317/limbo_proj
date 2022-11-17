@@ -12,11 +12,11 @@ public class GameScene : BaseScene
     // CAPTCHA system
     UI_Captcha uI_Captcha;
     Coroutine co;
-    const float CaptchaDelaySeconds = 3600.0f; // 1hour
+    const float CaptchaDelaySeconds = 900.0f; // 15min
 
-    //보스 1시간마다 생성
+    //보스 15min마다 생성
     GameObject Boss;
-    public float cooldownTime = 3600.0f;
+    [SerializeField] private float cooldownTime = 900.0f;
     private float nextFireTime = 0f;
     void Awake()
     {
