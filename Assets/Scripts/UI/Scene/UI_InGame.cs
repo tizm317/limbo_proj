@@ -576,11 +576,18 @@ public class UI_InGame : UI_Scene
         }
 
         // LEVEL UP Effect
-        
         if (ps.level_up == true)
         {
-            uI_NotificationLevel = Managers.UI.ShowPopupUI<UI_NotificationLevel>();
-            uI_NotificationLevel.Notify(Level);
+            if (uI_NotificationLevel == null)
+            {
+                uI_NotificationLevel = Managers.UI.ShowPopupUI<UI_NotificationLevel>();
+                uI_NotificationLevel.Notify(Level);
+            }
+            else
+            {
+                uI_NotificationLevel.ClosePopupUI();
+                uI_NotificationLevel = null;
+            }
         }
     }
 

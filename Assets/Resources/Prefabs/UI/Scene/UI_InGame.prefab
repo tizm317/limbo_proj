@@ -68113,6 +68113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  BossTr: {fileID: 0}
   linePrefab: {fileID: 0}
 --- !u!223 &1139126675883814778
 Canvas:
@@ -68238,12 +68239,12 @@ GameObject:
   - component: {fileID: 9159769395470339843}
   - component: {fileID: 9159769395470339842}
   m_Layer: 5
-  m_Name: Marker (Boss Alive)
+  m_Name: BossAliveMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9159769395470339845
 RectTransform:
   m_ObjectHideFlags: 0
@@ -68312,12 +68313,12 @@ GameObject:
   - component: {fileID: 9159769395563940896}
   - component: {fileID: 9159769395563940899}
   m_Layer: 5
-  m_Name: Marker (Boss Dead)
+  m_Name: BossDeadMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9159769395563940898
 RectTransform:
   m_ObjectHideFlags: 0

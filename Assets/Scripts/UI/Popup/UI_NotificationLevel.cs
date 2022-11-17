@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UI_NotificationLevel : UI_Popup
 {
-
     enum GameObjects
     {
         NotificationLevel,
@@ -39,6 +38,7 @@ public class UI_NotificationLevel : UI_Popup
     public void Notify(Text level)
     {
         _level = level;
+
         StartCoroutine(CoLevelUpPopup());
     }
     IEnumerator CoLevelUpPopup()
@@ -48,9 +48,14 @@ public class UI_NotificationLevel : UI_Popup
         GetText((int)Texts.LevelText).text = $"LEVEL {_level.text}";
         GetObject((int)GameObjects.LevelUpEffect).GetComponent<ParticleSystem>().Play();
         yield return new WaitForSeconds(10.0f);
-
+        
         //GetObject((int)GameObjects.NotificationLevel).SetActive(false);
         ClosePopupUI();
         //StopCoroutine(CoLevelUpPopup());
+    }
+
+    private void OnDestroy()
+    {
+        StopCoroutine(CoLevelUpPopup());
     }
 }

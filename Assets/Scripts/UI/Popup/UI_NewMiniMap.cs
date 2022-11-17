@@ -17,6 +17,8 @@ public class UI_NewMiniMap : UI_Popup
         DestinationMarker,
         BorderImage1,
         BorderImage2,
+        BossAliveMarker,
+        BossDeadMarker,
         //UI_NpcMarker,
         //ZoomIn,
         //ZoomOut,
@@ -50,12 +52,14 @@ public class UI_NewMiniMap : UI_Popup
     }
 
     [SerializeField] Transform player;
+    [SerializeField] Transform BossTr;
 
     // 길찾기
     PathFinding pathFinding;
     public GameObject linePrefab;
     Vector3 playerPos;
     Vector3 destination;
+    Vector3 BossPos;
     DrawUILine drawUILine;
 
     float dist_PlayerDestinationImg; // 미니맵 마커 사이 거리
@@ -72,6 +76,38 @@ public class UI_NewMiniMap : UI_Popup
         // 플레이어 위치(파란색), 목적지(빨간색) 표시
         if (player == null) return;
         playerPos = player.position;
+
+        // 보스몹
+        // find boss enemy
+        if (BossTr == null)
+            findBoss();
+
+        if (BossTr != null) // 맵에 보스 있는 경우
+        {
+            BossPos = BossTr.position;
+            BossPos.y = BossPos.z;
+            BossPos.z = 0;
+            if (BossTr.gameObject.GetComponent<EnemyStat>().Hp <= 0) // 죽은 경우
+            {
+                bossDeadImage.localPosition = BossPos;
+                bossDeadImage.gameObject.SetActive(true);
+                bossAliveImage.gameObject.SetActive(false);
+                
+                BossTr = null;
+            }
+            else
+            {
+                bossAliveImage.localPosition = BossPos;
+                bossAliveImage.gameObject.SetActive(true);
+                bossDeadImage.gameObject.SetActive(false);
+            }
+        }
+        else // 맵에 보스 없는 경우
+        {
+            bossAliveImage.gameObject.SetActive(false);
+            bossDeadImage.gameObject.SetActive(false);
+        }
+
 
         // 미니맵 플레이어, 도착지 이미지 방향
         RotationControl(playerImage);
@@ -95,14 +131,20 @@ public class UI_NewMiniMap : UI_Popup
         {
             case zoom.DefaultZoom:
                 playerImage.localPosition = playerPos;
+                if(BossTr != null)
+                    bossAliveImage.localPosition = BossPos;
                 mapImage.localPosition = playerPos * -1;
                 break;
             case zoom.MiddleZoom:
                 playerImage.localPosition = playerPos;
+                if (BossTr != null)
+                    bossAliveImage.localPosition = BossPos;
                 mapImage.localPosition = playerPos * -1.3f;
                 break;
             case zoom.MaxZoom:
                 playerImage.localPosition = playerPos;
+                if (BossTr != null)
+                    bossAliveImage.localPosition = BossPos;
                 mapImage.localPosition = playerPos * -1.5f;
                 break;
         }
@@ -117,6 +159,8 @@ public class UI_NewMiniMap : UI_Popup
     private RectTransform playerImage;
     private RectTransform destinationImage;
     private RectTransform npcImage;
+    private RectTransform bossAliveImage;
+    private RectTransform bossDeadImage;
     private RectTransform mapImage;
     private RectTransform boarderImage1;
     private RectTransform boarderImage2;
@@ -150,6 +194,8 @@ public class UI_NewMiniMap : UI_Popup
 
         playerImage = GetObject((int)GameObjects.PlayerMarker).GetComponent<RectTransform>();
         destinationImage = GetObject((int)GameObjects.DestinationMarker).GetComponent<RectTransform>();
+        bossAliveImage = GetObject((int)GameObjects.BossAliveMarker).GetComponent<RectTransform>();
+        bossDeadImage = GetObject((int)GameObjects.BossDeadMarker).GetComponent<RectTransform>();
         //npcImage = GetObject((int)GameObjects.UI_NpcMarker).GetComponent<RectTransform>();
         mapImage = GetObject((int)GameObjects.MapImage).GetComponent<RectTransform>();
         boarderImage1 = GetObject((int)GameObjects.BorderImage1).GetComponent<RectTransform>();
@@ -265,8 +311,41 @@ public class UI_NewMiniMap : UI_Popup
                 patrolNpcMarkers.Add(objImg);
             }
         }
+
+        // find boss enemy
+        if(BossTr == null)
+            findBoss(); 
     }
 
+    private void findBoss()
+    {
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            if (go.GetComponent<EnemyBoss>() == null) continue;
+            BossTr = go.transform;
+            BossPos = go.transform.position;
+            BossPos.y = BossPos.z;
+            BossPos.z = 0;
+            if (go.GetComponent<EnemyStat>().Hp <= 0) // 죽은 경우
+            {
+                bossDeadImage.localPosition = BossPos;
+                bossDeadImage.gameObject.SetActive(true);
+                bossAliveImage.gameObject.SetActive(false);
+            }
+            else
+            {
+                bossAliveImage.localPosition = BossPos;
+                bossAliveImage.gameObject.SetActive(true);
+                bossDeadImage.gameObject.SetActive(false);
+            }
+        }
+        // 못 찾은 경우(없는 경우)
+        if(BossTr == null)
+        {
+            bossAliveImage.gameObject.SetActive(false);
+            bossDeadImage.gameObject.SetActive(false);
+        }
+    }
 
     void RotationControl(RectTransform image)
     {
