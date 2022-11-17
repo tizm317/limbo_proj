@@ -68,7 +68,8 @@ public class UI_InGame : UI_Scene
     bool TransparentQuest;
     GameObject ChatGo;
     bool TransparentChat;
-
+    GameObject ItemSlotsGo;
+    bool TransparentItemSlots;
 
     #region UI업데이트
     GameObject Role;
@@ -84,6 +85,7 @@ public class UI_InGame : UI_Scene
         UI_SkillUpButton_R,
         ChatBtnToggle,           // Chat UI
         QuestBtnToggle,           // Quest UI
+        ItemBtnToggle,           // ItemSlots
     }
     enum Texts
     {
@@ -107,6 +109,7 @@ public class UI_InGame : UI_Scene
         MapChangeEffect,
         Chat,               // Chat UI
         QuestTracker,       // Quest UI
+        ItemSlots,
     }
 
 
@@ -278,9 +281,36 @@ public class UI_InGame : UI_Scene
         // Chat UI Toggle Button
         GetButton((int)Buttons.ChatBtnToggle).gameObject.BindEvent(ChatToggleClicked);
         GetButton((int)Buttons.QuestBtnToggle).gameObject.BindEvent(QuestToggleClicked);
+        GetButton((int)Buttons.ItemBtnToggle).gameObject.BindEvent(ItemToggleClicked);
 
         QuestGo = GetObject((int)GameObjects.QuestTracker);
         ChatGo = GetObject((int)GameObjects.Chat);
+        ItemSlotsGo = GetObject((int)GameObjects.ItemSlots);
+
+        foreach(Button button in ItemSlotsGo.GetComponentsInChildren<Button>())
+        {
+            switch(button.name)
+            {
+                case "MenuButton":
+                    button.gameObject.BindEvent(MenuButtonClicked);
+                    break;
+                case "StatButton":
+                    button.gameObject.BindEvent(StatButtonClicked);
+                    break;
+                case "SettingButton":
+                    button.gameObject.BindEvent(SettingButtonClicked);
+                    break;
+                case "InventoryButton":
+                    button.gameObject.BindEvent(InventoryButtonClicked);
+                    break;
+                case "EquipmentButton":
+                    button.gameObject.BindEvent(EquipmentButtonClicked);
+                    break;
+                case "Button6":
+                    button.gameObject.BindEvent(ScreenShotButtonClicked);
+                    break;
+            }
+        }
     }
 
     
@@ -309,6 +339,20 @@ public class UI_InGame : UI_Scene
         // boolean
         if (body.activeSelf == false) TransparentQuest = true;
         else TransparentQuest = false;
+    }
+
+    private void ItemToggleClicked(PointerEventData data)
+    {
+        for (int i = 0; i < ItemSlotsGo.transform.childCount; i++)
+        {
+            GameObject child = ItemSlotsGo.transform.GetChild(i).gameObject;
+            if (child.name == "Sidemenu") continue;
+            child.SetActive(!child.activeSelf); // 현재 상태의 반대로 set
+
+            // boolean
+            if (child.activeSelf == false) TransparentItemSlots = true;
+            else TransparentItemSlots = false;
+        }
     }
 
     public IEnumerator CoSkillPointUpUIPopup(bool goDown = false)
@@ -432,6 +476,44 @@ public class UI_InGame : UI_Scene
         ps.Skill_Point--;
     }
 
+    // ItemSlot 창에서 버튼 클릭
+    private void InventoryButtonClicked(PointerEventData data)
+    {
+        uI_Inventory.gameObject.SetActive(!uI_Inventory.gameObject.activeSelf);
+    }
+
+    private void StatButtonClicked(PointerEventData data)
+    {
+        // TODO
+        Debug.Log("스텟창");
+    }
+
+    private void MenuButtonClicked(PointerEventData data)
+    {
+        if (ui_GameMenu)
+            ui_GameMenu.ClosePopupUI();
+        else
+            ui_GameMenu = Managers.UI.ShowPopupUI<UI_GameMenu>();
+    }
+
+    private void SettingButtonClicked(PointerEventData data)
+    {
+        if (setting)
+            setting.ClosePopupUI();
+        else
+            setting = Managers.UI.ShowPopupUI<UI_Settings>();
+    }
+
+    private void EquipmentButtonClicked(PointerEventData data)
+    {
+        ui_Equipment.gameObject.SetActive(!ui_Equipment.gameObject.activeSelf);
+    }
+
+    private void ScreenShotButtonClicked(PointerEventData data)
+    {
+        Screenshot.TakeScreenshot(Screen.width,Screen.height);
+    }
+
     void UI_Init()//UI적용에 사용할 오브젝트 찾기용
     {
         ps = player.GetPlayer().GetComponent<PlayerStat>();
@@ -533,23 +615,23 @@ public class UI_InGame : UI_Scene
         {
             Button chatToggle = GetButton((int)Buttons.ChatBtnToggle);
             Button questToggle = GetButton((int)Buttons.QuestBtnToggle);
-            if(TransparentChat == TransparentQuest)
+            Button itemToggle = GetButton((int)Buttons.ItemBtnToggle);
+            if(TransparentChat == TransparentQuest && TransparentQuest == TransparentItemSlots)
             {
-                // 둘이 같으면 둘다 해주면 되고,
+                // 다 같으면 모두 해주면 되고,
                 ChatToggleClicked(null);
                 QuestToggleClicked(null);
+                ItemToggleClicked(null);
             }
             else
             {
-                // 한명만 off면 다른 것도 off 시켜줌
-                if(TransparentChat == true)
-                {
-                    QuestToggleClicked(null);
-                }
-                else
-                {
+                // 다 다르면(적어도 하나는 off) 다른 것도 off 시켜줌
+                if (TransparentChat == false)
                     ChatToggleClicked(null);
-                }
+                if (TransparentQuest == false)
+                    QuestToggleClicked(null);
+                if (TransparentItemSlots == false)
+                    ItemToggleClicked(null);
             }
         }
 
