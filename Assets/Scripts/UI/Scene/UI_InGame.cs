@@ -29,6 +29,7 @@ public class UI_InGame : UI_Scene
     UI_NewMiniMap miniMap;
     UI_Settings setting;
     UI_GameMenu ui_GameMenu;
+    UI_Stat ui_stat;
     PlayerMgr pm;
     #region RadialMenu
     private UI_RadialMenu radialMenu;
@@ -194,10 +195,13 @@ public class UI_InGame : UI_Scene
 
         ui_Equipment = GetComponentInChildren<UI_Equipment>();
         uI_Inventory = GetComponentInChildren<UI_Inventory>();
+        ui_stat = GetComponentInChildren<UI_Stat>();
         if(ui_Equipment)
             ui_Equipment.gameObject.SetActive(false);
         if(uI_Inventory)
             uI_Inventory.gameObject.SetActive(false);
+        if (ui_stat)
+            ui_stat.gameObject.SetActive(false);
 
 
 
@@ -485,7 +489,7 @@ public class UI_InGame : UI_Scene
     private void StatButtonClicked(PointerEventData data)
     {
         // TODO
-        Debug.Log("스텟창");
+        ui_stat.gameObject.SetActive(!ui_stat.gameObject.activeSelf);
     }
 
     private void MenuButtonClicked(PointerEventData data)
@@ -725,6 +729,10 @@ public class UI_InGame : UI_Scene
             //    Managers.UI.ClosePopupUI(setting);
             //}
         }
+        else if (Input.GetKeyDown(KeySetting.keys[KeyAction.STAT]))
+        {
+            ui_stat.gameObject.SetActive(!ui_stat.gameObject.activeSelf);
+        }
 
         if (Input.GetKeyDown(KeySetting.keys[KeyAction.EMOTEACTION]))
         {
@@ -844,7 +852,7 @@ public class UI_InGame : UI_Scene
             return;
 
         // 인베토리 및 장비창 떠있으면 안뜨게 (얘네 씬UI 소속이라 위에꺼에서 안걸러짐)
-        if (uI_Inventory.gameObject.activeSelf == true || ui_Equipment.gameObject.activeSelf == true)
+        if (uI_Inventory.gameObject.activeSelf == true || ui_Equipment.gameObject.activeSelf == true || ui_stat.gameObject.activeSelf == true)
             return;
 
         skillSlot_tooltip = RaycastAndGetFirstComponent<UI_SkillSlot>();

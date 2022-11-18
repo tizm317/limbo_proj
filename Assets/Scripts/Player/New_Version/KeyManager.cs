@@ -15,6 +15,7 @@ public enum KeyAction
     INVENTORY,
     MINIMAP,
     ZOOM,
+    STAT,
     KEYCOUNT//마지막 친구임, Count대신에 쓸거
 }
 
@@ -26,7 +27,7 @@ public static class KeySetting
 public class KeyManager : MonoBehaviour
 {
     
-    KeyCode[] default_key = new KeyCode[]{KeyCode.Q,KeyCode.W,KeyCode.E,KeyCode.R,KeyCode.Escape,KeyCode.T,KeyCode.G, KeyCode.Tab, KeyCode.I, KeyCode.M, KeyCode.Z};
+    KeyCode[] default_key = new KeyCode[]{KeyCode.Q,KeyCode.W,KeyCode.E,KeyCode.R,KeyCode.Escape,KeyCode.T,KeyCode.G, KeyCode.Tab, KeyCode.I, KeyCode.M, KeyCode.Z, KeyCode.S};
 
     void Awake()
     {

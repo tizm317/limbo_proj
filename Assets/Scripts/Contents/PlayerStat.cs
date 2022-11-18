@@ -17,6 +17,7 @@ public class PlayerStat : Stat
     [SerializeField] protected float _max_mana;
     [SerializeField] protected float _mana_regeneration;
     [SerializeField] protected int _skill_point;
+    [SerializeField] protected int _stat_point;
     public int Exp { get { return _exp; } set { _exp = value; } }
     public uint Gold { get { return _gold; } set { _gold = value; } }
     public bool level_up = true;
@@ -27,6 +28,7 @@ public class PlayerStat : Stat
     public float MaxMana{ get { return _max_mana; } set { _max_mana = value; } }
     public float Mana_Regeneration { get { return _mana_regeneration; } set { _mana_regeneration = value; }}
     public int Skill_Point { get { return _skill_point; }  set { _skill_point = value; } }
+    public int Stat_Point { get { return _stat_point; }  set { _stat_point = value; } }
     private int max_skill_point = 16; // 4(qwer) * 4렙
     public float STR,DEX,INT,LUC;
     public float Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
@@ -47,6 +49,7 @@ public class PlayerStat : Stat
         _exp = 0;
         _gold = 0;
         _skill_point = 0;
+        _stat_point = 0;
         Level_Update();
         Stat_Update();
         time = 0;
@@ -135,6 +138,7 @@ public class PlayerStat : Stat
             }
             level_up = true;
             Stat_Update();
+            _stat_point += 5; // 1레벨업 당 5 스킬 포인트
         }
     }
 
