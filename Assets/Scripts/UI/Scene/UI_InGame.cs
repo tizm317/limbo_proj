@@ -118,7 +118,7 @@ public class UI_InGame : UI_Scene
     {
         Init();
 
-        setMapText(Managers.Scene.CurrentScene.SceneType.ToString());
+        setMapInfo(Managers.Scene.CurrentScene.SceneType.ToString());
     }
 
     Coroutine coroutine;
@@ -148,7 +148,7 @@ public class UI_InGame : UI_Scene
         }
     }
 
-    internal void setMapText(string SceneName)
+    internal void setMapInfo(string SceneName)
     {
         if (SceneName.Contains("InGame"))
             SceneName = SceneName.Substring(6);

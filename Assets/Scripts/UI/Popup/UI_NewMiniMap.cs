@@ -133,7 +133,7 @@ public class UI_NewMiniMap : UI_Popup
                 playerImage.localPosition = playerPos;
                 if(BossTr != null)
                     bossAliveImage.localPosition = BossPos;
-                mapImage.localPosition = playerPos * -1;
+                mapImage.localPosition = playerPos * -1; // 지도가 움직이게
                 break;
             case zoom.MiddleZoom:
                 playerImage.localPosition = playerPos;
@@ -283,7 +283,9 @@ public class UI_NewMiniMap : UI_Popup
                 break;
         }
         _MapNameText.text = SceneName;
- 
+
+        // 맵 이미지
+        SetMapImage(SceneName);
 
 
         images = GetComponentsInChildren<Image>();
@@ -556,5 +558,25 @@ public class UI_NewMiniMap : UI_Popup
     public void OnZoomOutButtonClicked(PointerEventData data)
     {
         Zoom(reverse: true);
+    }
+
+
+    public void SetMapImage(string mapName)
+    {
+        switch (mapName)
+        {
+            case "Miðgarðr":
+                mapImage.GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>("Sprites/Map/Village");
+                break;
+            case "Járnviðr":
+                mapImage.GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>("Sprites/Map/Nature");
+                break;
+            case "Múspellsheimr":
+                mapImage.GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>("Sprites/Map/Desert");
+                break;
+            case "Helheim":
+                mapImage.GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>("Sprites/Map/Cemetery");
+                break;
+        }
     }
 }
