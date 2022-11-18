@@ -30,7 +30,7 @@ public class PlayerStat : Stat
     public int Skill_Point { get { return _skill_point; }  set { _skill_point = value; } }
     public int Stat_Point { get { return _stat_point; }  set { _stat_point = value; } }
     private int max_skill_point = 16; // 4(qwer) * 4렙
-    public float STR,DEX,INT,LUC;
+    public int STR,DEX,INT,LUC;
     public float Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent;
     float time;
@@ -139,6 +139,7 @@ public class PlayerStat : Stat
             level_up = true;
             Stat_Update();
             _stat_point += 5; // 1레벨업 당 5 스킬 포인트
+            _UI_Stat.UpdateStat(this); // 레벨업 할 때 갱신해줌
         }
     }
 
@@ -180,16 +181,16 @@ public class PlayerStat : Stat
         switch(stat)
         {
             case Define.Stat.STR :
-                STR += num;
+                STR = num;
                 break;
             case Define.Stat.DEX :
-                DEX += num;
+                DEX = num;
                 break;
             case Define.Stat.INT :
-                INT += num;
+                INT = num;
                 break;
             case Define.Stat.LUK :
-                LUC += num;
+                LUC = num;
                 break;
             default:
                 break;
@@ -197,8 +198,26 @@ public class PlayerStat : Stat
         Stat_Update();
     }
 
+    public void Stat_Change(int sp, int s, int d, int i, int l)
+    {
+        Stat_Point = sp;
+
+        Stat_Change(Define.Stat.STR, s);
+        Stat_Change(Define.Stat.DEX, d);
+        Stat_Change(Define.Stat.INT, i);
+        Stat_Change(Define.Stat.LUK, l);
+
+        Stat_Update();
+    }
+
     protected override void OnDead(Stat attacker)
     {
         //동작 없음
+    }
+
+    UI_Stat _UI_Stat;
+    public void ConnectStatUI(UI_Stat statUI)
+    {
+        _UI_Stat = statUI;
     }
 }
