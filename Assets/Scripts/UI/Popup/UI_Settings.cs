@@ -39,6 +39,7 @@ public class UI_Settings : UI_Popup
         INVENTORY,
         MINIMAP,
         ZOOM,
+        STAT,
     }
 
     private void Start()
@@ -121,6 +122,9 @@ public class UI_Settings : UI_Popup
 
         GetButton((int)Buttons.ZOOM).gameObject.BindEvent(ZOOMChange);
         buttons[10] = GetButton((int)Buttons.ZOOM).gameObject.GetComponent<Button>();
+
+        GetButton((int)Buttons.STAT).gameObject.BindEvent(STATChange);
+        buttons[11] = GetButton((int)Buttons.STAT).gameObject.GetComponent<Button>();
 
         taps[2].SetActive(false);
         for (int i = 0; i < buttons.Length; i++)
@@ -266,6 +270,11 @@ public class UI_Settings : UI_Popup
     {
         KM.ChangeKey(10);
         button_texts[10].text = KeySetting.keys[KeyAction.ZOOM].ToString();
+    }
+    private void STATChange(PointerEventData data)
+    {
+        KM.ChangeKey(11);
+        button_texts[11].text = KeySetting.keys[KeyAction.STAT].ToString();
     }
 
     private void _Button_Text_Update()
