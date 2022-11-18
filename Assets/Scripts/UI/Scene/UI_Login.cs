@@ -81,6 +81,17 @@ public class UI_Login : UI_Scene
 
             Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
             Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
+
+            if(res.CreateOk)
+            {
+                UI_NoticeBox uI_NoticeBox = Managers.UI.ShowPopupUI<UI_NoticeBox>(); // 계정 생성 성공 알림 UI
+                uI_NoticeBox.Notice(1, res.CreateOk);
+            }
+            else
+            {
+                UI_NoticeBox uI_NoticeBox = Managers.UI.ShowPopupUI<UI_NoticeBox>(); // 계정 생성 실패 알림 UI
+                uI_NoticeBox.Notice(1, res.CreateOk);
+            }
         });  
     }
     public void OnClickLoginButton(PointerEventData data)
@@ -106,6 +117,11 @@ public class UI_Login : UI_Scene
 
                 UI_SelectServer popup = Managers.UI.ShowPopupUI<UI_SelectServer>();
                 popup.SetServers(res.ServerList);
+            }
+            else
+            {
+                UI_NoticeBox uI_NoticeBox = Managers.UI.ShowPopupUI<UI_NoticeBox>(); // 계정 생성 실패 알림 UI
+                uI_NoticeBox.Notice(2, res.LoginOk);
             }
         });
     }

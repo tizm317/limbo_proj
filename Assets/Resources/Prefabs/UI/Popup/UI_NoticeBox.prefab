@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1649211871594239567}
   - component: {fileID: 1649211871594239570}
   m_Layer: 5
-  m_Name: Text
+  m_Name: NoticeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,10 +107,10 @@ RectTransform:
   m_Father: {fileID: 1649211872894493820}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 84, y: -242}
-  m_SizeDelta: {x: 696, y: 124}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1649211871594239566
 CanvasRenderer:
@@ -152,8 +152,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.05
-  m_Text: "Maintenance In Progress. \nWe apologize for the inconvenience. \nThe Sever
-    will be available shortly."
+  m_Text: NoticeNoticeNoticeNoticeNoticeNoticeNoticeNoticeNoticeNoticeNoticeNoticeNoticeNotice
 --- !u!114 &1649211871594239570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +432,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 232}
+  m_AnchoredPosition: {x: 0, y: 200}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1649211872008771048
@@ -760,10 +759,10 @@ RectTransform:
   m_Father: {fileID: 1649211872894493820}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 84, y: -100}
-  m_SizeDelta: {x: 696, y: 58}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1649211872961032588
 CanvasRenderer:
@@ -805,7 +804,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '      Sever Maintenance Notice'
+  m_Text: Notice
 --- !u!1 &1649211873338525748
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,7 +843,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 864, y: 700}
+  m_SizeDelta: {x: 864, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1649211873338525744
 CanvasRenderer:
@@ -974,7 +973,7 @@ GameObject:
   - component: {fileID: 3471222765254466846}
   - component: {fileID: 3471222765254466847}
   m_Layer: 5
-  m_Name: UI_ServerNoticeBox
+  m_Name: UI_NoticeBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
