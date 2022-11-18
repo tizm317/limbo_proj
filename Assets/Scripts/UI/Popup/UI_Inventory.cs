@@ -17,7 +17,7 @@ public class UI_Inventory : UI_Base
 
     enum Buttons
     {
-        ButtonClose,
+        //ButtonClose,
         ButtonTrim,
         ButtonSort,
     }
@@ -82,7 +82,7 @@ public class UI_Inventory : UI_Base
 
 
         Bind<Button>(typeof(Buttons));
-        Button buttonClose = GetButton((int)Buttons.ButtonClose);
+        //Button buttonClose = GetButton((int)Buttons.ButtonClose);
         //buttonClose.gameObject.BindEvent(Quit_Inventory);
         //GetButton((int)Buttons.ButtonClose).gameObject.BindEvent(Quit_Inventory);
 

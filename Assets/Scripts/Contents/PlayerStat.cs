@@ -49,11 +49,13 @@ public class PlayerStat : Stat
         _exp = 0;
         _gold = 0;
         _skill_point = 0;
-        _stat_point = 0;
+        _stat_point = 5; // 1렙 기본 제공
         Level_Update();
-        Stat_Update();
         time = 0;
+
         STR = 5;
+        Stat_Update();
+
         ps = gameObject.GetComponent<Player>();
     }
 
@@ -138,8 +140,13 @@ public class PlayerStat : Stat
             }
             level_up = true;
             Stat_Update();
-            _stat_point += 5; // 1레벨업 당 5 스킬 포인트
-            _UI_Stat.UpdateStat(this); // 레벨업 할 때 갱신해줌
+            
+            // 17렙까지?
+            if(Level < 17)
+                _stat_point += 5; // 1레벨업 당 5 스킬 포인트
+            
+            if(_UI_Stat)
+                _UI_Stat.UpdateStat(this); // 레벨업 할 때 갱신해줌
         }
     }
 
@@ -156,8 +163,8 @@ public class PlayerStat : Stat
         Hp = MaxHp;
         Regeneration = (Level * STR + Item_Regeneration + 1) * 0.01f;
         Attack = ((0.5f * Level * STR) + Item_Attack) * (1 + Item_Attack_percent)+20;
-        MoveSpeed = 4 + (1 / 40) * (DEX -20) + Item_MoveSpeed;
-        AttackSpeed = 1 + (1 / 50) * (DEX - 20) + Item_AttackSpeed;
+        MoveSpeed = 4 + (1.0f / 40) * (DEX -20) + Item_MoveSpeed;
+        AttackSpeed = 1 + (1.0f / 50) * (DEX - 20) + Item_AttackSpeed;
         MaxMana = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent);
         Mana = MaxMana;
         Mana_Regeneration = 0.5f * (Level * INT + Item_Mana + 100) * (1 + Item_Mana_percent) * (0.1f + Item_Mana_Regeneration);
