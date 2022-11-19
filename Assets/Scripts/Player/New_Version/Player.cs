@@ -532,7 +532,8 @@ public abstract class Player : MonoBehaviour
         }
 
         // 최종 데스티네이션? 넣어서 패킷으로 보내야함
-        Dest = destination[destination.Count-1];
+        if(destination.Count - 1 >= 0)
+            Dest = destination[destination.Count-1];
     }
 
 
