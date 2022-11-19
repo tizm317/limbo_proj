@@ -194,7 +194,7 @@ public class UI_Stat : UI_Base
     private void UpdateUI(int sp, int s, int d, int i, int l)
     {
         // Update Text UI
-        textDic["SP"].text  = $"{sp}";
+        textDic["SP"].text  = $"{sp}<color=#C1B39CFF>/{statInfo.MaxStatPoint}</color>";                   // MaxSP 도 표시해서 최대 얼마나 올릴 수 있는지 표시
         textDic["STR"].text = $"{s}";
         textDic["DEX"].text = $"{d}";
         textDic["INT"].text = $"{i}";
@@ -207,7 +207,7 @@ public class UI_Stat : UI_Base
     {
         // Update Text UI
         textDic["LEVEL"].text = $"{statInfo.Level}";
-        textDic["EXP"].text = $"{statInfo.Exp}";
+        textDic["EXP"].text = $"{statInfo.current_exp}<color=#C1B39CFF>/{statInfo.next_level_up}</color>"; // "현재 레벨에서 경험치 / 다음 레벨업에 필요한 경험치"
         textDic["HP"].text = $"{statInfo.MaxHp}";
         textDic["REG"].text = $"{statInfo.Regeneration}";
         textDic["ATK"].text = $"{statInfo.Attack}";

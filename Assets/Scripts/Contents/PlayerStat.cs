@@ -30,6 +30,8 @@ public class PlayerStat : Stat
     public int Skill_Point { get { return _skill_point; }  set { _skill_point = value; } }
     public int Stat_Point { get { return _stat_point; }  set { _stat_point = value; } }
     private int max_skill_point = 16; // 4(qwer) * 4렙
+    public int MaxStatPoint { get { return max_stat_point; } }
+    private int max_stat_point = 80; // 1~16 * 5 = 80
     public int STR,DEX,INT,LUC;
     public float Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent;
