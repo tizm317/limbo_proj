@@ -43,11 +43,13 @@ public class DrawUILine : MonoBehaviour
 
         // 위치
         Vector3 middle = (end + start) /2 ;
+
         // 방향
         UIline.transform.rotation = Quaternion.FromToRotation(Vector3.up, end - start);
         UIline.transform.localPosition = middle;
         // 크기
         Vector2 size = UIline.GetComponent<RectTransform>().sizeDelta;
+
         UIline.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x,  Vector3.Distance(start, end));
         // 개수
         count = 1;
@@ -97,6 +99,7 @@ public class DrawUILine : MonoBehaviour
                 // 위치
                 Vector3 curPos = new Vector3(path[i].x, path[i].z, 0);
                 Vector3 nextPos = new Vector3(path[i + 1].x, path[i + 1].z, 0);
+
                 middle = (nextPos + curPos) / 2;
                 lineList[i].transform.localPosition = middle;
 

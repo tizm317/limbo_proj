@@ -233,16 +233,19 @@ public class UI_NewMiniMap : UI_Popup
             if (data.pointerId != -1) return;
             //destinationImage.transform.localPosition = new Vector3(data.position.x - 784.375f, data.position.y - 316.25f, 0); // 이거 수정하자
 
+            Vector3 vec = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0);
+            vec /= 6;
+
             switch (curSize)
             {
                 case size.DefaultSize:
-                    destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0);
+                    destinationImage.transform.localPosition = vec;
                     break;
                 case size.MiddleSize:
-                    destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0) / 1.3f;
+                    destinationImage.transform.localPosition = vec / 1.3f;
                     break;
                 case size.MaxSize:
-                    destinationImage.transform.localPosition = new Vector3(data.position.x - playerImage.position.x, data.position.y - playerImage.position.y, 0) / 1.5f;
+                    destinationImage.transform.localPosition = vec / 1.5f;
                     break;
             }
             switch (curZoom)
@@ -261,7 +264,7 @@ public class UI_NewMiniMap : UI_Popup
             temp.x = destinationImage.transform.localPosition.x + player.transform.position.x;
             temp.z = destinationImage.transform.localPosition.y + player.transform.position.z;
             temp.y = 1;
-            temp *= 6;
+            //temp *= 6;
 
             player_State.Set_Destination(temp);
         }, Define.UIEvent.Click);
@@ -452,7 +455,6 @@ public class UI_NewMiniMap : UI_Popup
         {
             drawDestinationMark();
 
-            destinationImage.localPosition /= 6; /////////////////////////////////////////////////////////////////
             drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
             yield return null;
         }
@@ -467,10 +469,10 @@ public class UI_NewMiniMap : UI_Popup
         destinationImage.gameObject.SetActive(false);
 
         List<Vector3> path = pathFinding.Return_Path(player);
-        //for(int i = 0; i < path.Count; i++)
-        //{
-        //    path[i] /= 6;
-        //}
+        for (int i = 0; i < path.Count; i++)
+        {
+            path[i] *= 6;
+        }
 
         if (destinationImage.localPosition != null && player_State.get_isObstacle() == false)
         {
