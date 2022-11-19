@@ -1,56 +1,87 @@
 {
   "weapons": [
     {
-      "id": "1",
-      "name": "Axe",
-      "weaponType": "Axe",
+      "id": "13",
+      "name": "도끼",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "전사가 사용하는 도끼이다.",
+      "maxDurability": "100",
+      "classType": "Warrior",
       "damage": "10"
     },
     {
-      "id": "2",
-      "name": "Bow",
-      "weaponType": "Bow",
+      "id": "14",
+      "name": "활",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "궁수가 사용하는 활이다.",
+      "maxDurability": "100",
+      "classType": "Archer",
       "damage": "10"
     },
     {
-      "id": "3",
-      "name": "Wand",
-      "weaponType": "Wand",
+      "id": "15",
+      "name": "완드",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "법사가 사용하는 완드이다.",
+      "maxDurability": "100",
+      "classType": "Sorcerer",
       "damage": "10"
     }
   ],
   "armors": [
     {
-      "id": "100",
-      "name": "Helmet",
-      "armorType": "Helmet",
-      "defence": "10"
+      "id": "0",
+      "name": "일반 갑옷",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "일반적인 갑옷입니다.",
+      "maxDurability": "100",
+      "value": "10",
+      "part": "Body"
     },
     {
-      "id": "101",
-      "name": "Armor",
-      "armorType": "Armor",
-      "defence": "10"
+      "id": "1",
+      "name": "일반 투구",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "일반적인 투구입니다.",
+      "maxDurability": "100",
+      "value": "10",
+      "part": "Head"
     },
     {
-      "id": "102",
-      "name": "Pants",
-      "armorType": "Pants",
-      "defence": "10"
+      "id": "2",
+      "name": "일반 바지",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "일반적인 바지입니다.",
+      "maxDurability": "100",
+      "value": "10",
+      "part": "Pants"
     },
     {
-      "id": "103",
-      "name": "Shoes",
-      "armorType": "Shoes",
-      "damage": "10"
+      "id": "3",
+      "name": "일반 신발",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "일반적인 신발입니다.",
+      "maxDurability": "100",
+      "value": "10",
+      "part": "Shoes"
     }
   ],
-  "consumables": [
+  "potions": [
     {
-      "id": "200",
-      "name": "Hp Potion",
-      "consumableType": "Potion",
-      "count": "10"
+      "id": "9",
+      "name": "짬뽕 포션",
+      "grade": "Normal",
+      "price": "2000",
+      "tooltip": "HP와 MP 모두 10씩 회복합니다.",
+      "maxAmount": "99",
+      "value": "10"
     }
   ]
 }

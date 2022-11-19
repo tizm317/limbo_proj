@@ -100,41 +100,40 @@ public class Inventory : MonoBehaviour
     public bool LoadFinish { get { return _inventory_loaded; } set { _inventory_loaded = value; } }
     private bool _inventory_loaded = false;
 
-    public void InvenLoad()
-    {
-        string name = "bmc4886";
-        List<Data.Inventory> inventory = Managers.Data.Inventories[name];
+    //public void InvenLoad()
+    //{
+    //    string name = "bmc4886";
+    //    List<Data.Inventory> inventory = Managers.Data.Inventories[name];
 
-        foreach(Data.Inventory i in inventory)
-        {
-            int icount = i.itemCount;
+    //    foreach(Data.Inventory i in inventory)
+    //    {
+    //        int icount = i.itemCount;
 
-            ItemData idata = null;
-            foreach (ItemData data in itemDatas)
-            {
-                if(data.ID == i.itemID)
-                {
-                    idata = data;
-                    break;
-                }
-            }
+    //        ItemData idata = null;
+    //        foreach (ItemData data in itemDatas)
+    //        {
+    //            if(data.ID == i.itemID)
+    //            {
+    //                idata = data;
+    //                break;
+    //            }
+    //        }
 
-            CountableItemData cid = idata as CountableItemData;
-            int tempIdx;
-            if (cid != null)
-                Add(cid, out tempIdx, icount);
-            else
-                Add(idata, out tempIdx, icount);
-        }
+    //        CountableItemData cid = idata as CountableItemData;
+    //        int tempIdx;
+    //        if (cid != null)
+    //            Add(cid, out tempIdx, icount);
+    //        else
+    //            Add(idata, out tempIdx, icount);
+    //    }
+    //    // 골드
+    //    //_MyGolds = 0;
 
-        // 골드
-        //_MyGolds = 0;
+    //    //_UI_inventory.SetMyGolds(_MyGolds);
 
-        //_UI_inventory.SetMyGolds(_MyGolds);
-
-        // 로드 완료
-        LoadFinish = true;
-    }
+    //    // 로드 완료
+    //    LoadFinish = true;
+    //}
 
     public ItemData[] itemDatas = new ItemData[16];
 

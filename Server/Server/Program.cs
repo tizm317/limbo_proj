@@ -93,6 +93,49 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
+			// TEST CODE
+			using (AppDbContext db = new AppDbContext())
+            {
+				PlayerDb player = db.Players.FirstOrDefault();
+				if(player != null)
+                {
+					db.Items.Add(new ItemDb()
+					{
+						TemplateId = 13,
+						Count = 1,
+						Slot = 0,
+						Owner = player
+					});
+
+					db.Items.Add(new ItemDb()
+					{
+						TemplateId = 0,
+						Count = 1,
+						Slot = 1,
+						Owner = player
+					});
+
+					db.Items.Add(new ItemDb()
+					{
+						TemplateId = 3,
+						Count = 1,
+						Slot = 2,
+						Owner = player
+					});
+
+					db.Items.Add(new ItemDb()
+					{
+						TemplateId = 9,
+						Count = 10,
+						Slot = 5,
+						Owner = player
+					});
+
+					db.SaveChangesEx();
+				}
+            }
+
+
 			//// DB Test // DB를 컨텐츠 코드에서 바로 접근하는 것도 문제(오래 걸리면 .. 다른 부분도 오래걸림)
 			//using (AppDbContext db = new AppDbContext())
 			//         {

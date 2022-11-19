@@ -39,7 +39,7 @@ namespace Server.Game
             ItemType = itemType;
         }
 
-        // DB 에서 추출한 정보로 인메모리에서 관리할 수 있는 Item으로 만들어줌
+        // DB 에서 추출한 정보로 인메모리에서 관리할 수 있는 Item으로 만들어주는 함수
         public static Item MakeItem(ItemDb itemDb)
         {
             Item item = null;
@@ -56,11 +56,22 @@ namespace Server.Game
                 case ItemType.Armor:
                     item = new Armor(itemDb.TemplateId);
                     break;
-                case ItemType.Consumable:
-                    item = new Consumable(itemDb.TemplateId);
+                case ItemType.Potion:
+                    item = new Potion(itemDb.TemplateId);
+                    break;
+                case ItemType.Etc:
+                    item = new Etc(itemDb.TemplateId);
+                    break;
+                case ItemType.Quest:
+                    item = new Quest(itemDb.TemplateId);
+                    break;
+                case ItemType.Coin:
+                    item = new Coin(itemDb.TemplateId);
                     break;
             }
 
+            // 아이템 정보 중에서 Init할 때 채워주는데,
+            // DB에만 있고, 저장하지 않은 정보 DbId, Count 넣어줌
             if(item != null)
             {
                 item.ItemDbId = itemDb.ItemDbId;
@@ -70,10 +81,12 @@ namespace Server.Game
         }
     }
 
+    // Equipment Item
     public class Weapon : Item
     {
-        public WeaponType WeaponType { get; private set; }
+        public ClassType ClassType { get; private set; }
         public int Damage { get; private set; }
+        public int MaxDurablity { get; private set; }   //
         public Weapon(int templateId) : base(ItemType.Weapon)
         {
             // templateId를 이용해서 실제 값 찾아오기
@@ -90,16 +103,19 @@ namespace Server.Game
             {
                 // 정보 채우기
                 TemplateId = data.id;
-                Count = 1; // 안 겹침
-                WeaponType = data.weaponType;
+                Count = 1; // 무기는 안 겹치기 때문에
+                ClassType = data.classType;
                 Damage = data.damage;
                 Stackable = false; // 안 겹침
+                MaxDurablity = data.maxDurability;
             }
         }
-    }public class Armor : Item
+    }
+    public class Armor : Item
     {
-        public WeaponType WeaponType { get; private set; }
+        public ArmorType ArmorType { get; private set; }
         public int Defence { get; private set; }
+        public int MaxDurablity { get; private set; }   //
         public Armor(int templateId) : base(ItemType.Armor)
         {
             // templateId를 이용해서 실제 값 찾아오기
@@ -117,18 +133,20 @@ namespace Server.Game
                 // 정보 채우기
                 TemplateId = data.id;
                 Count = 1; // 안 겹침
-                WeaponType = data.armorType;
+                ArmorType = data.armorType;
                 Defence = data.defence;
                 Stackable = false; // 안 겹침
+                MaxDurablity = data.maxDurability;
             }
         }
     }
 
-    public class Consumable : Item
+    // Countable Item
+    public class Potion : Item
     {
-        public ConsumableType ConsumableType { get; private set; }
-        public int MaxCount { get; private set; }
-        public Consumable(int templateId) : base(ItemType.Consumable)
+        public int MaxAmount { get; private set; } //
+        public int Value { get; private set; }
+        public Potion(int templateId) : base(ItemType.Potion)
         {
             // templateId를 이용해서 실제 값 찾아오기
             Init(templateId);
@@ -139,15 +157,98 @@ namespace Server.Game
             ItemData itemData = null;
             DataManager.ItemDict.TryGetValue(templateId, out itemData);
 
-            if (itemData.itemType != ItemType.Weapon) return;
-            ConsumableData data = (ConsumableData)itemData;
+            if (itemData.itemType != ItemType.Potion) return;
+            PotionData data = (PotionData)itemData;
             {
                 // 정보 채우기
                 TemplateId = data.id;
-                Count = 1; // 내가 들고있는 Count 
-                MaxCount = data.maxCount;
-                ConsumableType = data.consumableType;
-                Stackable = (data.maxCount > 1); // maxCount 1 이상이면 겹쳐지는것
+                Count = 1; // 현재 내가 들고있는 Count 
+                MaxAmount = data.maxAmount;
+                Stackable = (data.maxAmount > 1); // maxAmount 1 이상이면 겹쳐지는것
+                Value = data.value;
+            }
+        }
+    }
+
+    public class Etc : Item
+    {
+        public int MaxAmount { get; private set; } //
+        public int Value { get; private set; }
+
+        public Etc(int templateId) : base(ItemType.Etc)
+        {
+            // templateId를 이용해서 실제 값 찾아오기
+            Init(templateId);
+        }
+
+        void Init(int templateId)
+        {
+            ItemData itemData = null;
+            DataManager.ItemDict.TryGetValue(templateId, out itemData);
+
+            if (itemData.itemType != ItemType.Etc) return;
+            EtcData data = (EtcData)itemData;
+            {
+                // 정보 채우기
+                TemplateId = data.id;
+                Count = 1; // 현재 내가 들고있는 Count 
+                MaxAmount = data.maxAmount;
+                Stackable = (data.maxAmount > 1); // maxAmount 1 이상이면 겹쳐지는것
+                Value = data.value;
+            }
+        }
+    }
+
+    public class Quest : Item
+    {
+        public int MaxAmount { get; private set; } //
+        public int Value { get; private set; }
+        public Quest(int templateId) : base(ItemType.Quest)
+        {
+            // templateId를 이용해서 실제 값 찾아오기
+            Init(templateId);
+        }
+
+        void Init(int templateId)
+        {
+            ItemData itemData = null;
+            DataManager.ItemDict.TryGetValue(templateId, out itemData);
+
+            if (itemData.itemType != ItemType.Quest) return;
+            QuestData data = (QuestData)itemData;
+            {
+                // 정보 채우기
+                TemplateId = data.id;
+                Count = 1; // 현재 내가 들고있는 Count 
+                MaxAmount = data.maxAmount;
+                Stackable = (data.maxAmount > 1); // maxAmount 1 이상이면 겹쳐지는것
+                Value = data.value;
+            }
+        }
+    }
+
+    public class Coin : Item
+    {
+        public int MaxAmount { get; private set; } //
+        public Coin(int templateId) : base(ItemType.Coin)
+        {
+            // templateId를 이용해서 실제 값 찾아오기
+            Init(templateId);
+        }
+
+        void Init(int templateId)
+        {
+            ItemData itemData = null;
+            DataManager.ItemDict.TryGetValue(templateId, out itemData);
+
+            if (itemData.itemType != ItemType.Coin) return;
+            CoinData data = (CoinData)itemData;
+            {
+                // 정보 채우기
+                TemplateId = data.id;
+                Count = 1; // 현재 내가 들고있는 Count 
+                MaxAmount = data.maxAmount;
+                Stackable = (data.maxAmount > 1); // maxAmount 1 이상이면 겹쳐지는것
             }
         }
     }

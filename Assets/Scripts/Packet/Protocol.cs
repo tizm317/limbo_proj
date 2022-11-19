@@ -79,20 +79,19 @@ namespace Google.Protobuf.Protocol {
             "X05PTkUQABIOCgpTS0lMTF9BVVRPEAESFAoQU0tJTExfUFJPSkVDVElMRRAC",
             "KloKEVBsYXllclNlcnZlclN0YXRlEhYKElNFUlZFUl9TVEFURV9MT0dJThAA",
             "EhYKElNFUlZFUl9TVEFURV9MT0JCWRABEhUKEVNFUlZFUl9TVEFURV9HQU1F",
-            "EAIqiwEKCEl0ZW1UeXBlEhIKDklURU1fVFlQRV9OT05FEAASFAoQSVRFTV9U",
-            "WVBFX1dFQVBPThABEhMKD0lURU1fVFlQRV9BUk1PUhACEhgKFElURU1fVFlQ",
-            "RV9DT05TVU1BQkxFEAMSEwoPSVRFTV9UWVBFX1FVRVNUEAQSEQoNSVRFTV9U",
-            "WVBFX0VUQxAFKmIKCldlYXBvblR5cGUSFAoQV0VBUE9OX1RZUEVfTk9ORRAA",
-            "EhMKD1dFQVBPTl9UWVBFX0FYRRABEhMKD1dFQVBPTl9UWVBFX0JPVxACEhQK",
-            "EFdFQVBPTl9UWVBFX1dBTkQQAyp5CglBcm1vclR5cGUSEwoPQVJNT1JfVFlQ",
-            "RV9OT05FEAASFQoRQVJNT1JfVFlQRV9IRUxNRVQQARIUChBBUk1PUl9UWVBF",
-            "X0FSTU9SEAISFAoQQVJNT1JfVFlQRV9QQU5UUxADEhQKEEFSTU9SX1RZUEVf",
-            "U0hPRVMQBCpGCg5Db25zdW1hYmxlVHlwZRIYChRDT05TVU1BQkxFX1RZUEVf",
-            "Tk9ORRAAEhoKFkNPTlNVTUFCTEVfVFlQRV9QT1RJT04QAUIbqgIYR29vZ2xl",
-            "LlByb3RvYnVmLlByb3RvY29sYgZwcm90bzM="));
+            "EAIqmwEKCEl0ZW1UeXBlEhIKDklURU1fVFlQRV9OT05FEAASFAoQSVRFTV9U",
+            "WVBFX1dFQVBPThABEhMKD0lURU1fVFlQRV9BUk1PUhACEhQKEElURU1fVFlQ",
+            "RV9QT1RJT04QAxITCg9JVEVNX1RZUEVfUVVFU1QQBBIRCg1JVEVNX1RZUEVf",
+            "RVRDEAUSEgoOSVRFTV9UWVBFX0NPSU4QBipoCglDbGFzc1R5cGUSEwoPQ0xB",
+            "U1NfVFlQRV9OT05FEAASFgoSQ0xBU1NfVFlQRV9XQVJSSU9SEAESFQoRQ0xB",
+            "U1NfVFlQRV9BUkNIRVIQAhIXChNDTEFTU19UWVBFX1NPUkNFUkVSEAMqdgoJ",
+            "QXJtb3JUeXBlEhMKD0FSTU9SX1RZUEVfTk9ORRAAEhMKD0FSTU9SX1RZUEVf",
+            "SEVBRBABEhMKD0FSTU9SX1RZUEVfQk9EWRACEhQKEEFSTU9SX1RZUEVfUEFO",
+            "VFMQAxIUChBBUk1PUl9UWVBFX1NIT0VTEARCG6oCGEdvb2dsZS5Qcm90b2J1",
+            "Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.State), typeof(global::Google.Protobuf.Protocol.SkillType), typeof(global::Google.Protobuf.Protocol.PlayerServerState), typeof(global::Google.Protobuf.Protocol.ItemType), typeof(global::Google.Protobuf.Protocol.WeaponType), typeof(global::Google.Protobuf.Protocol.ArmorType), typeof(global::Google.Protobuf.Protocol.ConsumableType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.MsgId), typeof(global::Google.Protobuf.Protocol.State), typeof(global::Google.Protobuf.Protocol.SkillType), typeof(global::Google.Protobuf.Protocol.PlayerServerState), typeof(global::Google.Protobuf.Protocol.ItemType), typeof(global::Google.Protobuf.Protocol.ClassType), typeof(global::Google.Protobuf.Protocol.ArmorType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_EnterGame), global::Google.Protobuf.Protocol.S_EnterGame.Parser, new[]{ "Player" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_LeaveGame), global::Google.Protobuf.Protocol.S_LeaveGame.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.S_Spawn), global::Google.Protobuf.Protocol.S_Spawn.Parser, new[]{ "Players" }, null, null, null, null),
@@ -169,29 +168,25 @@ namespace Google.Protobuf.Protocol {
     [pbr::OriginalName("ITEM_TYPE_NONE")] None = 0,
     [pbr::OriginalName("ITEM_TYPE_WEAPON")] Weapon = 1,
     [pbr::OriginalName("ITEM_TYPE_ARMOR")] Armor = 2,
-    [pbr::OriginalName("ITEM_TYPE_CONSUMABLE")] Consumable = 3,
+    [pbr::OriginalName("ITEM_TYPE_POTION")] Potion = 3,
     [pbr::OriginalName("ITEM_TYPE_QUEST")] Quest = 4,
     [pbr::OriginalName("ITEM_TYPE_ETC")] Etc = 5,
+    [pbr::OriginalName("ITEM_TYPE_COIN")] Coin = 6,
   }
 
-  public enum WeaponType {
-    [pbr::OriginalName("WEAPON_TYPE_NONE")] None = 0,
-    [pbr::OriginalName("WEAPON_TYPE_AXE")] Axe = 1,
-    [pbr::OriginalName("WEAPON_TYPE_BOW")] Bow = 2,
-    [pbr::OriginalName("WEAPON_TYPE_WAND")] Wand = 3,
+  public enum ClassType {
+    [pbr::OriginalName("CLASS_TYPE_NONE")] None = 0,
+    [pbr::OriginalName("CLASS_TYPE_WARRIOR")] Warrior = 1,
+    [pbr::OriginalName("CLASS_TYPE_ARCHER")] Archer = 2,
+    [pbr::OriginalName("CLASS_TYPE_SORCERER")] Sorcerer = 3,
   }
 
   public enum ArmorType {
     [pbr::OriginalName("ARMOR_TYPE_NONE")] None = 0,
-    [pbr::OriginalName("ARMOR_TYPE_HELMET")] Helmet = 1,
-    [pbr::OriginalName("ARMOR_TYPE_ARMOR")] Armor = 2,
+    [pbr::OriginalName("ARMOR_TYPE_HEAD")] Head = 1,
+    [pbr::OriginalName("ARMOR_TYPE_BODY")] Body = 2,
     [pbr::OriginalName("ARMOR_TYPE_PANTS")] Pants = 3,
     [pbr::OriginalName("ARMOR_TYPE_SHOES")] Shoes = 4,
-  }
-
-  public enum ConsumableType {
-    [pbr::OriginalName("CONSUMABLE_TYPE_NONE")] None = 0,
-    [pbr::OriginalName("CONSUMABLE_TYPE_POTION")] Potion = 1,
   }
 
   #endregion

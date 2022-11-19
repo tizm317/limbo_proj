@@ -33,9 +33,9 @@ public class DataManager
     //(추가 하는 부분)
     //public Dictionary<int, Data.Pos> PosDict { get; private set; } = new Dictionary<int, Data.Pos>();
     public Dictionary<int, Data.Map> MapDict { get; private set; } = new Dictionary<int, Data.Map>();
-    public Dictionary<int, Data.Item> InvenDict { get; private set; } = new Dictionary<int, Data.Item>();
+    //public Dictionary<int, Data.Item> InvenDict { get; private set; } = new Dictionary<int, Data.Item>();
     //public Dictionary<Tuple<string, int>, Data.Inventory> Inventories { get; private set; } = new Dictionary<Tuple<string, int>, Data.Inventory>();
-    public Dictionary<string, List<Data.Inventory>> Inventories { get; private set; } = new Dictionary<string, List<Data.Inventory>>();
+    //public Dictionary<string, List<Data.Inventory>> Inventories { get; private set; } = new Dictionary<string, List<Data.Inventory>>();
 
 
     public Dictionary<int, Data.Npc> NpcDict { get; private set; } = new Dictionary<int, Data.Npc>();
@@ -46,21 +46,24 @@ public class DataManager
     // 상황별 대사 딕셔너리 모아둔 전체 딕셔너리
     public Dictionary<string, Dictionary<int, Data.Dialog>> Dict_DialogDict { get; private set; } = new Dictionary<string, Dictionary<int, Data.Dialog>>();
 
-    public Dictionary<int, Data.Item2> ItemTable { get; private set; } = new Dictionary<int, Data.Item2>();
+    //public Dictionary<int, Data.Item2> ItemTable { get; private set; } = new Dictionary<int, Data.Item2>();
 
     public Dictionary<string, Data.Player> PlayerTable { get; private set; } = new Dictionary<string, Data.Player>();
+
+    public Dictionary<int, Data.ItemData> ItemDict { get; private set; } = new Dictionary<int, Data.ItemData>();
 
     public void Init()
     {
         // json 파일 읽어옴
         StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         PlayerStatDict = LoadJson<Data.PlayerStatData, int, Data.PlayerStat>("PlayerStatData").MakeDict(); //
-        InvenDict = LoadJson<Data.ItemData2, int, Data.Item>("InvenData").MakeDict();
+        //InvenDict = LoadJson<Data.ItemData2, int, Data.Item>("InvenData").MakeDict();
         NpcDict = LoadJson<Data.NpcData, int, Data.Npc>("NpcData").MakeDict();
+        ItemDict = LoadJson<Data.ItemLoader, int, Data.ItemData>("ItemData").MakeDict();
 
         //Inventories = LoadJson<Data.InventoryData, Tuple<string, int>, Data.Inventory>("Inventories").MakeDict();
-        Inventories = LoadJson<Data.InventoryData, string, List<Data.Inventory>>("Inventories").MakeDict();
-        ItemTable = LoadJson<Data.ItemTable, int, Data.Item2>("ItemTable").MakeDict();
+        //Inventories = LoadJson<Data.InventoryData, string, List<Data.Inventory>>("Inventories").MakeDict();
+        //ItemTable = LoadJson<Data.ItemTable, int, Data.Item2>("ItemTable").MakeDict();
 
         // csv 파일 파싱 테스트 (csv to json 파일 저장)
         //ParseTextData("test");
@@ -343,30 +346,30 @@ public class DataManager
         public int count;
     }
 
-    public string MakeListInDict(Data.Item item)
-    {
-        // 리스트 만드는 함수
+    //public string MakeListInDict(Data.Item item)
+    //{
+    //    // 리스트 만드는 함수
 
-        // 오브젝트 정보 담을 컨테이너
-        itemContainer MyItemContainer = new itemContainer();
+    //    // 오브젝트 정보 담을 컨테이너
+    //    itemContainer MyItemContainer = new itemContainer();
 
-        // 정보 넣어주고
-        MyItemContainer.id = item.id;
-        MyItemContainer.name = item.name;
-        MyItemContainer.type = item.type;
-        MyItemContainer.grade = item.grade;
-        MyItemContainer.count = item.count;
+    //    // 정보 넣어주고
+    //    MyItemContainer.id = item.id;
+    //    MyItemContainer.name = item.name;
+    //    MyItemContainer.type = item.type;
+    //    MyItemContainer.grade = item.grade;
+    //    MyItemContainer.count = item.count;
 
-        // List 에 add
-        saveData2.items.Add(MyItemContainer); 
+    //    // List 에 add
+    //    saveData2.items.Add(MyItemContainer); 
 
-        // List를 json으로
-        // List 계속 새로 덮이는데
-        // 결국 마지막꺼로 덮여서 저장됨 (최종본으로..)
-        string json = JsonUtility.ToJson(saveData2, true);
+    //    // List를 json으로
+    //    // List 계속 새로 덮이는데
+    //    // 결국 마지막꺼로 덮여서 저장됨 (최종본으로..)
+    //    string json = JsonUtility.ToJson(saveData2, true);
         
-        return json;
-    }
+    //    return json;
+    //}
 
 
     public void SaveJson(string json)
