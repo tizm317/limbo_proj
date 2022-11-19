@@ -87,6 +87,8 @@ public class UI_NewMiniMap : UI_Popup
             BossPos = BossTr.position;
             BossPos.y = BossPos.z;
             BossPos.z = 0;
+            BossPos *= 6;
+            
             if (BossTr.gameObject.GetComponent<EnemyStat>().Hp <= 0) // 죽은 경우
             {
                 bossDeadImage.localPosition = BossPos;
@@ -117,12 +119,15 @@ public class UI_NewMiniMap : UI_Popup
         // 플레이어
         playerPos.y = player.position.z;
         playerPos.z = 0;
+        playerPos *= 6;
 
         for(int i = 0; i < patrolNpc.Count; i++)
         {
             Vector3 npcPos = patrolNpc[i].transform.position;
             npcPos.y = npcPos.z;
             npcPos.z = 0;
+            npcPos *= 6;
+
             patrolNpcMarkers[i].gameObject.transform.localPosition = npcPos;
             patrolNpcMarkers[i].gameObject.transform.localScale = new Vector3(1, 1, 1);
         }
@@ -256,6 +261,7 @@ public class UI_NewMiniMap : UI_Popup
             temp.x = destinationImage.transform.localPosition.x + player.transform.position.x;
             temp.z = destinationImage.transform.localPosition.y + player.transform.position.z;
             temp.y = 1;
+            temp *= 6;
 
             player_State.Set_Destination(temp);
         }, Define.UIEvent.Click);
@@ -287,7 +293,6 @@ public class UI_NewMiniMap : UI_Popup
         // 맵 이미지
         SetMapImage(SceneName);
 
-
         images = GetComponentsInChildren<Image>();
         mapImg = GetComponentInChildren<RawImage>();
 
@@ -304,6 +309,8 @@ public class UI_NewMiniMap : UI_Popup
             Vector3 npcPos = npc.transform.position;
             npcPos.y = npcPos.z;
             npcPos.z = 0;
+            npcPos *= 6;
+
             objImg.gameObject.transform.localPosition = npcPos;
             objImg.gameObject.transform.localScale = new Vector3(1, 1, 1);
 
@@ -328,6 +335,8 @@ public class UI_NewMiniMap : UI_Popup
             BossPos = go.transform.position;
             BossPos.y = BossPos.z;
             BossPos.z = 0;
+            BossPos *= 6;
+
             if (go.GetComponent<EnemyStat>().Hp <= 0) // 죽은 경우
             {
                 bossDeadImage.localPosition = BossPos;
@@ -425,6 +434,8 @@ public class UI_NewMiniMap : UI_Popup
         // 목적지 미니맵 2d 위치
         destination.y = destination.z;
         destination.z = 0;
+        destination *= 6;
+
         destinationImage.localPosition = destination;
 
         // 방향
@@ -440,6 +451,8 @@ public class UI_NewMiniMap : UI_Popup
         while (dist_PlayerDestinationImg > arriveDist)
         {
             drawDestinationMark();
+
+            destinationImage.localPosition /= 6; /////////////////////////////////////////////////////////////////
             drawUILine.DrawLine(playerImage.localPosition, destinationImage.localPosition);
             yield return null;
         }
@@ -454,6 +467,10 @@ public class UI_NewMiniMap : UI_Popup
         destinationImage.gameObject.SetActive(false);
 
         List<Vector3> path = pathFinding.Return_Path(player);
+        //for(int i = 0; i < path.Count; i++)
+        //{
+        //    path[i] /= 6;
+        //}
 
         if (destinationImage.localPosition != null && player_State.get_isObstacle() == false)
         {
