@@ -22,7 +22,7 @@ public class UIManager
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>(); // UI_Popup 컴포넌트 들고 있는 것들
 
     // 씬 UI 들고 있는 변수
-    UI_Scene _sceneUI = null;
+    public UI_Scene SceneUI { get; private set; }
 
     public GameObject Root
     {
@@ -106,7 +106,7 @@ public class UIManager
 
         GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
         T sceneUI = Util.GetOrAddComponent<T>(go);
-        _sceneUI = sceneUI;
+        SceneUI = sceneUI;
 
         go.transform.SetParent(Root.transform);
 
@@ -215,6 +215,6 @@ public class UIManager
         // 팝업스택 날리기
         CloseAllPopupUI();
         // UI_Scene 날리기
-        _sceneUI = null;
+        SceneUI = null;
     }
 }

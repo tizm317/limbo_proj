@@ -770,26 +770,26 @@ public class UI_InGame : UI_Scene
 
     }
 
-    public void saveInven()
-    {
-        // 여기 있을게 아닌거 같은디.. -> Not Use
+    //public void saveInven()
+    //{
+    //    // 여기 있을게 아닌거 같은디.. -> Not Use
 
-        // dictionary 변경 있으면 json 저장
-        //state machine 써야하나..?
+    //    // dictionary 변경 있으면 json 저장
+    //    //state machine 써야하나..?
 
-        Managers.Data.resetSaveData2(); // json에 덮여쓰이는거 막기 위함
+    //    Managers.Data.resetSaveData2(); // json에 덮여쓰이는거 막기 위함
 
-        Dictionary<int, Data.Item> invenDict = Managers.Data.InvenDict;
-        string json = "";
+    //    Dictionary<int, Data.Item> invenDict = Managers.Data.InvenDict;
+    //    string json = "";
 
-        for (int key = 0; key < invenDict.Count; key++)
-        {
-            // MakeList() 에서 List 만들어서 반환
-            json = Managers.Data.MakeListInDict(invenDict[key]);
-        }
-        // List 최종본이 json에 저장된 채로 나옴
-        Managers.Data.SaveJson(json, "InvenData.json");
-    }
+    //    for (int key = 0; key < invenDict.Count; key++)
+    //    {
+    //        // MakeList() 에서 List 만들어서 반환
+    //        json = Managers.Data.MakeListInDict(invenDict[key]);
+    //    }
+    //    // List 최종본이 json에 저장된 채로 나옴
+    //    Managers.Data.SaveJson(json, "InvenData.json");
+    //}
 
     public IEnumerator coKeyUpCheck()
     {

@@ -40,45 +40,65 @@ namespace Server.Data
     {
         public int id;
         public string name;
+        public string grade;
+        public uint price;
+        //public string iconSprite;
+        public string tooltip;
         public ItemType itemType;
     }
 
-    public class WeaponData : ItemData
+    public class EquipmentData : ItemData
     {
-        public WeaponType weaponType;
+        public int maxDurability;
+    }
+
+    public class WeaponData : EquipmentData
+    {
+        public ClassType classType;
         public int damage;
     }
 
-    public class ArmorData : ItemData
+    public class ArmorData : EquipmentData
     {
         public ArmorType armorType;
         public int defence;
     }
 
-    public class ConsumableData : ItemData
+    //
+    public class CountableData : ItemData
     {
-        public ConsumableType consumableType;
-        public int maxCount;
+        public int maxAmount;
     }
 
-    // TODO : QuestItem, ETCItem
-    //public class QuestData : ItemData
-    //{
-    //    public QuestType questType;
-    //}
-    //public class EtcData : ItemData
-    //{
-    //    public EtcType etcType;
-    //}
+    public class PotionData : CountableData
+    {
+        public int value;
+    }
+
+    public class EtcData : CountableData
+    {
+        public int value;
+    }
+
+    public class QuestData : CountableData
+    {
+        public int value;
+    }
+
+    public class CoinData : CountableData
+    {
+
+    }
 
     [Serializable]
     public class ItemLoader : ILoader<int, ItemData>
     {
         public List<WeaponData> weapons = new List<WeaponData>();
         public List<ArmorData> armors = new List<ArmorData>();
-        public List<ConsumableData> consumables = new List<ConsumableData>();
-        //public List<ConsumableData> consumables = new List<ConsumableData>();
-        //public List<ConsumableData> consumables = new List<ConsumableData>();
+        public List<PotionData> potions = new List<PotionData>();
+        public List<EtcData> etcs = new List<EtcData>();
+        public List<QuestData> quests = new List<QuestData>();
+        public List<CoinData> coins = new List<CoinData>();
 
         // Dictionary 는 하나로 관리
         public Dictionary<int, ItemData> MakeDict()
@@ -94,21 +114,27 @@ namespace Server.Data
                 item.itemType = ItemType.Armor;
                 dict.Add(item.id, item);
             }
-            foreach (ItemData item in consumables)
+            foreach (ItemData item in potions)
             {
-                item.itemType = ItemType.Consumable;
+                item.itemType = ItemType.Potion;
                 dict.Add(item.id, item);
             }
-            //foreach (ItemData item in weapons)
-            //{
-            //    item.itemType = ItemType.Consumable;
-            //    dict.Add(item.id, item);
-            //}
-            //foreach (ItemData item in weapons)
-            //{
-            //    item.itemType = ItemType.Consumable;
-            //    dict.Add(item.id, item);
-            //}
+            foreach (ItemData item in quests)
+            {
+                item.itemType = ItemType.Quest;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in etcs)
+            {
+                item.itemType = ItemType.Etc;
+                dict.Add(item.id, item);
+            }
+            foreach (ItemData item in coins)
+            {
+                item.itemType = ItemType.Coin;
+                dict.Add(item.id, item);
+            }
+
             return dict;
         }
     }

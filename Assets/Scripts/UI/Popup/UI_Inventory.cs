@@ -33,7 +33,7 @@ public class UI_Inventory : UI_Base
 
         if (_inventory.LoadFinish == false)
         {
-            _inventory.InvenLoad();
+            //_inventory.InvenLoad();
             _inventory.UpdateCurrency();
         }
         else

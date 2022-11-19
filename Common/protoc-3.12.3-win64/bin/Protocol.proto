@@ -49,30 +49,27 @@ enum ItemType {
   ITEM_TYPE_NONE = 0;
   ITEM_TYPE_WEAPON = 1;
   ITEM_TYPE_ARMOR = 2;
-  ITEM_TYPE_CONSUMABLE = 3;
+  ITEM_TYPE_POTION = 3;
   ITEM_TYPE_QUEST = 4;
   ITEM_TYPE_ETC = 5;
+  ITEM_TYPE_COIN = 6;
 }
 
-enum WeaponType {
-  WEAPON_TYPE_NONE = 0;
-  WEAPON_TYPE_AXE = 1;
-  WEAPON_TYPE_BOW = 2;
-  WEAPON_TYPE_WAND = 3;
+enum ClassType {
+  CLASS_TYPE_NONE = 0;
+  CLASS_TYPE_WARRIOR = 1;
+  CLASS_TYPE_ARCHER = 2;
+  CLASS_TYPE_SORCERER = 3;
 }
 
 enum ArmorType {
   ARMOR_TYPE_NONE = 0;
-  ARMOR_TYPE_HELMET = 1;
-  ARMOR_TYPE_ARMOR = 2;
+  ARMOR_TYPE_HEAD = 1;
+  ARMOR_TYPE_BODY = 2;
   ARMOR_TYPE_PANTS = 3;
   ARMOR_TYPE_SHOES = 4;
 }
 
-enum ConsumableType {
-  CONSUMABLE_TYPE_NONE = 0;
-  CONSUMABLE_TYPE_POTION = 1;
-}
 
 message S_EnterGame {
   PlayerInfo player = 1;
