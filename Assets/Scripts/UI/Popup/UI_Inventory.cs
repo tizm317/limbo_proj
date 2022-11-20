@@ -31,25 +31,28 @@ public class UI_Inventory : UI_Base
         // 테스트용 임시
         //_inventory.test();
 
-        if (_inventory.LoadFinish == false)
-        {
-            //_inventory.InvenLoad();
-            _inventory.UpdateCurrency();
-        }
-        else
-        {
-            _inventory.UpdateAllSlot();
-            _inventory.UpdateCurrency();
-        }
+        //if (_inventory.LoadFinish == false)
+        //{
+        //    //_inventory.InvenLoad();
+        //    _inventory.UpdateCurrency();
+        //}
+        //else
+        //{
+        //    _inventory.UpdateAllSlot();
+        //    _inventory.UpdateCurrency();
+        //}
 
         //
-        if(_inventory.IsUpdated)
-        {
-            _inventory.UpdateAllSlot();
-            _inventory.UpdateCurrency();
-            _inventory.IsUpdated = false;
-        }
+        //if(_inventory.IsUpdated)
+        //{
+        //    _inventory.UpdateAllSlot();
+        //    _inventory.UpdateCurrency();
+        //    _inventory.IsUpdated = false;
+        //}
 
+        _inventory.UpdateAllSlot();
+        _inventory.UpdateCurrency();
+        _inventory.IsUpdated = false;
     }
 
     Player player_State;
@@ -428,7 +431,7 @@ public class UI_Inventory : UI_Base
         uI_Item_Remove_Caution.ClosePopupUI();
     }
 
-    Inventory _inventory;
+    public Inventory _inventory;
 
     public void OnEnable()
     {

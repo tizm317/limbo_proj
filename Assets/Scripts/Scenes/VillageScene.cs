@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VillageScene : GameScene
 {
-    void Awake()
+    void Start()
     {
         Init();
     }

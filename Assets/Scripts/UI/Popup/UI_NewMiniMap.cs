@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,20 @@ using UnityEngine.UI;
 public class UI_NewMiniMap : UI_Popup
 {
     // MiniMap New Version
+    #region 코루틴 Wrapper 메소드
+    // predicate 조건 불충족하면, 대기함
+    private void ProcessLater(Func<bool> predicate, Action job)
+    {
+        StartCoroutine(PorcessLaterRoutine());
 
+        // Local
+        IEnumerator PorcessLaterRoutine()
+        {
+            yield return new WaitUntil(predicate);
+            job?.Invoke();
+        }
+    }
+    #endregion
     enum GameObjects
     {
         Mask,
@@ -190,8 +204,15 @@ public class UI_NewMiniMap : UI_Popup
 
     public override void Init()
     {
+        if (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            //Debug.Log("There is no player.");
+            ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
+            return;
+        }
+
         base.Init();
-        
+
         Bind<GameObject>(typeof(GameObjects));
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
@@ -211,11 +232,7 @@ public class UI_NewMiniMap : UI_Popup
         GetButton((int)Buttons.ZoomInButton).gameObject.BindEvent(OnZoomInButtonClicked);
         GetButton((int)Buttons.ZoomOutButton).gameObject.BindEvent(OnZoomOutButtonClicked);
 
-        if (GameObject.FindGameObjectWithTag("Player") == null)
-        {
-            Debug.Log("There is no player.");
-            return;
-        }
+
         player_State = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
 

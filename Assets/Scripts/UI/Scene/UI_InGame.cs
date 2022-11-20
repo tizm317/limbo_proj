@@ -193,10 +193,13 @@ public class UI_InGame : UI_Scene
     {
         base.Init();
 
-        ui_Equipment = GetComponentInChildren<UI_Equipment>();
-        uI_Inventory = GetComponentInChildren<UI_Inventory>();
-        ui_stat = GetComponentInChildren<UI_Stat>();
-        if(ui_Equipment)
+        if(ui_Equipment == null)
+            ui_Equipment = GetComponentInChildren<UI_Equipment>();
+        if(uI_Inventory == null)
+            uI_Inventory = GetComponentInChildren<UI_Inventory>();
+        if(ui_stat == null)
+            ui_stat = GetComponentInChildren<UI_Stat>();
+        if (ui_Equipment)
             ui_Equipment.gameObject.SetActive(false);
         if(uI_Inventory)
             uI_Inventory.gameObject.SetActive(false);

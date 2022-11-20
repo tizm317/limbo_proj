@@ -166,6 +166,7 @@ namespace Server
                     {
 						// itemDb 정보로 item 만듦
 						Item item = Item.MakeItem(itemDb);
+
                         // 인벤토리
 						if(item != null)
                         {

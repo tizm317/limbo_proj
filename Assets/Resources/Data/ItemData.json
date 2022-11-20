@@ -1,7 +1,17 @@
 {
   "weapons": [
     {
-      "id": "13",
+      "id": "10000",
+      "name": "견습용 검",
+      "grade": "Normal",
+      "price": "0",
+      "tooltip": "견습용 무기입니다.",
+      "maxDurability": "100",
+      "classType": "Warrior",
+      "damage": "1"
+    },
+    {
+      "id": "10001",
       "name": "도끼",
       "grade": "Normal",
       "price": "5000",
@@ -11,7 +21,7 @@
       "damage": "10"
     },
     {
-      "id": "14",
+      "id": "10002",
       "name": "활",
       "grade": "Normal",
       "price": "5000",
@@ -21,7 +31,7 @@
       "damage": "10"
     },
     {
-      "id": "15",
+      "id": "10003",
       "name": "완드",
       "grade": "Normal",
       "price": "5000",
@@ -33,7 +43,7 @@
   ],
   "armors": [
     {
-      "id": "0",
+      "id": "20002",
       "name": "일반 갑옷",
       "grade": "Normal",
       "price": "5000",
@@ -43,7 +53,7 @@
       "part": "Body"
     },
     {
-      "id": "1",
+      "id": "20001",
       "name": "일반 투구",
       "grade": "Normal",
       "price": "5000",
@@ -53,7 +63,7 @@
       "part": "Head"
     },
     {
-      "id": "2",
+      "id": "20003",
       "name": "일반 바지",
       "grade": "Normal",
       "price": "5000",
@@ -63,7 +73,7 @@
       "part": "Pants"
     },
     {
-      "id": "3",
+      "id": "20004",
       "name": "일반 신발",
       "grade": "Normal",
       "price": "5000",
@@ -75,13 +85,199 @@
   ],
   "potions": [
     {
-      "id": "9",
+      "id": "1",
+      "name": "체력 포션",
+      "grade": "Normal",
+      "price": "2000",
+      "tooltip": "HP를 10 회복합니다.",
+      "maxAmount": "99",
+      "value": "10"
+    },
+    {
+      "id": "2",
+      "name": "마나 포션",
+      "grade": "Normal",
+      "price": "2000",
+      "tooltip": "MP를 10 회복합니다.",
+      "maxAmount": "99",
+      "value": "10"
+    },
+    {
+      "id": "3",
       "name": "짬뽕 포션",
       "grade": "Normal",
       "price": "2000",
       "tooltip": "HP와 MP 모두 10씩 회복합니다.",
       "maxAmount": "99",
       "value": "10"
+    },
+    {
+      "id": "4",
+      "name": "이속 포션",
+      "grade": "Normal",
+      "price": "2000",
+      "tooltip": "이동 속도를 올려주는 포션이다.",
+      "maxAmount": "99",
+      "value": "10"
+    }
+  ],
+  "etcs": [
+    {
+      "id": "30001",
+      "name": "화살",
+      "grade": "Normal",
+      "price": "1",
+      "tooltip": "궁수가 사용하는 화살이다.",
+      "maxAmount": "999",
+      "value": "0"
+    },
+    {
+      "id": "30002",
+      "name": "강화석",
+      "grade": "Normal",
+      "price": "10000",
+      "tooltip": "무기나 방어구를 강화할 때 사용하는 강화석이다.",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "30003",
+      "name": "티켓A",
+      "grade": "Normal",
+      "price": "10000",
+      "tooltip": "숲 던전에 들어가기 위한 티켓이다. ",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "30004",
+      "name": "티켓B",
+      "grade": "Normal",
+      "price": "10000",
+      "tooltip": "사막 던전에 들어가기 위한 티켓이다. ",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "30005",
+      "name": "티켓C",
+      "grade": "Normal",
+      "price": "10000",
+      "tooltip": "묘지 던전에 들어가기 위한 티켓이다. ",
+      "maxAmount": "99",
+      "value": "0"
+    }
+  ],
+  "quests": [
+    {
+      "id": "40001",
+      "name": "곰가죽",
+      "grade": "Normal",
+      "price": "150",
+      "tooltip": "곰가죽",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40002",
+      "name": "크래미",
+      "grade": "Normal",
+      "price": "1200",
+      "tooltip": "크래미",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40003",
+      "name": "거미줄",
+      "grade": "Normal",
+      "price": "500",
+      "tooltip": "거미줄",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40004",
+      "name": "풍뎅이의 꽃",
+      "grade": "Normal",
+      "price": "1000",
+      "tooltip": "풍뎅이의 꽃",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40005",
+      "name": "발톱",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "발톱",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40006",
+      "name": "토끼 피",
+      "grade": "Normal",
+      "price": "100",
+      "tooltip": "토끼 피",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40007",
+      "name": "코뿔소의 뿔",
+      "grade": "Normal",
+      "price": "1000",
+      "tooltip": "코뿔소의 뿔",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40008",
+      "name": "스켈레톤의 해골",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "스켈레톤의 해골",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40009",
+      "name": "갑옷",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "갑옷",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40010",
+      "name": "심장",
+      "grade": "Normal",
+      "price": "5000",
+      "tooltip": "심장",
+      "maxAmount": "99",
+      "value": "0"
+    },
+    {
+      "id": "40011",
+      "name": "두건",
+      "grade": "Normal",
+      "price": "8000",
+      "tooltip": "두건",
+      "maxAmount": "99",
+      "value": "0"
+    }
+  ],
+  "coins": [
+    {
+      "id": "50000",
+      "name": "Coins",
+      "grade": "Normal",
+      "price": "0",
+      "tooltip": "<color=Red>Saved Golds : 1000 G</color>",
+      "maxAmount": "1",
+      "value": "0"
     }
   ]
 }

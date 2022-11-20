@@ -136,12 +136,18 @@ public class Inventory : MonoBehaviour
     //}
 
     public ItemData[] itemDatas = new ItemData[16];
-
+    public Dictionary<int, ItemData> itemDict = new Dictionary<int, ItemData>();
 
     private void Start()
     {
         UpdateAccessibleStatesAll();
         //Debug.Log(Capacity);
+
+        // Dictionary Setting
+        foreach(ItemData data in itemDatas)
+        {
+            itemDict.Add(data.ID, data);
+        }
     }
 
     public void Buy(ItemData item)

@@ -201,7 +201,8 @@ public class UI_Equipment : UI_Base
         // 무기
         if(equipmentItem is WeaponItem weaponItem)
         {
-            if (player_State.my_job.ToString() != weaponItem.Class)
+            // player_State.my_job 랑 weaponItem.Class 대소문자 다르네..
+            if (player_State.my_job.ToString().ToLower() != weaponItem.Class.ToLower())
             {
                 // 다른 클래스 무기 착용 불가
                 Debug.Log($"This Weapon Is For {weaponItem.Class}.");

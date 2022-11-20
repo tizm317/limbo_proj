@@ -18,7 +18,7 @@ public class GameScene : BaseScene
     GameObject Boss;
     [SerializeField] private float cooldownTime = 900.0f;
     private float nextFireTime = 0f;
-    void Awake()
+    void Start()
     {
         Init();
     }
