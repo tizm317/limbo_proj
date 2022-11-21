@@ -12,9 +12,12 @@ namespace Server.Game
 
         //object _lock = new object();                // 멀티 쓰레드 환경
         public int RoomId { get; set; }             // 씬(맵) 식별자
-        List<Player> _players = new List<Player>(); // lock 걸어줘야 함
+        //List<Player> _players = new List<Player>(); // lock 걸어줘야 함
 
-        Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>(); 
+        Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
+        Dictionary<int, Player> _player = new Dictionary<int, Player>();
+        Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
+
 
         public void Init()
         {
@@ -43,30 +46,36 @@ namespace Server.Game
         }
 
         // Game Room 입장/퇴장
-        public void EnterGame(Player newPlayer)
+        public void EnterGame(GameObject gameObject)
         {
-            if (newPlayer == null) return;
+            if (gameObject == null) return;
+
+            GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.id);
 
             _players.Add(newPlayer);
             newPlayer.Room = this;
 
             // 본인한테 정보 전송
             {
-                // 내 정보를 나한테
-                S_EnterGame enterPacket = new S_EnterGame();
-                enterPacket.Player = newPlayer.Info;
-                newPlayer.Session.Send(enterPacket);
-
-                // 타인 정보를 나한테
-                S_Spawn spawnPacket = new S_Spawn();
-                foreach (Player p in _players)
+                if(type == GameObjectType.Player)
                 {
-                    if (newPlayer != p) // 나 빼고
+                    // 내 정보를 나한테
+                    S_EnterGame enterPacket = new S_EnterGame();
+                    enterPacket.Player = newPlayer.Info;
+                    newPlayer.Session.Send(enterPacket);
+
+                    // 타인 정보를 나한테
+                    S_Spawn spawnPacket = new S_Spawn();
+                    foreach (Player p in _players)
                     {
-                        spawnPacket.Objects.Add(p.Info);
+                        if (newPlayer != p) // 나 빼고
+                        {
+                            spawnPacket.Objects.Add(p.Info);
+                        }
                     }
+                    newPlayer.Session.Send(spawnPacket);
                 }
-                newPlayer.Session.Send(spawnPacket);
+                
             }
 
             // 타인한테 정보 전송
@@ -160,6 +169,20 @@ namespace Server.Game
             }
             else if (skillPacket.Info.SkillId == 2)
             {
+                //TODO : Arrow
+                
+                Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+                if (arrow == null)
+                    return;
+
+                arrow.Owner = player;
+                arrow.PosInfo.State = State.Move;
+                arrow.PosInfo.PosX = player.PosInfo.PosX;
+                arrow.PosInfo.PosY = player.PosInfo.PosY;
+                arrow.PosInfo.PosZ = player.PosInfo.PosZ;
+                
+                //타인에게 spawn 되었음을 보여주기 위함
+                EnterGame(arrow);
 
             }
         }
