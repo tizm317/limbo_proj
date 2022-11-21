@@ -15,6 +15,7 @@ namespace Server.Game
             get { return Info.ObjectId; }
             set { Info.ObjectId = value; }
         }
+        public GameRoom Room { get; set; }          // 어떤 Room 에 있는지
         public ObjectInfo Info { get; set; } = new ObjectInfo();
         public PositionInfo PosInfo { get; private set; } = new PositionInfo();
 

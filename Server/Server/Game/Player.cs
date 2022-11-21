@@ -11,7 +11,6 @@ namespace Server.Game
     public class Player : GameObject
     {
         public int PlayerDbId { get; set; }
-        public GameRoom Room { get; set; }          // 어떤 Room 에 있는지
         public ClientSession Session { get; set; }  // 플레이어가 패킷 보낼 때 사용
         public Inventory Inven { get; private set; } = new Inventory();
 
