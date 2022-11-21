@@ -123,6 +123,7 @@ namespace Data
         public string name;
         public string job;
         public bool patrol;
+        public int questid;
     }
 
     [Serializable]
@@ -135,6 +136,42 @@ namespace Data
             Dictionary<int, Npc> dict = new Dictionary<int, Npc>();
 
             foreach (Npc ele in npcs)
+                dict.Add(ele.id, ele);
+
+            return dict;
+        }
+    }
+    #endregion
+
+    #region Quest
+    [Serializable]
+    public class Quest
+    {
+        public int id;
+        public string name;
+        public string goal;
+        public string description;
+        public int previous;
+        public int targetItemCount;
+        public int exp;
+        public int gold;
+        public int targetItemId;
+        public int rewardItemId;
+        public int rewardItemCount;
+        public int get;
+        public int clear;
+    }
+
+    [Serializable]
+    public class QuestInfoData : ILoader<int, Quest>
+    {
+        public List<Quest> quests = new List<Quest>();
+
+        public Dictionary<int, Quest> MakeDict()
+        {
+            Dictionary<int, Quest> dict = new Dictionary<int, Quest>();
+
+            foreach (Quest ele in quests)
                 dict.Add(ele.id, ele);
 
             return dict;

@@ -176,5 +176,13 @@ namespace Server.Game
                     p.Session.Send(packet);
             }
         }
+
+        // Item
+        internal void HandleInventory(Player player, C_ItemList itemList)
+        {
+            if (player == null) return;
+
+            player.UpdateInventory(itemList);
+        }
     }
 }

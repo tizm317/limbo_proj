@@ -147,6 +147,10 @@ message S_ItemList {
   repeated ItemInfo items = 1;
 }
 
+message C_ItemList {
+  repeated ItemInfo items = 1;
+}
+
 // Lobby 에서만 사용하는 PlayerInfo
 message LobbyPlayerInfo {
   int32 playerDbId = 1;
