@@ -14,6 +14,7 @@ namespace Server.Game
         public int RoomId { get; set; }             // 씬(맵) 식별자
         List<Player> _players = new List<Player>(); // lock 걸어줘야 함
 
+        Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>(); 
 
         public void Init()
         {
@@ -21,6 +22,8 @@ namespace Server.Game
             // 맵 관련..?
 
             //TestTimer();
+
+            //temp monster
         }
         public void TestTimer()
         {
@@ -60,7 +63,7 @@ namespace Server.Game
                 {
                     if (newPlayer != p) // 나 빼고
                     {
-                        spawnPacket.Players.Add(p.Info);
+                        spawnPacket.Objects.Add(p.Info);
                     }
                 }
                 newPlayer.Session.Send(spawnPacket);
@@ -70,7 +73,7 @@ namespace Server.Game
             {
                 // 내 정보를 타인한테
                 S_Spawn spawnPacket = new S_Spawn();
-                spawnPacket.Players.Add(newPlayer.Info);
+                spawnPacket.Objects.Add(newPlayer.Info);
                 foreach (Player p in _players)
                 {
                     if (newPlayer != p) // 나 빼고 Broadcasting
@@ -81,7 +84,7 @@ namespace Server.Game
         public void LeaveGame(int playerId)
         {
             // 원하는 플레이어 찾기
-            Player player = _players.Find(p => p.Info.PlayerId == playerId);
+            Player player = _players.Find(p => p.Info.ObjectId == playerId);
             if (player == null) return;
 
             // 리스트에서 제거
@@ -97,7 +100,7 @@ namespace Server.Game
             // 타인한테 (Despawn)정보 전송
             {
                 S_Despawn despawnPacket = new S_Despawn();
-                despawnPacket.PlayerIds.Add(player.Info.PlayerId);
+                despawnPacket.PlayerIds.Add(player.Info.ObjectId);
                 foreach (Player p in _players)
                 {
                     if (player != p) // 나 빼고 Broadcasting
@@ -116,7 +119,7 @@ namespace Server.Game
 
             // 다른 플레이어한테도 알려준다
             S_Move resMovePacket = new S_Move();
-            resMovePacket.PlayerId = player.Info.PlayerId;
+            resMovePacket.PlayerId = player.Info.ObjectId;
             resMovePacket.DestInfo = movePacket.DestInfo;   // destination의 좌표를 보내주는 것
             resMovePacket.PosInfo = movePacket.PosInfo;   // 플레이어 위치
 
@@ -134,7 +137,7 @@ namespace Server.Game
         {
             if (player == null) return;
 
-            PlayerInfo info = player.Info;
+            ObjectInfo info = player.Info;
 
             // 스킬 쓸 수 있는 조건인지 체크(state?, cooltime? 등)
             // Idle 일 때만?
@@ -142,15 +145,23 @@ namespace Server.Game
                 return;
             // TODO : 스킬 사용 가능 여부 체크
 
-            // 통과
+            // 통과(스킬을 사용하는 애니메이션 맞춰주기 위함)
             info.DestInfo.State = State.Skill;
 
             S_Skill skill = new S_Skill { Info = new SkillInfo() };
-            skill.PlayerId = info.PlayerId;
-            skill.Info.SkillId = 1; // 나중에 데이터시트로 따로 관리(json, xml)
+            skill.PlayerId = info.ObjectId;
+            skill.Info.SkillId = skillPacket.Info.SkillId; // 1 -> skillPacket.Info.SkillId로 변경함 / 나중에 데이터시트로 따로 관리(json, xml)
             Broadcast(skill);
 
-            // 데미지 판정
+            // 스킬이 많은 경우 class로 따로 빼서 하는것이 효과적
+            if (skillPacket.Info.SkillId == 1)
+            {
+                //TODO : 데미지 판정
+            }
+            else if (skillPacket.Info.SkillId == 2)
+            {
+
+            }
         }
 
         // Broadcasting
@@ -168,7 +179,7 @@ namespace Server.Game
             S_Move mp = packet as S_Move;
             foreach (Player p in _players)
             {
-                if (mp != null && mp.PlayerId == p.Info.PlayerId)
+                if (mp != null && mp.PlayerId == p.Info.ObjectId)
                 {
                     // 이동동기화일 때는 나한테 안보낸다
                 }

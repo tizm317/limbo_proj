@@ -31,6 +31,9 @@ enum State {
   STATE_SKILL = 3;
   STATE_DIE = 4;
   STATE_Dance = 5;
+
+  STATE_JUMPSKILL = 6;
+  STATE_DAMAGE = 7;
 }
 
 enum SkillType {
@@ -70,18 +73,22 @@ enum ArmorType {
   ARMOR_TYPE_SHOES = 4;
 }
 
-
-message S_EnterGame {
-  PlayerInfo player = 1;
+enum GameObjectType {
+	NONE = 0;
+	PLAYER = 1;
+	MONSTER = 2;
+	PROJECTILE = 3; //화살 등 투사체
 }
 
-
+message S_EnterGame {
+  ObjectInfo player = 1;
+}
 
 message S_LeaveGame {
 }
 
 message S_Spawn {
-  repeated PlayerInfo players = 1;
+  repeated ObjectInfo objects = 1;
 }
 
 message S_Despawn {
@@ -98,6 +105,7 @@ message S_Move {
   PositionInfo destInfo = 2;
   PositionInfo posInfo = 3;
 }
+
 
 message C_Skill {
   SkillInfo info = 1;
@@ -155,8 +163,8 @@ message LobbyPlayerInfo {
   int32 job = 4;
 }
 
-message PlayerInfo {
-  int32 playerId = 1;
+message ObjectInfo {
+  int32 objectId = 1;
   string name = 2;
   PositionInfo posInfo = 3;
   PositionInfo destInfo = 4;
@@ -204,7 +212,7 @@ message EnemyStatInfo {
 }
 
 message PositionInfo {
-  State state = 1;
+  State state = 1; 
   float posX = 2;
   float posY = 3;
   float posZ = 4; 

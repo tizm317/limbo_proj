@@ -5520,19 +5520,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\이호영\\.nuget\\packages\\": {}
+    "C:\\Users\\heeji\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Unity\\newLimbo\\Server\\Server\\Server.csproj",
+      "projectUniqueName": "D:\\0.Hongik\\limbo_proj\\Server\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "D:\\Unity\\newLimbo\\Server\\Server\\Server.csproj",
-      "packagesPath": "C:\\Users\\이호영\\.nuget\\packages\\",
-      "outputPath": "D:\\Unity\\newLimbo\\Server\\Server\\obj\\",
+      "projectPath": "D:\\0.Hongik\\limbo_proj\\Server\\Server\\Server.csproj",
+      "packagesPath": "C:\\Users\\heeji\\.nuget\\packages\\",
+      "outputPath": "D:\\0.Hongik\\limbo_proj\\Server\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\이호영\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\heeji\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5546,11 +5546,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj": {
-              "projectPath": "D:\\Unity\\newLimbo\\Server\\ServerCore\\ServerCore.csproj"
+            "D:\\0.Hongik\\limbo_proj\\Server\\ServerCore\\ServerCore.csproj": {
+              "projectPath": "D:\\0.Hongik\\limbo_proj\\Server\\ServerCore\\ServerCore.csproj"
             },
-            "D:\\Unity\\newLimbo\\Server\\SharedDB\\SharedDB.csproj": {
-              "projectPath": "D:\\Unity\\newLimbo\\Server\\SharedDB\\SharedDB.csproj"
+            "D:\\0.Hongik\\limbo_proj\\Server\\SharedDB\\SharedDB.csproj": {
+              "projectPath": "D:\\0.Hongik\\limbo_proj\\Server\\SharedDB\\SharedDB.csproj"
             }
           }
         }
@@ -5598,12 +5598,22 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.23, 3.1.23]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

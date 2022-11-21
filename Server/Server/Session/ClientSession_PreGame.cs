@@ -127,7 +127,7 @@ namespace Server
 			LobbyPlayerInfo playerInfo = LobbyPlayers.Find(p => p.Name == enterGamePacket.Name);
 			if (playerInfo == null) return;
 
-			MyPlayer = PlayerManager.Instance.Add();
+			MyPlayer = ObjectManager.Instance.Add();
 			{   // 정보 셋팅
 				MyPlayer.PlayerDbId = playerInfo.PlayerDbId;
 				MyPlayer.Info.Name = playerInfo.Name; 

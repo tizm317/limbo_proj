@@ -8,21 +8,20 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class Player
+    public class Player : GameObject
     {
         public int PlayerDbId { get; set; }
         public GameRoom Room { get; set; }          // 어떤 Room 에 있는지
         public ClientSession Session { get; set; }  // 플레이어가 패킷 보낼 때 사용
         public Inventory Inven { get; private set; } = new Inventory();
 
-        public PlayerInfo Info { get; set; } = new PlayerInfo();
-        public PositionInfo PosInfo { get; set; } = new PositionInfo();
+        
         public PositionInfo DestInfo { get; set; } = new PositionInfo();
         public PlayerStatInfo StatInfo { get; set; } = new PlayerStatInfo();
 
         public Player()
         {
-            Info.PosInfo = PosInfo;
+            ObjectType = GameObjectType.Player;
             Info.DestInfo = DestInfo;
             Info.PlayerStatInfo = StatInfo;
         }
