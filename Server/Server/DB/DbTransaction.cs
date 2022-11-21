@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Google.Protobuf.Protocol;
+using Microsoft.EntityFrameworkCore;
 using Server.Game;
 using Server.Utils;
 using System;
@@ -59,6 +60,15 @@ namespace Server.DB
         public static void SavePlayerStatus_Step3(float hp)
         {
             Console.WriteLine($"Hp Saved : {hp}");
+        }
+
+        //
+        public static void SavePlayerInventory_Step1(Player player, C_ItemList itemList, GameRoom room)
+        {
+            if (player == null || itemList == null || room == null)
+                return;
+
+            /////////////////////////////////////////////////////////////////
         }
     }
 }

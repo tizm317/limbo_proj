@@ -90,4 +90,19 @@ class PacketHandler
 
 		clientSession.MyPlayer.Room.Broadcast(resChatPacket);
 	}
+
+	public static void C_ItemListHandler(PacketSession session, IMessage packet)
+    {
+		C_ItemList itemList = packet as C_ItemList;
+		ClientSession clientSession = session as ClientSession;
+
+		// 멀티쓰레드 환경에서 위험하기 때문에 꺼내서 체크한다.
+		Player player = clientSession.MyPlayer;
+		if (player == null) return;
+		GameRoom room = clientSession.MyPlayer.Room;
+		if (room == null) return;
+
+		// Room 안에서 처리하도록 함
+		room.Push(room.HandleInventory, player, itemList);
+	}
 }
