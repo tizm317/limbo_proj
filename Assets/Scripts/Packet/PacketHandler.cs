@@ -155,11 +155,7 @@ class PacketHandler
 		foreach(ItemInfo itemInfo in itemList.Items)
         {
 			ItemData item = null;
-			//foreach(ItemData id in invenUI._inventory.itemDatas)
-   //         {
-			//	if (id.ID == itemInfo.TemplateId)
-			//		item = id;
-   //         }
+
 			item = invenUI._inventory.itemDict[itemInfo.TemplateId];
 
 			int idx;

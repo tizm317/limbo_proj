@@ -45,5 +45,10 @@ namespace Server.Game
             // Room 떠날 때 Db 갱신 작업
             DbTransaction.SavePlayerStatus_Step1(this, Room);
         }
+
+        public void UpdateInventory(C_ItemList itemList)
+        {
+            DbTransaction.SavePlayerInventory_Step1(this, itemList, Room);
+        }
     }
 }

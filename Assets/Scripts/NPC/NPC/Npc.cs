@@ -20,6 +20,7 @@ public class Npc : MonoBehaviour
     public string _job { get; protected set; }
     //string _type;       // 타입 : 거래, 물품 보관, 이벤트 진행, 퀘스트 제공 등.
 
+    protected Dictionary<int, Data.Npc> dict;
     #endregion
 
     public virtual void Awake()
@@ -30,7 +31,7 @@ public class Npc : MonoBehaviour
     {
         #region Read NPC Info from Dictionary
 
-        Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
+        dict = Managers.Data.NpcDict;
         //_id = dict[num_npc].id;
         _id = id;
         _name = dict[_id].name;
@@ -122,7 +123,7 @@ public class Npc : MonoBehaviour
     public Define.NpcState curState { get; set; }
     protected EventActionTable[] table;
     /*=======================================================================================================================*/
-    public void stateMachine(Define.Event inputEvent)
+    public virtual void stateMachine(Define.Event inputEvent)
     {
         // 이거만 호출
         // 외부에서 인자로 다음 이벤트 넣어줌
