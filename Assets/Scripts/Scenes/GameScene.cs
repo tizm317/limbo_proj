@@ -60,7 +60,7 @@ public class GameScene : BaseScene
 
         GameObject go = new GameObject { name = "SpawningPool" };
         SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-        pool.SetKeepMonsterCount(3);
+        pool.SetKeepMonsterCount(6);
 
 
         //List<GameObject> list = new List<GameObject>();
