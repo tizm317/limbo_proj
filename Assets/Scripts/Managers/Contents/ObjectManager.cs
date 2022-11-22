@@ -40,6 +40,7 @@ public class ObjectManager
             MyPlayer.my_job = (Define.Job)info.Job;
             
             MyPlayer.transform.position = MyPlayer.Pos;
+            GameObject.DontDestroyOnLoad(go);
         }
         else // Not myPlayer
         {
