@@ -27,6 +27,9 @@ namespace Server.Game
             //TestTimer();
 
             //temp monster
+            Monster monster = ObjectManager.Instance.Add<Monster>();
+            //이 사이에 (강의에서는) 몬스터의 위치 하드 코딩했음
+            EnterGame(monster);
         }
         public void TestTimer()
         {

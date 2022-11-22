@@ -58,14 +58,26 @@ public class StageManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(FadeFlow());
+
             //모든 stage의 게임이 끝난 상황 game clear
             Time.timeScale = 0; //시간을 멈춰둠
             Debug.Log("all stage 클리어");
-            //로딩 후 village 씬 or 경매 씬으로 활성화시켜야함
+
+            if (SceneManager.GetActiveScene().name == "DungeonCemetery")
+            {
+                Managers.Scene.LoadScene(Define.Scene.InGameCemetery);
+
+            }
+            else if (SceneManager.GetActiveScene().name == "DungeonNature")
+            {
+                Managers.Scene.LoadScene(Define.Scene.InGameNature);
+            }
+            else if (SceneManager.GetActiveScene().name == "DungeonDesert")
+            {
+                Managers.Scene.LoadScene(Define.Scene.InGameDesert);
+            }
         }
-
-        //만약 stageIndex가 null이라면 게임 클리어할 수 있도록 방어 코드 작성해야함
-
     }
     
     IEnumerator FadeFlow()
