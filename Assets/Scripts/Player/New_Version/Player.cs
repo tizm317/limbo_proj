@@ -127,7 +127,10 @@ public abstract class Player : MonoBehaviour
 
     InputManager input;
     PathFinding pathfinding;
-
+    public void SceneChanged()
+    {
+        Init();
+    }
     #endregion
 
     #region 스킬 및 공격 관련
@@ -548,8 +551,7 @@ public abstract class Player : MonoBehaviour
         {
             pathfinding.FindPath(pos,new Vector3(dest.x,pos.y,dest.z));
             destination = pathfinding.Return_Path(player.GetComponent<Transform>());
-            destination.Add(new Vector3(dest.x,pos.y,dest.z));
-            
+            destination.Add(new Vector3(dest.x,pos.y,dest.z));  
         }
         else
         {

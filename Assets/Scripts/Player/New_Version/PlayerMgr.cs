@@ -95,7 +95,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
         //    Camera.main.GetComponent<Camera_Controller>().SetTarget(temp);
         //}
-
+        
         //// 한번만 (서버 안쓸때 임시)
         // 플레이어 초기화
         if (Managers.Object.MyPlayer == null)
@@ -105,6 +105,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
             Managers.Object.Add(info, myPlayer: true);
         }
+        
 
         // 서버에서
         playerGO = GameObject.FindGameObjectWithTag("Player");
@@ -116,8 +117,10 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         }
 
         ps = playerGO.GetComponent<Player>();
+        ps.SceneChanged();
         job = ps.my_job;
-        Camera.main.GetComponent<Camera_Controller>().SetTarget(playerGO.transform.gameObject);
+        //Camera.main.GetComponent<Camera_Controller>().SetTarget(playerGO.transform.gameObject);
+        playerGO.transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
         playerGO.transform.position = start_pos;
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
