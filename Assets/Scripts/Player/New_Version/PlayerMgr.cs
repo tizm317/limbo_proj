@@ -118,6 +118,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         ps = playerGO.GetComponent<Player>();
         job = ps.my_job;
         Camera.main.GetComponent<Camera_Controller>().SetTarget(playerGO.transform.gameObject);
+        playerGO.transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
         playerGO.transform.position = start_pos;
         GameObject skill_ui_root = GameObject.Find("Grid");
         Sprite[] skill_img = new Sprite[5];
