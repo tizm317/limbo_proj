@@ -12,7 +12,7 @@ public class DungeonScene : GameScene
 
     void Awake()
     {
-        Init();
+        //Init();
     }
 
     protected override void Init()
@@ -55,7 +55,7 @@ public class DungeonScene : GameScene
 
 
         // CAPTCHA System
-        co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
+        //co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
 
         //
         //Managers.NPC.Init();
