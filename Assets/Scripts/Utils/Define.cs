@@ -44,6 +44,7 @@ public class Define
         InGameNature,
         InGameDesert,
         InGameCemetery, // 공동묘지
+        LoadingScene,
     }
 
     public enum Sound

@@ -108,7 +108,10 @@ public class ObjectManager
     public void Clear()
     {
         foreach (GameObject go in _objects.Values)
+        {
+            if (go.name == "MyPlayer") continue;
             Managers.Resource.Destroy(go);
+        }
 
         _objects.Clear();
     }

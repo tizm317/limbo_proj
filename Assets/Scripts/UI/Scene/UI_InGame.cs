@@ -846,9 +846,11 @@ public class UI_InGame : UI_Scene
     private void OnPointerEnter(Vector2 pointer)
     {
         // 중복 수행 방지
-        pm.ToolTip();
         if (skillSlot_tooltip == RaycastAndGetFirstComponent<UI_SkillSlot>())
             return;
+        
+        pm.ToolTip();
+
 
         // 다른 팝업 떠있으면 안 뜨게
         if (Managers.UI.GetStackCount() > 1) // RadialMenu가 기본으로 떠있음
