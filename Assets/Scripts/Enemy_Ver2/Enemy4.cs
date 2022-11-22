@@ -34,12 +34,14 @@ public class Enemy4 : Enemy
     {
         base.Init();
 
-        WorldObjectType = Define.WorldObject.Monster;
+        WorldObjectType = Define.WorldObject.Enemy;
 
         // 스탯은 상속받아서 사용 : _stat
 
         // 디폴트 애니메이션 
         State = Define.EnemyState.Moving;
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.speed = Random.Range(0.4f, 1f);
 
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
@@ -73,7 +75,7 @@ public class Enemy4 : Enemy
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.speed = _stat.MoveSpeed;
+        //nma.speed = _stat.MoveSpeed;
 
         if (dist <= _attachRange)
         {
@@ -215,7 +217,8 @@ public class Enemy4 : Enemy
         State = Define.EnemyState.Idle;
 
         yield return new WaitForSeconds(2.0f);
-
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.speed = Random.Range(0.4f, 1f);
         State = Define.EnemyState.Moving;
     }
 

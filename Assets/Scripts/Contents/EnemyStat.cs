@@ -41,7 +41,7 @@ public class EnemyStat : Stat
     {
         Init();
         _moveSpeed = 1.0f;
-        _turnSpeed = 5.0f;
+        _turnSpeed = 3.0f;
         SetStat(_level);
     }
     public void SetStat(int level)

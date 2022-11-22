@@ -7,8 +7,11 @@ public class GameManagerEx
 {
     GameObject _player;
     HashSet<GameObject> _monsters = new HashSet<GameObject>();
+    HashSet<GameObject> _enemy = new HashSet<GameObject>();
 
     public Action<int> OnSpawnEvent;
+    public Action<int> OnSpawnEvent_enemy;
+
     public GameObject GetPlayer() { return _player; }
 
     //몬스터 생성
@@ -21,6 +24,11 @@ public class GameManagerEx
                 _monsters.Add(go);
                 if(OnSpawnEvent != null)
                     OnSpawnEvent.Invoke(1);                    
+                break;
+            case Define.WorldObject.Enemy:
+                _enemy.Add(go);
+                if (OnSpawnEvent_enemy != null)
+                    OnSpawnEvent_enemy.Invoke(1);
                 break;
         }
         return go;
@@ -51,6 +59,16 @@ public class GameManagerEx
                         if (OnSpawnEvent != null)
                             OnSpawnEvent.Invoke(-1);
                         _monsters.Remove(go);
+                    }
+                    break;
+                }
+            case Define.WorldObject.Enemy:
+                {
+                    if (_enemy.Contains(go))
+                    {
+                        if (OnSpawnEvent_enemy != null)
+                            OnSpawnEvent_enemy.Invoke(-1);
+                        _enemy.Remove(go);
                     }
                     break;
                 }
