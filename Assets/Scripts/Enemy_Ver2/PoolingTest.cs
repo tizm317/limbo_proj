@@ -61,7 +61,7 @@ public class PoolingTest : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "InGameDesert")
         {
-            _enemy = Managers.Game.Spawn(Define.WorldObject.Enemy, "Enemy_CrabMonster");
+            _enemy = Managers.Game.Spawn(Define.WorldObject.Enemy, "Enemy_HorrorMutant");
             NavMeshAgent nma0 = _enemy.GetComponent<NavMeshAgent>();
             //enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
             //NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();

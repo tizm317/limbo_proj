@@ -22,6 +22,7 @@ public class EnemyStat : Stat
     private float rate;
     private int length;
 
+
     // 외부에서 사용할 때
     public int EnemyExp { get { return _enemyExp; } set { _enemyExp = value; } }
     public ItemData[] ItemData { get { return _itemData; } set { _itemData = value; } }
@@ -121,8 +122,8 @@ public class EnemyStat : Stat
     {
         enemy.State = Define.EnemyState.Die;
 
-        //NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        //nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.SetDestination(transform.position); //움직이지 않고 본인 위치에서 어택하도록 
 
         yield return new WaitForSeconds(5.0f);
 
