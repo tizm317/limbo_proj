@@ -9,7 +9,7 @@ public class SpawningPool : MonoBehaviour
     [SerializeField] int _monsterCount = 0;
     int _reserveCount = 0; // 코루틴을 생성할 때 현재 예약된 코루틴이 몇개인지 판단
     [SerializeField] int _keepMonsterCount = 0;
-    [SerializeField] Vector3 _spawnPos;
+    [SerializeField] Vector3 _spawnPos = new Vector3(15f, 0f, -20f);
 
     float _spawnRadius = 20.0f;
 
@@ -29,8 +29,6 @@ public class SpawningPool : MonoBehaviour
     {
         Managers.Game.OnSpawnEvent -= AddMonsterCount;
         Managers.Game.OnSpawnEvent += AddMonsterCount;
-        //enemyCharacter = Resources.LoadAll<GameObject>("Prefabs/EnemyCharacters");
-
     }
 
     // Update is called once per frame
@@ -67,10 +65,10 @@ public class SpawningPool : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "InGameCemetery")
         {
             
-            //enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
-            //NavMeshAgent nma0 = enemyCharacter.GetComponent<NavMeshAgent>();
-            enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
-            NavMeshAgent nma1 = enemyCharacter.GetComponent<NavMeshAgent>();
+            enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
+            NavMeshAgent nma0 = enemyCharacter.GetComponent<NavMeshAgent>();
+            //enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+            //NavMeshAgent nma1 = enemyCharacter.GetComponent<NavMeshAgent>();
         }
 
 
