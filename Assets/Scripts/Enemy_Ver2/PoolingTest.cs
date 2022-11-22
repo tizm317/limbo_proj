@@ -9,7 +9,7 @@ public class PoolingTest : MonoBehaviour
     [SerializeField] int _enemyCount = 0;
     int _reserveCount = 0; // 코루틴을 생성할 때 현재 예약된 코루틴이 몇개인지 판단
     [SerializeField] int _keepEnemyCount = 0;
-    [SerializeField] Vector3 _spawnPos = new Vector3(-45f, 0f, 12f);
+    [SerializeField] Vector3 _spawnPos = new Vector3(-35f, 0f, 16f);
 
     float _spawnRadius = 20.0f;
     float _spawnTime = 5.0f;
