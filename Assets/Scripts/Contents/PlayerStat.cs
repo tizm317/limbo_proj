@@ -31,7 +31,7 @@ public class PlayerStat : Stat
     public int Stat_Point { get { return _stat_point; }  set { _stat_point = value; } }
     private int max_skill_point = 16; // 4(qwer) * 4렙
     public int MaxStatPoint { get { return max_stat_point; } }
-    private int max_stat_point = 80; // 1~16 * 5 = 80
+    private int max_stat_point = 160; // 1~16 * 5 = 80
     public int STR,DEX,INT,LUC;
     public float Item_Hp, Item_Regeneration, Item_Attack, Item_MoveSpeed, Item_AttackSpeed, Item_Mana, Item_Mana_Regeneration;
     public float Item_Hp_percent, Item_Attack_percent, Item_Mana_percent;
@@ -54,11 +54,30 @@ public class PlayerStat : Stat
         _stat_point = 5; // 1렙 기본 제공
         Level_Update();
         time = 0;
+        ps = gameObject.GetComponent<Player>();
+        my_job = ps.my_job;
+        switch(my_job)
+        {
+            case Define.Job.WARRIOR :
+                STR = 20;
+                DEX = 20;
+                INT = 20;
+                break;
+            case Define.Job.ARCHER :
+                STR = 20;
+                DEX = 25;
+                INT = 15;
+                break;
+            case Define.Job.SORCERER :
+                STR = 15;
+                DEX = 20;
+                INT = 25;
+                break;
 
-        STR = 5;
+        }
         Stat_Update();
 
-        ps = gameObject.GetComponent<Player>();
+        
     }
 
     void Update()
@@ -144,7 +163,7 @@ public class PlayerStat : Stat
             Stat_Update();
             
             // 17렙까지?
-            if(Level < 17)
+            if(Level < 32)
                 _stat_point += 5; // 1레벨업 당 5 스킬 포인트
             
             if(_UI_Stat)

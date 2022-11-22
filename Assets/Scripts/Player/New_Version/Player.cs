@@ -7,6 +7,7 @@ public abstract class Player : MonoBehaviour
 {
 
     protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
+    protected GameObject pos_indicator;
     #region 애니메이션
     protected Animator ani;
     public State Ani_State
@@ -21,7 +22,7 @@ public abstract class Player : MonoBehaviour
                     ani.CrossFade("Idle", 0.2f);
                     break;
                 case State.Move :
-                    ani.CrossFade("Move", 0.2f);
+                    ani.CrossFade("Move", 0f);
                     break;
                 case State.Attack :
                     ani.CrossFade($"{my_job}_Attack", 0.2f);
@@ -413,7 +414,7 @@ public abstract class Player : MonoBehaviour
         curState = State.Idle;              
         player.transform.position = Pos;
         Dest = player.transform.position;   // 목적지 : 현재 위치
-
+        pos_indicator = Instantiate(Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Mouse_Indicator"));
 
 
         Enemy_Update(); // ??
@@ -913,6 +914,8 @@ public abstract class Player : MonoBehaviour
                     Set_Destination(hit.point);//마우스에서 나간 광선이 도착한 위치를 목적지로 설정
                     my_enemy = null;//다시 땅 찍으면 타게팅을 풀어줌
                     my_enemy_stat = null;//저장해둔 스텟도 지워줌
+                    pos_indicator.transform.position = hit.point + new Vector3(0,0.1f,0);
+                    pos_indicator.GetComponent<ParticleSystem>().Play();
                 }
                 else if(hit.collider.tag == "Enemy")//후에 공격과 자동 타게팅을 추가할 예정
                 {
