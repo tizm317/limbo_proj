@@ -10,9 +10,13 @@ namespace Server.Game
     {
         // Room 하나 관리하는 객체
 
-        //object _lock = new object();                // 멀티 쓰레드 환경
+        object _lock = new object();                // 멀티 쓰레드 환경
         public int RoomId { get; set; }             // 씬(맵) 식별자
-        List<Player> _players = new List<Player>(); // lock 걸어줘야 함
+        //List<Player> _players = new List<Player>(); // lock 걸어줘야 함
+
+        Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
+        Dictionary<int, Player> _players = new Dictionary<int, Player>();
+        Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
 
         public void Init()
@@ -21,6 +25,11 @@ namespace Server.Game
             // 맵 관련..?
 
             //TestTimer();
+
+            //temp monster
+            Monster monster = ObjectManager.Instance.Add<Monster>();
+            //이 사이에 (강의에서는) 몬스터의 위치 하드 코딩했음
+            EnterGame(monster);
         }
         public void TestTimer()
         {
@@ -33,74 +42,137 @@ namespace Server.Game
         public void Update()
         {
             // TODO : Monster Update
-            // TODO : Projectile Update
+
+            // Projectile Update
+            lock (_lock)
+            {
+                foreach (Projectile projectile in _projectiles.Values)
+                {
+                    projectile.Update();
+                }
+            }
 
             // 일감처리
             Flush();
         }
 
         // Game Room 입장/퇴장
-        public void EnterGame(Player newPlayer)
+        public void EnterGame(GameObject gameObject)
         {
-            if (newPlayer == null) return;
+            if (gameObject == null) 
+                return;
 
-            _players.Add(newPlayer);
-            newPlayer.Room = this;
+            GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.id);
 
             // 본인한테 정보 전송
+            lock (_lock)
             {
-                // 내 정보를 나한테
-                S_EnterGame enterPacket = new S_EnterGame();
-                enterPacket.Player = newPlayer.Info;
-                newPlayer.Session.Send(enterPacket);
-
-                // 타인 정보를 나한테
-                S_Spawn spawnPacket = new S_Spawn();
-                foreach (Player p in _players)
+                if (type == GameObjectType.Player)
                 {
-                    if (newPlayer != p) // 나 빼고
+                    Player player = gameObject as Player;
+
+                    _players.Add(gameObject.id, player);
+                    player.Room = this;
+
+                    // 내 정보를 나한테
                     {
-                        spawnPacket.Players.Add(p.Info);
+                        S_EnterGame enterPacket = new S_EnterGame();
+                        enterPacket.Player = player.Info;
+                        player.Session.Send(enterPacket);
+
+                        // 타인 정보를 나한테
+                        S_Spawn spawnPacket = new S_Spawn();
+                        foreach (Player p in _players.Values)
+                        {
+                            if (player != p) // 나 빼고
+                            {
+                                spawnPacket.Objects.Add(p.Info);
+                            }
+                        }
+                        player.Session.Send(spawnPacket);
                     }
+
                 }
-                newPlayer.Session.Send(spawnPacket);
+                else if(type == GameObjectType.Monster)
+                {
+                    Monster monster = gameObject as Monster;
+                    _monsters.Add(gameObject.id, monster);
+                    monster.Room = this;
+                }
+                else if(type == GameObjectType.Projectile)
+                {
+                    Projectile projectile = gameObject as Projectile;
+                    _projectiles.Add(gameObject.id, projectile);
+                    projectile.Room = this;
+                }
+                
             }
 
             // 타인한테 정보 전송
             {
                 // 내 정보를 타인한테
                 S_Spawn spawnPacket = new S_Spawn();
-                spawnPacket.Players.Add(newPlayer.Info);
-                foreach (Player p in _players)
+                spawnPacket.Objects.Add(gameObject.Info);
+                foreach (Player p in _players.Values)
                 {
-                    if (newPlayer != p) // 나 빼고 Broadcasting
+                    if (p.id != gameObject.id) // 나 빼고 Broadcasting
                         p.Session.Send(spawnPacket);
                 }
             }
         }
-        public void LeaveGame(int playerId)
+        public void LeaveGame(int objectId)
         {
-            // 원하는 플레이어 찾기
-            Player player = _players.Find(p => p.Info.PlayerId == playerId);
-            if (player == null) return;
+            GameObjectType type = ObjectManager.GetObjectTypeById(objectId);
 
-            // 리스트에서 제거
-            player.OnLeaveGame(); //
-            _players.Remove(player);
-            player.Room = null;
-
-            // 본인한테 (Leave)정보 전송
+            lock(_lock)
             {
-                S_LeaveGame leavePacket = new S_LeaveGame();
-                player.Session.Send(leavePacket);
+                if(type == GameObjectType.Player)
+                {
+                    //Player player = _players.Find(p => p.Info.ObjectId == playerId);
+                    //if (player == null) return;
+
+                    // 리스트에서 제거
+                    //player.OnLeaveGame();
+                    //_players.Remove(objectId);
+
+                    Player player = null;
+                    if (_players.Remove(objectId, out player) == false)
+                        return;
+
+                    player.Room = null;
+
+                    // 본인한테 (Leave)정보 전송
+                    {
+                        S_LeaveGame leavePacket = new S_LeaveGame();
+                        player.Session.Send(leavePacket);
+                    }
+                }
+                else if(type == GameObjectType.Monster)
+                {
+                    Monster monster = null;
+                    if (_monsters.Remove(objectId, out monster) == false)
+                        return;
+                    monster.Room = null;
+
+                }
+                else if(type == GameObjectType.Projectile)
+                {
+                    Projectile projectile = null;
+                    if (_projectiles.Remove(objectId, out projectile) == false)
+                        return;
+                    projectile.Room = null;
+
+                }
             }
+            // 원하는 플레이어 찾기
+            
             // 타인한테 (Despawn)정보 전송
             {
                 S_Despawn despawnPacket = new S_Despawn();
-                despawnPacket.PlayerIds.Add(player.Info.PlayerId);
-                foreach (Player p in _players)
+                despawnPacket.PlayerIds.Add(objectId);
+                foreach (Player p in _players.Values)
                 {
-                    if (player != p) // 나 빼고 Broadcasting
+                    if (p.id != objectId) // 나 빼고 Broadcasting
                         p.Session.Send(despawnPacket);
                 }
             }
@@ -112,11 +184,14 @@ namespace Server.Game
             if (player == null) return;
 
             // 정보 수정은 한번에 한명씩 (경합상태 해결)
-            // TODO : 검증
+
+            // 검증
+            //PositionInfo movePosInfo = movePacket.PosInfo;
+            //ObjectInfo info = player.Info;
 
             // 다른 플레이어한테도 알려준다
             S_Move resMovePacket = new S_Move();
-            resMovePacket.PlayerId = player.Info.PlayerId;
+            resMovePacket.PlayerId = player.Info.ObjectId;
             resMovePacket.DestInfo = movePacket.DestInfo;   // destination의 좌표를 보내주는 것
             resMovePacket.PosInfo = movePacket.PosInfo;   // 플레이어 위치
 
@@ -134,7 +209,7 @@ namespace Server.Game
         {
             if (player == null) return;
 
-            PlayerInfo info = player.Info;
+            ObjectInfo info = player.Info;
 
             // 스킬 쓸 수 있는 조건인지 체크(state?, cooltime? 등)
             // Idle 일 때만?
@@ -142,22 +217,44 @@ namespace Server.Game
                 return;
             // TODO : 스킬 사용 가능 여부 체크
 
-            // 통과
+            // 통과(스킬을 사용하는 애니메이션 맞춰주기 위함)
             info.DestInfo.State = State.Skill;
 
             S_Skill skill = new S_Skill { Info = new SkillInfo() };
-            skill.PlayerId = info.PlayerId;
-            skill.Info.SkillId = 1; // 나중에 데이터시트로 따로 관리(json, xml)
+            skill.PlayerId = info.ObjectId;
+            skill.Info.SkillId = skillPacket.Info.SkillId; // 1 -> skillPacket.Info.SkillId로 변경함 / 나중에 데이터시트로 따로 관리(json, xml)
             Broadcast(skill);
 
-            // 데미지 판정
+            // 스킬이 많은 경우 class로 따로 빼서 하는것이 효과적
+            if (skillPacket.Info.SkillId == 1)
+            {
+                //TODO : 데미지 판정
+            }
+            else if (skillPacket.Info.SkillId == 2)
+            {
+                //TODO : Arrow
+                
+                Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+                if (arrow == null)
+                    return;
+
+                arrow.Owner = player;
+                arrow.PosInfo.State = State.Move;
+                arrow.PosInfo.PosX = player.PosInfo.PosX;
+                arrow.PosInfo.PosY = player.PosInfo.PosY;
+                arrow.PosInfo.PosZ = player.PosInfo.PosZ;
+                
+                //타인에게 spawn 되었음을 보여주기 위함
+                EnterGame(arrow);
+
+            }
         }
 
         // Broadcasting
         public void Broadcast(IMessage packet)
         {
             // ex) 채팅
-            foreach (Player p in _players)
+            foreach (Player p in _players.Values)
             {
                 p.Session.Send(packet);
             }
@@ -166,9 +263,9 @@ namespace Server.Game
         {
             // ex) 이동동기화 : 내껀 클라에서 이동
             S_Move mp = packet as S_Move;
-            foreach (Player p in _players)
+            foreach (Player p in _players.Values)
             {
-                if (mp != null && mp.PlayerId == p.Info.PlayerId)
+                if (mp != null && mp.PlayerId == p.Info.ObjectId)
                 {
                     // 이동동기화일 때는 나한테 안보낸다
                 }

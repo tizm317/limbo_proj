@@ -50,7 +50,7 @@ public class UI_SkillDescription : UI_Popup
         float panelWidth = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.width;
         float panelHeight = ((RectTransform)(GetObject((int)GameObjects.DescriptionPanel).transform)).rect.height;
         float xPosValue = panelWidth / 1.75f;
-        float yPosValue = panelHeight / 1.75f;
+        float yPosValue = panelHeight / 2f;
 
         // 화면 범위 안 넘어가게 위치 조정
         if (mousePointerPos.x + panelWidth > Screen.width)

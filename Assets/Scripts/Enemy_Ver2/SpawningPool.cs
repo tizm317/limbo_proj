@@ -15,7 +15,7 @@ public class SpawningPool : MonoBehaviour
 
     float _spawnTime = 5.0f;
 
-    public GameObject[] enemyCharacter;
+    public GameObject enemyCharacter;
     public void AddMonsterCount(int value)
     {
         _monsterCount += value;
@@ -29,7 +29,7 @@ public class SpawningPool : MonoBehaviour
     {
         Managers.Game.OnSpawnEvent -= AddMonsterCount;
         Managers.Game.OnSpawnEvent += AddMonsterCount;
-        enemyCharacter = Resources.LoadAll<GameObject>("Prefabs/EnemyCharacters");
+        //enemyCharacter = Resources.LoadAll<GameObject>("Prefabs/EnemyCharacters");
 
     }
 
@@ -51,26 +51,26 @@ public class SpawningPool : MonoBehaviour
         // _monsterCount를 이 함수에서 늘리지 않아도 GameManagerEx에서 Spawn함수가 실행될 때 Invoke로 _monsterCount를 늘려준다.
         if (SceneManager.GetActiveScene().name == "InGameNature")
         {
-            enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
-            NavMeshAgent nma0 = enemyCharacter[0].GetComponent<NavMeshAgent>();
-            enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Bear");
-            NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
+            enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Rabbit");
+            NavMeshAgent nma0 = enemyCharacter.GetComponent<NavMeshAgent>();
+            //enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Bear");
+            //NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
 
         }
         else if (SceneManager.GetActiveScene().name == "InGameDesert")
         {
-            enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_HorrorMutant");
-            NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
-            enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
-            NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
+            enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_HorrorMutant");
+            NavMeshAgent nma0 = enemyCharacter.GetComponent<NavMeshAgent>();
+            //enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_CrabMonster");
+            //NavMeshAgent nma1 = enemyCharacter[1].GetComponent<NavMeshAgent>();
         }
         else if (SceneManager.GetActiveScene().name == "InGameCemetery")
         {
             
-            enemyCharacter[0] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
-            NavMeshAgent nma0 = enemyCharacter[2].GetComponent<NavMeshAgent>();
-            enemyCharacter[1] = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
-            NavMeshAgent nma1 = enemyCharacter[3].GetComponent<NavMeshAgent>();
+            //enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Monster");
+            //NavMeshAgent nma0 = enemyCharacter.GetComponent<NavMeshAgent>();
+            enemyCharacter = Managers.Game.Spawn(Define.WorldObject.Monster, "Enemy_Wizard");
+            NavMeshAgent nma1 = enemyCharacter.GetComponent<NavMeshAgent>();
         }
 
 
@@ -89,14 +89,12 @@ public class SpawningPool : MonoBehaviour
             //    break;
             //}
         }
+        //for(int i = 0; i < enemyCharacter.Length ; i++)
+        //{
+        //    enemyCharacter[i].transform.position = randPos;
+        //}
+        enemyCharacter.transform.position = randPos;
 
-        for(int i = 0; i < enemyCharacter.Length ; i++)
-        {
-            enemyCharacter[i].transform.position = randPos;
-        }
-
-        //obj1.transform.position = randPos;
-        //obj2.transform.position = randPos;
         _reserveCount--;
     }
 }

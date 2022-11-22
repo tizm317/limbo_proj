@@ -48,10 +48,8 @@ public class Enemy1 : Enemy
         nextIdx = Random.Range(1, points.Length);
 
         //enemy & player 위치
-        tr = GetComponent<Transform>();  
+        tr = GetComponent<Transform>();
         //playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-
-
     }
 
     //Idle 상태
@@ -72,7 +70,6 @@ public class Enemy1 : Enemy
         float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.speed = 1f;
 
         if (dist <= _attachRange)
         {
@@ -101,9 +98,7 @@ public class Enemy1 : Enemy
                 nextIdx = 1;
             }
             movePos = points[nextIdx].position;  //다음 waypoint 위치
-//            Debug.Log(nextIdx);
             nma.SetDestination(movePos);
-            //nma.speed = _stat.MoveSpeed;
 
             Quaternion quat = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
             tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
@@ -142,9 +137,6 @@ public class Enemy1 : Enemy
 
     void OnTriggerEnter(Collider coll)
     {
-        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.SetDestination(transform.position);
-
         if (coll.tag == "WAY_POINT1")
         {
             theNextIdx = Random.Range(1, points.Length);
@@ -211,6 +203,9 @@ public class Enemy1 : Enemy
         State = Define.EnemyState.Idle;
 
         yield return new WaitForSeconds(2.0f);
+
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.speed = Random.Range(0.4f, 1f);
 
         State = Define.EnemyState.Moving;
     }

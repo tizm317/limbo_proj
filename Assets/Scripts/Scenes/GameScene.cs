@@ -58,9 +58,18 @@ public class GameScene : BaseScene
         // InGame Scene BGM ����
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
-        GameObject go = new GameObject { name = "SpawningPool" };
-        SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-        pool.SetKeepMonsterCount(3);
+        if (SceneManager.GetActiveScene().name == "InGameVillage")
+        {
+
+        }
+        else
+        {
+            GameObject go = new GameObject { name = "SpawningPool" };
+            SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
+            pool.SetKeepMonsterCount(10);
+        }
+
+
 
 
         //List<GameObject> list = new List<GameObject>();

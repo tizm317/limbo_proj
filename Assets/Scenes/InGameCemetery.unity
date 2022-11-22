@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 1
   m_FogDensity: 0.01
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 513809869}
-  m_IndirectSpecularColor: {r: 0.5648993, g: 0.6356382, b: 0.7239358, a: 1}
+  m_IndirectSpecularColor: {r: 0.56489927, g: 0.6356381, b: 0.72393566, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1731,8 +1731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1109f9e33632c0c44ae2478450a17e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  job: 0
-  pos: {x: 0, y: 1, z: 65}
+  job: 1
+  pos: {x: 47, y: 1, z: -60}
   character: []
 --- !u!114 &29188129
 MonoBehaviour:
