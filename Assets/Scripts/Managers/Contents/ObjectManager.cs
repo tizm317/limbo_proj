@@ -1,4 +1,4 @@
-﻿using Google.Protobuf.Protocol;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,9 +38,8 @@ public class ObjectManager
             MyPlayer.PosInfo = info.PosInfo;
             MyPlayer.DestInfo = info.DestInfo;
             MyPlayer.my_job = (Define.Job)info.Job;
-            
-            MyPlayer.transform.position = MyPlayer.Pos;
             GameObject.DontDestroyOnLoad(go);
+            MyPlayer.transform.position = MyPlayer.Pos;
         }
         else // Not myPlayer
         {
@@ -108,12 +107,26 @@ public class ObjectManager
     }
     public void Clear()
     {
+        GameObject temp = null;
+        int idx = 0;
+        int _idx = 0;
         foreach (GameObject go in _objects.Values)
         {
-            if (go.name == "MyPlayer") continue;
+            if (go.name == "MyPlayer")
+            {
+                _idx = idx;
+                temp = go;
+                continue;
+            }
             Managers.Resource.Destroy(go);
+            idx++;
         }
-
+        List<int> keys = new List<int>();
+        foreach(int key in _objects.Keys)
+            keys.Add(key);
+        
         _objects.Clear();
+        _objects.Add(keys[_idx],temp);
+        MyPlayer = temp.GetComponent<Player>();
     }
 }
