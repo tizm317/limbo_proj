@@ -49,11 +49,14 @@ public class UI_Inventory : UI_Base
         //    _inventory.UpdateCurrency();
         //    _inventory.IsUpdated = false;
         //}
-
-        _inventory.UpdateAllSlot();
-        _inventory.UpdateCurrency();
-        _inventory.IsUpdated = false;
+        if(_inventory)
+        {
+            _inventory.UpdateAllSlot();
+            _inventory.UpdateCurrency();
+            _inventory.IsUpdated = false;
+        }
     }
+
 
     Player player_State;
     private GameObject Scene;
@@ -435,6 +438,11 @@ public class UI_Inventory : UI_Base
 
     public void OnEnable()
     {
+        // 켜질 때마다 update
+        _inventory.UpdateAllSlot();
+        _inventory.UpdateCurrency();
+        _inventory.IsUpdated = false;
+
         _inventory.SetInventoryUI(this);
     }
 
@@ -479,22 +487,26 @@ public class UI_Inventory : UI_Base
 
     public void SetItemIcon(int idx, Sprite iconSprite)
     {
-        _slotUIList[idx].SetItem(iconSprite);
+        if (_slotUIList != null)
+            _slotUIList[idx].SetItem(iconSprite);
     }
 
     public void SetItemAmountText(int idx, int amount)
     {
-        _slotUIList[idx].SetItemAmount(amount);
+        if (_slotUIList != null)
+            _slotUIList[idx].SetItemAmount(amount);
     }
 
     public void HideItemAmountText(int idx)
     {
-        _slotUIList[idx].SetItemAmount(0);
+        if (_slotUIList != null)
+            _slotUIList[idx].SetItemAmount(0);
     }
     
     public void RemoveItem(int idx)
     {
-        _slotUIList[idx].RemoveItem();
+        if(_slotUIList != null)
+            _slotUIList[idx].RemoveItem();
     }
 
     internal bool Equip(EquipmentItem equipmentItem, out EquipmentItem exchangedItem)

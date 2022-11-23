@@ -48,6 +48,15 @@ public class QuestNpc : Npc
         //Debug.Log("Show Quest UI");
         // Quest UI
 
+        //for(; _questId < Managers.Data.QuestDict.Count; _questId++)
+        //{
+        //    if (Managers.Data.QuestDict[_questId].clear == 0)
+        //    {
+        //        break;
+        //    }
+        //}
+
+
         // 안 받은 경우+ 클리어 안 한 경우
         if (Managers.Data.QuestDict[_questId].get == 0 && Managers.Data.QuestDict[_questId].clear == 0)
         {
@@ -77,10 +86,16 @@ public class QuestNpc : Npc
                 // 입력된 이벤트와 일치하는지 검사
                 if (inputEvent == table[i]._event)
                 {
-                    // 퀘스트 깬 상태에서 퀘스트 버튼눌리는 경우
-                    if (inputEvent == Define.Event.EVENT_PUSH_QUEST && (Managers.Data.QuestDict[_questId].get == 1 || Managers.Data.QuestDict[_questId].clear == 1))
+                    // 퀘스트 받은 상태에서 퀘스트 버튼눌리는 경우
+                    if (inputEvent == Define.Event.EVENT_PUSH_QUEST && (Managers.Data.QuestDict[_questId].get == 1 && Managers.Data.QuestDict[_questId].clear == 0))
                     {
                         continue;
+                    }
+                    else if(inputEvent == Define.Event.EVENT_PUSH_QUEST && Managers.Data.QuestDict[_questId].clear == 1) 
+                    {
+                        // 퀘스트 깬 상태에서 퀘스트 버튼눌리는 경우
+                        // 다음 퀘스트로
+                        _questId++;
                     }
 
                     // 해당 트랜지션이 발생할 때 수행해야할 함수들을 실행시킴
