@@ -2110,6 +2110,7 @@ MonoBehaviour:
   _max_mana: 0
   _mana_regeneration: 0
   _skill_point: 0
+  _stat_point: 0
   level_up: 1
   current_exp: 0
   STR: 0
@@ -2128,6 +2129,7 @@ MonoBehaviour:
   Item_Mana_percent: 0
   isDead: 0
   my_job: 0
+  _myQuests: []
 --- !u!114 &2348436605236481152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2144,8 +2146,8 @@ MonoBehaviour:
   _maxCapacity: 42
   _UI_inventory: {fileID: 286161426470419700, guid: dd2623a390bea594883253e50675ca1f,
     type: 3}
+  _myQuests: []
   _MyGolds: 0
-  _maxGolds: 4294967295
   itemDatas:
   - {fileID: 0}
   - {fileID: 0}
@@ -2207,6 +2209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74533e3b376667a4dad4676b1a8da78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 5805985069832564864}
   my_stat: {fileID: 0}
   my_job: 1
   attackRange: 3
@@ -2226,6 +2229,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  selected_pos: {x: 0, y: 0, z: 0}
   magicNumber: 100
 --- !u!1 &6822533122492325649
 GameObject:

@@ -379,6 +379,7 @@ public class Sorcerer : Player
         GameObject temp = Instantiate<GameObject>(Icy_Field);
         GameObject temp2 = Instantiate<GameObject>(Icy_Smoke);
         GameObject sword = temp.transform.GetChild(3).gameObject;
+        Add_MeshEffect(14, sword);
         temp.SetActive(false);
         temp.transform.localScale = Vector3.zero;
         temp2.SetActive(false);
@@ -593,6 +594,7 @@ public class Sorcerer : Player
                 for(int i = 0; i < how_many; i++)
                 {
                     GameObject a = Instantiate(Shield);
+                    Add_MeshEffect(15, a);
                     a.transform.position = pos - new Vector3(0,3f,0);
                     a.transform.Rotate(0, (rad * (i+1)),0);
                     a.transform.Translate(a.transform.forward * width2);

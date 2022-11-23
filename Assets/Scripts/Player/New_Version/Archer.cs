@@ -11,6 +11,7 @@ public class Archer : Player
     public override void abstract_Init()
     {
         //job = "Archer";
+        //StartCoroutine(Test());
         Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Arrow");
         R_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2");
         skill_Arrow = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/ElementalArrow2_Small");
@@ -199,6 +200,7 @@ public class Archer : Player
                 curState = State.Skill;
                 skill = HotKey.E;
                 Ani_State_Change();
+                Add_MeshEffect(7,weapon);
                 Vector3 pos_s = player.transform.GetChild(2).position;
                 yield return new WaitForSeconds(1.8f);
                 List<GameObject> temp = new List<GameObject>();
@@ -247,6 +249,7 @@ public class Archer : Player
                     Destroy(i);
                 cool[2] = cool_max[2];
                 on_skill = false;
+                Delete_MeshEffect(weapon);
                 break;
             }
             yield return new WaitForEndOfFrame();
@@ -293,6 +296,7 @@ public class Archer : Player
                 curState = State.Skill;
                 skill = HotKey.R;
                 Ani_State_Change();
+                Add_MeshEffect(9, weapon);
                 yield return new WaitForSeconds(3.6f);
                 Managers.Sound.Stop();
                 Managers.Sound.Play("Sound/Skill_Sound/Archer_R",Define.Sound.Effect, 1.0f, true);
@@ -308,6 +312,7 @@ public class Archer : Player
         }
         pos_selected = false;
         canceled = false;
+        Delete_MeshEffect(weapon);
     }
 
     IEnumerator Archer_Passive()

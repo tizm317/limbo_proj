@@ -6,7 +6,23 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public abstract class Player : MonoBehaviour
 {
-
+    [SerializeField]
+    protected GameObject weapon;
+    protected IEnumerator Test()
+    {
+        int idx = 1;
+        Add_MeshEffect(idx, weapon);
+        while(true)
+        {
+            Debug.Log(idx);
+            yield return new WaitForSeconds(3f);
+            idx++;
+            if(idx == 22)
+                break;
+            Add_MeshEffect(idx, weapon);
+            
+        }
+    }
     protected Vector3 start_pos = new Vector3(1.2f,1f,-62.6f);
     protected GameObject pos_indicator;
     #region 애니메이션
@@ -653,7 +669,7 @@ public abstract class Player : MonoBehaviour
             {
                 foreach(GameObject i in enemies)
                 {
-                    if(Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
+                    if(i.GetComponent<Stat>().Hp > 0 && Vector3.Distance(i.GetComponent<Transform>().position,player.GetComponent<Transform>().position) < 5)
                     {
                         Lock_On(i);
                         break;
