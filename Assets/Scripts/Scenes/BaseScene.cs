@@ -31,8 +31,8 @@ public abstract class BaseScene : MonoBehaviour
         Object eventSystem = GameObject.FindObjectOfType(typeof(EventSystem));
         if (eventSystem == null)
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
-        //Screen.SetResolution(1920,1080,false);
-        Set_Resolution();
+        Screen.SetResolution(1920,1080,false);
+        //Set_Resolution();
     }
 
     public void Set_Resolution()
@@ -63,7 +63,7 @@ public abstract class BaseScene : MonoBehaviour
             set_Width = (int)((float)set_Width * ((float)device_Height / (float)set_Height));
             set_Height = device_Height;
         }
-        //Debug.LogFormat("set_Width = {0}, set_Height = {1}", set_Width, set_Height);
+        //Debug.LogFormat("set_Width = {0}, set_Height = {1}", set_Width, set_Height)
         Screen.SetResolution(set_Width, set_Height, false);
         if ((float)set_Width / set_Height < (float)device_Width / device_Height) // ����� �ػ󵵺� �� ū ���!
         {

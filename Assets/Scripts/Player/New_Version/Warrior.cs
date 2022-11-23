@@ -1,4 +1,4 @@
-﻿using Google.Protobuf.Protocol;
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,23 +38,6 @@ public class Warrior : Player
                 break;
             Add_MeshEffect(idx, weapon);
             
-        }
-    }
-    public void Add_MeshEffect(int idx, GameObject target)
-    {
-        Delete_MeshEffect(target);
-        GameObject MeshEffect_Prefab = Instantiate(Resources.Load<GameObject>("DownLoaded/KriptoFX/MeshEffect/Prefabs/Effect" + idx.ToString()));   
-        MeshEffect_Prefab.transform.SetParent(target.transform);
-        MeshEffect_Prefab.GetComponent<PSMeshRendererUpdater>().MeshObject = target;
-        MeshEffect_Prefab.GetComponent<PSMeshRendererUpdater>().UpdateMeshEffect();
-    }
-
-    public void Delete_MeshEffect(GameObject target)//무기 오브젝트 하나에만 적용(Mesh로 된 친구만 사용 가능함)
-    {
-        if(target.transform.childCount == 1)
-        {
-            GameObject temp = target.transform.GetChild(0).gameObject;
-            Destroy(temp);
         }
     }
 
@@ -139,11 +122,6 @@ public class Warrior : Player
                 yield return new WaitForSeconds(1.2f);
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    if(enemies[i] == null)
-                    {
-                        Debug.Log("Null ref / break");
-                        break;
-                    }
                     Vector3 targetDir = (enemies[i].transform.position - player.transform.position).normalized;//방향 계산
 
                     float dot = Vector3.Dot(player.transform.forward, targetDir);//내적 계산
