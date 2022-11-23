@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Archer : Player
 {
-    GameObject Arrow;
-    GameObject R_Arrow, skill_Arrow;
-    GameObject W_Effect;
-    Buff _buff;
+    protected GameObject Arrow;
+    protected GameObject R_Arrow, skill_Arrow;
+    protected GameObject W_Effect;
+    
     public override void abstract_Init()
     {
         //job = "Archer";
@@ -20,7 +20,6 @@ public class Archer : Player
         {
             cool[i] = 0;
         }
-        _buff = gameObject.AddComponent<Buff>();
     }
 
     public override void Cool_Update()
@@ -111,39 +110,14 @@ public class Archer : Player
         StartCoroutine(Archer_Passive());
     }
 
-    IEnumerator Archer_Q()
+    
+
+    protected virtual IEnumerator Archer_Q()
     {
-        pos_selected = false;
-        canceled = false;
-        Vector3 pos;
-        StartCoroutine(Show_ArrowIndicator(true,5));//range값은 5넘어가면 안됨
+        player.transform.forward = new Vector3(selected_pos.x - player.transform.position.x, 0, selected_pos.z - player.transform.position.z).normalized;
+        
         while(!canceled)
         {
-            while(!pos_selected)
-            {
-                if(Input.GetMouseButton(0))
-                {
-                    destination.Clear();
-                    RaycastHit hit;
-                    bool raycastHit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit);
-                    if (!raycastHit)
-                        canceled = true;
-                    else
-                    {              
-                        pos = hit.point;
-                        player.transform.forward = new Vector3(pos.x - player.transform.position.x, 0, pos.z - player.transform.position.z).normalized;
-                        pos_selected = true;
-                    }
-                }
-                else if(Input.GetMouseButton(1)||Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.E)||Input.GetKey(KeyCode.R))
-                {
-                    canceled = true;
-                    on_skill = false;
-                    break;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            yield return new WaitForEndOfFrame();
             if(pos_selected)
             {
                 curState = State.Skill;

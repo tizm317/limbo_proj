@@ -1,4 +1,4 @@
-﻿using Google.Protobuf.Protocol;
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -140,6 +140,7 @@ public abstract class Player : MonoBehaviour
     protected bool canceled = false;
     protected bool pos_selected = false;
     public bool attackable = true;
+    
     protected enum HotKey
     {
         Q,
@@ -665,6 +666,7 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 스킬
+    public Vector3 selected_pos;
 
     public virtual void Q()
     {
