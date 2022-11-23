@@ -48,6 +48,29 @@ public class PotionItem : CountableItem, IUsableItem, ISellableItem
     // 아이템 사용
     public bool Use()
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return false;
+        PlayerStat myPlayerStat = player.GetComponent<PlayerStat>();
+        if (myPlayerStat == null) return false;
+
+        if (this.potionData.ID == 1)
+            myPlayerStat.Hp += this.Value;
+        else if (this.potionData.ID == 2)
+            myPlayerStat.Mana += this.Value;
+        else if (this.potionData.ID == 3)
+        {
+            myPlayerStat.Hp += this.Value;
+            myPlayerStat.Mana += this.Value;
+        }
+        else if(this.potionData.ID == 4)
+        {
+            // TODO
+            Debug.Log("이속 증가");
+            //myPlayerStat.MoveSpeed
+        }
+
+
+
         Amount--; // 임시 : 개수 하나 감소
 
         return true;
