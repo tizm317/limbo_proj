@@ -17,30 +17,37 @@ public class NpcManager
         if (scene == Define.Scene.InGameVillage)
         {
             // TODO : 빌리지로 바꿔야함
-            for(int i = 0; i < Npcs.Length; i++)
+            foreach (GameObject npc in Npcs)
             {
-                switch(i)
+                switch(npc.transform.parent.name)
                 {
-                    case 0:
-                        Util.GetOrAddComponent<MerchantNpc>(Npcs[i]);
+                    case "Valkyrie":
+                        Util.GetOrAddComponent<MerchantNpc>(npc);
+                        id = 0;
                         break;
-                    case 1:
-                        Util.GetOrAddComponent<Npc>(Npcs[i]);
+                    case "Soldier1":
+                        id = 1;
+                        Util.GetOrAddComponent<Npc>(npc);
                         break;
-                    case 2:
-                        Util.GetOrAddComponent<Npc>(Npcs[i]);
+                    case "Soldier2":
+                        Util.GetOrAddComponent<Npc>(npc);
+                        id = 2;
                         break;
-                    case 3:
-                        Util.GetOrAddComponent<MapNpc>(Npcs[i]);
+                    case "Hejmdal":
+                        Util.GetOrAddComponent<MapNpc>(npc);
+                        id = 3;
                         break;
-                    case 4:
-                        Util.GetOrAddComponent<QuestNpc>(Npcs[i]);
+                    case "Geirröth":
+                        Util.GetOrAddComponent<QuestNpc>(npc);
+                        id = 4;
                         break;
-                    case 5:
-                        Util.GetOrAddComponent<QuestNpc>(Npcs[i]);
+                    case "Askr":
+                        Util.GetOrAddComponent<QuestNpc>(npc);
+                        id = 5;
                         break;
-                    case 6:
-                        Util.GetOrAddComponent<QuestNpc>(Npcs[i]);
+                    case "Embla":
+                        Util.GetOrAddComponent<QuestNpc>(npc);
+                        id = 6;
                         break;
                 }
 
@@ -62,9 +69,7 @@ public class NpcManager
                 //        Util.GetOrAddComponent<MapNpc>(npc);
                 //        break;
                 //}
-                
-                id = i;
-                Npcs[i].GetComponent<Npc>().Init(id);
+                npc.GetComponent<Npc>().Init(id);
             }
         }
         else
