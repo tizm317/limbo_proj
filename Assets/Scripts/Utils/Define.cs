@@ -11,6 +11,7 @@ public class Define
         Unknown,
         Monster,
         Player,
+        Enemy,
     }
     public enum EnemyState // State -> EnemyState 로 임시로 바꿔둠 (구글protobuf에 State가 있어서)
     {

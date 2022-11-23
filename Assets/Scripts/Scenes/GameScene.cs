@@ -66,11 +66,12 @@ public class GameScene : BaseScene
         {
             GameObject go = new GameObject { name = "SpawningPool" };
             SpawningPool pool = go.GetOrAddComponent<SpawningPool>();
-            pool.SetKeepMonsterCount(10);
+            pool.SetKeepMonsterCount(5);
+
+            GameObject goTest = new GameObject { name = "SpawningPoolTest" };
+            PoolingTest poolTest = goTest.GetOrAddComponent<PoolingTest>();
+            poolTest.SetKeepMonsterCount(4);
         }
-
-
-
 
         //List<GameObject> list = new List<GameObject>();
         //for (int i = 0; i < 3; i++)

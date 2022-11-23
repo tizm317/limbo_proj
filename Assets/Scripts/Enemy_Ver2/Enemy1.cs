@@ -37,6 +37,8 @@ public class Enemy1 : Enemy
             
         // 디폴트 애니메이션 
         State = Define.EnemyState.Moving;
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.speed = Random.Range(0.4f, 1f);
 
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
@@ -205,7 +207,7 @@ public class Enemy1 : Enemy
         yield return new WaitForSeconds(2.0f);
 
         NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-        nma.speed = Random.Range(0.4f, 1f);
+        nma.speed = Random.Range(0.2f, 1f);
 
         State = Define.EnemyState.Moving;
     }
