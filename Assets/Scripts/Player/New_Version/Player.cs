@@ -668,7 +668,23 @@ public abstract class Player : MonoBehaviour
 
     #region 스킬
     public Vector3 selected_pos;
+    public void Add_MeshEffect(int idx, GameObject target)
+    {
+        Delete_MeshEffect(target);
+        GameObject MeshEffect_Prefab = Instantiate(Resources.Load<GameObject>("DownLoaded/KriptoFX/MeshEffect/Prefabs/Effect" + idx.ToString()));   
+        MeshEffect_Prefab.transform.SetParent(target.transform);
+        MeshEffect_Prefab.GetComponent<PSMeshRendererUpdater>().MeshObject = target;
+        MeshEffect_Prefab.GetComponent<PSMeshRendererUpdater>().UpdateMeshEffect();
+    }
 
+    public void Delete_MeshEffect(GameObject target)//무기 오브젝트 하나에만 적용(Mesh로 된 친구만 사용 가능함)
+    {
+        if(target.transform.childCount == 1)
+        {
+            GameObject temp = target.transform.GetChild(0).gameObject;
+            Destroy(temp);
+        }
+    }
     public virtual void Q()
     {
         

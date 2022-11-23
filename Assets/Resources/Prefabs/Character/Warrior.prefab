@@ -2457,6 +2457,7 @@ MonoBehaviour:
   _max_mana: 0
   _mana_regeneration: 0
   _skill_point: 0
+  _stat_point: 0
   level_up: 1
   current_exp: 0
   STR: 0
@@ -2475,6 +2476,7 @@ MonoBehaviour:
   Item_Mana_percent: 0
   isDead: 0
   my_job: 0
+  _myQuests: []
 --- !u!114 &-1944816110246812008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2506,8 +2508,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  selected_pos: {x: 0, y: 0, z: 0}
   magicNumber: 100
   _buff: {fileID: 0}
+  t: {fileID: 5021909856208167982}
 --- !u!1 &7413277364404848349
 GameObject:
   m_ObjectHideFlags: 0

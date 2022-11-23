@@ -159,7 +159,7 @@ public class Archer : Player
         my_stat.AttackSpeed /= (1f + speed/100f);;
     }
 
-    IEnumerator Archer_E()
+    protected virtual IEnumerator Archer_E()
     {
         float SightAngle = 60f;
         float distance = attackRange;
@@ -255,7 +255,7 @@ public class Archer : Player
         canceled = false;
     }
 
-    IEnumerator Archer_R()
+    protected virtual IEnumerator Archer_R()
     {
         float damage = my_stat.Attack * 5f;
         pos_selected = false;
