@@ -105,6 +105,11 @@ public class Warrior : Player
 
                 for(int i = 0; i < enemies.Count; i++)
                 {
+                    if(enemies[i] == null)
+                    {
+                        Debug.Log("Null ref / break");
+                        break;
+                    }
                     Vector3 targetDir = (enemies[i].transform.position - player.transform.position).normalized;//방향 계산
 
                     float dot = Vector3.Dot(player.transform.forward, targetDir);//내적 계산
