@@ -17,28 +17,54 @@ public class NpcManager
         if (scene == Define.Scene.InGameVillage)
         {
             // TODO : 빌리지로 바꿔야함
-            foreach (GameObject npc in Npcs)
+            for(int i = 0; i < Npcs.Length; i++)
             {
-                switch (dict[id].job)
+                switch(i)
                 {
-                    case "Npc":
-                        Util.GetOrAddComponent<Npc>(npc);
+                    case 0:
+                        Util.GetOrAddComponent<MerchantNpc>(Npcs[i]);
                         break;
-                    case "MerchantNpc":
-                        Util.GetOrAddComponent<MerchantNpc>(npc);
+                    case 1:
+                        Util.GetOrAddComponent<Npc>(Npcs[i]);
                         break;
-                    case "QuestNpc":
-                        Util.GetOrAddComponent<QuestNpc>(npc);
+                    case 2:
+                        Util.GetOrAddComponent<Npc>(Npcs[i]);
                         break;
-                    case "EnchantNpc":
-                        Util.GetOrAddComponent<EnchantNpc>(npc);
+                    case 3:
+                        Util.GetOrAddComponent<MapNpc>(Npcs[i]);
                         break;
-                    case "MapNpc":
-                        Util.GetOrAddComponent<MapNpc>(npc);
+                    case 4:
+                        Util.GetOrAddComponent<QuestNpc>(Npcs[i]);
+                        break;
+                    case 5:
+                        Util.GetOrAddComponent<QuestNpc>(Npcs[i]);
+                        break;
+                    case 6:
+                        Util.GetOrAddComponent<QuestNpc>(Npcs[i]);
                         break;
                 }
-                npc.GetComponent<Npc>().Init(id);
-                id++;
+
+                //switch (dict[id].job)
+                //{
+                //    case "Npc":
+                //        Util.GetOrAddComponent<Npc>(npc);
+                //        break;
+                //    case "MerchantNpc":
+                //        Util.GetOrAddComponent<MerchantNpc>(npc);
+                //        break;
+                //    case "QuestNpc":
+                //        Util.GetOrAddComponent<QuestNpc>(npc);
+                //        break;
+                //    case "EnchantNpc":
+                //        Util.GetOrAddComponent<EnchantNpc>(npc);
+                //        break;
+                //    case "MapNpc":
+                //        Util.GetOrAddComponent<MapNpc>(npc);
+                //        break;
+                //}
+                
+                id = i;
+                Npcs[i].GetComponent<Npc>().Init(id);
             }
         }
         else
