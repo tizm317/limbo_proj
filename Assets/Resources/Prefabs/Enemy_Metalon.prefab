@@ -1318,9 +1318,9 @@ GameObject:
   - component: {fileID: 1913941092965520399}
   - component: {fileID: 1913941092965520398}
   - component: {fileID: 1913941092965520393}
-  - component: {fileID: 8276736861217043809}
   - component: {fileID: -615888695314132965}
   - component: {fileID: -5824894003346841914}
+  - component: {fileID: -6102467164201331565}
   m_Layer: 9
   m_Name: Enemy_Metalon
   m_TagString: Enemy
@@ -1431,24 +1431,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8276736861217043809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912813580386056745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd4e46066c0fa1442bc63fb89c2a4259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _destPos: {x: 0, y: 0, z: 0}
-  state: 1
-  lockTarget: {fileID: 0}
-  audioDie: {fileID: 8300000, guid: dad17992ca38b784f809c96aebbf5ab0, type: 3}
-  _scanRange: 10
-  _attachRange: 2
 --- !u!114 &-615888695314132965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1573,6 +1555,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6102467164201331565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912813580386056745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2940bc0db4fe9f74b989bca3a81c1741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destPos: {x: 0, y: 0, z: 0}
+  state: 1
+  lockTarget: {fileID: 0}
+  audioDie: {fileID: 8300000, guid: 780b8795f2bae6b4682da3a1840c5cb3, type: 3}
+  _scanRange: 15
+  _attachRange: 2.5
+  points: []
 --- !u!1 &1912844896383075469
 GameObject:
   m_ObjectHideFlags: 0
