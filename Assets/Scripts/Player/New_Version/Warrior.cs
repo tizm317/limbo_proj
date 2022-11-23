@@ -8,13 +8,15 @@ public class Warrior : Player
 
     public Buff _buff;
     GameObject Debuff_Effect, Explosion;
-
+    [SerializeField]
+    GameObject weapon;
+    
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
         //job = "Warrior";
+        //StartCoroutine(Test());
         attackRange = 3f;
-        
         for(int i = 0; i < cool.Length; i++)
         {
             cool[i] = 0;
@@ -22,6 +24,38 @@ public class Warrior : Player
         _buff = gameObject.AddComponent<Buff>();
         Debuff_Effect = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Swamp");
         Explosion = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Explode10");
+    }
+    IEnumerator Test()
+    {
+        int idx = 1;
+        Add_MeshEffect(idx, weapon);
+        while(true)
+        {
+            Debug.Log(idx);
+            yield return new WaitForSeconds(3f);
+            idx++;
+            if(idx == 22)
+                break;
+            Add_MeshEffect(idx, weapon);
+            
+        }
+    }
+    public void Add_MeshEffect(int idx, GameObject target)
+    {
+        Delete_MeshEffect(target);
+        GameObject MeshEffect_Prefab = Instantiate(Resources.Load<GameObject>("DownLoaded/KriptoFX/MeshEffect/Prefabs/Effect" + idx.ToString()));   
+        MeshEffect_Prefab.transform.SetParent(target.transform);
+        MeshEffect_Prefab.GetComponent<PSMeshRendererUpdater>().MeshObject = target;
+        MeshEffect_Prefab.GetComponent<PSMeshRendererUpdater>().UpdateMeshEffect();
+    }
+
+    public void Delete_MeshEffect(GameObject target)//무기 오브젝트 하나에만 적용(Mesh로 된 친구만 사용 가능함)
+    {
+        if(target.transform.childCount == 1)
+        {
+            GameObject temp = target.transform.GetChild(0).gameObject;
+            Destroy(temp);
+        }
     }
 
     public override void Cool_Update()//스킬 레벨업 할때 한번씩 돌아가면됨
@@ -97,12 +131,12 @@ public class Warrior : Player
             {
                 curState = State.Skill;
                 skill = HotKey.Q;
+                Add_MeshEffect(7,weapon);
                 Ani_State_Change();
                 yield return new WaitForSeconds(1f);
                 Managers.Sound.Stop();
                 Managers.Sound.Play("Sound/Skill_Sound/Warrior_Q",Define.Sound.Effect, 1.0f, true);
                 yield return new WaitForSeconds(1.2f);
-
                 for(int i = 0; i < enemies.Count; i++)
                 {
                     if(enemies[i] == null)
@@ -125,6 +159,8 @@ public class Warrior : Player
                 }
                 cool[0] = cool_max[0];
                 on_skill = false;
+                yield return new WaitForSeconds(0.5f);
+                Delete_MeshEffect(weapon);
                 break;
             }
             yield return new WaitForEndOfFrame();
@@ -291,12 +327,14 @@ public class Warrior : Player
                 }
                 curState = State.Skill;
                 skill = HotKey.R;
+                Add_MeshEffect(21,weapon);
                 Ani_State_Change();
                 yield return new WaitForSeconds(1.8f);
                 StartCoroutine(CameraShake(0.5f));
                 Managers.Sound.Stop();
                 Managers.Sound.Play("Sound/Skill_Sound/Warrior_R",Define.Sound.Effect, 1.0f, true);
                 temp.SetActive(true);
+                Add_MeshEffect(21,temp);
                 temp.transform.position = player.transform.position;
                 temp.transform.localScale = Vector3.one * 0.1f * range;
                 yield return new WaitForSeconds(0.4f);
@@ -310,7 +348,7 @@ public class Warrior : Player
                             enemies[i].GetComponent<Stat>().OnAttacked(damage,my_stat);
                     }
                 }
-                
+                Delete_MeshEffect(weapon);
                 cool[3] = cool_max[3];
                 on_skill = false;
                 break;
