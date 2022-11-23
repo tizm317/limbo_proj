@@ -10,10 +10,11 @@ public class UI_Settings : UI_Popup
     [SerializeField]
     private GameObject[] taps;
     public Slider[] AudioSlide = new Slider[2];
-    public Toggle[] Toggle = new Toggle[2];
+    private Toggle[] Toggle = new Toggle[3];
     private Slider BrightSlide;
     private new Light light;
     private new KeyManager KM;
+    private static int cur_width, cur_height;
     public Button[] buttons = new Button[8];
     public Text[] button_texts = new Text[8];
     enum GameObjects
@@ -22,6 +23,7 @@ public class UI_Settings : UI_Popup
         BGMSlider,
         SFXSwitch,
         SFXSlider,
+        FSwitch,
     }
     private bool FullScreen = false;
     enum Buttons
@@ -51,6 +53,7 @@ public class UI_Settings : UI_Popup
     {
         base.Init();
         KM = gameObject.GetComponent<KeyManager>();
+        taps[1].SetActive(true);
         Bind<GameObject>(typeof(GameObjects));
         AudioSlide[0] = GetObject((int)GameObjects.BGMSlider).GetComponent<Slider>();
         Toggle[0] = GetObject((int)GameObjects.BGMSwitch).GetComponent<Toggle>();
@@ -64,7 +67,7 @@ public class UI_Settings : UI_Popup
         // SFX
         AudioSlide[1] = GetObject((int)GameObjects.SFXSlider).GetComponent<Slider>();
         Toggle[1] = GetObject((int)GameObjects.SFXSwitch).GetComponent<Toggle>();
-
+        
         if ((AudioSlide[1].value = Managers.Sound.GetVolume("SFX")) == -80f)
             Toggle[1].isOn = false;
         else
@@ -74,8 +77,7 @@ public class UI_Settings : UI_Popup
         //BrightSlide = GetObject((int)GameObjects.Slider_Brightness).GetComponent<Slider>();
         //light = GameObject.Find("Directional Light").GetComponent<Light>();
         //BrightSlide.value = light.intensity;
-
-
+        
         // 슬라이더 Event 바인딩
         GetObject((int)GameObjects.BGMSlider).gameObject.BindEvent(OnBGMSliderDrag, Define.UIEvent.Drag);
         GetObject((int)GameObjects.SFXSlider).gameObject.BindEvent(OnSFXSliderDrag, Define.UIEvent.Drag);
@@ -84,6 +86,13 @@ public class UI_Settings : UI_Popup
         // 토글 Event 바인딩
         GetObject((int)GameObjects.BGMSwitch).gameObject.BindEvent(OnBGMToggle, Define.UIEvent.Click);
         GetObject((int)GameObjects.SFXSwitch).gameObject.BindEvent(OnSFXToggle, Define.UIEvent.Click);
+
+        
+        Toggle[2] = GetObject((int)GameObjects.FSwitch).GetComponent<Toggle>();
+        Toggle[2].isOn = Screen.fullScreen;
+        GetObject((int)GameObjects.FSwitch).gameObject.BindEvent(Screen_Toggle,Define.UIEvent.Click);
+        
+        taps[1].SetActive(false);
         taps[2].SetActive(true);
         Bind<Button>(typeof(Buttons));
         
@@ -152,16 +161,18 @@ public class UI_Settings : UI_Popup
 
         if(set_Width > device_Width)
         {
-            set_Height = (int)(set_Height * ((float)device_Width/set_Width));
+            set_Height = (int)((float)set_Height * ((float)device_Width/(float)set_Width));
             set_Width = device_Width;
         }
         if(set_Height > device_Height)
         {
-            set_Width = (int)(set_Width * ((float)device_Height/set_Height));
+            set_Width = (int)((float)set_Width * ((float)device_Height/(float)set_Height));
             set_Height = device_Height;
         }
-        Debug.LogFormat("set_Width = {0}, set_Height = {1}",set_Width, set_Height);
-        //Screen.SetResolution(set_Width,set_Height, false);
+        
+        cur_height = set_Height;
+        cur_width = set_Width;
+        Screen.SetResolution(set_Width,set_Height, FullScreen);
         if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
         {
             float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
@@ -175,10 +186,17 @@ public class UI_Settings : UI_Popup
             //Debug.LogFormat("Current Resolution = {0} * {1}",set_Width,newHeight);
         }
     }
-
-    public void Full_Screen(bool input)
+    void Screen_Toggle(PointerEventData data)
     {
-        FullScreen = input;
+        Full_Screen(Toggle[2]);
+        Screen.SetResolution(cur_width, cur_height,FullScreen);
+    }
+    void Full_Screen(Toggle toggle)
+    {
+        if(toggle.isOn)
+            FullScreen = true;
+        else
+            FullScreen = false;
     }
 
     private void CloseButtonClicked(PointerEventData data)

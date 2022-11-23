@@ -55,15 +55,15 @@ public abstract class BaseScene : MonoBehaviour
         // }
         if (set_Width > device_Width)
         {
-            set_Height = (int)(set_Height * ((float)device_Width / set_Width));
+            set_Height = (int)((float)set_Height * ((float)device_Width / (float)set_Width));
             set_Width = device_Width;
         }
         if (set_Height > device_Height)
         {
-            set_Width = (int)(set_Width * ((float)device_Height / set_Height));
+            set_Width = (int)((float)set_Width * ((float)device_Height / (float)set_Height));
             set_Height = device_Height;
         }
-        //Debug.LogFormat("set_Width = {0}, set_Height = {1}", set_Width, set_Height);
+        //Debug.LogFormat("set_Width = {0}, set_Height = {1}", set_Width, set_Height)
         Screen.SetResolution(set_Width, set_Height, false);
         if ((float)set_Width / set_Height < (float)device_Width / device_Height) // ����� �ػ󵵺� �� ū ���!
         {
