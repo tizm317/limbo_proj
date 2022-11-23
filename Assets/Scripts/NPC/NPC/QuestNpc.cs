@@ -96,6 +96,8 @@ public class QuestNpc : Npc
                         // 퀘스트 깬 상태에서 퀘스트 버튼눌리는 경우
                         // 다음 퀘스트로
                         _questId++;
+                        if (_questId >= Managers.Data.QuestDict.Count)
+                            _questId = 1;
                     }
 
                     // 해당 트랜지션이 발생할 때 수행해야할 함수들을 실행시킴
