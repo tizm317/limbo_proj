@@ -67,10 +67,13 @@ public class UI_InGame : UI_Scene
     // Chat, Quest UI GO
     GameObject QuestGo;
     bool TransparentQuest;
+    GameObject Checkmark;
+
     GameObject ChatGo;
     bool TransparentChat;
     GameObject ItemSlotsGo;
     bool TransparentItemSlots;
+
 
     #region UI업데이트
     GameObject Role;
@@ -100,6 +103,8 @@ public class UI_InGame : UI_Scene
         SKILL4_HotKey,
         //LevelText,
         MapText,
+        QuestNameText,
+        ObjectiveText,
     }
 
     enum GameObjects
@@ -111,6 +116,7 @@ public class UI_InGame : UI_Scene
         Chat,               // Chat UI
         QuestTracker,       // Quest UI
         ItemSlots,
+        Checkmark,
     }
 
 
@@ -291,6 +297,9 @@ public class UI_InGame : UI_Scene
         GetButton((int)Buttons.ItemBtnToggle).gameObject.BindEvent(ItemToggleClicked);
 
         QuestGo = GetObject((int)GameObjects.QuestTracker);
+        Checkmark = GetObject((int)GameObjects.Checkmark);
+        Checkmark.SetActive(false);
+
         ChatGo = GetObject((int)GameObjects.Chat);
         ItemSlotsGo = GetObject((int)GameObjects.ItemSlots);
 
@@ -346,6 +355,40 @@ public class UI_InGame : UI_Scene
         // boolean
         if (body.activeSelf == false) TransparentQuest = true;
         else TransparentQuest = false;
+    }
+
+    public void UpdateQuestUI(Data.Quest quest, int count)
+    {
+        if (uI_Inventory == null) return;
+        if (uI_Inventory._inventory == null) return;
+        if (uI_Inventory._inventory.itemDict == null) return;
+
+        ItemData targetItemData = uI_Inventory._inventory.itemDict[quest.targetItemId];
+        if (targetItemData == null)
+        {
+            Debug.Log("Wrong");
+            return;
+        }
+
+        Text questNameText = GetText((int)Texts.QuestNameText);
+        Text objectiveText = GetText((int)Texts.ObjectiveText);
+
+        if(questNameText)
+            questNameText.text = $"{quest.name}";
+        if (objectiveText)
+            objectiveText.text = $"{count}/{quest.targetItemCount} : {targetItemData.Name}";
+
+        // TODO : Clear
+        if(count == quest.targetItemCount)
+        {
+            if(Checkmark)
+                Checkmark.SetActive(true);
+        }
+        else
+        {
+            if(Checkmark)
+                Checkmark.SetActive(false);
+        }
     }
 
     private void ItemToggleClicked(PointerEventData data)

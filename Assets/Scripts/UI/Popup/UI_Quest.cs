@@ -10,6 +10,7 @@ public class UI_Quest : UI_Popup
     ItemData[] ItemDatas;
     QuestNpc npc;
     Data.Quest quest;
+    Inventory myInven;
 
     enum Texts
     {
@@ -45,7 +46,8 @@ public class UI_Quest : UI_Popup
         GetButton((int)Buttons.AcceptButton).gameObject.BindEvent(acceptButtonClicked);
 
 
-        ItemDatas = GameObject.Find("@Scene").GetComponent<Inventory>().itemDatas;
+        myInven = GameObject.Find("@Scene").GetComponent<Inventory>();
+        ItemDatas = myInven.itemDatas;
     }
 
     public void endButtonClicked(PointerEventData data)
@@ -59,6 +61,7 @@ public class UI_Quest : UI_Popup
     {
         npc.stateMachine(Define.Event.EVENT_ACCEPT_QUEST);
         quest.get = 1;
+        myInven.AddQuest(quest);
         //Managers.Data.QuestDict[quest.id] = quest;
     }
 

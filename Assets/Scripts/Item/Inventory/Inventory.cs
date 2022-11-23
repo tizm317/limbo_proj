@@ -11,6 +11,21 @@ public class Inventory : MonoBehaviour
      * InventoryUI와 상호작용
      */
 
+    #region 코루틴 Wrapper 메소드
+    // predicate 조건 불충족하면, 대기함
+    private void ProcessLater(Func<bool> predicate, Action job)
+    {
+        StartCoroutine(PorcessLaterRoutine());
+
+        // Local
+        IEnumerator PorcessLaterRoutine()
+        {
+            yield return new WaitUntil(predicate);
+            job?.Invoke();
+        }
+    }
+    #endregion
+
     // 아이템 수용 한도
     public int Capacity { get; private set; }
 
@@ -28,16 +43,24 @@ public class Inventory : MonoBehaviour
 
     public UI_Inventory UI_Inventory => _UI_inventory;
 
+    UI_InGame UI_InGame;
+
+
+    // PlayerStat에서
     // 아이템 목록
-    [SerializeField]
+    //[SerializeField]
     private Item[] _items;
+
+    // 퀘스트 목록
+    [SerializeField]
+    private List<Data.Quest> _myQuests;
 
     // 소유 골드
     [SerializeField]
     private uint _MyGolds; // unsigned int
 
     // 최대 소유 골드
-    [SerializeField, Range(0, uint.MaxValue)]
+    //[SerializeField, Range(0, uint.MaxValue)]
     private uint _maxGolds = uint.MaxValue;
 
     public uint Golds { get { return _MyGolds; }  set { _MyGolds = value; } }
@@ -51,13 +74,35 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-
+    PlayerStat myPlayerStat;
 
     /* Methods */
     public void Init()
     {
-        _items = new Item[_maxCapacity];
+
+        // Player Stat하고 연동
+        GameObject Player = GameObject.FindGameObjectWithTag("Player");
+        if (Player == null)
+        {
+            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루틴으로 대기함
+            ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
+            return;
+        }
+        myPlayerStat = Player.GetComponent<PlayerStat>();
+        if(myPlayerStat._items == null)
+        {
+            myPlayerStat._items = new Item[_maxCapacity];
+        }
+        _items = myPlayerStat._items;
+        _myQuests = myPlayerStat._myQuests;
+        _MyGolds = myPlayerStat.Gold;
+
+        //_items = new Item[_maxCapacity];
         Capacity = _initialCapacity;
+
+        // TODO 수정
+        // 씬 넘어갈 때 사라지는 거 방지 임시로
+        UpdateQuest();
     }
 
     private void Awake()
@@ -72,11 +117,149 @@ public class Inventory : MonoBehaviour
         //_UI_inventory.SetInventory(this);
     }
 
+    #region Quest
+    // 퀘스트 추가
+    internal void AddQuest(Data.Quest quest)
+    {
+        _myQuests.Add(quest);
+
+        // 퀘스트 미니 UI 갱신
+        if (UI_InGame)
+            UI_InGame.UpdateQuestUI(quest, 0);
+    }
+
+    // 인벤토리 Update 시 같이 작동
+    // UpdateSlot 안에 넣으면 될까?
+    public void UpdateQuest()
+    {
+        foreach(Data.Quest quest in _myQuests)
+        {
+            // clear 시키고 다시 체크
+            int myTargetItemCount = 0;
+
+            // 인벤토리 내부 순회하면서 변화 있는지 체크
+            foreach(Item it in _items)
+            {
+                if (it == null) continue;
+
+                // 해당 퀘스트 아이템 가지고 있으면,
+                if(it.Data.ID == quest.targetItemId)
+                {
+                    // 셀수 있는 아이템(중첩아이템)
+                    if(it is CountableItem)
+                    {
+                        CountableItem ci = it as CountableItem;
+                        myTargetItemCount += ci.Amount;
+                    }
+                    else // 중첩 안되는 아이템
+                    {
+                        myTargetItemCount++;
+                    }
+                }
+            }
+
+            // Quest Clear
+            ItemData rewardItem = null;
+            if (myTargetItemCount >= quest.targetItemCount)
+            {
+                QuestClear(quest);
+                rewardItem = AddReward(quest); //
+                DecreaseTargetItem(quest);
+            }
+
+            // 퀘스트 미니 UI 갱신
+            if (UI_InGame)
+                UI_InGame.UpdateQuestUI(quest, myTargetItemCount);
+
+            // MyQuest에서 제거
+            if (myTargetItemCount >= quest.targetItemCount)
+                RemoveQuest(quest, rewardItem);
+        }
+    }
+
+    // 클리어 시 보상(exp , items)
+    public ItemData AddReward(Data.Quest quest)
+    {
+        Debug.Log($"{quest.name} Clear!!!");
+        Debug.Log($"{itemDict[quest.rewardItemId]} Get!!!");
+        Debug.Log($"Exp {quest.exp} Up!!!");
+
+        // Item Reward
+        //int idx;
+        //Add(itemDict[quest.rewardItemId], out idx, quest.rewardItemCount);
+
+        // Exp Reward
+        myPlayerStat.Exp += quest.exp;
+
+        // 여기서 바로 올리면 오류생김 -> quest 지워준 후 추가해주기
+        return itemDict[quest.rewardItemId];
+    }
+
+    public void QuestClear(Data.Quest quest)
+    {
+        quest.clear = 1;
+    }
+
+    // TODO
+    public void DecreaseTargetItem(Data.Quest quest)
+    {
+        Debug.Log($"{itemDict[quest.targetItemId].Name} : {quest.targetItemCount} Decrease!");
+
+        //int count = 0;
+
+        //// 인벤토리 내부 순회하면서 변화 있는지 체크
+        //foreach (Item it in _items)
+        //{
+        //    if (it == null) continue;
+
+        //    // 해당 퀘스트 아이템 가지고 있으면,
+        //    if (it.Data.ID == quest.targetItemId)
+        //    {
+        //        // 셀수 있는 아이템(중첩아이템)
+        //        if (it is CountableItem)
+        //        {
+        //            CountableItem ci = it as CountableItem;
+        //            if(ci.Amount >= count)
+        //            {
+        //                //
+        //            }
+        //        }
+        //        else // 중첩 안되는 아이템
+        //        {
+        //            count++;
+        //        }
+        //    }
+        //}
+    }
+
+    // 퀘스트 제거
+    public void RemoveQuest(Data.Quest quest, ItemData reward)
+    {
+        //_myQuests.Remove(quest);
+        //myPlayerStat._myQuests.Remove(quest);
+        if (reward == null) return;
+
+        int rewardCount = quest.rewardItemCount;
+
+        // 지금은 어차피 퀘스트 하나씩이라 클리어 해버림
+        _myQuests.Clear();
+        myPlayerStat._myQuests.Clear();
+
+        // 퀘스트 지워준 후 보상 아이템 Add
+        int idx;
+        Add(reward, out idx, rewardCount);
+    }
+    #endregion
+
     // 인벤토리UI에서 호출
     public void SetInventoryUI(UI_Inventory inventoryUI)
     {
         _UI_inventory = inventoryUI;
+
+        // 인게임UI도 연결
+        UI_InGame = _UI_inventory.transform.parent.GetComponent<UI_InGame>();
     }
+
 
     public void test()
     {
@@ -341,10 +524,15 @@ public class Inventory : MonoBehaviour
         }
 
         _UI_inventory.SetMyGolds(Golds);
+
+        // PlayerStat 쪽 Gold 동기화
+        if(myPlayerStat)
+            myPlayerStat.Gold = Golds; 
     }
     public void AddGold(uint gold)
     {
         Golds += gold;
+        UpdateCurrency();
     }
 
     // 해당하는 인덱스의 슬롯 상태 및 UI 업데이트
@@ -385,11 +573,18 @@ public class Inventory : MonoBehaviour
             RemoveIcon();
         }
 
+        // Quest Target Item의 개수 체크
+        UpdateQuest();
+
+
         // local : 아이템 제거
         void RemoveIcon()
         {
-            _UI_inventory.RemoveItem(idx);
-            _UI_inventory.HideItemAmountText(idx);
+            if(_UI_inventory != null)
+            {
+                _UI_inventory.RemoveItem(idx);
+                _UI_inventory.HideItemAmountText(idx);
+            }
         }
     }
 
@@ -518,6 +713,9 @@ public class Inventory : MonoBehaviour
                 //UpdateSlot(idx);
             }
         }
+
+        //
+        UpdateQuest();
 
         // 넣는 데 실패한 잉여 아이템 개수 리턴
         return amount;

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DungeonScene : GameScene
 {
    // CAPTCHA system
-    UI_Captcha uI_Captcha;
+    //UI_Captcha uI_Captcha;
     Coroutine co;
     const float CaptchaDelaySeconds = 3600.0f; // 1hour
 
@@ -62,15 +62,15 @@ public class DungeonScene : GameScene
     }
 
 
-    IEnumerator CoCaptcha(float seconds)
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(seconds);
-            uI_Captcha = Managers.UI.ShowPopupUI<UI_Captcha>();
-            uI_Captcha.GenerateCaptcha();
-        }
-    }
+    //IEnumerator CoCaptcha(float seconds)
+    //{
+    //    while(true)
+    //    {
+    //        yield return new WaitForSeconds(seconds);
+    //        uI_Captcha = Managers.UI.ShowPopupUI<UI_Captcha>();
+    //        uI_Captcha.GenerateCaptcha();
+    //    }
+    //}
 
     public override void Clear()
     {

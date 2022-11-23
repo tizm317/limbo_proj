@@ -39,6 +39,10 @@ public class PlayerStat : Stat
     public bool isDead = false;
     private Player ps;
     public Define.Job my_job;
+
+    public Item[] _items;
+    public List<Data.Quest> _myQuests;
+
     void Start()
     {
         _level = 1;

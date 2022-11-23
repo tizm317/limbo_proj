@@ -112,9 +112,9 @@ public class Managers : MonoBehaviour
         Input.Clear();
         Scene.Clear();
         UI.Clear();
-        NPC.Clear();
+        //NPC.Clear();
 
-        Object.Clear(); //
+        //Object.Clear(); //
 
         // 다른 곳에서 사용할 수도 있어서 마지막에 clear
         Pool.Clear();   

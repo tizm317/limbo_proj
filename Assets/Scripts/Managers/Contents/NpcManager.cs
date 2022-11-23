@@ -12,6 +12,7 @@ public class NpcManager
     {
         Npcs = GameObject.FindGameObjectsWithTag("NPC");
         Dictionary<int, Data.Npc> dict = Managers.Data.NpcDict;
+        id = 0;
 
         if (scene == Define.Scene.InGameVillage)
         {
