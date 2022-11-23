@@ -12,19 +12,9 @@ public class PotionItem : CountableItem, IUsableItem, ISellableItem
     public PotionItemData potionData { get; private set; }
     public float Value => potionData.Value;
 
-    PlayerStat playerstat;
     #endregion
 
     #region Methods
-    void Init()
-    {
-        playerstat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
-
-    }
-    void Start()
-    {
-        Init();
-    }
     // 생성자
     public PotionItem(PotionItemData data, int amount = 1)
     : base(data, amount) 
@@ -36,11 +26,6 @@ public class PotionItem : CountableItem, IUsableItem, ISellableItem
     public bool Sell()
     {
         Amount--;
-
-        if (potionData.name == "Item_Potion_HP")
-            playerstat.Exp += 10;
-        else if (potionData.name == "Item_Potion_MP")
-            playerstat.Mana += 10;
 
         return true;
     }
@@ -58,4 +43,5 @@ public class PotionItem : CountableItem, IUsableItem, ISellableItem
         return new PotionItem(CountableData as PotionItemData, amount);
     }
 #endregion
+
 }
