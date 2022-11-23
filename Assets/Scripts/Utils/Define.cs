@@ -131,7 +131,6 @@ public class Define
         WARRIOR,
         ARCHER,
         SORCERER,
-        NONE,
     }
 
     public enum Stat

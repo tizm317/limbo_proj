@@ -29,7 +29,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     Player ps;
     string my_name;
     [SerializeField]
-    Vector3 pos;
+    public Vector3 pos;
     protected Vector3 start_pos = new Vector3(1.2f, 2f, -62.6f);
     [SerializeField]
     GameObject[] character;
@@ -42,15 +42,6 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     void Update()
     {
         
-    }
-
-    void GetInfo()
-    {
-        //캐릭터 종류와 데이터를 받아오는 내용이 필요함
-        character = Resources.LoadAll<GameObject>("Prefabs/Character");
-        my_name = "Player";
-        if(pos == null || pos ==Vector3.zero)
-            pos = start_pos;
     }
 
     void Init()
