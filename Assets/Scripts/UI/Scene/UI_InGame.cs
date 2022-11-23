@@ -195,6 +195,8 @@ public class UI_InGame : UI_Scene
 
 
     List<GameObject> UI_SkillUpButtonList = new List<GameObject>();
+    float OriginalPosY_SkillUpButton;
+    float DestinationPosY_SkillUpButton;
     public override void Init()
     {
         base.Init();
@@ -258,7 +260,12 @@ public class UI_InGame : UI_Scene
         UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_W).gameObject);
         UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_E).gameObject);
         UI_SkillUpButtonList.Add(GetButton((int)Buttons.UI_SkillUpButton_R).gameObject);
-        foreach(GameObject go in UI_SkillUpButtonList)
+
+        // 스킬 레벨업 UI 오리지널 위치 y값
+        OriginalPosY_SkillUpButton = UI_SkillUpButtonList[0].transform.position.y;
+        DestinationPosY_SkillUpButton = OriginalPosY_SkillUpButton + UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height * 0.93f;
+
+        foreach (GameObject go in UI_SkillUpButtonList)
         {
             go.BindEvent(skillUpButtonClicked);
         }
@@ -412,13 +419,17 @@ public class UI_InGame : UI_Scene
         float dest = 0;
         if (goDown == true)
         {
-            start = 232;
-            dest = start - 128;
+            //start = 232;
+            //dest = start - 128;
+            dest = OriginalPosY_SkillUpButton;
+            start = DestinationPosY_SkillUpButton;
         }
         else
         {
-            start = 104;
-            dest = start + 128;
+            //start = 104;
+            start = OriginalPosY_SkillUpButton;
+            dest = DestinationPosY_SkillUpButton;
+            //dest = start + 128;
         }
 
         while (percent < 1)
