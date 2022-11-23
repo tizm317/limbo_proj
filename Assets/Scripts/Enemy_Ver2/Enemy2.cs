@@ -5,11 +5,17 @@ using UnityEngine.AI;
 
 public class Enemy2 : Enemy
 {
-    //enemyController1은 대기하다가 추적 사정거리 안에 player가 들어오면 무빙하여 attack
-    [SerializeField] float _scanRange = 10;  //사정거리
+
+    [SerializeField] float _scanRange = 15;   //사정거리
     [SerializeField] float _attachRange = 2.5f;  //적 공격 사정거리
 
-    GameObject player;
+    public Transform[] points;  //waypoints 배열
+    private int nextIdx = 1;     // waypoints 인덱스
+    private int theNextIdx = 0;   // 다음 waypoint 확인용 인덱스
+
+    private Vector3 movePos;  // enemy 위치 정보
+    private Transform tr;  //enemy 위치
+    //private Transform playerTr; //player 위치
 
     //private void Start()
     //{
@@ -20,86 +26,102 @@ public class Enemy2 : Enemy
     {
         Init();
     }
+
     protected override void Init()
     {
         base.Init();
 
-        WorldObjectType = Define.WorldObject.Monster;
+        WorldObjectType = Define.WorldObject.Enemy2;
 
         // 스탯은 상속받아서 사용 : _stat
-
+            
         // 디폴트 애니메이션 
-        State = Define.EnemyState.Idle;
+        State = Define.EnemyState.Moving;
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.speed = Random.Range(0.4f, 1f);
 
         // HPBar
         if (gameObject.GetComponentInChildren<UI_HPBar>() == null)
             Managers.UI.MakeWorldSpaceUI<UI_HPBar>(transform);
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        lockTarget = player;
 
+        // WayPoint
+        points = GameObject.Find("WayPointGroup2").GetComponentsInChildren<Transform>();
+        nextIdx = Random.Range(1, points.Length);
+
+        //enemy & player 위치
+        tr = GetComponent<Transform>();
+        //playerTr = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
+    //Idle 상태
     protected override void UpdateIdle()
     {
-
-        //사정 거리 내에서 Tag를 이용하여 플레이어 찾기
-        //GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)  //Player가 없으면 대기
-            return;
-
-        //player와 enemy의 거리 계산
-        float distance = (player.transform.position - transform.position).magnitude;
-        if (distance <= _scanRange)
-        {
-            lockTarget = player;
-            State = Define.EnemyState.Moving;
-            return;
-        }
-
+        State = Define.EnemyState.Idle;
     }
 
+    //Moving 상태
     protected override void UpdateMoving()
     {
-        //플레이어가 사정 거리보다 가까우면 공격
-        if (lockTarget != null)
-        {
-            _destPos = lockTarget.transform.position;
-            float distance = (_destPos - transform.position).magnitude;
-            if (distance <= _attachRange)
-            {
-                NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-                nma.SetDestination(transform.position);
-                nma.speed = 1.2f;
-                State = Define.EnemyState.Skill;
-                return;
-            }
-        }
-
-        //이동
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+        //GameObject player = Managers.Game.GetPlayer();
+        lockTarget = player;
+        if (lockTarget == null) return;
+        _destPos = lockTarget.transform.position;
+        float dist = (_destPos - tr.position).magnitude;
         Vector3 dir = _destPos - transform.position;
-        if (dir.magnitude < 0.1f)
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+
+        if (dist <= _attachRange)
         {
-            State = Define.EnemyState.Idle;
+            nma.SetDestination(tr.position);
+
+            State = Define.EnemyState.Skill;
+            return;
+        }
+        else if (dist <= _scanRange)
+        {
+            if (dir.magnitude < 0.1f)
+            {
+                State = Define.EnemyState.Moving;
+            }
+            else
+            {
+                nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
+                //nma.speed = _stat.MoveSpeed;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+            }
         }
         else
         {
-            _destPos = lockTarget.transform.position;
-            NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-            nma.SetDestination(_destPos);  //내가 가야할 타켓 지정
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
-        }
+            if (nextIdx >= points.Length)
+            {
+                nextIdx = 1;
+            }
+            movePos = points[nextIdx].position;  //다음 waypoint 위치
+            nma.SetDestination(movePos);
 
+            Quaternion quat = Quaternion.LookRotation(movePos - tr.position);  //가야할 방향벡터를 퀀터니언 타입의 각도로 변환
+            tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
+            tr.Translate(Vector3.forward * Time.deltaTime * _stat.MoveSpeed);  //앞으로 이동
+        }
+        
     }
+
+    //skill 상태
     protected override void UpdateSkill()
     {
         if (lockTarget != null)
         {
-            Vector3 dir = lockTarget.transform.position - transform.position;
-            Quaternion quat = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Lerp(transform.rotation, quat, 20 * Time.deltaTime);
+            Vector3 dir = lockTarget.transform.position - tr.position;
+            Quaternion quat = Quaternion.LookRotation(dir); //바라보고 싶은 방향
+            //tr.rotation = Quaternion.Lerp(tr.rotation, quat, 20 * Time.deltaTime);
+            tr.rotation = Quaternion.Slerp(tr.rotation, quat, _stat.TurnSpeed * Time.deltaTime);  //점진적 회전(smooth하게 회전)
         }
     }
+
+    //Hit 상태
     protected override void UpdateHit()
     {
         if (lockTarget != null)
@@ -110,10 +132,35 @@ public class Enemy2 : Enemy
         }
     }
 
+    //Die 상태
     protected override void UpdateDie()
     {
     }
 
+    void OnTriggerEnter(Collider coll)
+    {
+        if (coll.tag == "WAY_POINT2")
+        {
+            theNextIdx = Random.Range(1, points.Length);
+
+            if(nextIdx != theNextIdx)
+            {
+                nextIdx = theNextIdx;
+            }
+            else if(nextIdx == theNextIdx)
+            {
+
+                if (nextIdx >= points.Length)
+                {
+                    nextIdx = 1;
+                }
+                nextIdx += 1;
+                return;
+            }
+            StartCoroutine("Idle");
+        }
+    }
+    
     void OnHitEvent()
     {
         if (_stat.Hp <= 0)
@@ -121,30 +168,47 @@ public class Enemy2 : Enemy
             return;
         }
 
-        //체력
         if (lockTarget != null)
         {
+            if (State == Define.EnemyState.Die) return;
             PlayerStat targetStat = lockTarget.GetComponent<PlayerStat>();
             targetStat.OnAttacked(_stat);
 
             //죽었는지 여부 체크 
             if (targetStat.Hp > 0)
             {
-                float distance = (lockTarget.transform.position - transform.position).magnitude;
-                if (distance <= _attachRange)
+                float dist = (lockTarget.transform.position - tr.position).magnitude;
+                if (dist <= _attachRange)
+                {
                     State = Define.EnemyState.Skill;
+                }
                 else
                     State = Define.EnemyState.Moving;
             }
             else
-            {
-                State = Define.EnemyState.Idle;
-            }
+                State = Define.EnemyState.Moving;
         }
         else
-        {
-            State = Define.EnemyState.Idle;
-        }
+            State = Define.EnemyState.Moving;
+    }
+    IEnumerator Attack()
+    {
+
+        State = Define.EnemyState.Idle;
+
+        yield return new WaitForSeconds(1.0f);
+
+        State = Define.EnemyState.Skill;
+    }
+    IEnumerator Idle()
+    {
+        State = Define.EnemyState.Idle;
+
+        yield return new WaitForSeconds(2.0f);
+
+        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        nma.speed = Random.Range(0.4f, 1f);
+
+        State = Define.EnemyState.Moving;
     }
 }
-
