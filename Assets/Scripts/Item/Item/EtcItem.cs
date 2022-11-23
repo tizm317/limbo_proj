@@ -37,6 +37,20 @@ public class EtcItem : CountableItem, IUsableItem, ISellableItem
     {
         Amount--;
 
+        if (this.EtcData.ID == 30003)
+        {
+            LoadingScene.LoadScene("DungeonNature");
+        }
+        else if (this.EtcData.ID == 30004)
+        {
+            LoadingScene.LoadScene("DungeonDesert");
+
+        }
+        else if (this.EtcData.ID == 30005)
+        {
+            LoadingScene.LoadScene("DungeonCemetery");
+        }
+
         return true;
     }
 
