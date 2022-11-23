@@ -9,7 +9,7 @@ public class SpawningPool : MonoBehaviour
     [SerializeField] int _monsterCount = 0;
     int _reserveCount = 0; // 코루틴을 생성할 때 현재 예약된 코루틴이 몇개인지 판단
     [SerializeField] int _keepMonsterCount = 0;
-    [SerializeField] Vector3 _spawnPos = new Vector3(15f, 0f, -20f);
+    [SerializeField] Vector3 _spawnPos = new Vector3(20f, 0f, 0f);
 
     float _spawnRadius = 20.0f;
     float _spawnTime = 5.0f;
