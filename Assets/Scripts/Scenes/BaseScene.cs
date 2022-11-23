@@ -6,14 +6,14 @@ using UnityEngine.EventSystems;
 
 public abstract class BaseScene : MonoBehaviour
 {
-    // ¸ðµç ¾À Å¬·¡½º ºÎ¸ð ¿ªÇÒ
-    // ´©±º°¡´Â ¼±ºÀ´ë ¿ªÇÒÀ» ÇØ¾ßÇÔ
-    // ±× ¿ªÇÒÀ» ´©°¡? Æ¯Á¤ ¿ÀºêÁ§Æ®°¡ ÇÏ¸é ¾ÈµÇ°ÚÁö
-    // ÀÌ°É À§ÇÑ ¾À ÀÌ¶ó´Â »õ·Î¿î ³ð ¸¸µé°í ¾À °ü·Ã ¸ðµç ÃÊ±âÈ­ ´ã´çÇÏµµ·Ï ¸¸µê
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½? Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ÈµÇ°ï¿½ï¿½ï¿½
+    // ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     // abstract class
 
-    // ¾À Å¸ÀÔÀ¸·Î Define¿¡¼­ °ü¸®
+    // ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Defineï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
     
 
@@ -24,14 +24,14 @@ public abstract class BaseScene : MonoBehaviour
 
     protected virtual void Init()
     { 
-        // ¾À ½ÃÀÛÇÒ ¶§ eventSystem È®ÀÎ °úÁ¤
-        // eventsystem ÀÖ¾î¾ß UI °¡´É
-        // ÇÁ¸®ÆÕ ¸¸µé¾î¼­ ÃÊ±âÈ­
-        // ÀÖ´ÂÁö Ã¼Å© ÈÄ ¾øÀ¸¸é ¸¸µé¾îÁÜ.
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ eventSystem È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // eventsystem ï¿½Ö¾ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½Ê±ï¿½È­
+        // ï¿½Ö´ï¿½ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
         Object eventSystem = GameObject.FindObjectOfType(typeof(EventSystem));
         if (eventSystem == null)
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
-
+        Screen.SetResolution(1920,1080,false);
         //Set_Resolution();
     }
 
@@ -43,15 +43,15 @@ public abstract class BaseScene : MonoBehaviour
         int device_Height = Screen.height;
 
         // Screen.SetResolution(set_Width,(int)((float)device_Height/device_Width) * set_Width, false);
-        // if((float)set_Width / set_Height < (float)device_Width / device_Height) // ±â±âÀÇ ÇØ»óµµºñ°¡ ´õ Å« °æ¿ì!
+        // if((float)set_Width / set_Height < (float)device_Width / device_Height) // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø»óµµºï¿½ ï¿½ï¿½ Å« ï¿½ï¿½ï¿½!
         // {
-        //     float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // »õ·Î¿î ³Êºñ
-        //     Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, 1f); // »õ·Î¿î Rect Àû¿ë
+        //     float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Êºï¿½
+        //     Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, 1f); // ï¿½ï¿½ï¿½Î¿ï¿½ Rect ï¿½ï¿½ï¿½ï¿½
         // }
-        // else // °ÔÀÓÀÇ ÇØ»óµµ ºñ°¡ ´õ Å« °æ¿ì
+        // else // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø»ï¿½ ï¿½ï¿½ ï¿½ï¿½ Å« ï¿½ï¿½ï¿½
         // {
-        //     float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // »õ·Î¿î ³ôÀÌ
-        //     Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // »õ·Î¿î Rect Àû¿ë
+        //     float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //     Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // ï¿½ï¿½ï¿½Î¿ï¿½ Rect ï¿½ï¿½ï¿½ï¿½
         // }
         if (set_Width > device_Width)
         {
@@ -63,24 +63,24 @@ public abstract class BaseScene : MonoBehaviour
             set_Width = (int)(set_Width * ((float)device_Height / set_Height));
             set_Height = device_Height;
         }
-        Debug.LogFormat("set_Width = {0}, set_Height = {1}", set_Width, set_Height);
+        //Debug.LogFormat("set_Width = {0}, set_Height = {1}", set_Width, set_Height);
         Screen.SetResolution(set_Width, set_Height, false);
-        if ((float)set_Width / set_Height < (float)device_Width / device_Height) // ±â±âÀÇ ÇØ»óµµºñ°¡ ´õ Å« °æ¿ì!
+        if ((float)set_Width / set_Height < (float)device_Width / device_Height) // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø»óµµºï¿½ ï¿½ï¿½ Å« ï¿½ï¿½ï¿½!
         {
-            float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // »õ·Î¿î ³Êºñ
-            Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, set_Height); // »õ·Î¿î Rect Àû¿ë
+            float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Êºï¿½
+            Camera.main.rect = new Rect((1f - new_Width) / 2f, 0f, new_Width, set_Height); // ï¿½ï¿½ï¿½Î¿ï¿½ Rect ï¿½ï¿½ï¿½ï¿½
             //Debug.LogFormat("Current Resolution = {0} * {1}",new_Width,set_Height);
         }
-        else // °ÔÀÓÀÇ ÇØ»óµµ ºñ°¡ ´õ Å« °æ¿ì
+        else // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø»ï¿½ ï¿½ï¿½ ï¿½ï¿½ Å« ï¿½ï¿½ï¿½
         {
-            float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // »õ·Î¿î ³ôÀÌ
-            Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, set_Width, newHeight); // »õ·Î¿î Rect Àû¿ë
+            float newHeight = ((float)device_Width / device_Height) / ((float)set_Width / set_Height); // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+            Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, set_Width, newHeight); // ï¿½ï¿½ï¿½Î¿ï¿½ Rect ï¿½ï¿½ï¿½ï¿½
             //Debug.LogFormat("Current Resolution = {0} * {1}",set_Width,newHeight);
         }
     }
 
-    // base¿¡¼­ ±¸Çö ¾È ÇÒ °Å´Ï±î abstaract
-    // ¾À ³¯¸®±â Àü¿¡ ÇØ¾ßÇÏ´Â ÀÛ¾÷µé ¼öÇàÇÏ´Â ÇÔ¼ö
+    // baseï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Å´Ï±ï¿½ abstaract
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½Ï´ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     public abstract void Clear();
 
 }

@@ -161,7 +161,7 @@ public class UI_Settings : UI_Popup
             set_Height = device_Height;
         }
         Debug.LogFormat("set_Width = {0}, set_Height = {1}",set_Width, set_Height);
-        Screen.SetResolution(set_Width,set_Height, false);
+        //Screen.SetResolution(set_Width,set_Height, false);
         if((float)set_Width / set_Height < (float)device_Width / device_Height) // 기기의 해상도비가 더 큰 경우!
         {
             float new_Width = ((float)set_Width / set_Height) / ((float)device_Width / device_Height); // 새로운 너비
