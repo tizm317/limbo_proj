@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public abstract class Player : MonoBehaviour
 {
 
@@ -834,20 +835,51 @@ public abstract class Player : MonoBehaviour
 
     void Die()//사망 처리
     {
-        if(my_stat.isDead)
+        if(my_stat.isDead && one)
             StartCoroutine(Die(start_pos));
     }
-
+    bool one = true;
     IEnumerator Die(Vector3 pos)//사망 처리 구현부
     {
+        one = false;
         my_stat.isDead = false;
         curState = State.Die;
+        string track;
+        switch(my_job)
+        {
+            case Define.Job.WARRIOR:
+                track = "Sound/Skill_Sound/Warrior_Death";
+                break;
+            case Define.Job.ARCHER:
+                track = "Sound/Skill_Sound/Archer_Death";
+                break;
+            case Define.Job.SORCERER:
+                track = "Sound/Skill_Sound/Sorcerer_Death";
+                break;
+            default:
+                track = "Sound/Skill_Sound/Warrior_Death";
+                break;
+        }
+        
         Ani_State_Change();
+        Managers.Sound.Play(track,Define.Sound.Effect, 1.0f, true);
         yield return new WaitForSeconds(3.9f);//사망 애니메이션 시간
-        curState = State.Idle;
-        Ani_State_Change();
-        my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
-        player.transform.position = pos;//초기 위치로 이동시켜줌
+        
+        LoadingScene.LoadScene("InGameVillage");
+        while(true)
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            if(scene.name == "InGameVillage")
+            {
+                my_stat.Hp = my_stat.MaxHp;//체력을 만땅으로 체워주고
+                player.transform.position = GameObject.Find("@Scene").GetComponent<PlayerMgr>().pos;//초기 위치로 이동시켜줌
+                curState = State.Idle;
+                Ani_State_Change();
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        
     }
 
     public void GetDamage(float Damage)
