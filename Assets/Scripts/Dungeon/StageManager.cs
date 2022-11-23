@@ -64,19 +64,7 @@ public class StageManager : MonoBehaviour
             Time.timeScale = 0; //시간을 멈춰둠
             Debug.Log("all stage 클리어");
 
-            if (SceneManager.GetActiveScene().name == "DungeonCemetery")
-            {
-                Managers.Scene.LoadScene(Define.Scene.InGameCemetery);
-
-            }
-            else if (SceneManager.GetActiveScene().name == "DungeonNature")
-            {
-                Managers.Scene.LoadScene(Define.Scene.InGameNature);
-            }
-            else if (SceneManager.GetActiveScene().name == "DungeonDesert")
-            {
-                Managers.Scene.LoadScene(Define.Scene.InGameDesert);
-            }
+            gameOver();
         }
     }
     
@@ -123,15 +111,19 @@ public class StageManager : MonoBehaviour
 
     public void gameOver()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (SceneManager.GetActiveScene().name == "DungeonCemetery")
         {
-             Managers.Scene.LoadScene(Define.Scene.InGameVillage);
+            LoadingScene.LoadScene("InGameCemetery");
         }
+        else if (SceneManager.GetActiveScene().name == "DungeonNature")
+        {
+            LoadingScene.LoadScene("InGameNature");
+        }
+        else if (SceneManager.GetActiveScene().name == "DungeonDesert")
+        {
+            LoadingScene.LoadScene("InGameDesert");
+        }
+
     }
-
-    //player어 죽었을 때 현재는 player 스크립트에서는 hp가 다시 차고 초기 위치로 가도록 하였지만
-    //부활하지 못하도록 스크립트 추가해야함
-    //hp 다운 후 0이 되면 플레이어 죽음 함수 호출 
-
 
 }
