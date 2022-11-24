@@ -16,7 +16,7 @@ public abstract class BaseScene : MonoBehaviour
     // �� Ÿ������ Define���� ����
     public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
     
-
+    public static int resolution_count = 0;
     void Start()
     {
         Init();
@@ -32,11 +32,13 @@ public abstract class BaseScene : MonoBehaviour
         if (eventSystem == null)
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
         //Screen.SetResolution(1920,1080,false);
-        Set_Resolution();
+        if(resolution_count == 0)
+            Set_Resolution();
     }
 
     public void Set_Resolution()
     {
+        resolution_count++;
         int set_Width = 1920;
         int set_Height = 1080;
         int device_Width = Screen.width;
