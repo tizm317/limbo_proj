@@ -142,7 +142,7 @@ public class Sorcerer : Player
         player.tag = "Untagged";
         foreach(GameObject i  in enemies)
             i.GetComponent<Enemy>().set_target(null);
-        FindObjectOfType<EnemyBoss>().set_target(null);
+        //FindObjectOfType<EnemyBoss>().set_target(null);
         changeRenderMode(player.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().sharedMaterial,BlendMode.Transparent);
         GameObject temp = Instantiate<GameObject>(Smoke);
         temp.transform.SetParent(player.transform);

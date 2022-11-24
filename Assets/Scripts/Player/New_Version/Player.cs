@@ -961,6 +961,11 @@ public abstract class Player : MonoBehaviour
                 R();
             }
         }
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            my_stat.Exp = (int)my_stat.next_level_up;
+            my_stat.Level_Update();
+        }
     }
 
     protected void OnMouseClicked(Define.MouseEvent evt)

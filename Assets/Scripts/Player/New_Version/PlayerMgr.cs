@@ -86,17 +86,17 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
         //    Camera.main.GetComponent<Camera_Controller>().SetTarget(temp);
         //}
-        
+
         //// 한번만 (서버 안쓸때 임시)
         // 플레이어 초기화
         if (Managers.Object.MyPlayer == null)
         {
             // playerMgr 에 public으로 셋팅된 직업
-            ObjectInfo info = new ObjectInfo() { Name = "MyPlayer", ObjectId = 0, PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z}, DestInfo = new PositionInfo(), Job = (int)job };
+            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z }, DestInfo = new PositionInfo(), Job = (int)job };
 
             Managers.Object.Add(info, myPlayer: true);
         }
-        
+
 
         // 서버에서
         playerGO = GameObject.FindGameObjectWithTag("Player");
