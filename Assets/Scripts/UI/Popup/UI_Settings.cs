@@ -17,6 +17,7 @@ public class UI_Settings : UI_Popup
     private static int cur_width, cur_height;
     public Button[] buttons = new Button[8];
     public Text[] button_texts = new Text[8];
+    UI_InGame ui_ingame;
     enum GameObjects
     {
         BGMSwitch,
@@ -52,6 +53,7 @@ public class UI_Settings : UI_Popup
     public override void Init()
     {
         base.Init();
+        ui_ingame = GameObject.Find("UI_InGame").GetComponent<UI_InGame>();
         KM = gameObject.GetComponent<KeyManager>();
         taps[1].SetActive(true);
         Bind<GameObject>(typeof(GameObjects));
@@ -185,11 +187,13 @@ public class UI_Settings : UI_Popup
             Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // 새로운 Rect 적용
             //Debug.LogFormat("Current Resolution = {0} * {1}",set_Width,newHeight);
         }
+        ui_ingame.EX();
     }
     void Screen_Toggle(PointerEventData data)
     {
         Full_Screen(Toggle[2]);
         Screen.SetResolution(cur_width, cur_height,FullScreen);
+        ui_ingame.EX();
     }
     void Full_Screen(Toggle toggle)
     {
