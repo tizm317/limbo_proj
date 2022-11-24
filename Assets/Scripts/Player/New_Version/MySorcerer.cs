@@ -6,6 +6,11 @@ using UnityEngine;
 public class MySorcerer : Sorcerer
 {
     // 내가 조종하는 소서러 클래스
+    public override void init()
+    {
+        Init();
+        abstract_Init();
+    }
     protected override void Init()
     {
         base.Init();

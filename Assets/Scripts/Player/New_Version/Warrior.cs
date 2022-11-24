@@ -59,7 +59,7 @@ public class Warrior : Player
     IEnumerator Warrior_Q()
     {
         float SightAngle = 45f;
-        float distance = attackRange * 1.5f;
+        float distance = attackRange * 2f;
         float damage = my_stat.Attack * (1 + skill_level[0] * 0.25f);
 
         pos_selected = false;
@@ -232,7 +232,7 @@ public class Warrior : Player
     }
     IEnumerator Warrior_R()
     {
-        float range = 1 + skill_level[3];
+        float range = 3.5f + skill_level[3];
         float damage = my_stat.Attack * (skill_level[3] * 0.5f + 1f);
         canceled = false;
         pos_selected = false;

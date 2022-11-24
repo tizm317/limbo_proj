@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -26,7 +26,7 @@ public class UI_Settings : UI_Popup
         SFXSlider,
         FSwitch,
     }
-    private bool FullScreen = false;
+    public bool FullScreen = false;
     enum Buttons
     {
         CloseButton,

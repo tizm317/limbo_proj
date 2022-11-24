@@ -24,7 +24,9 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
 
     // Start is called before the first frame update
-    public Define.Job job = Define.Job.ARCHER;
+    [SerializeField]
+    public static Define.Job cur_JOB = Define.Job.NONE;
+    public Define.Job job = cur_JOB;
     SkillData[] skillDatas = new SkillData[5];
     GameObject playerGO;
     Player ps;
@@ -47,6 +49,10 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
     void Init()
     {
+        if(cur_JOB != Define.Job.NONE)
+        {
+            job = cur_JOB;
+        }
         //var obj = GameObject.FindGameObjectsWithTag("Player");//플레이어가 있다면(서버넘어가면 수정해야할 내용일듯?)
         //if(obj.Length == 1)//이미 있어?
         //{
@@ -93,7 +99,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         if (Managers.Object.MyPlayer == null)
         {
             // playerMgr 에 public으로 셋팅된 직업
-            PlayerInfo info = new PlayerInfo() { Name = "MyPlayer", PlayerId = 0, PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z }, DestInfo = new PositionInfo(), Job = (int)job };
+            ObjectInfo info = new ObjectInfo() {ObjectId = 0, Name = "MyPlayer",  PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z }, DestInfo = new PositionInfo(), Job = (int)job };
 
             Managers.Object.Add(info, myPlayer: true);
         }
@@ -147,10 +153,10 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[3].Name = "Overpower";
                 skillDatas[4].Name = "Mercy Stroke";
                 skillDatas[0].Tooltip = $"(패시브) 매초 잃은 체력의 1%를 회복합니다.";
-                skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 1.5f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 줍니다.";
+                skillDatas[1].Tooltip = $"도끼를 크게 휘둘러 전방의 {ps.attackRange * 2f}만큼의 거리에 {ps.my_stat.Attack * (1 + ps.skill_level[0] * 0.25f)}의 데미지를 줍니다.";
                 skillDatas[2].Tooltip = $"{ps.attackRange * (2 + ps.skill_level[1])}거리 이내의 적들을 도발하고, 5초간 체력 재생력이 {1 + ps.skill_level[1]}배 만큼 증가합니다.";
                 skillDatas[3].Tooltip = $"힘찬 함성으로 주위 적들을 꾸짖어 5초간 {ps.attackRange * (2 + ps.skill_level[2])}거리 이내의 적들의 공격력과 공격속도를 {5f * ps.skill_level[2]}%만큼 감소시킵니다.";
-                skillDatas[4].Tooltip = $"도약한 뒤 지면을 내려쳐 {1 + ps.skill_level[3]}거리 이내의 적들에게 {ps.my_stat.Attack * (ps.skill_level[3] * 0.5f + 1f)}만큼의 데미지를 줍니다.";
+                skillDatas[4].Tooltip = $"도약한 뒤 지면을 내려쳐 {3.5f + ps.skill_level[3]}거리 이내의 적들에게 {ps.my_stat.Attack * (ps.skill_level[3] * 0.5f + 1f)}만큼의 데미지를 줍니다.";
                 break;
             case Define.Job.ARCHER:
                 skillDatas[0].Name = "Hawk's Eye";
@@ -185,17 +191,19 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     IEnumerator New_Character(Define.Job a)
     {
         Managers.Object.RemoveMyPlayer();
-        Debug.Log(playerGO.name);
-        job = a;
+        cur_JOB = a;
         ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
-        while(this.playerGO != null)
+        while(true)
         {
-            Debug.Log("!");
+            if(playerGO != null)
+                break;
+            playerGO = GameObject.FindGameObjectWithTag("Player");
             yield return new WaitForEndOfFrame();
         }
-
-        
+        Managers.Clear();
         playerGO.GetComponent<Player>().init();
-
+        playerGO.GetComponent<Player>().SetPlayer(playerGO);
+        
+        LoadingScene.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

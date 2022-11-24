@@ -364,9 +364,13 @@ public abstract class Player : MonoBehaviour
     }
 
     // dir 따로 필요한가?
+    public virtual void init()
+    {
+        Init();
+        abstract_Init();
+    }
 
-
-    void Start()
+    public void Start()
     {
         Init();
         abstract_Init();
@@ -424,12 +428,8 @@ public abstract class Player : MonoBehaviour
                 break;
         }
     }
-    public void init()
-    {
-        Init();
-        abstract_Init();
-    }
-
+    
+    static int indicator_count = 0;
     protected virtual void Init()
     {
         
@@ -440,7 +440,7 @@ public abstract class Player : MonoBehaviour
         curState = State.Idle;              
         player.transform.position = Pos;
         Dest = player.transform.position;   // 목적지 : 현재 위치
-        pos_indicator = Instantiate(Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Mouse_Indicator"));
+        
 
 
         Enemy_Update(); // ??
@@ -465,6 +465,8 @@ public abstract class Player : MonoBehaviour
 
     protected void GetIndicator()
     {
+        if(GameObject.Find("Pos_Indicator"))
+            return;
         if(GameObject.Find("ArrowIndicator") == null)
             ArrowIndicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
         ArrowIndicator.name = "ArrowIndicator";
@@ -474,6 +476,9 @@ public abstract class Player : MonoBehaviour
             CircleIndicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/CircleIndicator_modified"));
         CircleIndicator.name = "CircleIndicator";
         CircleIndicator.SetActive(false);
+
+        pos_indicator = Instantiate(Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Mouse_Indicator"));
+        pos_indicator.name = "PosIndicator";
     }
 
     public void SetPlayer(GameObject g)
@@ -631,7 +636,7 @@ public abstract class Player : MonoBehaviour
             Ani_State_Change();
             player.transform.LookAt(my_enemy.transform);
             ani.SetFloat("AttackSpeed",attack_speed);
-            yield return new WaitForSeconds(0.867f/attack_speed);//공격 애니메이션 시간
+            yield return new WaitForSeconds(0.867f/(attack_speed*2));//공격 애니메이션 시간
             //my_enemy_stat.Hp -= damage;
             if(my_enemy != null)
             {
@@ -975,6 +980,16 @@ public abstract class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.WARRIOR);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.ARCHER);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.SORCERER);
         }
     }
 

@@ -128,9 +128,11 @@ public class Define
 
     public enum Job
     {
+
         WARRIOR,
         ARCHER,
         SORCERER,
+        NONE,
     }
 
     public enum Stat

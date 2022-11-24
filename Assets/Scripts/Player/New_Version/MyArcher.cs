@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class MyArcher : Archer
 {
+    public override void init()
+    {
+        Init();
+        abstract_Init();
+    }
     protected override void Init()
     {
         base.Init();

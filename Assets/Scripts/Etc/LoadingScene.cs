@@ -24,8 +24,7 @@ public class LoadingScene : BaseScene
 
     IEnumerator LoadScene()
     {
-        Managers.Sound.Play("Sound/BGM/LoadingScene",Define.Sound.Bgm, 1.0f, true);
-                   
+        Managers.Sound.Play("Sound/BGM/LoadingScene",Define.Sound.Bgm, 1.0f, true);       
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
