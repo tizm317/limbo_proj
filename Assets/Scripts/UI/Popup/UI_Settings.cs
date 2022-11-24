@@ -14,7 +14,7 @@ public class UI_Settings : UI_Popup
     private Slider BrightSlide;
     private new Light light;
     private new KeyManager KM;
-    private static int cur_width, cur_height;
+    public static int cur_width, cur_height;
     public Button[] buttons = new Button[8];
     public Text[] button_texts = new Text[8];
     UI_InGame ui_ingame;

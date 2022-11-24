@@ -24,7 +24,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
 
 
     // Start is called before the first frame update
-    public Define.Job job;
+    public Define.Job job = Define.Job.ARCHER;
     SkillData[] skillDatas = new SkillData[5];
     GameObject playerGO;
     Player ps;
@@ -177,5 +177,25 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
                 skillDatas[4].Tooltip = $"마법사가 마법으로 인챈트된 방패를 소환하여 {1 + ps.skill_level[3] + 3}범위의 적들을 가두고 갇힌 적에게는 {ps.my_stat.Attack * (1f + ps.skill_level[3] * 0.5f)}만큼의 데미지를 주고 아군을 회복합니다.";
                 break;
         }
+    }
+    public void new_Character(Define.Job a)
+    {
+        StartCoroutine(New_Character(a));
+    }
+    IEnumerator New_Character(Define.Job a)
+    {
+        Managers.Object.RemoveMyPlayer();
+        Debug.Log(playerGO.name);
+        job = a;
+        ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
+        while(this.playerGO != null)
+        {
+            Debug.Log("!");
+            yield return new WaitForEndOfFrame();
+        }
+
+        
+        playerGO.GetComponent<Player>().init();
+
     }
 }

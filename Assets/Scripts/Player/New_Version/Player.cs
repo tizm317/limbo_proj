@@ -424,6 +424,11 @@ public abstract class Player : MonoBehaviour
                 break;
         }
     }
+    public void init()
+    {
+        Init();
+        abstract_Init();
+    }
 
     protected virtual void Init()
     {
@@ -965,6 +970,11 @@ public abstract class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             my_stat.Exp = (int)my_stat.next_level_up;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.WARRIOR);
         }
     }
 

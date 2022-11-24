@@ -8,14 +8,11 @@ public class Warrior : Player
 
     public Buff _buff;
     GameObject Debuff_Effect, Explosion;
-    [SerializeField]
-    GameObject weapon;
     
     public override void abstract_Init()
     {
         //클래스, 사거리, 스킬 쿨타임 초기화 지정
         //job = "Warrior";
-        //StartCoroutine(Test());
         attackRange = 3f;
         for(int i = 0; i < cool.Length; i++)
         {
@@ -24,21 +21,6 @@ public class Warrior : Player
         _buff = gameObject.AddComponent<Buff>();
         Debuff_Effect = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Swamp");
         Explosion = Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Explode10");
-    }
-    IEnumerator Test()
-    {
-        int idx = 1;
-        Add_MeshEffect(idx, weapon);
-        while(true)
-        {
-            Debug.Log(idx);
-            yield return new WaitForSeconds(3f);
-            idx++;
-            if(idx == 22)
-                break;
-            Add_MeshEffect(idx, weapon);
-            
-        }
     }
 
     public override void Cool_Update()//스킬 레벨업 할때 한번씩 돌아가면됨
