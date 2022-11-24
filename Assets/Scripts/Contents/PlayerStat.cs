@@ -144,7 +144,7 @@ public class PlayerStat : Stat
         }
     }
 
-    void Level_Update()
+    public void Level_Update()
     {
         if(level_up)
         {
