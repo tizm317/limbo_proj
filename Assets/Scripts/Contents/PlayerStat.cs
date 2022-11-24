@@ -11,7 +11,7 @@ public class PlayerStat : Stat
     // player 필요 변수
     [SerializeField] protected int _exp;
     [SerializeField] protected uint _gold;
-    [SerializeField] protected float _next_level_up;
+    [SerializeField] public float _next_level_up;
     [SerializeField] protected float _regeneration;
     [SerializeField] protected float _mana;
     [SerializeField] protected float _max_mana;

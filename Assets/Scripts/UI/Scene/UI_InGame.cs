@@ -352,6 +352,12 @@ public class UI_InGame : UI_Scene
         }
     }
 
+    public void EX()
+    {
+        OriginalPosY_SkillUpButton = UI_SkillUpButtonList[0].transform.position.y;
+        DestinationPosY_SkillUpButton = OriginalPosY_SkillUpButton + UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height * 0.93f;
+    }
+
     private void QuestToggleClicked(PointerEventData data)
     {
         GameObject body = QuestGo.transform.GetChild(1).gameObject;
