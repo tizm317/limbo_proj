@@ -115,7 +115,7 @@ public class PlayerStat : Stat
     void HPMP_Update()
     {
         time += Time.deltaTime;
-        if(_hp < 0)
+        if(_hp <= 0)
         {
             isDead = true;
             
