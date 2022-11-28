@@ -31,14 +31,16 @@ public abstract class BaseScene : MonoBehaviour
         Object eventSystem = GameObject.FindObjectOfType(typeof(EventSystem));
         if (eventSystem == null)
             Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
-        //Screen.SetResolution(1920,1080,false);
+        
         if(resolution_count == 0)
-            Set_Resolution();
+        {
+            resolution_count++;
+            Screen.SetResolution(1920,1080,false);
+        }
     }
 
     public void Set_Resolution()
     {
-        resolution_count++;
         int set_Width = 1920;
         int set_Height = 1080;
         int device_Width = Screen.width;
