@@ -37,7 +37,14 @@ public class Screenshot : MonoBehaviour
 
             byte[] byteArray = renderResult.EncodeToPNG();
             string date = System.DateTime.Now.ToString().Trim().Replace('-', '_').Replace(':', '_');
+
+            // 폴더 없으면 폴더 생성 후 저장
+            bool folderExist = System.IO.Directory.Exists(Application.dataPath + "/ScreenShots/");
+            if(folderExist == false)
+                System.IO.Directory.CreateDirectory(Application.dataPath + "/ScreenShots/");
+
             string savePath =  string.Format(Application.dataPath + "/ScreenShots/Screenshot{0}.png", date);
+
             System.IO.File.WriteAllBytes(savePath, byteArray);
             Debug.Log($"Saved Screenshot In {savePath}");
 
