@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_NewMiniMap : UI_Popup
+public class UI_NewMiniMap : UI_Base
 {
     // MiniMap New Version
     #region 코루틴 Wrapper 메소드
@@ -211,7 +211,7 @@ public class UI_NewMiniMap : UI_Popup
             return;
         }
 
-        base.Init();
+        //base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Text>(typeof(Texts));
