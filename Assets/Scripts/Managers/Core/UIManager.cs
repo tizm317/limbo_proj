@@ -13,8 +13,11 @@ public class UIManager
     // 최근 사용 sort order
     // 시작을 0으로 하면, sorting 하지 않는 order 하고 같아지니까
     // 10부터 시작하도록 수정(어차피 UI_Popup 끼리의 order니까 상관x)
-    // 0~9 는 더 먼저 뜨고 싶은거 예약할 수 있음
+    // 0~9 는 더 먼저 뜨고 싶은거 예약할 수 있음 ----------------------------------------> 대화창 예약해두기(poolable) 2개
     int _order = 10;
+
+    //대화창 예약해두기(poolable) 2개
+    int _poolableOrder = 5; // 5,6 할당
 
     // 팝업 목록을 들고 있음.
     // stack 구조
@@ -51,9 +54,19 @@ public class UIManager
         // sorting 요청 확인
         if (sort)
         {
-            // sorting 요청 O => _order 넣어주고 증가시킴.
-            canvas.sortingOrder = _order;
-            _order++;
+            if(canvas.gameObject.GetComponent<Poolable>() != null)
+            {
+                // poolable
+                canvas.sortingOrder = _poolableOrder;
+                _poolableOrder++;
+                Debug.Log("대화창 order");
+            }
+            else
+            {
+                // sorting 요청 O => _order 넣어주고 증가시킴.
+                canvas.sortingOrder = _order;
+                _order++;
+            }
         }
         else
         {
@@ -188,12 +201,17 @@ public class UIManager
         // 스택 pop
         UI_Popup popup = _popupStack.Pop();
 
+        bool poolable = false;
+        if (popup.GetComponent<Poolable>() != null)
+            poolable = true;
+
         // 프리팹 지우기
         Managers.Resource.Destroy(popup.gameObject);
         popup = null;
 
         // sort order 관리
-        _order--;
+        if(poolable == false)
+            _order--;
     }
     public void CloseAllPopupUI()
     {
