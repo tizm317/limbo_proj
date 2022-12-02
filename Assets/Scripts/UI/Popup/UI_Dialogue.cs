@@ -43,11 +43,39 @@ public class UI_Dialogue : UI_Popup
     Npc npc;
     int lineNum = 0;
 
-
+    Dictionary<int, Button> buttonDict = new Dictionary<int, Button>();
 
     private void Start()
     {
         Init();
+    }
+
+    public void SetJobButtons()
+    {
+        if (buttonDict.Count == 0) return;
+
+        foreach (Button button in buttonDict.Values)
+        {
+            button.gameObject.SetActive(false);
+        }
+        switch (npc._job)
+        {
+            case "MerchantNpc":
+                buttonDict[(int)Buttons.TradeButton].gameObject.SetActive(true);
+                break;
+            case "MapNpc":
+                buttonDict[(int)Buttons.MapButton].gameObject.SetActive(true);
+                break;
+            case "QuestNpc":
+                buttonDict[(int)Buttons.QuestButton].gameObject.SetActive(true);
+                break;
+        }
+        buttonDict[(int)Buttons.DialogueButton].gameObject.SetActive(true);
+        buttonDict[(int)Buttons.EndButton].gameObject.SetActive(true);
+
+        // 대사 초기화
+        GetText((int)Texts.ScriptText).text = "";
+        GetText((int)Texts.SpeakerNameText).text = "";
     }
 
     List<Button> buttons;
@@ -59,6 +87,15 @@ public class UI_Dialogue : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
 
+        // Dictionary로 저장
+        buttonDict.Clear();
+        buttonDict.Add((int)Buttons.DialogueButton, GetButton((int)Buttons.DialogueButton));
+        buttonDict.Add((int)Buttons.TradeButton, GetButton((int)Buttons.TradeButton));
+        buttonDict.Add((int)Buttons.EndButton, GetButton((int)Buttons.EndButton));
+        buttonDict.Add((int)Buttons.QuestButton, GetButton((int)Buttons.QuestButton));
+        buttonDict.Add((int)Buttons.MapButton, GetButton((int)Buttons.MapButton));
+
+        //
         GetButton((int)Buttons.DialogueButton).gameObject.BindEvent(startDialogue);
         GetButton((int)Buttons.TradeButton).gameObject.BindEvent(startTrade);
         GetButton((int)Buttons.EndButton).gameObject.BindEvent(endButtonClicked);
@@ -86,10 +123,6 @@ public class UI_Dialogue : UI_Popup
         }
         GetButton((int)Buttons.DialogueButton).gameObject.SetActive(true);
         GetButton((int)Buttons.EndButton).gameObject.SetActive(true);
-
-
-        //if (npc._name != "경비 대장")
-        //    GetButton((int)Buttons.MapButton).gameObject.SetActive(false);
 
         // 대사 초기화
         GetText((int)Texts.ScriptText).text = "";
@@ -150,6 +183,7 @@ public class UI_Dialogue : UI_Popup
     {
         // 대화창 UI 랑 대화하는 NPC 연결해주기 위함
         npc = clickedNpc;
+        SetJobButtons();
     }
 
     public void dialogEnd()
