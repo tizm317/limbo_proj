@@ -220,7 +220,15 @@ public class UIManager
         // Radial UI 제외
 
         while (_popupStack.Count > 1)
-            ClosePopupUI();
+        {
+            // 여기에서 order 개수 안맞기 시작함
+            if (_popupStack.Peek().GetComponent<UI_RadialMenu>() != null)
+                return;
+            else
+                ClosePopupUI();
+        }
+
+
     }
 
     public int GetStackCount()
@@ -234,5 +242,14 @@ public class UIManager
         CloseAllPopupUI();
         // UI_Scene 날리기
         SceneUI = null;
+
+        // Popup Order 초기화 해줌(sort order가 10(초기값)보다 줄어드는 문제 발생해서 해결하기 위함)
+        ResetOrder();
+    }
+
+    public void ResetOrder()
+    {
+        _order = 10;
+        _poolableOrder = 5;
     }
 }
