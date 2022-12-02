@@ -390,6 +390,13 @@ public abstract class Player : MonoBehaviour
     void Update()
     {
         Cool();
+
+        // turn 체큰
+        if(isTurning == false && enumerator != null)
+        {
+            StopCoroutine(enumerator);
+            enumerator = null;
+        }
         
         switch(curState)
         {
@@ -998,8 +1005,10 @@ public abstract class Player : MonoBehaviour
         // NPC와 상호작용 중
         if (npc && npc.ui_dialogue_ison)
             return;
-        
-        if(!on_skill)
+
+        isTurning = false;
+
+        if (!on_skill)
         {
             if (evt == Define.MouseEvent.Right_Press || evt == Define.MouseEvent.Right_PointerDown)//마우스 오른쪽 클릭인 경우만 사용
             {
@@ -1041,7 +1050,11 @@ public abstract class Player : MonoBehaviour
                         // 바로 NPC와 대화 상호작용
                         npcPos = hit.collider.transform.position;
                         toNpc = false;
-                        
+
+                        // 회전
+                        enumerator = turnToNPC();
+                        StartCoroutine(enumerator);
+
                         npc.getPlayer(player); // npc한테 플레이어 넘겨줌
                         npc.stateMachine(Define.Event.EVENT_NPC_CLICKED_IN_DISTANCE);
                     }
@@ -1099,10 +1112,13 @@ public abstract class Player : MonoBehaviour
     {
         // 플레이어가 NPC 바라보는 코루틴
         //Debug.Log("코루틴 돌기 시작");
+        isTurning = true;
         turnTimeCount = 0.0f;
         while (turnTimeCount < 1.0f)
         {
-            Quaternion lookOnlook = Quaternion.LookRotation(npcPos - player.transform.position);
+            // position.y 는 같게 해서 기울지 않도록
+            Vector3 tempVector = new Vector3(npcPos.x, player.transform.position.y, npcPos.z);
+            Quaternion lookOnlook = Quaternion.LookRotation(tempVector - player.transform.position);
             player.transform.rotation = Quaternion.Slerp(player.transform.rotation, lookOnlook, Time.deltaTime * turnSpeed);
             turnTimeCount = Time.deltaTime * turnSpeed;
             yield return null;
