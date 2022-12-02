@@ -192,8 +192,8 @@ public class Npc : MonoBehaviour
         while (timeCount < 1.0f)
         {
             // position.y 는 같게 해서 기울지 않도록
-            //Vector3 playerVector = new Vector3(clickedPlayer.transform.position.x, this.transform.position.y, clickedPlayer.transform.position.z);
-            Quaternion lookOnlook = Quaternion.LookRotation(clickedPlayer.transform.position - this.transform.position);
+            Vector3 tempVector = new Vector3(clickedPlayer.transform.position.x, this.transform.position.y, clickedPlayer.transform.position.z);
+            Quaternion lookOnlook = Quaternion.LookRotation(tempVector - this.transform.position);
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookOnlook, timeCount);
             //this.transform.rotation.eulerAngles.Set(0, this.transform.rotation.eulerAngles.y, 0);
             timeCount = Time.deltaTime * _turnSpeed;
