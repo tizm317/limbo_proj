@@ -21,6 +21,13 @@ public class LoadingScene : BaseScene
         //SceneManager.LoadScene("LoadingScene");
         Managers.Scene.LoadScene(Define.Scene.LoadingScene);
     }
+    public static void LoadScene(Define.Scene sceneName)
+    {
+        nextScene = sceneName.ToString();
+        //Debug.Log(nextScene);
+        //SceneManager.LoadScene("LoadingScene");
+        Managers.Scene.LoadScene(Define.Scene.LoadingScene);
+    }
 
     IEnumerator LoadScene()
     {

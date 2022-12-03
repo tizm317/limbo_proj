@@ -26,6 +26,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
     // Start is called before the first frame update
     [SerializeField]
     public static Define.Job cur_JOB = Define.Job.NONE;
+    public static string Nickname;
     public Define.Job job = cur_JOB;
     SkillData[] skillDatas = new SkillData[5];
     GameObject playerGO;
@@ -52,6 +53,16 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         if(cur_JOB != Define.Job.NONE)
         {
             job = cur_JOB;
+        }
+        else
+        {
+            Debug.Log("직업 설정 안함");
+            job = Define.Job.WARRIOR;
+            Nickname = "MyPlayer";
+        }
+        if(Nickname == "")
+        {
+            Nickname = "MyPlayer";
         }
         //var obj = GameObject.FindGameObjectsWithTag("Player");//플레이어가 있다면(서버넘어가면 수정해야할 내용일듯?)
         //if(obj.Length == 1)//이미 있어?
@@ -99,7 +110,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         if (Managers.Object.MyPlayer == null)
         {
             // playerMgr 에 public으로 셋팅된 직업
-            ObjectInfo info = new ObjectInfo() {ObjectId = 0, Name = "MyPlayer",  PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z }, DestInfo = new PositionInfo(), Job = (int)job };
+            ObjectInfo info = new ObjectInfo() {ObjectId = 0, Name = Nickname,  PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z }, DestInfo = new PositionInfo(), Job = (int)job };
 
             Managers.Object.Add(info, myPlayer: true);
         }

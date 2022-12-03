@@ -62,7 +62,7 @@ public class Managers : MonoBehaviour
         _network.OnUpdate();
     }
 
-    static void Init()
+    public static void Init()
     {
         // 초기화
         //Instance = this; // 누군가(본인) 채워줘 -> 문제 해결 x // Managers 여러개 일때 각 객체마다 start 실행해서 덮어쓰는 문제

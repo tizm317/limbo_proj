@@ -41,6 +41,7 @@ public class Define
         Unknown, // 디폴트
         Login,
         Lobby,
+        CharacterCreate,
         Dungeon,
         InGameVillage,
         InGameNature,
