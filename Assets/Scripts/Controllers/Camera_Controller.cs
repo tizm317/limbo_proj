@@ -20,15 +20,10 @@ public class Camera_Controller : MonoBehaviour
     [SerializeField]
     public bool camera_control = true;
 
-    //�̴ϸʿ� ī�޶�
-    //Camera minimapCam;
-
 
     void Start()
     {
         SetQuarterView(_delta);
-        
-        //minimapCam = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
     }
     public void SetTarget(GameObject target)
     {
@@ -61,8 +56,6 @@ public class Camera_Controller : MonoBehaviour
                 }
             }
         }
-        // �̴ϸ� ī�޶� �÷��̾� ����ٴϰ�
-       //minimapCam.transform.position = new Vector3(_player.transform.position.x, minimapCam.transform.position.y, _player.transform.position.z);
     }
 
     public void SetQuarterView(Vector3 delta)
