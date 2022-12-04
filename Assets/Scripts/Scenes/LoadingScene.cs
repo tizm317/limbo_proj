@@ -8,6 +8,7 @@ public class LoadingScene : BaseScene
     public static string nextScene = "InGameCemetery";
     [SerializeField] Image progressBar;
     [SerializeField] Text Percent;
+    [SerializeField] Text TipText;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +40,10 @@ public class LoadingScene : BaseScene
         op.allowSceneActivation = false;
         float timer = 0.0f;
         float timer2 = 0.0f;
+
+        // Tip
+        TipText.text = "Tip : 레벨이 2 오를 때마다 스킬 포인트를 얻습니다.";
+        
         while(!op.isDone)
         {
             yield return null;
