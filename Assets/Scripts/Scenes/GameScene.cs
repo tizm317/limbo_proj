@@ -50,7 +50,8 @@ public class GameScene : BaseScene
         //Screen.SetResolution(640, 480, false);
         //Set_Resolution();//나중에 주석 해제해주시면 됨돠! (HY : BaseScene으로 옮김!)
         // �� UI
-        _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
+        if(_sceneUI == null)
+            _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
 
         //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
         //Managers.UI.ShowSceneUI<UI_Inven>();

@@ -25,7 +25,8 @@ public class LoginScene : BaseScene
         //Screen.SetResolution(640, 480, false);
 
         // �� UI
-        _sceneUI = Managers.UI.ShowSceneUI<UI_Login>("UI_Login");
+        if(_sceneUI == null)
+            _sceneUI = Managers.UI.ShowSceneUI<UI_Login>("UI_Login");
 
         // Login Scene BGM
         Managers.Sound.Play("Sound/BGM/BGM_Ambient_Version", Define.Sound.Bgm);

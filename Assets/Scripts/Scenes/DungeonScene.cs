@@ -9,6 +9,8 @@ public class DungeonScene : GameScene
     //UI_Captcha uI_Captcha;
     Coroutine co;
     const float CaptchaDelaySeconds = 3600.0f; // 1hour
+    
+    UI_Dungeon _sceneUI;
 
     void Awake()
     {
@@ -26,7 +28,8 @@ public class DungeonScene : GameScene
 
 
         // �� UI
-        Managers.UI.ShowSceneUI<UI_Dungeon>("UI_Dungeon");
+        if(_sceneUI == null)
+            _sceneUI = Managers.UI.ShowSceneUI<UI_Dungeon>("UI_Dungeon");
 
 
         // InGame Scene BGM ����
