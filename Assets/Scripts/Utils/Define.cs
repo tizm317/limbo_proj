@@ -105,31 +105,22 @@ public class Define
     {
         // 기본 NPC EVENT
         EVENT_NPC_CLICKED_IN_DISTANCE,
-        //EVENT_QUIT_UI_POPUP,
         EVENT_PUSH_DIALOGUE,
-        //EVENT_OTHER_DIALOGUE,
         EVENT_QUIT_DIALOGUE,
         // 상점
         EVENT_PUSH_SHOP,
-        //EVENT_PUSH_BUY,
-        //EVENT_QUIT_BUY,
-        //EVENT_PUSH_SELL,
-        //EVENT_QUIT_SELL,
         EVENT_QUIT_SHOP,
-        // 창고
-        // ...
         // 퀘스트
         EVENT_PUSH_QUEST,
         EVENT_ACCEPT_QUEST,
         EVENT_REJECT_QUEST,
-        //EVENT_QUIT_QUEST,
+        // 맵
         EVENT_PUSH_MAP,
         EVENT_QUIT_MAP,
     }
 
     public enum Job
     {
-
         WARRIOR,
         ARCHER,
         SORCERER,

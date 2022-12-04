@@ -9,7 +9,6 @@ public class Screenshot : MonoBehaviour
 
     private Camera GCamera;
     private bool takeScreenshot;
-    //private int screenShotcount = 1;
 
 
     private void Awake()
