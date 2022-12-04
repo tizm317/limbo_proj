@@ -57,14 +57,16 @@ public class UI_SelectMap : UI_Popup
 
 
             /////////////////////////////////////////////////////////////////////////////////////////////
+            // 해상도 조절
             //Button mapBtn = mapItem.transform.GetChild(0).GetChild(0).GetComponent<Button>();
             Button mapBtn = mapItem.transform.GetComponent<Button>();
 
             float w = mapBtn.GetComponent<RectTransform>().rect.width;
             float h = mapBtn.GetComponent<RectTransform>().rect.height;
-            w /= 2560;
-            w *= Screen.width;
-                //Screen.currentResolution.width; // 내 기기 해상도
+            // 기준 해상도 2560x1440
+            w /= 2560; 
+            w *= Screen.width; // 설정된 해상도
+            //Screen.currentResolution.width; // 내 기기 해상도
             h /= 1440;
             h *= Screen.height;
             //Screen.currentResolution.height;

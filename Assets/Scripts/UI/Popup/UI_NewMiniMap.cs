@@ -280,7 +280,8 @@ public class UI_NewMiniMap : UI_Base
             // 수정 -> 덜덜거림
             temp.x = destinationImage.transform.localPosition.x + player.transform.position.x;
             temp.z = destinationImage.transform.localPosition.y + player.transform.position.z;
-            temp.y = 1;
+            temp.y = player.position.y; // 실제 플레이어 y값하고 차이나서 도착 거리보다 항상 커서 왔다갔다하는 문제 해결
+            //temp.y = 1;
             //temp *= 6;
 
             player_State.Set_Destination(temp);
