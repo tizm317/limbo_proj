@@ -90,27 +90,6 @@ public class PlayerStat : Stat
         Level_Update();
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.name == "VillagePotal")
-            Managers.Scene.LoadScene(Define.Scene.InGameVillage);
-        //else if (collision.gameObject.name == "BossPotal")
-        //{
-        //    if (SceneManager.GetActiveScene().name == "InGameCemetery")
-        //    {
-        //            Managers.Scene.LoadScene(Define.Scene.InGameBoss);
-        //    }
-        //    else if (SceneManager.GetActiveScene().name == "InGameNature")
-        //    {
-        //            Managers.Scene.LoadScene(Define.Scene.InGameNatureBoss);
-        //    }
-        //    else if (SceneManager.GetActiveScene().name == "InGameDesert")
-        //    {
-        //            Managers.Scene.LoadScene(Define.Scene.InGameDesertBoss);
-        //    }
-        //}
-            
-    }
 
     void HPMP_Update()
     {
@@ -175,11 +154,6 @@ public class PlayerStat : Stat
         }
     }
 
-    //void SkillUpUIPopUp()
-    //{
-    //    Debug.Log("Lv Up => SP Up");
-    //    UI_InGame _UI_InGame = GameObject.Find("@Scene").GetComponent<GameScene>().UI_InGame;
-    //}
 
 
     void Stat_Update()

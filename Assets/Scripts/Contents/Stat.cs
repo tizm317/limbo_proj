@@ -28,26 +28,7 @@ public class Stat : MonoBehaviour
     public float TurnSpeed { get { return _turnSpeed; } set { _turnSpeed = value; } }
     public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
 
-    //private void Awake()
-    //{
-    //    _level = 1;
-    //    _hp = 100;
-    //    _maxHp = 100;
-    //    _attack = 6.0f;
-    //    _defense = 0;
-    //    _moveSpeed = 1.0f;
-    //    _turnSpeed = 5.0f;
-    //}
-
-
-    //void Init()
-    //{
-
-    //}
-    //void Start()
-    //{
-    //    Init();
-    //}
+    
     public virtual void OnAttacked(Stat attacker)
     {
 
