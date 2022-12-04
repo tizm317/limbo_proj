@@ -9,10 +9,12 @@ public class LoadingScene : BaseScene
     [SerializeField] Image progressBar;
     [SerializeField] Text Percent;
     [SerializeField] Text TipText;
+    [SerializeField] LoadingScneeTooltip tips;
     // Start is called before the first frame update
     void Start()
     {
         SceneType = Define.Scene.Unknown;
+        
         StartCoroutine(LoadScene());
     }
 
@@ -42,7 +44,9 @@ public class LoadingScene : BaseScene
         float timer2 = 0.0f;
 
         // Tip
-        TipText.text = "Tip : 레벨이 2 오를 때마다 스킬 포인트를 얻습니다.";
+        int random = (int)Random.Range(0,tips.Tooltips.Length);
+        TipText.text = "Tip : " + tips.Tooltips[random] + ".";
+        //TipText.text = "Tip : 레벨이 2 오를 때마다 스킬 포인트를 얻습니다.";
         
         while(!op.isDone)
         {
