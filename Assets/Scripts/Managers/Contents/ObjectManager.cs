@@ -11,7 +11,7 @@ public class ObjectManager
     // 모든 오브젝트 하나로 관리할 수도 있고/ (_players/_monsters/_envs) 등으로 나눠서 관리할 수도 있음
 
     // Add, Remove, Find, Clear
-    public void Add(ObjectInfo info, bool myPlayer = false)
+    public void Add(PlayerInfo info, bool myPlayer = false)
     {
         string job = "";
         switch (info.Job)
@@ -31,10 +31,10 @@ public class ObjectManager
         {
             GameObject go = Managers.Resource.Instantiate($"Character/My{job}");
             go.name = info.Name;
-            _objects.Add(info.ObjectId, go);
+            _objects.Add(info.PlayerId, go);
 
             MyPlayer = go.GetComponent<Player>();
-            MyPlayer.Id = info.ObjectId;
+            MyPlayer.Id = info.PlayerId;
             MyPlayer.PosInfo = info.PosInfo;
             MyPlayer.DestInfo = info.DestInfo;
             MyPlayer.my_job = (Define.Job)info.Job;
@@ -45,10 +45,10 @@ public class ObjectManager
         {
             GameObject go = Managers.Resource.Instantiate($"Character/{job}");
             go.name = info.Name;
-            _objects.Add(info.ObjectId, go);
+            _objects.Add(info.PlayerId, go);
 
             Player p = go.GetComponent<Player>();
-            p.Id = info.ObjectId;
+            p.Id = info.PlayerId;
             p.PosInfo = info.PosInfo;
             p.DestInfo = info.DestInfo;
             p.my_job = (Define.Job)info.Job;

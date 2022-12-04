@@ -58,7 +58,7 @@ namespace Server
 		{
 			// Room 1에서 Leave시킴
 			GameRoom room = RoomManager.Instance.Find(1);
-			room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
+			room.Push(room.LeaveGame, MyPlayer.Info.PlayerId);
 
 			// 세션 제거
 			SessionManager.Instance.Remove(this);

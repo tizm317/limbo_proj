@@ -27,9 +27,9 @@ namespace Server.Game
             //TestTimer();
 
             //temp monster
-            Monster monster = ObjectManager.Instance.Add<Monster>();
+            //Monster monster = ObjectManager.Instance.Add<Monster>();
             //이 사이에 (강의에서는) 몬스터의 위치 하드 코딩했음
-            EnterGame(monster);
+            //EnterGame(monster);
         }
         public void TestTimer()
         {
@@ -86,7 +86,7 @@ namespace Server.Game
                         {
                             if (player != p) // 나 빼고
                             {
-                                spawnPacket.Objects.Add(p.Info);
+                                spawnPacket.Players.Add(p.Info);
                             }
                         }
                         player.Session.Send(spawnPacket);
@@ -112,7 +112,7 @@ namespace Server.Game
             {
                 // 내 정보를 타인한테
                 S_Spawn spawnPacket = new S_Spawn();
-                spawnPacket.Objects.Add(gameObject.Info);
+                spawnPacket.Players.Add(gameObject.Info);
                 foreach (Player p in _players.Values)
                 {
                     if (p.id != gameObject.id) // 나 빼고 Broadcasting
@@ -191,7 +191,7 @@ namespace Server.Game
 
             // 다른 플레이어한테도 알려준다
             S_Move resMovePacket = new S_Move();
-            resMovePacket.PlayerId = player.Info.ObjectId;
+            resMovePacket.PlayerId = player.Info.PlayerId;
             resMovePacket.DestInfo = movePacket.DestInfo;   // destination의 좌표를 보내주는 것
             resMovePacket.PosInfo = movePacket.PosInfo;   // 플레이어 위치
 
@@ -209,7 +209,7 @@ namespace Server.Game
         {
             if (player == null) return;
 
-            ObjectInfo info = player.Info;
+            PlayerInfo info = player.Info;
 
             // 스킬 쓸 수 있는 조건인지 체크(state?, cooltime? 등)
             // Idle 일 때만?
@@ -221,7 +221,7 @@ namespace Server.Game
             info.DestInfo.State = State.Skill;
 
             S_Skill skill = new S_Skill { Info = new SkillInfo() };
-            skill.PlayerId = info.ObjectId;
+            skill.PlayerId = info.PlayerId;
             skill.Info.SkillId = skillPacket.Info.SkillId; // 1 -> skillPacket.Info.SkillId로 변경함 / 나중에 데이터시트로 따로 관리(json, xml)
             Broadcast(skill);
 
@@ -265,7 +265,7 @@ namespace Server.Game
             S_Move mp = packet as S_Move;
             foreach (Player p in _players.Values)
             {
-                if (mp != null && mp.PlayerId == p.Info.ObjectId)
+                if (mp != null && mp.PlayerId == p.Info.PlayerId)
                 {
                     // 이동동기화일 때는 나한테 안보낸다
                 }

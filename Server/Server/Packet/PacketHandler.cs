@@ -85,7 +85,7 @@ class PacketHandler
 
 		// 다른 플레이어한테도 알려준다
 		S_Chat resChatPacket = new S_Chat();
-		resChatPacket.PlayerId = clientSession.MyPlayer.Info.ObjectId;
+		resChatPacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
 		resChatPacket.ChatMessage = chatPacket.ChatMessage;
 
 		clientSession.MyPlayer.Room.Broadcast(resChatPacket);

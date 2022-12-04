@@ -30,7 +30,7 @@ class PacketHandler
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)
 	{
 		S_Spawn spawnPacket = packet as S_Spawn;
-		foreach(ObjectInfo player in spawnPacket.Objects)
+		foreach(PlayerInfo player in spawnPacket.Players)
         {
 			Managers.Object.Add(player, myPlayer: false);
         }
