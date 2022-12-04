@@ -108,6 +108,9 @@ public class Managers : MonoBehaviour
         // 각 매니저 클리어 함수
         // data는 클리어 할 이유 없음
 
+        // indicator 개수 초기화
+        Player.indicator_count = 0;
+
         Sound.Clear();
         Input.Clear();
         Scene.Clear();

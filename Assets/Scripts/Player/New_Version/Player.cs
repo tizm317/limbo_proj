@@ -467,7 +467,7 @@ public abstract class Player : MonoBehaviour
 
     }
 
-    static int indicator_count = 0;
+    public static int indicator_count = 0; // 씬 바뀔 때 clear 부분에서 초기화시켜줌
     protected void GetIndicator()
     {
         // 인디케이터 중복 생성 방지
