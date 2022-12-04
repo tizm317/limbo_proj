@@ -45,7 +45,7 @@ public class MapInfo
 }
 
 
-//
+// Certification 우회
 public class CertificateWhore : CertificateHandler
 {
     protected override bool ValidateCertificate(byte[] certificateData)
