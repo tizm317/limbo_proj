@@ -436,7 +436,6 @@ public abstract class Player : MonoBehaviour
         }
     }
     
-    static int indicator_count = 0;
     protected virtual void Init()
     {
         
@@ -466,14 +465,20 @@ public abstract class Player : MonoBehaviour
             pathfinding = GameObject.Find("A*").GetComponent<PathFinding>();
         enumerator = turnToNPC(); // 코루틴
 
-        // 미니맵
-        //ui_MiniMap = GameObject.Find("@UI_Root").GetComponentInChildren<UI_MiniMap>(); 
     }
 
+    static int indicator_count = 0;
     protected void GetIndicator()
     {
+        // 인디케이터 중복 생성 방지
+        // find로는 비활성화 되면 못찾음
+        // init 여러번 겹쳐서 문제가 되는듯함 /////////////////////////////////////////////////////////
+        if (indicator_count > 0)
+            return;
+
         if(GameObject.Find("Pos_Indicator"))
             return;
+
         if(GameObject.Find("ArrowIndicator") == null)
             ArrowIndicator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/ArrowIndicator_modified"));
         ArrowIndicator.name = "ArrowIndicator";
@@ -486,6 +491,8 @@ public abstract class Player : MonoBehaviour
 
         pos_indicator = Instantiate(Resources.Load<GameObject>("Prefabs/Prejectiles&Effects/Mouse_Indicator"));
         pos_indicator.name = "PosIndicator";
+
+        indicator_count++;
     }
 
     public void SetPlayer(GameObject g)
