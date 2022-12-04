@@ -53,9 +53,6 @@ public class GameScene : BaseScene
         if(_sceneUI == null)
             _sceneUI = Managers.UI.ShowSceneUI<UI_InGame>("UI_InGame");
 
-        //Managers.UI.ShowSceneUI<MiniMap>("MiniMap");
-        //Managers.UI.ShowSceneUI<UI_Inven>();
-
         // InGame Scene BGM ����
         Managers.Sound.Play("Sound/BGM/BGM_Dramatic_Theme", Define.Sound.Bgm);
 
@@ -101,10 +98,8 @@ public class GameScene : BaseScene
         // CAPTCHA System
         co = StartCoroutine("CoCaptcha", CaptchaDelaySeconds);
 
-        //
+        // NPC
         Managers.NPC.Init(SceneType);
-
-
     }
     private void Update()
     {
@@ -151,6 +146,4 @@ public class GameScene : BaseScene
     {
         Debug.Log("InGameScene Clear");
     }
-
-    
 }

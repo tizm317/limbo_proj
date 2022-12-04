@@ -18,15 +18,17 @@ public class LoadingScene : BaseScene
     public static void LoadScene(string sceneName)
     {
         nextScene = sceneName;
+        Managers.Scene.LoadScene(Define.Scene.LoadingScene); // 이 버전 사용해야 clear 다 해줌
+        
         //SceneManager.LoadScene("LoadingScene");
-        Managers.Scene.LoadScene(Define.Scene.LoadingScene);
     }
     public static void LoadScene(Define.Scene sceneName)
     {
         nextScene = sceneName.ToString();
+        Managers.Scene.LoadScene(Define.Scene.LoadingScene);
+
         //Debug.Log(nextScene);
         //SceneManager.LoadScene("LoadingScene");
-        Managers.Scene.LoadScene(Define.Scene.LoadingScene);
     }
 
     IEnumerator LoadScene()
