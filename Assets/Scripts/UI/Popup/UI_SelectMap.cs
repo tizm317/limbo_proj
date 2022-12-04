@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UI_SelectMap : UI_Popup
 {
-    public List<UI_SelectMapItem> Items { get; } = new List<UI_SelectMapItem>();
+    public List<MapButton> Items { get; } = new List<MapButton>();
 
     enum Buttons
     {
@@ -52,8 +52,25 @@ public class UI_SelectMap : UI_Popup
             if (maps[i].scene == Managers.Scene.CurrentScene.SceneType)
                 continue;
 
-            GameObject go = Managers.UI.MakeSubItem<UI_SelectMapItem>(parent: layout.transform).gameObject;
-            UI_SelectMapItem mapItem = go.GetOrAddComponent<UI_SelectMapItem>();
+            GameObject go = Managers.UI.MakeSubItem<MapButton>(parent: layout.transform).gameObject;
+            MapButton mapItem = go.GetOrAddComponent<MapButton>();
+
+
+            /////////////////////////////////////////////////////////////////////////////////////////////
+            //Button mapBtn = mapItem.transform.GetChild(0).GetChild(0).GetComponent<Button>();
+            Button mapBtn = mapItem.transform.GetComponent<Button>();
+
+            float w = mapBtn.GetComponent<RectTransform>().rect.width;
+            float h = mapBtn.GetComponent<RectTransform>().rect.height;
+            w /= 2560;
+            w *= Screen.width;
+                //Screen.currentResolution.width; // 내 기기 해상도
+            h /= 1440;
+            h *= Screen.height;
+            //Screen.currentResolution.height;
+            mapBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
+            /////////////////////////////////////////////////////////////////////////////////////////////
+
             Items.Add(mapItem);
 
             mapItem.Info = maps[i];
