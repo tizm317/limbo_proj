@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class EnchantNpc : Npc
 {
-
+    // 강화 NPC
 }

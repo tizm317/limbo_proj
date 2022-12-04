@@ -7,12 +7,6 @@ public class QuestNpc : Npc
     protected UI_Quest _UI_Quest;
     protected int _questId = 0;
 
-    public override void Awake()
-    {
-        //Init();
-    }
-
-
     public override void Init(int id)
     {
         // NPC Default Setting
@@ -45,18 +39,6 @@ public class QuestNpc : Npc
 
     public void ShowQuestUI()
     {
-        //Debug.Log("Show Quest UI");
-        // Quest UI
-
-        //for(; _questId < Managers.Data.QuestDict.Count; _questId++)
-        //{
-        //    if (Managers.Data.QuestDict[_questId].clear == 0)
-        //    {
-        //        break;
-        //    }
-        //}
-
-
         // 안 받은 경우+ 클리어 안 한 경우
         if (Managers.Data.QuestDict[_questId].get == 0 && Managers.Data.QuestDict[_questId].clear == 0)
         {
@@ -127,8 +109,6 @@ public class QuestNpc : Npc
 
     public void CloseQuestUI()
     {
-        //Debug.Log("Close Quest UI");
-        // Quest UI
         _UI_Quest.ClosePopupUI();
         _UI_Quest = null;
     }

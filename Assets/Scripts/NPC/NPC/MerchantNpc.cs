@@ -5,20 +5,17 @@ using UnityEngine;
 public class MerchantNpc : Npc
 {
     UI_Shop _UI_Shop;
-    //UI_Inven _UI_Inven;
     UI_Inventory _UI_Inventory;
 
 
     // 판매 아이템 목록
     [SerializeField]
     public ItemData[] itemDatas = new ItemData[12];
-    //Inventory inventory;
 
     public List<Item> itemList = new List<Item>();
 
     public override void Awake()
     {
-        //Init();
         itemListInit();
     }
 

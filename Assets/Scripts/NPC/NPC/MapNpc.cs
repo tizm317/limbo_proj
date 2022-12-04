@@ -5,10 +5,7 @@ using UnityEngine;
 public class MapNpc : QuestNpc
 {
     UI_SelectMap _UI_SelectMap;
-    public override void Awake()
-    {
-        //Init();
-    }
+
     public override void Init(int id)
     {
         // NPC Default Setting
@@ -21,9 +18,9 @@ public class MapNpc : QuestNpc
 
         tempTable[table.Length] = new EventActionTable(Define.NpcState.STATE_NPC_UI_POPUP, Define.Event.EVENT_PUSH_MAP, null, Define.NpcState.STATE_MAP_UI_POPUP);
         tempTable[table.Length + 1] = new EventActionTable(Define.NpcState.STATE_MAP_UI_POPUP, Define.Event.EVENT_PUSH_MAP, null, Define.NpcState.STATE_IDLE); 
-        tempTable[table.Length + 1] = new EventActionTable(Define.NpcState.STATE_MAP_UI_POPUP, Define.Event.EVENT_QUIT_MAP, null, Define.NpcState.STATE_NPC_UI_POPUP); 
+        tempTable[table.Length + 1] = new EventActionTable(Define.NpcState.STATE_MAP_UI_POPUP, Define.Event.EVENT_QUIT_MAP, null, Define.NpcState.STATE_NPC_UI_POPUP);
 
-        // 맵 관련
+        //Plus Map NPC Table Setting
         tempTable[table.Length]._action -= ShowSelectMapUI;
         tempTable[table.Length]._action += ShowSelectMapUI;
 
