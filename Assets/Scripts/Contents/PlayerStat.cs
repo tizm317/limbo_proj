@@ -53,7 +53,7 @@ public class PlayerStat : Stat
         _moveSpeed = 6.0f;
         _turnSpeed = 20.0f;
         _exp = 0;
-        _gold = 0;
+        _gold = 100000; // 테스트용 1렙 돈 제공
         _skill_point = 0;
         _stat_point = 5; // 1렙 기본 제공
         Level_Update();

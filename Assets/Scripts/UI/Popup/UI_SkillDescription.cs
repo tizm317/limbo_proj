@@ -59,9 +59,17 @@ public class UI_SkillDescription : UI_Popup
             mousePointerPos.x += xPosValue;
 
         if (mousePointerPos.y - panelHeight < 0)
-            mousePointerPos.y += yPosValue;
+        {
+            // 스킬버튼에 가려질 때 위치 조정
+            if (mousePointerPos.y < (panelHeight / 2f))
+                mousePointerPos.y += (yPosValue * 2f);
+            else
+                mousePointerPos.y += yPosValue;
+        }
         else
             mousePointerPos.y -= yPosValue;
+
+
 
         GetObject((int)GameObjects.DescriptionPanel).transform.position = mousePointerPos;
     }
