@@ -86,5 +86,6 @@ public class LoadingScene : BaseScene
     public override void Clear()
     {
         Debug.Log("LoadingScene Clear");
+        StopAllCoroutines();
     }
 }
