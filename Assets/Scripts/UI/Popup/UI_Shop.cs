@@ -86,7 +86,7 @@ public class UI_Shop : UI_Popup
     public void endButtonClicked(PointerEventData data)
     {
         // 거래 종료
-        Debug.Log("거래 종료");
+        //Debug.Log("거래 종료");
         npc.stateMachine(Define.Event.EVENT_QUIT_SHOP);
     }
 
@@ -225,11 +225,11 @@ public class UI_Shop : UI_Popup
             int tempIdx;
             inventory.Add(item, idx: out tempIdx);
 
-            Debug.Log($"Buy {item.Name}");
+            //Debug.Log($"Buy {item.Name}");
         }
         else // if inventory.Gold < item.Price
         {
-            Debug.Log($"Can't Buy {item.Name}");
+            //Debug.Log($"Can't Buy {item.Name}");
             Debug.Log($"You Need More Golds : {item.Price - inventory.Golds}");
         }
     }

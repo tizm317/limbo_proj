@@ -133,29 +133,21 @@ public class UI_Dialogue : UI_Popup
     public void startDialogue(PointerEventData data)
     {
         // 대화
-
         if (lineNum != -1)
         {
-            Debug.Log("대화");
             npc.stateMachine(Define.Event.EVENT_PUSH_DIALOGUE);
         }
-
-        // 대화 끝 : 버튼 비활성화
-        //if (lineNum == -1)
-        //    GetButton((int)Buttons.DialogueButton).interactable = false;
     }
 
     public void startTrade(PointerEventData data)
     {
         // 거래
-        Debug.Log("거래");
         npc.stateMachine(Define.Event.EVENT_PUSH_SHOP);
 
     }
 
     public void startQuest(PointerEventData data)
     {
-        Debug.Log("퀘스트");
         npc.stateMachine(Define.Event.EVENT_PUSH_QUEST);
     }
 

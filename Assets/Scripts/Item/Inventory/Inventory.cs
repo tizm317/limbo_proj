@@ -103,11 +103,35 @@ public class Inventory : MonoBehaviour
         // TODO 수정
         // 씬 넘어갈 때 사라지는 거 방지 임시로 -> 이거로 안됨
         //UpdateQuest();
+
+        // Start쪽에 있던부분
+        //Debug.Log(Capacity);
+        UpdateAccessibleStatesAll();
+
+        // Dictionary Setting
+        foreach (ItemData data in itemDatas)
+        {
+            itemDict.Add(data.ID, data);
+        }
+    }
+
+    private void Start()
+    {
+        // Init 안쪽으로
+        //Debug.Log(Capacity);
+        //UpdateAccessibleStatesAll();
+
+        //// Dictionary Setting
+        //foreach(ItemData data in itemDatas)
+        //{
+        //    itemDict.Add(data.ID, data);
+        //}
     }
 
     private void Awake()
     {
         Init();
+
         //_items = new Item[_maxCapacity];
         //Capacity = _initialCapacity;
 
@@ -321,17 +345,7 @@ public class Inventory : MonoBehaviour
     public ItemData[] itemDatas = new ItemData[16];
     public Dictionary<int, ItemData> itemDict = new Dictionary<int, ItemData>();
 
-    private void Start()
-    {
-        UpdateAccessibleStatesAll();
-        //Debug.Log(Capacity);
 
-        // Dictionary Setting
-        foreach(ItemData data in itemDatas)
-        {
-            itemDict.Add(data.ID, data);
-        }
-    }
 
     public void Buy(ItemData item)
     {
@@ -944,7 +958,7 @@ public class Inventory : MonoBehaviour
                 // 2. 인벤토리에서 제거
                 if(equipSuccess == true)
                 {
-                    Debug.Log($"{equipmentItem.Data.Name} 착용");
+                    //Debug.Log($"{equipmentItem.Data.Name} 착용");
                     Remove(idx);
                 }
 

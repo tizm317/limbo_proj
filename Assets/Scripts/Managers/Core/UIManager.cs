@@ -59,7 +59,7 @@ public class UIManager
                 // poolable
                 canvas.sortingOrder = _poolableOrder;
                 _poolableOrder++;
-                Debug.Log("대화창 order");
+                //Debug.Log("대화창 order");
             }
             else
             {
