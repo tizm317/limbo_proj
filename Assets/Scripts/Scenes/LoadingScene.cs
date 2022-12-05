@@ -9,7 +9,7 @@ public class LoadingScene : BaseScene
     [SerializeField] Image progressBar;
     [SerializeField] Text Percent;
     [SerializeField] Text TipText;
-    [SerializeField] LoadingScneeTooltip tips;
+    [SerializeField] LoadingSceneTooltip tips;
     // Start is called before the first frame update
     void Start()
     {

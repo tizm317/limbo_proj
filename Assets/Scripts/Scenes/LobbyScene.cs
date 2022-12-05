@@ -76,6 +76,20 @@ public class LobbyScene : BaseScene
 
     }
 
+    public void Toggled(int idx)
+    {
+        Transform ui_base = GameObject.Find("Characters Group").transform;
+        for(int i = 0; i < ui_base.childCount; i++)
+        {
+
+        }
+    }
+
+    public void Play()
+    {
+
+    }
+
     public void CreateCharacterScene()
     {
         LoadingScene.LoadScene(Define.Scene.CharacterCreate);

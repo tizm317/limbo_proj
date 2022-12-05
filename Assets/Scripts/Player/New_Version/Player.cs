@@ -991,17 +991,17 @@ public abstract class Player : MonoBehaviour
             my_stat.Exp = (int)my_stat.next_level_up;
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(Input.GetKeyDown(KeyCode.Keypad1))
         {
             GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.WARRIOR);
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha2))
+        if(Input.GetKeyDown(KeyCode.Keypad2))
         {
             GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.ARCHER);
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha3))
+        if(Input.GetKeyDown(KeyCode.Keypad3))
         {
             GameObject.Find("@Scene").GetComponent<PlayerMgr>().new_Character(Define.Job.SORCERER);
         }
