@@ -65,7 +65,7 @@ public class UI_SelectServerItem : UI_Base
 
         if (Info.Open == 1)
         {
-            Managers.Scene.LoadScene(Define.Scene.InGameVillage);
+            Managers.Scene.LoadScene(Define.Scene.Lobby);
             Managers.UI.ClosePopupUI();
         }
         

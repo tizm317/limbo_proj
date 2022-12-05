@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,11 +26,12 @@ public class CharacterInfo
 public class LobbyScene : BaseScene
 {
     // Start is called before the first frame update
-    public static List<CharacterInfo> my_list = new List<CharacterInfo>();
+    //public static List<CharacterInfo> my_list = new List<CharacterInfo>();
+    public static List<LobbyPlayerInfo> lobbyPlayerlist = new List<LobbyPlayerInfo>();
     void Start()
     {
         SceneType = Define.Scene.Lobby;
-        Init();
+        //Init();
     }
     
     // Update is called once per frame
@@ -40,7 +42,7 @@ public class LobbyScene : BaseScene
 
     protected override void Init()
     {
-        GetInfo();
+        //GetInfo();
         base.Init();
         Transform ui_base = GameObject.Find("Characters Group").transform;
         if(ui_base.childCount != 0)
@@ -52,28 +54,45 @@ public class LobbyScene : BaseScene
             }
         }
         
-        foreach(CharacterInfo i in my_list)
+        foreach(LobbyPlayerInfo i in lobbyPlayerlist)
         {
             GameObject ci = Instantiate(Resources.Load<GameObject>("RPG and MMO UI 11/Prefabs/Lobby/Character Select/Character (List)"));
             ci.transform.SetParent(ui_base);
-            ci.transform.Find("Name Text").GetComponent<Text>().text = i.nic_name;
-            ci.transform.transform.Find("Sub Texts Group").transform.Find("Level Text").GetComponent<Text>().text = i.stat.Level.ToString();
-            ci.transform.transform.Find("Sub Texts Group").transform.Find("Class Text").GetComponent<Text>().text = i.job.ToString();
+            ci.transform.Find("Name Text").GetComponent<Text>().text = i.Name;
+            ci.transform.transform.Find("Sub Texts Group").transform.Find("Level Text").GetComponent<Text>().text = i.PlayerStatInfo.Level.ToString();
+            ci.transform.transform.Find("Sub Texts Group").transform.Find("Class Text").GetComponent<Text>().text = i.Job.ToString();
             ci.transform.localScale = Vector3.one;
-            ci.name = i.nic_name;
+            ci.name = i.Name;
         }
+        
+        //foreach(CharacterInfo i in my_list)
+        //{
+        //    GameObject ci = Instantiate(Resources.Load<GameObject>("RPG and MMO UI 11/Prefabs/Lobby/Character Select/Character (List)"));
+        //    ci.transform.SetParent(ui_base);
+        //    ci.transform.Find("Name Text").GetComponent<Text>().text = i.nic_name;
+        //    ci.transform.transform.Find("Sub Texts Group").transform.Find("Level Text").GetComponent<Text>().text = i.stat.Level.ToString();
+        //    ci.transform.transform.Find("Sub Texts Group").transform.Find("Class Text").GetComponent<Text>().text = i.job.ToString();
+        //    ci.transform.localScale = Vector3.one;
+        //    ci.name = i.nic_name;
+        //}
         
     }
 
-    public void GetInfo()
+    public void GetInfo(S_Login loginPacket)
     {
         //TODO 웹서버에서 닉네임이 가지고 있는 정보 가져와서 사용 가능한 형태로 저장하기
 
         //TEMP
-        my_list.Add(new CharacterInfo("춘식이"));
-        my_list.Add(new CharacterInfo("똥개"));
-        my_list.Add(new CharacterInfo("라이언"));
+        //my_list.Add(new CharacterInfo("춘식이"));
+        //my_list.Add(new CharacterInfo("똥개"));
+        //my_list.Add(new CharacterInfo("라이언"));
 
+        foreach(LobbyPlayerInfo playerInfo in loginPacket.Players)
+        {
+            lobbyPlayerlist.Add(playerInfo);
+        }
+
+        Init();
     }
 
     public void Toggled(int idx)
