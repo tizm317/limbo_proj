@@ -226,4 +226,34 @@ public class PlayerStat : Stat
     {
         _UI_Stat = statUI;
     }
+
+    public void GetStat(PlayerStat _stat)
+    {
+        Exp = _stat.Exp;
+        Gold = _stat.Gold;
+        next_level_up = _stat.next_level_up;
+        current_exp = _stat.current_exp;
+        Regeneration = _stat.Regeneration;
+        Mana = _stat.Mana;
+        MaxMana = _stat.MaxMana;
+        Mana_Regeneration = _stat.Mana_Regeneration;
+        Skill_Point = _stat.Skill_Point;
+        Stat_Point = _stat.Stat_Point;
+        STR = _stat.STR;
+        DEX = _stat.DEX;
+        INT = _stat.INT;
+        LUC = _stat.LUC;
+        Item_Hp = _stat.Item_Hp;
+        Item_Regeneration = _stat.Item_Regeneration;
+        Item_Attack = _stat.Item_Attack;
+        Item_MoveSpeed = _stat.Item_MoveSpeed;
+        Item_AttackSpeed = _stat.Item_AttackSpeed;
+        Item_Mana = _stat.Item_Mana;
+        Item_Mana_Regeneration = _stat.Item_Mana_Regeneration;
+        Item_Hp_percent = _stat.Item_Hp_percent;
+        Item_Attack_percent = _stat.Item_Attack_percent;
+        Item_Mana_percent = _stat.Item_Mana_percent;
+        _items = _stat._items;
+        _myQuests = _stat._myQuests;
+    }
 }

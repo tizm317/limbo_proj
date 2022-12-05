@@ -111,7 +111,7 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
         {
             // playerMgr 에 public으로 셋팅된 직업
             PlayerInfo info = new PlayerInfo() {PlayerId = 0, Name = Nickname,  PosInfo = new PositionInfo() { State = State.Idle, PosX = pos.x, PosY = pos.y, PosZ = pos.z }, DestInfo = new PositionInfo(), Job = (int)job };
-
+                
             Managers.Object.Add(info, myPlayer: true);
         }
 
@@ -124,7 +124,8 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
             ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
             return;
         }
-
+        if(LobbyScene.my_character_info != null)
+            playerGO.GetComponent<PlayerStat>().GetStat(LobbyScene.my_character_info.stat);
         ps = playerGO.GetComponent<Player>();
         ps.SceneChanged();
         job = ps.my_job;
