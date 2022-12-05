@@ -272,6 +272,7 @@ public class UI_Inventory : UI_Base
         }
     }
 
+
     private void OnPointerDrag()
     {
         if (!_beginDragSlot) return;
@@ -553,6 +554,8 @@ public class UI_Inventory : UI_Base
         exchangedItem = null;
 
         UI_Equipment _UI_Equipment = transform.parent.GetComponentInChildren<UI_Equipment>();
+        if (_UI_Equipment == null) return false; // 장비창 안 열림
+
         bool success = _UI_Equipment.Equip(equipmentItem, out exchangedItem);
         return success;
     }
