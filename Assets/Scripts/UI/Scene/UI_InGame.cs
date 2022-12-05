@@ -851,35 +851,35 @@ public class UI_InGame : UI_Scene
 
         // 아이템 퀵슬롯 단축키 (1~8)
         {
-            if (Input.GetKey(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 inventory.Use(0);
             }
-            if (Input.GetKey(KeyCode.Alpha2))
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 inventory.Use(1);
             }
-            if (Input.GetKey(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 inventory.Use(2);
             }
-            if (Input.GetKey(KeyCode.Alpha4))
+            if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 inventory.Use(3);
             }
-            if (Input.GetKey(KeyCode.Alpha5))
+            if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 inventory.Use(4);
             }
-            if (Input.GetKey(KeyCode.Alpha6))
+            if (Input.GetKeyDown(KeyCode.Alpha6))
             {
                 inventory.Use(5);
             }
-            if (Input.GetKey(KeyCode.Alpha7))
+            if (Input.GetKeyDown(KeyCode.Alpha7))
             {
                 inventory.Use(6);
             }
-            if (Input.GetKey(KeyCode.Alpha8))
+            if (Input.GetKeyDown(KeyCode.Alpha8))
             {
                 inventory.Use(7);
             }
