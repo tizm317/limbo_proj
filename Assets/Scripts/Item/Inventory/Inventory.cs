@@ -101,8 +101,8 @@ public class Inventory : MonoBehaviour
         Capacity = _initialCapacity;
 
         // TODO 수정
-        // 씬 넘어갈 때 사라지는 거 방지 임시로
-        UpdateQuest();
+        // 씬 넘어갈 때 사라지는 거 방지 임시로 -> 이거로 안됨
+        //UpdateQuest();
     }
 
     private void Awake()

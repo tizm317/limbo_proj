@@ -25,6 +25,7 @@ public class UI_InGame : UI_Scene
 
     // 연관된 팝업 UI 목록
     public UI_Inventory uI_Inventory { get; private set; }
+    private Inventory inventory;
     public UI_Equipment ui_Equipment { get; private set; }
     UI_NewMiniMap miniMap;
     UI_Settings setting;
@@ -143,6 +144,8 @@ public class UI_InGame : UI_Scene
 
         UI_Update();
 
+
+
         if (_ped == null) return;
         _ped.position = Input.mousePosition;
         OnPointerEnter(_ped.position);
@@ -201,11 +204,16 @@ public class UI_InGame : UI_Scene
     {
         base.Init();
 
-        if(ui_Equipment == null)
+        updateCount = 0;
+
+        if (ui_Equipment == null)
             ui_Equipment = GetComponentInChildren<UI_Equipment>();
         if(uI_Inventory == null)
             uI_Inventory = GetComponentInChildren<UI_Inventory>();
-        if(ui_stat == null)
+
+        inventory = uI_Inventory._inventory;
+
+        if (ui_stat == null)
             ui_stat = GetComponentInChildren<UI_Stat>();
         if (ui_Equipment)
             ui_Equipment.gameObject.SetActive(false);
@@ -621,6 +629,7 @@ public class UI_InGame : UI_Scene
         //여기에 경험치 채우는 거 구현(근데 왜 2개로 나눠져있지??)
     }
 
+    int updateCount = 0;
     void UI_Update()
     {
         if (Hp == null || Hp == null || ps == null) return;
@@ -656,6 +665,15 @@ public class UI_InGame : UI_Scene
                 uI_NotificationLevel = null;
             }
         }
+
+        // Quest UI
+        if (updateCount <= 0)
+        {
+            inventory.UpdateQuest();
+            updateCount = 10000;
+        }
+        else
+            updateCount--;
     }
 
     UI_NotificationLevel uI_NotificationLevel;
