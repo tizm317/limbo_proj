@@ -29,8 +29,8 @@ public class LobbyScene : BaseScene
     // Start is called before the first frame update
     //public static List<CharacterInfo> my_list = new List<CharacterInfo>();
     public static List<LobbyPlayerInfo> lobbyPlayerlist = new List<LobbyPlayerInfo>();
-    public List<CharacterInfo> my_list = new List<CharacterInfo>();
-    public static CharacterInfo my_character_info = new CharacterInfo();
+    //public List<CharacterInfo> my_list = new List<CharacterInfo>();
+    //public static CharacterInfo my_character_info = new CharacterInfo();
     int idx = -1;
 
     void Start()
@@ -131,8 +131,14 @@ public class LobbyScene : BaseScene
     {
         if(idx != -1)//선택을 한 경우만
         {
-            my_character_info = my_list[idx];
-            LoadingScene.LoadScene(Define.Scene.InGameVillage);//마지막 위치에서 소환되게하려면 여기서 수정~
+            LobbyPlayerInfo info = lobbyPlayerlist[idx];
+            C_EnterGame enterGamePacket = new C_EnterGame();
+            enterGamePacket.Name = info.Name;
+            Managers.Network.Send(enterGamePacket);
+            
+
+            //my_character_info = my_list[idx];
+            //LoadingScene.LoadScene(Define.Scene.InGameVillage);//마지막 위치에서 소환되게하려면 여기서 수정~
         }
     }
 
