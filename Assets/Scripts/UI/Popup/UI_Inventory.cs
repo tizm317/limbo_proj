@@ -55,6 +55,8 @@ public class UI_Inventory : UI_Base
             _inventory.UpdateCurrency();
             _inventory.IsUpdated = false;
         }
+
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
 
@@ -72,6 +74,7 @@ public class UI_Inventory : UI_Base
 
         _inventory = GameObject.Find("@Scene").GetComponent<Inventory>();
         SlotInit();
+
     }
 
     public override void Init()
@@ -99,10 +102,17 @@ public class UI_Inventory : UI_Base
         buttonSort.gameObject.BindEvent(SortItems);
 
         /**/
-        _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject);
+        // 퀵슬롯 추가하면서 parent로 수정
+        _gr = Util.GetOrAddComponent<GraphicRaycaster>(this.gameObject.transform.gameObject);
         _ped = new PointerEventData(EventSystem.current);
         _rrList = new List<RaycastResult>(10);
 
+        //
+        _inventory.UpdateAllSlot();
+        _inventory.UpdateCurrency();
+        _inventory.IsUpdated = false;
+
+        _inventory.SetInventoryUI(this);
     }
 
     private void SortItems(PointerEventData obj)
@@ -118,7 +128,7 @@ public class UI_Inventory : UI_Base
 
     internal void SetMyGolds(uint myGolds)
     {
-        HorizontalLayoutGroup CurrenciesGroup = transform.GetComponentInChildren<HorizontalLayoutGroup>();
+        HorizontalLayoutGroup CurrenciesGroup = transform.GetChild(1).GetComponentInChildren<HorizontalLayoutGroup>();
         Text[] curenciesTexts = CurrenciesGroup.GetComponentsInChildren<Text>();
 
         // Gold, Silver, Copper Init
@@ -157,8 +167,31 @@ public class UI_Inventory : UI_Base
         OnPointerDrag();
         OnPointerUp();
         OnPointerExit(_ped.position);
+
+        // 여기서 직접 호출
+        if(isUpdated == false && transform.GetChild(1).gameObject.activeInHierarchy == true)
+        {
+            OnEnableInventory();
+            isUpdated = true;
+        }
+        if(transform.GetChild(1).gameObject.activeInHierarchy == false)
+        {
+            isUpdated = false;
+        }
     }
 
+    bool isUpdated = false;
+    private void OnEnableInventory()
+    {
+        // 켜질 때마다 update
+        _inventory.UpdateAllSlot();
+        _inventory.UpdateCurrency();
+        _inventory.IsUpdated = false;
+
+        _inventory.SetInventoryUI(this);
+
+        isUpdated = true;
+    }
 
     private T RaycastAndGetFirstComponent<T>() where T : Component
     {
@@ -177,10 +210,14 @@ public class UI_Inventory : UI_Base
         // 중복 수행 방지
         if (itemSlot_tooltip == RaycastAndGetFirstComponent<UI_ItemSlot>())
             return;
-        
+
         itemSlot_tooltip = RaycastAndGetFirstComponent<UI_ItemSlot>();
-        if(itemSlot_tooltip != null && itemSlot_tooltip.HasItem)
+        if (itemSlot_tooltip != null && itemSlot_tooltip.HasItem)
         {
+            // 퀵슬롯에서 설명 안뜨게 (팝업 때문에 문제 생김)
+            if (itemSlot_tooltip.transform.parent.name == "ItemGrid")
+                return;
+
             ItemData itemData = _inventory.GetItemData(itemSlot_tooltip.Index);
             if (!ui_tooltip)
             {
@@ -253,13 +290,12 @@ public class UI_Inventory : UI_Base
             {
                 // 위치 복원
                 _beginDragIconTransform.position = _beginDragIconPoint;
-                
+
                 // UI 순서 복원
                 _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
 
                 // 드래그 완료 처리
                 EndDrag();
-
                 // 참조 제거
                 _beginDragSlot = null;
                 _beginDragIconTransform = null;
@@ -436,6 +472,7 @@ public class UI_Inventory : UI_Base
 
     public Inventory _inventory;
 
+    // 바꿔서 문제...생김 -> Update문에서 직접 호출
     public void OnEnable()
     {
         // 켜질 때마다 update
@@ -465,10 +502,11 @@ public class UI_Inventory : UI_Base
 
 
     List<UI_ItemSlot> _slotUIList;
-
     public void SlotInit()
     {
-        _slotUIList = new List<UI_ItemSlot>(GetComponentsInChildren<UI_ItemSlot>(true));
+        UI_InGame uI_InGame = transform.parent.GetComponent<UI_InGame>();
+
+        _slotUIList = new List<UI_ItemSlot>(uI_InGame.GetComponentsInChildren<UI_ItemSlot>(true));
         int index = 0;
         foreach(UI_ItemSlot slot in _slotUIList)
         {

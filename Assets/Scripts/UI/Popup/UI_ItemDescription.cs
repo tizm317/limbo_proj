@@ -95,6 +95,7 @@ public class UI_ItemDescription : UI_Popup
 
     public void setTooltip(ItemData data, Vector3 mousePointerPos)
     {
+        if (data == null) return;
 
         Reset();
         GetText((int)Texts.NameText).text += ("<color=#ff8000ff>" + data.Name + "</color>");

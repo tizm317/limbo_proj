@@ -145,5 +145,7 @@ public class GameScene : BaseScene
     public override void Clear()
     {
         Debug.Log("InGameScene Clear");
+
+        StopAllCoroutines();
     }
 }

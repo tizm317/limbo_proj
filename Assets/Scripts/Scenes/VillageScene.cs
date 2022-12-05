@@ -20,6 +20,8 @@ public class VillageScene : GameScene
     public override void Clear()
     {
         // 이 씬이 종료될 때 날려줘야 하는 부분 넣어줘야 함
+        StopAllCoroutines();
+
         Debug.Log("Village Scene Clear");
     }
 }

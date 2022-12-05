@@ -170,7 +170,7 @@ public class MerchantNpc : Npc
         // Inventory UI
         UI_InGame uI_InGame = GameObject.Find("@UI_Root").GetComponentInChildren<UI_InGame>();
         _UI_Inventory = uI_InGame.GetComponentInChildren<UI_Inventory>(true);
-        _UI_Inventory.gameObject.SetActive(true);
+        _UI_Inventory.transform.GetChild(1).gameObject.SetActive(true);
 
 
         // 인벤토리 UI를 거래용으로 씀
@@ -182,7 +182,7 @@ public class MerchantNpc : Npc
     {
         // 거래용으로 쓰던 인벤토리 UI를 false
         _UI_Inventory.Trading = false;
-        _UI_Inventory.gameObject.SetActive(false);
+        _UI_Inventory.transform.GetChild(1).gameObject.SetActive(false);
 
         // Inventory UI
         //_UI_Inventory.ClosePopupUI();

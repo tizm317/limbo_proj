@@ -217,8 +217,8 @@ public class UI_InGame : UI_Scene
             ui_stat = GetComponentInChildren<UI_Stat>();
         if (ui_Equipment)
             ui_Equipment.gameObject.SetActive(false);
-        if(uI_Inventory)
-            uI_Inventory.gameObject.SetActive(false);
+        //if (uI_Inventory)
+        //    uI_Inventory.transform.GetChild(1).gameObject.SetActive(false);
         if (ui_stat)
             ui_stat.gameObject.SetActive(false);
 
@@ -554,7 +554,7 @@ public class UI_InGame : UI_Scene
     // ItemSlot 창에서 버튼 클릭
     private void InventoryButtonClicked(PointerEventData data)
     {
-        uI_Inventory.gameObject.SetActive(!uI_Inventory.gameObject.activeSelf);
+        uI_Inventory.transform.GetChild(1).gameObject.SetActive(!uI_Inventory.transform.GetChild(1).gameObject.activeSelf);
     }
 
     private void StatButtonClicked(PointerEventData data)
@@ -732,9 +732,9 @@ public class UI_InGame : UI_Scene
         {
             // 인벤토리 UI
 
-            if(uI_Inventory.gameObject.activeInHierarchy == false)
+            if(uI_Inventory.transform.GetChild(1).gameObject.activeInHierarchy == false)
             {
-                uI_Inventory.gameObject.SetActive(true);
+                uI_Inventory.transform.GetChild(1).gameObject.SetActive(true);
                 ui_Equipment.gameObject.SetActive(true);
 
                 //ui_Equipment = Managers.UI.ShowPopupUI<UI_Equipment>();
@@ -742,7 +742,7 @@ public class UI_InGame : UI_Scene
             }
             else
             {
-                uI_Inventory.gameObject.SetActive(false);
+                uI_Inventory.transform.GetChild(1).gameObject.SetActive(false);
                 ui_Equipment.gameObject.SetActive(false);
 
                 //if (!uI_Inventory.IsPeek())
@@ -935,7 +935,7 @@ public class UI_InGame : UI_Scene
             return;
 
         // 인베토리 및 장비창 떠있으면 안뜨게 (얘네 씬UI 소속이라 위에꺼에서 안걸러짐)
-        if (uI_Inventory.gameObject.activeSelf == true || ui_Equipment.gameObject.activeSelf == true || ui_stat.gameObject.activeSelf == true)
+        if (uI_Inventory.transform.GetChild(1).gameObject.activeSelf == true || ui_Equipment.gameObject.activeSelf == true || ui_stat.gameObject.activeSelf == true)
             return;
 
         skillSlot_tooltip = RaycastAndGetFirstComponent<UI_SkillSlot>();

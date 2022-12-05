@@ -41,6 +41,8 @@ public class DungeonScene : GameScene
 
     public override void Clear()
     {
+        StopAllCoroutines();
+
         Debug.Log("Dungeon Scene Clear");
     }
 

@@ -30,12 +30,15 @@ public class Inventory : MonoBehaviour
     public int Capacity { get; private set; }
 
     // 초기 수용 한도
-    [SerializeField, Range(6, 42)]
-    private int _initialCapacity = 42;
+    // 42 -> 50(42+8 quickslot)
+    // 0~41(42) : 인벤토리
+    // 42~49(8) : 퀵슬롯 
+    //[SerializeField, Range(6, 50)] 
+    private int _initialCapacity = 50;
 
     // 최대 수용 한도 (아이템 배열 크기)
-    [SerializeField, Range(6, 42)]
-    private int _maxCapacity = 42;
+    //[SerializeField, Range(6, 50)]
+    private int _maxCapacity = 50;
 
     // 연결된 인벤토리 UI
     [SerializeField]
@@ -44,6 +47,7 @@ public class Inventory : MonoBehaviour
     public UI_Inventory UI_Inventory => _UI_inventory;
 
     UI_InGame UI_InGame;
+
 
 
     // PlayerStat에서
@@ -106,6 +110,22 @@ public class Inventory : MonoBehaviour
 
         // Start쪽에 있던부분
         //Debug.Log(Capacity);
+
+        // 연결..
+        GameObject invenGO = GameObject.Find("UI_Inventory");
+        if (invenGO == null)
+        {
+            // player 가 아직 생성 전이면, 생긴 이후에 다시 Init하도록 코루틴으로 대기함
+            ProcessLater(() => GameObject.Find("UI_Inventory") != null, () => Init());
+            return;
+        }
+        _UI_inventory = invenGO.GetComponent<UI_Inventory>();
+        if (_UI_inventory == null)
+        {
+            ProcessLater(() => GameObject.Find("UI_Inventory").GetComponent<UI_Inventory>() != null, () => Init());
+            return;
+        }
+
         UpdateAccessibleStatesAll();
 
         // Dictionary Setting
@@ -537,7 +557,8 @@ public class Inventory : MonoBehaviour
             Golds = 0;
         }
 
-        _UI_inventory.SetMyGolds(Golds);
+        if(_UI_inventory)
+            _UI_inventory.SetMyGolds(Golds);
 
         // PlayerStat 쪽 Gold 동기화
         if(myPlayerStat)
