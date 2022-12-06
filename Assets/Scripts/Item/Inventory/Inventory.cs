@@ -176,6 +176,8 @@ public class Inventory : MonoBehaviour
     // UpdateSlot 안에 넣으면 될까?
     public void UpdateQuest()
     {
+        if(_myQuests == null)
+            return;
         foreach(Data.Quest quest in _myQuests)
         {
             // clear 시키고 다시 체크

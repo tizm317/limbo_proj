@@ -272,7 +272,7 @@ public class UI_InGame : UI_Scene
         // 스킬 레벨업 UI 오리지널 위치 y값
         OriginalPosY_SkillUpButton = UI_SkillUpButtonList[0].transform.position.y;
         DestinationPosY_SkillUpButton = OriginalPosY_SkillUpButton + UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height * 0.93f;
-
+        Debug.Log(UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height);
         foreach (GameObject go in UI_SkillUpButtonList)
         {
             go.BindEvent(skillUpButtonClicked);
@@ -362,8 +362,12 @@ public class UI_InGame : UI_Scene
 
     public void EX()
     {
-        OriginalPosY_SkillUpButton = UI_SkillUpButtonList[0].transform.position.y;
-        DestinationPosY_SkillUpButton = OriginalPosY_SkillUpButton + UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height * 0.93f;
+        //OriginalPosY_SkillUpButton = UI_SkillUpButtonList[0].transform.position.y;
+        float t = UI_Settings.cur_height;
+        if(t != 0)
+            DestinationPosY_SkillUpButton = OriginalPosY_SkillUpButton + UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height * 0.93f * (t/1440f);
+        else
+            DestinationPosY_SkillUpButton = OriginalPosY_SkillUpButton + UI_SkillUpButtonList[0].transform.parent.GetComponent<RectTransform>().rect.height * 0.93f;
     }
 
     private void QuestToggleClicked(PointerEventData data)
@@ -441,6 +445,7 @@ public class UI_InGame : UI_Scene
         else
         {
             //start = 104;
+            EX();
             start = OriginalPosY_SkillUpButton;
             dest = DestinationPosY_SkillUpButton;
             //dest = start + 128;

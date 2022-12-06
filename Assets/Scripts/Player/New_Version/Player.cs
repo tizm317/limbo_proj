@@ -258,7 +258,7 @@ public abstract class Player : MonoBehaviour
     // turn To NPC
     private float turnSpeed = 4.0f;
     private float turnTimeCount = 0.0f;
-    private bool isTurning = false;
+    [SerializeField]private bool isTurning = false;
     private IEnumerator enumerator; // turnToNPC 코루틴용
 
     // Camera FOV Value for NPC Interact
@@ -661,7 +661,7 @@ public abstract class Player : MonoBehaviour
                     //Managers.Resource.Destroy(my_enemy);
                 }
             }
-
+            yield return new WaitForSeconds(0.867f/(attack_speed*2));
             curState = State.Idle;
             Ani_State_Change();
             yield return new WaitForSeconds(1/attack_speed);//1초를 공격속도로 나눈 값만큼 기다렸다가 다음 공격을 수행
@@ -1121,13 +1121,15 @@ public abstract class Player : MonoBehaviour
         //Debug.Log("코루틴 돌기 시작");
         isTurning = true;
         turnTimeCount = 0.0f;
-        while (turnTimeCount < 1.0f)
+        while(true)
         {
             // position.y 는 같게 해서 기울지 않도록
             Vector3 tempVector = new Vector3(npcPos.x, player.transform.position.y, npcPos.z);
             Quaternion lookOnlook = Quaternion.LookRotation(tempVector - player.transform.position);
             player.transform.rotation = Quaternion.Slerp(player.transform.rotation, lookOnlook, Time.deltaTime * turnSpeed);
-            turnTimeCount = Time.deltaTime * turnSpeed;
+            
+            if(Mathf.Abs(player.transform.rotation.y - lookOnlook.y) <0.1f)
+                break;
             yield return null;
         }
         isTurning = false;

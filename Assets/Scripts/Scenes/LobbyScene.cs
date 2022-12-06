@@ -49,17 +49,39 @@ public class LobbyScene : BaseScene
     {
         //GetInfo();
         base.Init();
+        
+        Make_List();
+        
+    }
+
+    void Make_List()
+    {
         Transform ui_base = GameObject.Find("Characters Group").transform;
-        if(ui_base.childCount != 0)
+        if (ui_base.childCount != 0)
         {
             Debug.Log(ui_base.childCount);
-            for(int i = 0; i < ui_base.childCount; i++)
+            for (int i = 0; i < ui_base.childCount; i++)
             {
-                Destroy(ui_base.transform.GetChild(i));//리스트 전부 비워주기
+                Destroy(ui_base.transform.GetChild(i).gameObject);//리스트 전부 비워주기
             }
         }
-        
-        foreach(LobbyPlayerInfo i in lobbyPlayerlist)
+
+        //for(int i = 0; i < my_list.Count; i++)
+        //{
+        //    GameObject ci = Instantiate(Resources.Load<GameObject>("RPG and MMO UI 11/Prefabs/Lobby/Character Select/Character (List)"));
+        //    ci.transform.SetParent(ui_base);
+        //    ci.transform.Find("Name Text").GetComponent<Text>().text = my_list[i].nic_name;
+        //    ci.transform.transform.Find("Sub Texts Group").transform.Find("Level Text").GetComponent<Text>().text = my_list[i].stat.Level.ToString();
+        //    ci.transform.transform.Find("Sub Texts Group").transform.Find("Class Text").GetComponent<Text>().text = my_list[i].job.ToString();
+        //    ci.transform.localScale = Vector3.one;
+        //    ci.name = my_list[i].nic_name;
+        //    ci.name = i.Name;
+        //    ci.BindEvent(Toggled, Define.UIEvent.Click);
+        //    int index = i;
+        //    ci.transform.Find("Button (Delete)").GetComponent<Button>().onClick.AddListener(() => Delete(index));
+        //}
+
+        foreach (LobbyPlayerInfo i in lobbyPlayerlist)
         {
             GameObject ci = Instantiate(Resources.Load<GameObject>("RPG and MMO UI 11/Prefabs/Lobby/Character Select/Character (List)"));
             ci.transform.SetParent(ui_base);
@@ -67,23 +89,12 @@ public class LobbyScene : BaseScene
             ci.transform.transform.Find("Sub Texts Group").transform.Find("Level Text").GetComponent<Text>().text = i.PlayerStatInfo.Level.ToString();
             ci.transform.transform.Find("Sub Texts Group").transform.Find("Class Text").GetComponent<Text>().text = i.Job.ToString();
             ci.transform.localScale = Vector3.one;
-
             ci.name = i.Name;
             ci.BindEvent(Toggled,Define.UIEvent.Click);
-
+        
+            //int index = i;
+            //ci.transform.Find("Button (Delete)").GetComponent<Button>().onClick.AddListener(() => Delete(index));
         }
-        
-        //foreach(CharacterInfo i in my_list)
-        //{
-        //    GameObject ci = Instantiate(Resources.Load<GameObject>("RPG and MMO UI 11/Prefabs/Lobby/Character Select/Character (List)"));
-        //    ci.transform.SetParent(ui_base);
-        //    ci.transform.Find("Name Text").GetComponent<Text>().text = i.nic_name;
-        //    ci.transform.transform.Find("Sub Texts Group").transform.Find("Level Text").GetComponent<Text>().text = i.stat.Level.ToString();
-        //    ci.transform.transform.Find("Sub Texts Group").transform.Find("Class Text").GetComponent<Text>().text = i.job.ToString();
-        //    ci.transform.localScale = Vector3.one;
-        //    ci.name = i.nic_name;
-        //}
-        
     }
 
     public void GetInfo(S_Login loginPacket)
@@ -125,6 +136,14 @@ public class LobbyScene : BaseScene
                 ui_base.transform.GetChild(idx).GetComponent<Toggle>().isOn = false;
             idx = -1;
         }
+    }
+
+    public void Delete(int i)
+    {
+        Debug.Log(i);
+        Transform ui_base = GameObject.Find("Characters Group").transform;
+        //my_list.RemoveAt(i); ///////////////////////////////////////////////////////////
+        Make_List();
     }
 
     public void Play()

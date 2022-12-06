@@ -12,10 +12,14 @@ public class LoadingScene : BaseScene
     [SerializeField] LoadingSceneTooltip tips;
     // Start is called before the first frame update
     void Start()
+    {    
+        Init();
+        StartCoroutine(LoadScene());
+    }
+    protected override void Init()
     {
         SceneType = Define.Scene.Unknown;
-        
-        StartCoroutine(LoadScene());
+        base.Init();
     }
 
     public static void LoadScene(string sceneName)
@@ -81,6 +85,7 @@ public class LoadingScene : BaseScene
 
     public override void Clear()
     {
-
+        Debug.Log("LoadingScene Clear");
+        StopAllCoroutines();
     }
 }

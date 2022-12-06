@@ -187,13 +187,13 @@ public class UI_Settings : UI_Popup
             Camera.main.rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight); // 새로운 Rect 적용
             //Debug.LogFormat("Current Resolution = {0} * {1}",set_Width,newHeight);
         }
-        ui_ingame.EX();
+        //ui_ingame.EX();
     }
     void Screen_Toggle(PointerEventData data)
     {
         Full_Screen(Toggle[2]);
         Screen.SetResolution(cur_width, cur_height,FullScreen);
-        ui_ingame.EX();
+        //ui_ingame.EX();
     }
     void Full_Screen(Toggle toggle)
     {
