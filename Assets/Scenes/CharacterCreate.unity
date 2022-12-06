@@ -2242,7 +2242,7 @@ RectTransform:
   m_GameObject: {fileID: 976731669}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 980}
-  m_LocalScale: {x: 0.52923775, y: 0.52923775, z: 1}
+  m_LocalScale: {x: 0.5292378, y: 0.5292378, z: 1}
   m_Children:
   - {fileID: 1710613615}
   m_Father: {fileID: 0}
@@ -8771,7 +8771,6 @@ GameObject:
   - component: {fileID: 4297752864539358744}
   - component: {fileID: 7873562776905772130}
   - component: {fileID: 4550435245423668238}
-  - component: {fileID: 5689025906046543416}
   - component: {fileID: 3524780401474426242}
   - component: {fileID: 1644320907546812774}
   - component: {fileID: 4645387814501151840}
@@ -12376,41 +12375,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5689025906046543416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3526177604010339490}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ad872c546a719f4b9922f6e0b33b24f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _UI_inventory: {fileID: 286161426470419700, guid: dd2623a390bea594883253e50675ca1f,
-    type: 3}
-  _myQuests: []
-  _MyGolds: 0
-  itemDatas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _CoinData: {fileID: 0}
-  IsUpdated: 0
 --- !u!1 &5718243747640867512
 GameObject:
   m_ObjectHideFlags: 0
@@ -14955,7 +14919,6 @@ GameObject:
   - component: {fileID: 7889831939978309714}
   - component: {fileID: 4296008036948765224}
   - component: {fileID: 7364934553196063468}
-  - component: {fileID: 7364934553196063467}
   - component: {fileID: 7364934553196063466}
   - component: {fileID: 7364934553196063465}
   - component: {fileID: 1217941766263501936}
@@ -14996,40 +14959,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &7364934553196063467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7364934553196063464}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ad872c546a719f4b9922f6e0b33b24f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _UI_inventory: {fileID: 0}
-  _myQuests: []
-  _MyGolds: 0
-  itemDatas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _CoinData: {fileID: 0}
-  IsUpdated: 0
 --- !u!114 &7364934553196063468
 MonoBehaviour:
   m_ObjectHideFlags: 0

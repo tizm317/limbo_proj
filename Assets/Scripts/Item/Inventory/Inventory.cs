@@ -53,7 +53,7 @@ public class Inventory : MonoBehaviour
     // PlayerStat에서
     // 아이템 목록
     //[SerializeField]
-    private Item[] _items;
+    private Item[] _items = new Item[50];
 
     // 퀘스트 목록
     [SerializeField]
@@ -102,7 +102,7 @@ public class Inventory : MonoBehaviour
         _MyGolds = myPlayerStat.Gold;
 
         //_items = new Item[_maxCapacity];
-        Capacity = _initialCapacity;
+        //Capacity = _initialCapacity;
 
         // TODO 수정
         // 씬 넘어갈 때 사라지는 거 방지 임시로 -> 이거로 안됨
@@ -128,11 +128,11 @@ public class Inventory : MonoBehaviour
 
         UpdateAccessibleStatesAll();
 
-        // Dictionary Setting
-        foreach (ItemData data in itemDatas)
-        {
-            itemDict.Add(data.ID, data);
-        }
+        //// Dictionary Setting
+        //foreach (ItemData data in itemDatas)
+        //{
+        //    itemDict.Add(data.ID, data);
+        //}
     }
 
     private void Start()
@@ -150,6 +150,14 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        Capacity = _initialCapacity;
+
+        // Dictionary Setting
+        foreach (ItemData data in itemDatas)
+        {
+            itemDict.Add(data.ID, data);
+        }
+
         Init();
 
         //_items = new Item[_maxCapacity];
