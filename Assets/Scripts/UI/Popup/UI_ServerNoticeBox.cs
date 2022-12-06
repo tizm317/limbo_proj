@@ -13,6 +13,7 @@ public class UI_ServerNoticeBox : UI_Popup
     enum Buttons
     {
         CloseButton,
+        SinglePlayButton,
     }
 
     private void Start()
@@ -25,10 +26,17 @@ public class UI_ServerNoticeBox : UI_Popup
         base.Init();
         Bind<Button>(typeof(Buttons));
         GetButton((int)Buttons.CloseButton).gameObject.BindEvent(CloseButtonClicked);
+        GetButton((int)Buttons.SinglePlayButton).gameObject.BindEvent(SinglePlayButtonClicked);
     }
 
     private void CloseButtonClicked(PointerEventData data)
     {
         ClosePopupUI();
+    }
+    private void SinglePlayButtonClicked(PointerEventData data)
+    {
+        ClosePopupUI();
+        LoadingScene.LoadScene(Define.Scene.Lobby);
+        //Managers.Scene.LoadScene(Define.Scene.Lobby);
     }
 }
