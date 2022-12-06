@@ -759,7 +759,6 @@ GameObject:
   - component: {fileID: 3412997430666791407}
   - component: {fileID: 8772250937584178069}
   - component: {fileID: 2600467835897992017}
-  - component: {fileID: 2600467835897992022}
   - component: {fileID: 2600467835897992023}
   - component: {fileID: 2600467835897992020}
   - component: {fileID: -3258977920278311475}
@@ -834,6 +833,7 @@ MonoBehaviour:
   _max_mana: 0
   _mana_regeneration: 0
   _skill_point: 0
+  _stat_point: 0
   level_up: 1
   current_exp: 0
   STR: 0
@@ -852,42 +852,7 @@ MonoBehaviour:
   Item_Mana_percent: 0
   isDead: 0
   my_job: 0
---- !u!114 &2600467835897992022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600467835897992021}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ad872c546a719f4b9922f6e0b33b24f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initialCapacity: 42
-  _maxCapacity: 42
-  _UI_inventory: {fileID: 0}
-  _MyGolds: 0
-  _maxGolds: 4294967295
-  itemDatas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _CoinData: {fileID: 0}
-  IsUpdated: 0
+  _myQuests: []
 --- !u!54 &2600467835897992023
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -930,6 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fefe69b78893d429126ffb43309eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 0}
   my_stat: {fileID: 0}
   my_job: 2
   attackRange: 3
@@ -949,6 +915,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  selected_pos: {x: 0, y: 0, z: 0}
   magicNumber: 100
   mana_for_attack: 5
 --- !u!1 &2790455577844795249
