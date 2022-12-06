@@ -135,8 +135,8 @@ public class LobbyScene : BaseScene
             C_EnterGame enterGamePacket = new C_EnterGame();
             enterGamePacket.Name = info.Name;
             Managers.Network.Send(enterGamePacket);
-            
 
+            Managers.Scene.LoadScene(Define.Scene.InGameVillage);
             //my_character_info = my_list[idx];
             //LoadingScene.LoadScene(Define.Scene.InGameVillage);//마지막 위치에서 소환되게하려면 여기서 수정~
         }

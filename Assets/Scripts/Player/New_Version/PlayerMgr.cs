@@ -124,8 +124,8 @@ public class PlayerMgr:MonoBehaviour//Managers가 만약 Ingame에서 생성되�
             ProcessLater(() => GameObject.FindGameObjectWithTag("Player") != null, () => Init());
             return;
         }
-        if(LobbyScene.my_character_info != null)
-            playerGO.GetComponent<PlayerStat>().GetStat(LobbyScene.my_character_info.stat);
+        //if(LobbyScene.my_character_info != null)
+        //    playerGO.GetComponent<PlayerStat>().GetStat(LobbyScene.my_character_info.stat);
         ps = playerGO.GetComponent<Player>();
         ps.SceneChanged();
         job = ps.my_job;

@@ -160,18 +160,17 @@ class PacketHandler
 		// 메모리에 아이템 정보 적용
 		foreach(ItemInfo itemInfo in itemList.Items)
         {
-			ItemData item = null;
+            ItemData item = null;
+            item = invenUI._inventory.itemDict[itemInfo.TemplateId];
 
-			item = invenUI._inventory.itemDict[itemInfo.TemplateId];
-
-			int idx;
-			invenUI._inventory.Add(item, out idx);
+            int idx;
+            invenUI._inventory.Add(item, out idx);
 
 
-			//Item2 item = Item2.MakeItem(itemInfo);
-			//Managers.Inven.Add(item);
+            //Item2 item = Item2.MakeItem(itemInfo);
+            //Managers.Inven.Add(item);
 
-			//Debug.Log($"{item.TemplateId} : {item.Count}");
+            //Debug.Log($"{item.TemplateId} : {item.Count}");
         }
 
 		// UI에서 표시
