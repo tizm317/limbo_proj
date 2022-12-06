@@ -30,6 +30,22 @@ public class UI_SelectServer : UI_Popup
         {
             GameObject go = Managers.UI.MakeSubItem<UI_SelectServerItem>(parent: layout.transform).gameObject;
             UI_SelectServerItem serverItem = go.GetOrAddComponent<UI_SelectServerItem>();
+
+            /////////////////////////////////////////////////////////////////////////////////////////////
+            // 해상도 조절
+            Button serverBtn = serverItem.transform.GetComponentInChildren<Button>();
+            float w = serverBtn.GetComponent<RectTransform>().rect.width;
+            float h = serverBtn.GetComponent<RectTransform>().rect.height;
+            // 기준 해상도 2560x1440
+            w /= 2560;
+            w *= Screen.width; // 설정된 해상도
+            //Screen.currentResolution.width; // 내 기기 해상도
+            h /= 1440;
+            h *= Screen.height;
+            //Screen.currentResolution.height;
+            serverBtn.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
+            /////////////////////////////////////////////////////////////////////////////////////////////
+
             Items.Add(serverItem);
 
             serverItem.Info = servers[i];
