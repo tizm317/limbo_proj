@@ -28,9 +28,10 @@ public class LobbyScene : BaseScene
 {
     // Start is called before the first frame update
     //public static List<CharacterInfo> my_list = new List<CharacterInfo>();
-    public static List<LobbyPlayerInfo> lobbyPlayerlist = new List<LobbyPlayerInfo>();
     //public List<CharacterInfo> my_list = new List<CharacterInfo>();
     //public static CharacterInfo my_character_info = new CharacterInfo();
+    public static List<LobbyPlayerInfo> lobbyPlayerlist = new List<LobbyPlayerInfo>();
+    public static LobbyPlayerInfo my_character_info = new LobbyPlayerInfo();
     int idx = -1;
 
     void Start()
@@ -81,6 +82,8 @@ public class LobbyScene : BaseScene
         //    ci.transform.Find("Button (Delete)").GetComponent<Button>().onClick.AddListener(() => Delete(index));
         //}
 
+        // lobbyPlayer 버전
+        int index = 0;
         foreach (LobbyPlayerInfo i in lobbyPlayerlist)
         {
             GameObject ci = Instantiate(Resources.Load<GameObject>("RPG and MMO UI 11/Prefabs/Lobby/Character Select/Character (List)"));
@@ -91,9 +94,8 @@ public class LobbyScene : BaseScene
             ci.transform.localScale = Vector3.one;
             ci.name = i.Name;
             ci.BindEvent(Toggled,Define.UIEvent.Click);
-        
-            //int index = i;
-            //ci.transform.Find("Button (Delete)").GetComponent<Button>().onClick.AddListener(() => Delete(index));
+            ci.transform.Find("Button (Delete)").GetComponent<Button>().onClick.AddListener(() => Delete(index));
+            index++;
         }
     }
 
@@ -142,6 +144,7 @@ public class LobbyScene : BaseScene
     {
         Debug.Log(i);
         Transform ui_base = GameObject.Find("Characters Group").transform;
+        lobbyPlayerlist.RemoveAt(i);
         //my_list.RemoveAt(i); ///////////////////////////////////////////////////////////
         Make_List();
     }
@@ -155,8 +158,8 @@ public class LobbyScene : BaseScene
             enterGamePacket.Name = info.Name;
             Managers.Network.Send(enterGamePacket);
 
+            my_character_info = lobbyPlayerlist[idx];
             Managers.Scene.LoadScene(Define.Scene.InGameVillage);
-            //my_character_info = my_list[idx];
             //LoadingScene.LoadScene(Define.Scene.InGameVillage);//마지막 위치에서 소환되게하려면 여기서 수정~
         }
     }
